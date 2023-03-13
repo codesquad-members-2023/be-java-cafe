@@ -7,6 +7,7 @@ import org.junit.jupiter.api.Test;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 class MemoryUserRepositoryTest {
 
@@ -39,5 +40,19 @@ class MemoryUserRepositoryTest {
 
         assertThat(users.get(0)).isEqualTo(user1);
         assertThat(users.get(1)).isEqualTo(user2);
+    }
+
+    @Test
+    @DisplayName("회원 ID 중복 시, 예외가 제대로 터지는지 확인")
+    void validateDuplicatedId() {
+        User user1 = new User("Hyun", "1234", "황현", "ghkdgus29@naver.com");
+        User user2 = new User("Hyun", "12345", "황현태", "ghkddbs28@naver.com");
+
+        repository.save(user1);
+        assertThatThrownBy(() -> {
+            repository.save(user2);
+        })
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("[ERROR] ID 중복입니다.");
     }
 }

@@ -7,17 +7,18 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 @Repository
 public class MemoryUserRepository {
 
-    private final Map<Integer, User> users = new HashMap<>();
-    private int sequence = 0;
+    private final Map<String, User> users = new HashMap<>();
 
     public void save(User user) {
-        user.setId(++sequence);
-        users.put(user.getId(), user);
+        if (users.containsKey(user.getUserId())) {
+            throw new IllegalArgumentException("[ERROR] ID 중복입니다.");
+        }
+
+        users.put(user.getUserId(), user);
     }
 
     public List<User> findAll() {
