@@ -14,7 +14,11 @@ repositories {
 
 dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-web'
+	implementation 'com.dagm:dev-tool:0.0.8-RELEASE'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	compileOnly 'org.projectlombok:lombok'
+	implementation group: 'org.springframework', name: 'spring-jdbc', version: '6.0.6'
+
 }
 
 tasks.named('test') {
