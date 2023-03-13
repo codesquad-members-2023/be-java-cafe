@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import javax.annotation.PostConstruct;
 import java.util.List;
 
 @Controller
@@ -20,6 +21,12 @@ public class UserController {
     @Autowired
     public UserController(MemoryUserRepository repository) {
         this.repository = repository;
+    }
+
+    @PostConstruct
+    void init() {
+        repository.save(new User("Hyun", "1234", "황현", "ghkdgus29@naver.com"));
+        repository.save(new User("Yoon", "4321", "황윤", "ghkddbs28@naver.com"));
     }
 
     @GetMapping("/")
