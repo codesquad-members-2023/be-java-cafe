@@ -1,6 +1,7 @@
 package kr.codesqaud.cafe.service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 import kr.codesqaud.cafe.model.User;
 import org.springframework.stereotype.Service;
 
@@ -16,13 +17,19 @@ public class UserService {
         userList.add(user);
     }
 
-    public void searchUserAll() {
+    public void printUserAll() {
         System.out.println();
         System.out.println("전체목록");
         userList.forEach(u -> System.out.println(u.toString()));
     }
 
-    public List<User> returnUserList() {
+    public List<User> findUserAll() {
         return userList;
+    }
+
+    public List<User> findUserByUserId(String userId) {
+        return userList.stream()
+                .filter(s -> s.getUserId().equals(userId))
+                .collect(Collectors.toList());
     }
 }
