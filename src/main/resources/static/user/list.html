@@ -84,13 +84,33 @@
               </thead>
               <tbody>
                 <tr>
-                    <th scope="row">1</th> <td>javajigi</td> <td>자바지기</td> <td>javajigi@sample.net</td><td><a href="#" class="btn btn-success" role="button">수정</a></td>
-                </tr>
-                <tr>
-                    <th scope="row">2</th> <td>slipp</td> <td>슬립</td> <td>slipp@sample.net</td><td><a href="#" class="btn btn-success" role="button">수정</a></td>
+<!--                    <th scope="row">1</th> <td>javajigi</td> <td>자바지기</td> <td>javajigi@sample.net</td><td><a href="#" class="btn btn-success" role="button">수정</a></td>-->
                 </tr>
               </tbody>
           </table>
+          <script>
+              const xhr = new XMLHttpRequest();
+              xhr.open('get', '/getUser');
+              xhr.onload = function () {
+                  const users = JSON.parse(xhr.responseText);
+                  const tbody = document.querySelector('#main tbody');
+                  users.forEach(function (user, index) {
+                      const tr = document.createElement('tr');
+                      tr.innerHTML = `
+            <td>${index + 1}</td>
+            <td>${user.userId}</td>
+            <td>${user.name}</td>
+            <td>${user.email}</td>
+            <td><a href="#" class="btn btn-success" role="button">수정</a></td>
+          `;
+                      tbody.appendChild(tr);
+                  });
+              };
+              xhr.onerror = function() {
+                  console.error('Error while fetching users');
+              };
+              xhr.send();
+          </script>
         </div>
     </div>
 </div>
