@@ -83,9 +83,6 @@
                 </tr>
               </thead>
               <tbody>
-                <tr>
-<!--                    <th scope="row">1</th> <td>javajigi</td> <td>자바지기</td> <td>javajigi@sample.net</td><td><a href="#" class="btn btn-success" role="button">수정</a></td>-->
-                </tr>
               </tbody>
           </table>
           <script>
@@ -98,7 +95,7 @@
                       const tr = document.createElement('tr');
                       tr.innerHTML = `
             <td>${index + 1}</td>
-            <td>${user.userId}</td>
+            <td><a href="/user/profile/${user.userId}">${user.userId}</a></td>
             <td>${user.name}</td>
             <td>${user.email}</td>
             <td><a href="#" class="btn btn-success" role="button">수정</a></td>
