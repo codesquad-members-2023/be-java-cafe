@@ -1,2 +1,11 @@
-package kr.codesqaud.cafe.repository;public interface UserRepository {
+package kr.codesqaud.cafe.repository;
+
+import kr.codesqaud.cafe.domain.User;
+
+import java.util.List;
+
+public interface UserRepository {
+    void save(User user);
+    User findById(Long userId);
+    List<User> findAll();
 }
