@@ -1,12 +1,23 @@
 package kr.codesqaud.cafe.controller;
 
+import kr.codesqaud.cafe.domain.User;
+import kr.codesqaud.cafe.repository.MemoryUserRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 public class UserController {
+
+    private final MemoryUserRepository repository;
+
+    @Autowired
+    public UserController(MemoryUserRepository repository) {
+        this.repository = repository;
+    }
 
     @GetMapping("/")
     public String home() {
@@ -20,16 +31,8 @@ public class UserController {
     }
 
     @PostMapping("/users")
-    public String signUp(@RequestParam String userId,
-                         @RequestParam String password,
-                         @RequestParam String name,
-                         @RequestParam String email) {
-
-        System.out.println("userId = " + userId);
-        System.out.println("password = " + password);
-        System.out.println("name = " + name);
-        System.out.println("email = " + email);
-
+    public String signUp(@ModelAttribute User user) {
+        repository.save(user);
         return "redirect:/users";
     }
 
