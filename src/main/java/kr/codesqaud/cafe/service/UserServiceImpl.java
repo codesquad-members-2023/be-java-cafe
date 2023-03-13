@@ -3,12 +3,15 @@ package kr.codesqaud.cafe.service;
 import kr.codesqaud.cafe.domain.User;
 import kr.codesqaud.cafe.repository.MemoryUserRepository;
 import kr.codesqaud.cafe.repository.UserRepository;
+import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
 
+@AllArgsConstructor
 public class UserServiceImpl implements UserService {
 
-    private final UserRepository repository = new MemoryUserRepository();
+    private UserRepository repository;
 
     @Override
     public void join(User user) {
