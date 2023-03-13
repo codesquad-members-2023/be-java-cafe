@@ -1,4 +1,4 @@
-package kr.codesqaud.caffe;
+package kr.codesqaud.cafe;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
