@@ -1,4 +1,4 @@
-package kr.codesqaud.cafe;
+package kr.codesqaud.caffe;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
