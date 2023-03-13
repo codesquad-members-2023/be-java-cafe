@@ -23,8 +23,8 @@ public class UserMemoryRepositoryTest {
     @Test
     public void findTest () {
         //given
-        User userA = new User("cire", 1234, "lee","dltpwns6@naver.com");
-        User userB = new User("hello", 123, "kim","lee6820@naver.com");
+        User userA = new User("cire", "1234", "lee","dltpwns6@naver.com");
+        User userB = new User("hello", "123", "kim","lee6820@naver.com");
 
         repository.join(userA);
         repository.join(userB);
