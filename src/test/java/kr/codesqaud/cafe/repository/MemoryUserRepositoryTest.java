@@ -55,4 +55,33 @@ class MemoryUserRepositoryTest {
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("[ERROR] ID 중복입니다.");
     }
+
+    @Test
+    @DisplayName("회원 ID로 메모리 저장소에서 검색이 가능한지 확인")
+    void findByUserId() {
+        User user1 = new User("Hyun", "1234", "황현", "ghkdgus29@naver.com");
+        User user2 = new User("Yoon", "12345", "황윤", "ghkddbs28@naver.com");
+
+        repository.save(user1);
+        repository.save(user2);
+
+        User findUser = repository.findByUserId(user1.getUserId());
+        assertThat(findUser).isEqualTo(user1);
+    }
+
+    @Test
+    @DisplayName("메모리 저장소에 존재하지 않는 회원 ID 검색시 예외가 터지는지 확인")
+    void validateFindByUserId() {
+        User user1 = new User("Hyun", "1234", "황현", "ghkdgus29@naver.com");
+        User user2 = new User("Yoon", "12345", "황윤", "ghkddbs28@naver.com");
+
+        repository.save(user1);
+        repository.save(user2);
+
+        assertThatThrownBy(() -> {
+            repository.findByUserId("Hwang");
+        })
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("[ERROR] 존재하지 않는 ID 입니다.");
+    }
 }

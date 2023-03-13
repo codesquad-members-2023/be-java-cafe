@@ -21,6 +21,14 @@ public class MemoryUserRepository {
         users.put(user.getUserId(), user);
     }
 
+    public User findByUserId(String userId) {
+        if (!users.containsKey(userId)) {
+            throw new IllegalArgumentException("[ERROR] 존재하지 않는 ID 입니다.");
+        }
+
+        return users.get(userId);
+    }
+
     public List<User> findAll() {
         return new ArrayList<>(users.values());
     }
