@@ -3,28 +3,29 @@ package kr.codesqaud.cafe.repository;
 import kr.codesqaud.cafe.user.User;
 import org.springframework.stereotype.Repository;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Repository
 public class MemoryMemberRepository implements MemberRepository {
 
-    private static Map<String, User> store = new HashMap<>();
+    private List<User> store = new ArrayList<>();
+    private int sequence = 0;
     @Override
     public void save(User user) {
-        store.put(user.getId(), user);
+        user.setSequence(++sequence);
+        store.add(user);
     }
 
     @Override
-    public User findById(String memberId) {
-        return store.get(memberId);
+    public Optional<User> findById(String memberId) {
+        return store.stream()
+                .filter(user -> user.getName().equals(memberId))
+                .findFirst();
     }
 
     @Override
     public List<User> findAll() {
-        return new ArrayList<>(store.values());
+        return store;
     }
 
     // 테스트용
