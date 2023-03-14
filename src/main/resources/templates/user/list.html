@@ -44,18 +44,19 @@
             <table class="table table-hover">
                 <thead>
                 <tr>
-                    <th>닉네임</th> <th>이메일</th> <th>회원가입일</th><th></th>
+                    <th>회원코드</th><th>닉네임</th> <th>이메일</th> <th>회원가입일</th><th></th>
                 </tr>
                 </thead>
                 <tbody>
                 {{#list}}
                 <tr>
+                    <td>{{userId}}</td>
                     <td>{{nickname}}</td>
                     <td>{{email}}</td>
                     <td>{{createdDate}}</td>
                 </tr>
-                </tbody>
                 {{/list}}
+                </tbody>
             </table>
         </div>
     </div>

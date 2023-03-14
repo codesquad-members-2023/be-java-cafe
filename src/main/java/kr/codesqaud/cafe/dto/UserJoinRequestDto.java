@@ -11,21 +11,15 @@ import java.time.LocalDate;
 @NoArgsConstructor
 public class UserJoinRequestDto {
     private String email;
-    private String password;
     private String nickname;
-
-    public UserJoinRequestDto(String email, String password, String nickname) {
-        this.email = email;
-        this.password = password;
-        this.nickname = nickname;
-    }
+    private String password;
 
     public User toEntity() {
         return User.builder()
                 .userId(generateUserId())
+                .email(email)
                 .nickname(nickname)
                 .password(password)
-                .email(email)
                 .createdDate(LocalDate.now())
                 .build();
     }
