@@ -5,20 +5,23 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
+import java.time.LocalDate;
+
 @Getter @Builder
 public class User {
-    private long id;
-    private String userId;
+    private Long userId;
+    private String username;
     private String password;
-    private String name;
     private String email;
+    private String phone;
+    private LocalDate localDate;
 
-    public User(long id, String userId, String password, String name, String email) {
-        this.id = id;
+    public User(Long userId, String username, String password, String email, String phone, LocalDate localDate) {
         this.userId = userId;
+        this.username = username;
         this.password = password;
-        this.name = name;
         this.email = email;
+        this.phone = phone;
+        this.localDate = localDate;
     }
 }
