@@ -35,4 +35,8 @@ public class UserMemoryRepository {
         return new ArrayList<>(userRepository.values());
     }
 
+    public void clear() {
+        userRepository.clear();
+    }
+
 }
