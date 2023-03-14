@@ -83,18 +83,38 @@
                         <a class="thumbnail pull-left" href="#">
                             <img class="media-object" src="../images/80-text.png">
                         </a>
-                        <div class="media-body">
-                            <h4 class="media-heading">자바지기</h4>
+                        <div class="media-body" id="userId">
+                            <h4 class="media-heading">asd</h4>
                             <p>
-                                <a href="#" class="btn btn-xs btn-default"><span class="glyphicon glyphicon-envelope"></span>&nbsp;javajigi@slipp.net</a>
+                                <a href="#" class="btn btn-xs btn-default"><span class="glyphicon glyphicon-envelope"></span>&nbsp;email</a>
                             </p>
                         </div>
                     </div>
+                    <script>
+                        const xhr = new XMLHttpRequest();
+                        xhr.open('get', '/user/profile/asd');
+                        xhr.onload = function () {
+                            const users = JSON.parse(xhr.responseText);
+                            const tbody = document.querySelector('#userId h4');
+                            users.forEach(function (user) {
+                                const tr = document.createElement('tr');
+                                tr.innerHTML = `
+            <h4>${user.id}</h4>
+          `;
+                                tbody.appendChild(tr);
+                            });
+                        };
+                        xhr.onerror = function() {
+                            console.error('Error while fetching users');
+                        };
+                        xhr.send();
+                    </script>
                 </div>
             </div>
         </div>
     </div>
 </div>
+
 
 <!-- script references -->
 <script src="../js/jquery-2.2.0.min.js"></script>
