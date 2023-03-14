@@ -10,4 +10,5 @@ public interface UserRepository {
     Optional<User> findById(long userId);
     List<User> findAll();
     void clear();
+    boolean vaildName(String userName);
 }

@@ -1,19 +1,19 @@
 package kr.codesqaud.cafe.repository;
 
 import kr.codesqaud.cafe.domain.User;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Repository;
 
 import java.util.*;
 
-@Slf4j
 @Repository
 public class MemoryUserRepository implements UserRepository{
     private final List<User> store = new ArrayList<>();
 
     @Override
     public void save(User user) {
-        store.add(user);
+        if (vaildName(user.getNickname())) {
+            store.add(user);
+        }
     }
 
     @Override
@@ -28,7 +28,13 @@ public class MemoryUserRepository implements UserRepository{
         return new ArrayList<>(Collections.unmodifiableList(store));
     }
 
+    @Override
     public void clear() {
         store.clear();
+    }
+
+    @Override
+    public boolean vaildName(String userName) {
+        return store.stream().noneMatch(e -> e.isNameEquals(userName));
     }
 }
