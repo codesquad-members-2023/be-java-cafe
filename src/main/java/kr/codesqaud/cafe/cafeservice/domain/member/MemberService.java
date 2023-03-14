@@ -5,7 +5,7 @@ import org.springframework.stereotype.Repository;
 import java.util.*;
 
 @Repository
-public class MemberRepository {
+public class MemberService {
     final List<Member> store = new ArrayList<>();
 
     public void save(Member member) {
