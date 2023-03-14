@@ -1,5 +1,8 @@
 package kr.codesqaud.cafe.domain.repository;
 
+import kr.codesqaud.cafe.repository.MemoryMemberRepository;
+import kr.codesqaud.cafe.repository.SignUpService;
+import kr.codesqaud.cafe.repository.SignUpServiceImpl;
 import kr.codesqaud.cafe.user.User;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.AfterEach;
