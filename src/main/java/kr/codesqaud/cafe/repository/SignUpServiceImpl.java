@@ -1,10 +1,10 @@
-package kr.codesqaud.cafe.domain.repository;
+package kr.codesqaud.cafe.repository;
 
-import kr.codesqaud.cafe.domain.repository.MemberRepository;
-import kr.codesqaud.cafe.domain.repository.SignUpService;
 import kr.codesqaud.cafe.user.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class SignUpServiceImpl implements SignUpService {
@@ -19,6 +19,10 @@ public class SignUpServiceImpl implements SignUpService {
     @Override
     public void join(User user) {
         memberRepository.save(user);
+    }
+
+    public List<User> findAll() {
+        return memberRepository.findAll();
     }
 
     @Override
