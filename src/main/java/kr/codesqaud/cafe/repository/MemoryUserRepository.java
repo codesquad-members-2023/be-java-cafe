@@ -1,14 +1,15 @@
 package kr.codesqaud.cafe.repository;
 
 import kr.codesqaud.cafe.domain.User;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Repository;
 
 import java.util.*;
 
+@Slf4j
 @Repository
 public class MemoryUserRepository implements UserRepository{
     private final List<User> store = new ArrayList<>();
-
 
     @Override
     public void save(User user) {
@@ -16,14 +17,18 @@ public class MemoryUserRepository implements UserRepository{
     }
 
     @Override
-    public Optional<User> findById(Long userId) {
+    public Optional<User> findById(long userId) {
            return store.stream()
-                    .filter(user -> user.getUserId()==userId)
-                    .findFirst();
+                   .filter(user -> user.isIdEquals(userId))
+                   .findFirst();
     }
 
     @Override
     public List<User> findAll() {
         return new ArrayList<>(Collections.unmodifiableList(store));
+    }
+
+    public void clear() {
+        store.clear();
     }
 }
