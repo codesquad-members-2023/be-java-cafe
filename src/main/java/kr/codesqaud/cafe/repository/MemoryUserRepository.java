@@ -4,7 +4,6 @@ import kr.codesqaud.cafe.domain.User;
 import org.springframework.stereotype.Repository;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 @Repository
 public class MemoryUserRepository implements UserRepository{
@@ -18,9 +17,9 @@ public class MemoryUserRepository implements UserRepository{
 
     @Override
     public Optional<User> findById(Long userId) {
-        return store.stream()
-                .filter(user -> Objects.equals(user.getUserId(), userId))
-                .findFirst();
+           return store.stream()
+                    .filter(user -> user.getUserId()==userId)
+                    .findFirst();
     }
 
     @Override
