@@ -13,13 +13,14 @@ public class User {
     private String nickname;
     private String password;
     private LocalDate createdDate;
+    private static Long sequence = 0L;
 
-    public User(long userId, String email, String nickname, String password, LocalDate localDate) {
-        this.userId = userId;
+    public User(String email, String nickname, String password, LocalDate createdDate) {
+        this.userId = idIncrease();
         this.email = email;
         this.nickname = nickname;
         this.password = password;
-        this.createdDate = localDate;
+        this.createdDate = createdDate;
     }
 
     public boolean isIdEquals(long userId) {
@@ -28,5 +29,9 @@ public class User {
 
     public boolean isNameEquals(String userName) {
         return Objects.equals(this.nickname, userName);
+    }
+
+    private static Long idIncrease() {
+        return LocalDate.now().hashCode() + ++sequence;
     }
 }
