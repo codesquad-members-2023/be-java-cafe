@@ -3,27 +3,28 @@ package kr.codesqaud.cafe.repository;
 import kr.codesqaud.cafe.domain.User;
 import org.springframework.stereotype.Repository;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Repository
 public class MemoryUserRepository implements UserRepository{
-    private final Map<Long, User> store = new HashMap<>();
+    private final List<User> store = new ArrayList<>();
 
 
     @Override
     public void save(User user) {
-//        store.put(user.getId(), user);
+        store.add(user);
     }
 
     @Override
-    public User findById(Long userId) {
-        return store.get(userId);
+    public Optional<User> findById(Long userId) {
+        return store.stream()
+                .filter(user -> Objects.equals(user.getUserId(), userId))
+                .findFirst();
     }
 
     @Override
     public List<User> findAll() {
-        return (List<User>) store.values();
+        return new ArrayList<>(Collections.unmodifiableList(store));
     }
 }
