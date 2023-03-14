@@ -12,13 +12,10 @@ public class MemberAddDtoRequest {
     private String email;
     private String userName;
     private String password;
-    private static long sequence = 0L; //static 사용
 
     public Member toEntity() {
-        return new Member(idIncrease(), userName, email, password);
+        return new Member(id, userName, email, password);
     }
 
-    private Long idIncrease() {
-        return ++sequence;
-    }
+
 }
