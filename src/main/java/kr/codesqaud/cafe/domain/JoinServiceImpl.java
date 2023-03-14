@@ -7,10 +7,9 @@ import org.springframework.stereotype.Service;
 
 import kr.codesqaud.cafe.user.User;
 
-@Service
+
 public class JoinServiceImpl implements JoinService{
     private final Logger logger = LoggerFactory.getLogger(getClass());
-    @Autowired
     private final UserRepository userRepository;
 
     public JoinServiceImpl(UserRepository userRepository) {

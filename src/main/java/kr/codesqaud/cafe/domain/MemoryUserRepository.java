@@ -4,25 +4,25 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import org.springframework.stereotype.Repository;
 
 import kr.codesqaud.cafe.user.User;
 import lombok.ToString;
 
-@Repository
-@ToString
+
 public class MemoryUserRepository implements UserRepository {
-    private Map<String, User> userMap = new HashMap<>();
+    private ArrayList<User> userList = new ArrayList<>();
 
     @Override
-    public User findById(String id) {
-        //null인 경우, Optional로 반환할지 고려
-        return userMap.get(id);
+    public Optional<User> findById(String id) {
+        //id가 일치하는 User 객체를 반환
+        return userList.stream().filter(user -> user.getId().equals(id)).findAny();
     }
 
     @Override
     public void addUser(User user) {
-        userMap.put(user.getId(), user);
+        userList.add(user);
     }
 }
