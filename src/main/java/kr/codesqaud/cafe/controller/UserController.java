@@ -2,10 +2,9 @@ package kr.codesqaud.cafe.controller;
 
 import kr.codesqaud.cafe.domain.User;
 import kr.codesqaud.cafe.dto.UserJoinRequestDto;
-import kr.codesqaud.cafe.dto.UserListReponseDto;
+import kr.codesqaud.cafe.dto.UserListResponseDto;
 import kr.codesqaud.cafe.service.UserService;
 import lombok.AllArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -32,8 +31,8 @@ public class UserController {
 
     @GetMapping("/users")
     public String list(Model model) {
-        List<UserListReponseDto> collect = userService.findAll().stream()
-                .map(UserListReponseDto::user)
+        List<UserListResponseDto> collect = userService.findAll().stream()
+                .map(UserListResponseDto::user)
                 .collect(Collectors.toList());
 
         model.addAttribute("list", collect);
@@ -44,7 +43,7 @@ public class UserController {
     @GetMapping("/users/{userId}")
     public String profile(@PathVariable Long userId, Model model) {
         User user = userService.findUser(userId);
-        model.addAttribute("profile", UserListReponseDto.user(user));
+        model.addAttribute("profile", UserListResponseDto.user(user));
         return "user/profile";
     }
 

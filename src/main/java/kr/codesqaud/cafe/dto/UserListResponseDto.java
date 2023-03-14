@@ -10,21 +10,21 @@ import java.time.LocalDate;
 
 @Getter @Setter @Builder
 @NoArgsConstructor
-public class UserListReponseDto {
+public class UserListResponseDto {
     private Long userId;
     private String nickname;
     private String email;
     private LocalDate createdDate;
 
-    public UserListReponseDto(Long userId, String nickname, String email, LocalDate createdDate) {
+    public UserListResponseDto(Long userId, String nickname, String email, LocalDate createdDate) {
         this.userId = userId;
         this.nickname = nickname;
         this.email = email;
         this.createdDate = createdDate;
     }
 
-    public static UserListReponseDto user(User user) {
-        return UserListReponseDto.builder()
+    public static UserListResponseDto user(User user) {
+        return UserListResponseDto.builder()
                 .userId(user.getUserId())
                 .nickname(user.getNickname())
                 .email(user.getEmail())
