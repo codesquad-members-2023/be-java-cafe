@@ -7,6 +7,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
+import java.util.Optional;
 
 @AllArgsConstructor
 public class UserServiceImpl implements UserService {
@@ -20,7 +21,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User findUser(Long id) {
-        return repository.findById(id);
+        return repository.findById(id).get();
     }
 
     @Override
