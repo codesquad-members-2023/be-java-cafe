@@ -29,4 +29,8 @@ public class UserJoinRequestDto {
                 .createdDate(LocalDate.now())
                 .build();
     }
+
+    private Long generateUserId() {
+        return (long) LocalDate.now().hashCode();
+    }
 }
