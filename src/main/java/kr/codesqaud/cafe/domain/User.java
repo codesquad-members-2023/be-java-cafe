@@ -4,6 +4,7 @@ import lombok.Builder;
 import lombok.Getter;
 
 import java.time.LocalDate;
+import java.util.Objects;
 
 @Getter @Builder
 public class User {
@@ -23,5 +24,9 @@ public class User {
 
     public boolean isIdEquals(long userId) {
         return this.userId == userId;
+    }
+
+    public boolean isNameEquals(String userName) {
+        return Objects.equals(this.nickname, userName);
     }
 }
