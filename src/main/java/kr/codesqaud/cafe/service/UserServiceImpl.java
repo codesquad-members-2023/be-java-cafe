@@ -17,6 +17,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void join(User user) {
+        //TODO 같은 userId 저장 안되게 처리하기
         repository.save(user);
     }
 
