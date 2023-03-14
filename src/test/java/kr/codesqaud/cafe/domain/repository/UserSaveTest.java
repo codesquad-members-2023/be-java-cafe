@@ -8,17 +8,15 @@ import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Optional;
 
 class UserSaveTest {
 
-    private MemoryMemberRepository memberRepository = new MemoryMemberRepository();
     private SignUpService signUpService = new SignUpServiceImpl(new MemoryMemberRepository());
 
-    @AfterEach
-    void afterEach(){
-        memberRepository.clear();
-    }
-
+    @Transactional
     @Test
     @DisplayName("회원 가입 잘 되는지 테스트")
     void signUpTest() {
@@ -29,7 +27,8 @@ class UserSaveTest {
         signUpService.join(user);
 
         // then
-        User findId = signUpService.findById("userId");
-        Assertions.assertThat(user).isEqualTo(findId);
+        Optional<User> findId = signUpService.findById("userId");
+        Assertions.assertThat(user).isEqualTo(findId.get());
     }
+
 }

@@ -19,7 +19,7 @@ public class MemoryMemberRepository implements MemberRepository {
     @Override
     public Optional<User> findById(String memberId) {
         return store.stream()
-                .filter(user -> user.getName().equals(memberId))
+                .filter(user -> user.getUserId().equals(memberId))
                 .findFirst();
     }
 
@@ -28,8 +28,4 @@ public class MemoryMemberRepository implements MemberRepository {
         return store;
     }
 
-    // 테스트용
-    public void clear() {
-        store.clear();
-    }
 }
