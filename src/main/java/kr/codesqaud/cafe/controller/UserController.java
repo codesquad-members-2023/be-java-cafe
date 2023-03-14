@@ -25,7 +25,7 @@ public class UserController {
     }
 
     @PostMapping("/users")
-    public String addUser(UserJoinRequestDto dto) {
+    public String addUser(UserJoinRequestDto dto) throws IllegalAccessException {
         userService.join(dto.toEntity());
         return "redirect:/users";
     }
@@ -39,7 +39,7 @@ public class UserController {
 
     @GetMapping("/users/{userId}")
     public String profile(@PathVariable Long userId, Model model) {
-        model.addAttribute(userService.findUser(userId));
+        model.addAttribute("profile", userService.findUser(userId));
         return "user/profile";
     }
 
