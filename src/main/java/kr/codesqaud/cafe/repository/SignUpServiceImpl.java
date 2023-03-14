@@ -27,6 +27,6 @@ public class SignUpServiceImpl implements SignUpService {
 
     @Override
     public User findById(String userId) {
-        return memberRepository.findById(userId);
+        return memberRepository.findById(userId).orElse(null);
     }
 }
