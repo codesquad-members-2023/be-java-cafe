@@ -1,10 +1,27 @@
 package kr.codesqaud.cafe.user;
 
 public class User {
-    private final String id;
-    private final String password;
-    private final String name;
-    private final String email;
+    private String id;
+    private String password;
+    private String name;
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    private String email;
 
     public User(String id, String password, String name, String email) {
         this.id = id;
