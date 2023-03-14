@@ -10,21 +10,23 @@ import java.time.LocalDate;
 @Getter @Setter
 @NoArgsConstructor
 public class UserJoinRequestDto {
-    private String username;
-    private String password;
-    private String passwordConfirm;
     private String email;
-    private String phone;
+    private String password;
+    private String nickname;
+
+    public UserJoinRequestDto(String email, String password, String nickname) {
+        this.email = email;
+        this.password = password;
+        this.nickname = nickname;
+    }
 
     public User toEntity() {
-        if (password!=passwordConfirm) return null;
-
         return User.builder()
-                .username(username)
+                .userId(generateUserId())
+                .nickname(nickname)
                 .password(password)
                 .email(email)
-                .phone(phone)
-                .localDate(LocalDate.now())
+                .createdDate(LocalDate.now())
                 .build();
     }
 }
