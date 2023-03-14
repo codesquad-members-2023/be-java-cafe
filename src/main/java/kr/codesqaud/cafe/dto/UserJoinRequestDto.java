@@ -13,15 +13,19 @@ public class UserJoinRequestDto {
     private String email;
     private String nickname;
     private String password;
-    private Long sequence = 0L;
+    private static Long sequence = 0L;
 
     public User toEntity() {
         return User.builder()
-                .userId(++ sequence)
+                .userId(idIncrease())
                 .email(email)
                 .nickname(nickname)
                 .password(password)
                 .createdDate(LocalDate.now())
                 .build();
+    }
+
+    private static Long idIncrease() {
+        return LocalDate.now().hashCode() + ++sequence;
     }
 }
