@@ -22,11 +22,6 @@ public class UserController {
 
     private Logger LOG = LoggerFactory.getLogger(UserController.class.getName());
 
-    @GetMapping("/user/form")
-    public String addForm() {
-        return "user/form";
-    }
-
     @PostMapping("/users")
     public String addUser(@ModelAttribute UserJoinRequestDto dto) throws IllegalAccessException {
         userService.join(dto.toEntity());
