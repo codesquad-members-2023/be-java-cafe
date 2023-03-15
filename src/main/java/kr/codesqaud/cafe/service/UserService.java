@@ -17,12 +17,6 @@ public class UserService {
         userList.add(user);
     }
 
-    public void printUserAll() {
-        System.out.println();
-        System.out.println("전체목록");
-        userList.forEach(u -> System.out.println(u.toString()));
-    }
-
     public List<User> findUserAll() {
         return userList;
     }

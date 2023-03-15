@@ -10,6 +10,7 @@ import org.springframework.core.io.Resource;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -34,10 +35,9 @@ public class UserController {
         return redirectView;
     }
 
-    @GetMapping("users")
+    @GetMapping("/users")
     public String findUser() {
-        userService.printUserAll();
-        return "user/list.html";
+        return "list2";
     }
 
     @GetMapping("/getUser")
@@ -47,16 +47,14 @@ public class UserController {
     }
 
     @GetMapping("users/{userId}")
-    public ResponseEntity<Resource> getProfile(@PathVariable("userId") String userId) {
-        Resource resource = new ClassPathResource("static/user/profile.html");
-        return ResponseEntity.ok()
-                .contentType(MediaType.TEXT_HTML)
-                .body(resource);
+    public String getProfile(@PathVariable("userId") String userId, Model model) {
+        model.addAttribute(userId);
+        return "profile2";
     }
 
-    @GetMapping("/findById")
+    @GetMapping("/findById/{userId}")
     @ResponseBody
-    public List<User> findById() {
-        return userService.findUserByUserId("asd");
+    public List<User> findById(@PathVariable("userId") String userId) {
+        return userService.findUserByUserId(userId);
     }
 }
