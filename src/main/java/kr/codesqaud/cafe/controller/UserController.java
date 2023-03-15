@@ -29,17 +29,6 @@ public class UserController {
         repository.save(new User("Yoon", "4321", "황윤", "ghkddbs28@naver.com"));
     }
 
-    @GetMapping("/")
-    public String home() {
-        return "index";
-    }
-
-    @GetMapping("/users/form")
-    public String showRegistrationForm() {
-
-        return "user/form";
-    }
-
     @PostMapping("/users")
     public String signUp(@ModelAttribute User user) {
         repository.save(user);
