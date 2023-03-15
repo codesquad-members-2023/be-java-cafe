@@ -4,6 +4,9 @@ import kr.codesqaud.cafe.domain.User;
 import kr.codesqaud.cafe.dto.UserJoinRequestDto;
 import kr.codesqaud.cafe.dto.UserListResponseDto;
 import kr.codesqaud.cafe.service.UserService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -14,7 +17,10 @@ import java.util.stream.Collectors;
 @Controller
 public class UserController {
 
+    @Autowired
     private UserService userService;
+
+    private Logger LOG = LoggerFactory.getLogger(UserController.class.getName());
 
     @GetMapping("/user/form")
     public String addForm() {
@@ -22,7 +28,7 @@ public class UserController {
     }
 
     @PostMapping("/users")
-    public String addUser(UserJoinRequestDto dto) throws IllegalAccessException {
+    public String addUser(@ModelAttribute UserJoinRequestDto dto) throws IllegalAccessException {
         userService.join(dto.toEntity());
         return "redirect:/users";
     }

@@ -1,6 +1,7 @@
 package kr.codesqaud.cafe.dto;
 
 import kr.codesqaud.cafe.domain.User;
+
 import java.time.LocalDate;
 
 public class UserJoinRequestDto {
@@ -29,6 +30,12 @@ public class UserJoinRequestDto {
     }
 
     public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public UserJoinRequestDto(String email, String nickname, String password) {
+        this.email = email;
+        this.nickname = nickname;
         this.password = password;
     }
 
