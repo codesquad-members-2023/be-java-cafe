@@ -9,7 +9,7 @@
     <!--[if lt IE 9]>
     <script src="//html5shim.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
-    <link href="../css/user/form.css" rel="stylesheet">
+    <link href="../css/user/list.css" rel="stylesheet">
 </head>
 <body>
 <div class="background">
@@ -22,32 +22,43 @@
 
             </div>
             <ul class="nav navbar-nav navbar-right">
-                <li class="active"><a href="../user/list.html">멤버 리스트</a></li>
+                <li class="active"><a href="../index.html">메인 페이지</a></li>
                 <li><a class="black-component" href="login.html" role="button">로그인</a></li>
                 <li><a class="black-component" href="form.html" role="button">회원가입</a></li>
             </ul>
         </div>
     </nav>
 
+    <div class="description">
+        <div class="desc-container">
+            <p class="desc-small">멤버리스트</p>
+            <p class="desc-big">참여자를 확인할 수 있습니다.</p>
+        </div>
+    </div>
+
+    <p class="total_num">전체 멤버 10명</p>
+
     <div class="container" id="main">
-        <header class="post-header">
-            <p class="title">회원가입</p>
-        </header>
-        <form name="question" class="info-container" method="post" action="/users">
-            <div class="form-group">
-                <label for="email">이메일</label>
-                <input type="email" class="form-control" id="email" name="email" placeholder="이메일을 입력하세요">
+        <div class="col-md-10 col-md-offset-1">
+            <div class="panel panel-default">
+                <table class="table table-hover">
+                    <thead>
+                    <tr>
+                        <th>ID</th> <th>이메일</th> <th>닉네임</th><th></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {{#users}}
+                    <tr>
+                        <td>{{id}}</td>
+                        <td>{{email}}</td>
+                        <td>{{userName}}</td>
+                    </tr>
+                    {{/users}}
+                    </tbody>
+                </table>
             </div>
-            <div class="form-group">
-                <label for="userName">닉네임</label>
-                <input class="form-control" id="userName" name="userName" placeholder="닉네입을 입력하세요">
-            </div>
-            <div class="form-group">
-                <label for="password">비밀번호</label>
-                <input type="password" class="form-control" id="password" name="password" placeholder="비밀번호를 입력하세요">
-            </div>
-            <button type="submit" class="btn btn-success clearfix pull-right">완료</button>
-        </form>
+        </div>
     </div>
 </div>
 </body>
