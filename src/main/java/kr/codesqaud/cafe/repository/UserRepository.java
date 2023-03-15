@@ -1,14 +1,37 @@
 package kr.codesqaud.cafe.repository;
 
 import kr.codesqaud.cafe.domain.User;
+import org.springframework.stereotype.Repository;
 
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
-public interface UserRepository {
-    User save(User user);
-    Optional<User> findById(String userId);
+@Repository
+public class UserRepository {
 
-    Optional<User> findByName(String userName);
-    List<User> findAll(); // 모든 회원 리스트 반환
+    private static List<User> store = new ArrayList<>();
+    private static UserRepository instance;
+
+    public static UserRepository getInstance() {
+        return instance;
+    }
+
+    public User save(User user) {
+        store.add(user);
+        return user;
+    }
+
+    public Optional<User> findById(String userId) {
+        return store.stream().filter(user -> user.getUserId().equals(userId)).findFirst();    }
+
+    public Optional<User> findByName(String userName) {
+        return store.stream().filter(user -> user.getUserName().equals(userName)).findAny();
+    }
+
+    public List<User> findAll() {
+        return new ArrayList<>(store);
+    }
+    
+    public void clearStore(){
+        store.clear();
+    }
 }
