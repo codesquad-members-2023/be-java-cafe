@@ -89,13 +89,13 @@
               const xhr = new XMLHttpRequest();
               xhr.open('get', '/getUser');
               xhr.onload = function () {
-                  const users = JSON.parse(xhr.responseText);
-                  const tbody = document.querySelector('#main tbody');
-                  users.forEach(function (user, index) {
+                      const users = JSON.parse(xhr.responseText);
+                      const tbody = document.querySelector('#main tbody');
+                      users.forEach(function (user, index) {
                       const tr = document.createElement('tr');
                       tr.innerHTML = `
             <td>${index + 1}</td>
-            <td><a href="/user/profile/${user.userId}">${user.userId}</a></td>
+            <td><a href="/users/${user.userId}">${user.userId}</a></td>
             <td>${user.name}</td>
             <td>${user.email}</td>
             <td><a href="#" class="btn btn-success" role="button">수정</a></td>
