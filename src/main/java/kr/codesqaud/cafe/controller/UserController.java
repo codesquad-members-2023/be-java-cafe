@@ -29,10 +29,16 @@ public class UserController {
 
     @GetMapping("/users")
     public String showUsers(Model model) {
-        List<User> list = repository.findAll();
+        List<User> users = repository.findAll();
         //System.out.println("받았는가?");
-        model.addAttribute("list", list);
+        model.addAttribute("users", users);
 
         return "user/list";
+    }
+
+    @GetMapping("/user/list")
+    public String showUserProfile(Model model) {
+
+        return "redirect:user/profile";
     }
 }
