@@ -36,5 +36,13 @@ public class ArticleController {
         articleRepository.save(article);
         return "redirect:/";
     }
+
+    @GetMapping("/")
+    public String index(Model model) {
+        List<Article> all = articleRepository.findAll();
+        model.addAttribute("list", all);
+        model.addAttribute("size", all.size());
+        return "index";
+    }
     }
 }
