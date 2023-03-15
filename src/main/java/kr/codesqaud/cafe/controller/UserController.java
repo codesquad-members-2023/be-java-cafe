@@ -27,9 +27,17 @@ public class UserController {
 
     // 회원 가입
     @PostMapping("/create")
-    public String addUser(@ModelAttribute User user) {
-
-        log.info("addUser 호출");
+    public String addUser(@RequestParam String userId,
+                          @RequestParam String password,
+                          @RequestParam String name,
+                          @RequestParam String email
+                          ) {
+        User user = new User.Builder()
+                .userId(userId)
+                .password(password)
+                .name(name)
+                .email(email)
+                .build();
 
         signUpService.join(user);
 
@@ -54,9 +62,18 @@ public class UserController {
     }
 
     @PostConstruct
-    private void postConstruct(){
-        User user1 = new User("first", "first", "first", "first@naver.com");
-        User user2 = new User("second", "second", "second", "second@naver.com");
+    private void postConstruct(Model model){
+        User user1 = new User.Builder()
+                .userId("first")
+                .password("first")
+                .name("first")
+                .email("first@naver.com")
+                .build();
+        User user2 = new User.Builder()
+                .userId("second")
+                .password("second")
+                .name("second")
+                .email("second@naver.com").build();
 
         signUpService.join(user1);
         signUpService.join(user2);

@@ -19,7 +19,12 @@ class UserSaveTest {
     @DisplayName("회원 가입 잘 되는지 테스트")
     void signUpTest() {
         // given
-        User user = new User("userId", "password", "username", "email.com");
+        User user = new User.Builder()
+                .userId("userId")
+                .password("password")
+                .name("username")
+                .email("email.com")
+                .build();
 
         // when
         signUpService.join(user);
