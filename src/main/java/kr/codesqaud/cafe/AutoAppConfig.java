@@ -5,6 +5,7 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.Ordered;
 import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 
 import kr.codesqaud.cafe.domain.JoinService;
@@ -13,7 +14,7 @@ import kr.codesqaud.cafe.domain.MemoryUserRepository;
 import kr.codesqaud.cafe.domain.UserRepository;
 
 @Configuration
-public class AutoAppConfig extends WebMvcConfigurerAdapter {
+public class AutoAppConfig implements WebMvcConfigurer {
     @Bean
     public JoinService joinService() {
         return new JoinServiceImpl(userRepository());
