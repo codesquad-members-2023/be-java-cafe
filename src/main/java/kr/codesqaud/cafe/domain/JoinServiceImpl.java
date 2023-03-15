@@ -1,5 +1,7 @@
 package kr.codesqaud.cafe.domain;
 
+import java.util.Optional;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,8 +27,8 @@ public class JoinServiceImpl implements JoinService{
     }
 
     @Override
-    public User lookupUser(String userId) {
-
-        return null;
+    public Optional<User> lookupUser(String userId) {
+        //회원 이름으로 조회
+        return userRepository.findById(userId);
     }
 }

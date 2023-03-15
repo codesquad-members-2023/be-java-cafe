@@ -13,7 +13,6 @@ import kr.codesqaud.cafe.user.User;
 
 
 @Controller
-
 public class CafeController {
     @Autowired
     private final JoinService joinService;
@@ -23,8 +22,21 @@ public class CafeController {
     }
 
     @GetMapping("/user/list")
-    public String redirect() {
+    public String userList() {
         return "/user/list";
+    }
+    @GetMapping("/user/form")
+    public String userForm() {
+        return "/user/form";
+    }
+
+    @GetMapping("/user/profile")
+    public String userProfile() {
+        return "/user/profile";
+    }
+    @GetMapping("/user/login")
+    public String userLogin() {
+        return "/user/login";
     }
 
     @PostMapping("/user/create")
