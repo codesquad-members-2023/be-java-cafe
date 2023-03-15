@@ -1,4 +1,4 @@
-package kr.codesqaud.cafe.model;
+package kr.codesqaud.cafe.user;
 
 public class Article {
     private String writer;
