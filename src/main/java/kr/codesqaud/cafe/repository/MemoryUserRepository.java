@@ -7,21 +7,21 @@ import java.util.*;
 
 @Repository
 public class MemoryUserRepository implements UserRepository {
-    private static Map<Long, User> store = new HashMap<>();
+    private static Map<String, User> store = new LinkedHashMap<>();
     private static long sequence = 0L;
 
     @Override
     public User save(User user) {
         user.setUserNum(++sequence);
-        store.put(sequence, user);
+        store.put(user.getUserId(), user);
         return user;
     }
 
-//    @Override
-//    public Optional<User> findById(String id) {
-//        return Optional.ofNullable(store.get(id));
-//    }
-//
+    @Override
+    public Optional<User> findById(String userId) {
+        return Optional.ofNullable(store.get(userId));
+    }
+
 //    @Override
 //    public Optional<User> findByName(String name) {
 //        return store.values().stream()
