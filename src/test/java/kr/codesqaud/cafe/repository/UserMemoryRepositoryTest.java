@@ -1,16 +1,13 @@
 package kr.codesqaud.cafe.repository;
 
 import kr.codesqaud.cafe.basic.User;
-import lombok.extern.log4j.Log4j2;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import lombok.Data;
 
 import java.util.List;
 
 
-@Log4j2
 public class UserMemoryRepositoryTest {
 
     UserMemoryRepository repository;
