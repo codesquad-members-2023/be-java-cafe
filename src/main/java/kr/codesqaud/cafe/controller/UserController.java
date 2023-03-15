@@ -17,14 +17,11 @@ import java.util.stream.Collectors;
 @Controller
 public class UserController {
 
-    @Autowired
-    private UserService userService;
-
+    private final UserService userService;
     private Logger LOG = LoggerFactory.getLogger(UserController.class.getName());
 
-    @GetMapping("/user/form")
-    public String addForm() {
-        return "user/form";
+    public UserController(UserService userService) {
+        this.userService = userService;
     }
 
     @PostMapping("/users")
