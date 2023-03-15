@@ -22,6 +22,11 @@ public class UserController {
         this.repository = repository;
     }
 
+    @GetMapping("/user/form.html")
+    public String showForm(){
+        return "user/form";
+    }
+
     @PostMapping("/users")
     public String signUp(@ModelAttribute User user) {
         //System.out.println("보냈는가?");
