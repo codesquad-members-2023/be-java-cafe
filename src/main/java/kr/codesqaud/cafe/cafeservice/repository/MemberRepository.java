@@ -1,6 +1,6 @@
-package kr.codesqaud.cafe.cafeservice.domain.repository;
+package kr.codesqaud.cafe.cafeservice.repository;
 
-import kr.codesqaud.cafe.cafeservice.domain.member.Member;
+import kr.codesqaud.cafe.cafeservice.domain.Member;
 import org.springframework.stereotype.Repository;
 
 import java.util.*;

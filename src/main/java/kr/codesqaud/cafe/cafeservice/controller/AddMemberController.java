@@ -1,7 +1,7 @@
-package kr.codesqaud.cafe.cafeservice.web.basic;
+package kr.codesqaud.cafe.cafeservice.controller;
 
-import kr.codesqaud.cafe.cafeservice.domain.member.Member;
-import kr.codesqaud.cafe.cafeservice.domain.repository.MemberRepository;
+import kr.codesqaud.cafe.cafeservice.domain.Member;
+import kr.codesqaud.cafe.cafeservice.repository.MemberRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -22,17 +22,6 @@ public class AddMemberController {
     @Autowired
     public AddMemberController(MemberRepository repository) {
         this.repository = repository;
-    }
-
-    @GetMapping("/")
-    public String home() {
-        return "index";
-    }
-
-    @GetMapping("/user/form.html")
-    public String addForm() {
-        log.info("f");
-        return "user/form";
     }
 
     @PostMapping("/users")
