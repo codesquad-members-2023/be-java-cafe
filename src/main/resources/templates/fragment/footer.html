@@ -1,17 +1,9 @@
+<!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<body>
-
-<footer th:fragment="footer">
-    <div class="collapse navbar-collapse" id="navbar-collapse2">
-        <ul class="nav navbar-nav navbar-right">
-            <li class="active"><a href="../../static/index.html">Posts</a></li>
-            <li><a href="/login.html" role="button">로그인</a></li>
-            <li><a href="/form.html" role="button">회원가입</a></li>
-            <li><a href="#" role="button">로그아웃</a></li>
-            <li><a href="#" role="button">개인정보수정</a></li>
-        </ul>
-    </div>
-</footer>
-
-</body>
+<th:block th:fragment="footer">
+    <script src="/js/jquery-2.2.0.min.js"></script>
+    <script src="/js/bootstrap.min.js"></script>
+    <script src="/js/scripts.js"></script>
+    </footer>
+</th:block>
 </html>

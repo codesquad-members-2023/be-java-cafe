@@ -3,9 +3,9 @@
 <head th:replace="fragment/header :: head"></head>
 
 <body>
-<nav th:replace="fragment/nav :: nav"></nav>
+<nav th:replace="fragment/nav :: navbar"></nav>
 
-<div th:replace="fragment/nav :: navigator"></div>
+<div th:replace="fragment/nav :: subnav"></div>
 
 <div class="container" id="main">
     <div class="col-md-10 col-md-offset-1">
@@ -23,7 +23,7 @@
                 <tbody>
                 <tr th:each="user : ${userList}">
                     <td th:text="${user.sequence}"></td>
-                    <td >
+                    <td>
                         <a th:href="@{/users/{userId}(userId=${user.userId})}" th:text="${user.userId}">
 
                         </a>
@@ -38,9 +38,7 @@
     </div>
 </div>
 
-<!-- script references -->
-<script src="../js/jquery-2.2.0.min.js"></script>
-<script src="../js/bootstrap.min.js"></script>
-<script src="../js/scripts.js"></script>
+<div th:replace="fragment/footer :: footer"></div>
+
 </body>
 </html>
