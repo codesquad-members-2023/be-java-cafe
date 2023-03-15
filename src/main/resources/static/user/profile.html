@@ -101,7 +101,6 @@
                         xhr.open('get', '/findById');
                         xhr.onload = function () {
                             const users = JSON.parse(xhr.responseText);
-                            console.log(users);
                             const tbody = document.querySelector('#userId');
                             users.forEach(function (user) {
                                 const tr = document.createElement('tr');
