@@ -13,18 +13,14 @@ repositories {
 }
 
 dependencies {
+	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	implementation 'org.projectlombok:lombok:1.18.22'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testImplementation 'junit:junit:4.13.1'
 
-//	// 테스트코드에 log4j2 적용
-//	testCompileOnly 'org.projectlombok:lombok:1.18.22'
-//	testAnnotationProcessor 'org.projectlombok:lombok:1.18.22'
-
 	compileOnly 'org.projectlombok:lombok'
 	annotationProcessor 'org.projectlombok:lombok'
-
 }
 
 tasks.named('test') {
