@@ -21,12 +21,6 @@ public class UserLogicController {
         this.userMemoryRepository = userMemoryRepository;
     }
 
-    @GetMapping("/form")
-    public String form() {
-        log.info("hi");
-        return "user/form";
-    }
-
     @PostMapping("/create")
     public String create(@RequestParam String userId,
                          @RequestParam String password,
@@ -36,10 +30,10 @@ public class UserLogicController {
     ) {
         userMemoryRepository.join(new User(userId, password, name, email));
 
-        return "redirect:/user";
+        return "redirect:/user/list";
     }
 
-    @GetMapping
+    @GetMapping("/list")
     public String list(Model model) {
         List<User> users = userMemoryRepository.findAll();
         model.addAttribute("users", users);
