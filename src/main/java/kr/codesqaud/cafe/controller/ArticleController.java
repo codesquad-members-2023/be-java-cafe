@@ -19,13 +19,13 @@ public class ArticleController {
     }
 
     @GetMapping("/qna/form")
-    public String qna() {
+    public String getForm() {
         return "/qna/form";
     }
     @PostMapping("/qna/form")
     public String question(@RequestParam String writer, @RequestParam String title, @RequestParam String contents) {
-        new Article(writer, title, contents);
-
+        qnaService.postQna(new Article(writer, title, contents));
+        System.out.println(new Article(writer, title, contents));
         return "redirect:/";
     }
 }
