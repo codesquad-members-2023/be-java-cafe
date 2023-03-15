@@ -1,5 +1,7 @@
 package kr.codesqaud.cafe.user;
 
+import java.util.Objects;
+
 public class User {
     private String id;
     private String password;
@@ -53,5 +55,21 @@ public class User {
                 ", name='" + name + '\'' +
                 ", email='" + email + '\'' +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o)
+            return true;
+        if (o == null || getClass() != o.getClass())
+            return false;
+        User user = (User)o;
+        return id.equals(user.id) && password.equals(user.password) && name.equals(user.name)
+                && email.equals(user.email);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, password, name, email);
     }
 }
