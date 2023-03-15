@@ -2,12 +2,12 @@ package kr.codesqaud.cafe.domain;
 
 public class Member {
     private String email;
-    private String userId;
+    private String userNickName;
     private String password;
 
-    public Member(String email, String userId, String password) {
+    public Member(String email, String userNickName, String password) {
         this.email = email;
-        this.userId = userId;
+        this.userNickName = userNickName;
         this.password = password;
     }
 
@@ -15,8 +15,8 @@ public class Member {
         return email;
     }
 
-    public String getUserId() {
-        return userId;
+    public String getUserNickName() {
+        return userNickName;
     }
 
     public String getPassword() {

@@ -2,8 +2,11 @@ package kr.codesqaud.cafe.repository;
 
 import kr.codesqaud.cafe.domain.Member;
 
+import java.util.List;
+import java.util.Optional;
+
 public interface MemberRepository {
-    void saveMember(Member member);
-    void findOneMember(String userName);
-    void findAll();
+    Member saveMember(Member member);
+    Optional<Member> findOneMemberbyEmail(String userName);
+    List<Member> findAll();
 }
