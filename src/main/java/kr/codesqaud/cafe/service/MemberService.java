@@ -2,10 +2,12 @@ package kr.codesqaud.cafe.service;
 
 import kr.codesqaud.cafe.domain.Member;
 import kr.codesqaud.cafe.repository.MemberRepository;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 
+@Service
 public class MemberService {
 
     private final MemberRepository memberRepository;
