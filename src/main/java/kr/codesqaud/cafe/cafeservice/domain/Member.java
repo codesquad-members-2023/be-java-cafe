@@ -1,8 +1,5 @@
-package kr.codesqaud.cafe.cafeservice.domain.member;
+package kr.codesqaud.cafe.cafeservice.domain;
 
-import lombok.Getter;
-
-@Getter
 public class Member {
     private Long id;
     private String userName;
@@ -19,5 +16,21 @@ public class Member {
 
     private Long idIncrease() {
         return ++sequence;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public String getEmail() {
+        return email;
     }
 }

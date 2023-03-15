@@ -17,14 +17,14 @@
         <div class="col-md-12">
             <div class="navbar-header">
                 <a href="../index.html" class="navbar-brand">
-                    <img src="../images/KakaoCI.png" />
+                    <img src="../images/KakaoCI.png"/>
                 </a>
 
             </div>
             <ul class="nav navbar-nav navbar-right">
                 <li class="active"><a href="../index.html">메인 페이지</a></li>
                 <li><a class="black-component" href="login.html" role="button">로그인</a></li>
-                <li><a class="black-component" href="form.html" role="button">회원가입</a></li>
+                <li><a class="black-component" href="../qna/form.html" role="button">회원가입</a></li>
             </ul>
         </div>
     </nav>
@@ -44,13 +44,16 @@
                 <table class="table table-hover">
                     <thead>
                     <tr>
-                        <th>ID</th> <th>이메일</th> <th>닉네임</th><th></th>
+                        <th>ID</th>
+                        <th>이메일</th>
+                        <th>닉네임</th>
+                        <th></th>
                     </tr>
                     </thead>
                     <tbody>
                     {{#users}}
                     <tr>
-                        <td>{{id}}</td>
+                        <td><a href="/users/{{id}}"/>{{id}}</a></td>
                         <td>{{email}}</td>
                         <td>{{userName}}</td>
                     </tr>

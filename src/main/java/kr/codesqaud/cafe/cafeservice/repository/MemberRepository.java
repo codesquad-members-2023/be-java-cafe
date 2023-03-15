@@ -1,6 +1,6 @@
-package kr.codesqaud.cafe.cafeservice.domain.repository;
+package kr.codesqaud.cafe.cafeservice.repository;
 
-import kr.codesqaud.cafe.cafeservice.domain.member.Member;
+import kr.codesqaud.cafe.cafeservice.domain.Member;
 import org.springframework.stereotype.Repository;
 
 import java.util.*;
@@ -16,6 +16,10 @@ public class MemberRepository {
 
     public List<Member> findAll() {
         return new ArrayList<>(Collections.unmodifiableList(store));
+    }
+
+    public Member findOne(Long id) {
+        return findById(id).get();
     }
 
     public Optional<Member> findById(Long userId) {
