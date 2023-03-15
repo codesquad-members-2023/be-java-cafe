@@ -18,6 +18,10 @@ public class MemberRepository {
         return new ArrayList<>(Collections.unmodifiableList(store));
     }
 
+    public Member findOne(Long id) {
+        return findById(id).get();
+    }
+
     public Optional<Member> findById(Long userId) {
         return store.stream().filter(member -> member.getId() == userId).findFirst();
     }
