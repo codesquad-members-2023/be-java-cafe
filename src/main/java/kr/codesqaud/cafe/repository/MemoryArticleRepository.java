@@ -13,7 +13,8 @@ public class MemoryArticleRepository implements ArticleRepository {
 
     @Override
     public Article save(Article article) {
-        articleStore.put(++sequence, article);
+        article.setId(++sequence);
+        articleStore.put(sequence, article);
         return article;
     }
 
