@@ -26,9 +26,6 @@ public class UserController {
 
     @PostMapping("/user")
     public String createUser(UserForm form){
-        //ApplicationContext ac = new AnnotationConfigApplicationContext(CafeConfig.class);
-        //MemberRepository memberRepository = ac.getBean("memberRepository", MemberRepository.class);
-
         Member member = new Member(form.getEmail(), form.getUserNickName(), form.getPassword());
         memberService.join(member);
         return "redirect:/list";
@@ -38,6 +35,4 @@ public class UserController {
     public String showList() {
         return "list";
     }
-
-
 }
