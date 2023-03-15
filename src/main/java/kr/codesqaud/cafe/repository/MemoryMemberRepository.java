@@ -13,9 +13,6 @@ public class MemoryMemberRepository implements MemberRepository {
 
     @Override
     public Member saveMember(Member member) {
-        if (repository.containsKey(member.getUserNickName())) {
-            throw new IllegalStateException("중복된 아이디입니다.");
-        }
         repository.put(member.getUserNickName(), member);
         return member;
     }
