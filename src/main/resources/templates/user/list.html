@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<!--<html lang="kr">-->
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <div th:replace="header.html::head"></div>
+</head>
+<body>
+<div th:replace="navigation_bar.html::navbar"></div>
+<div th:replace="navigation_bar.html::subnav"></div>
+
+<div class="container" id="main">
+    <div class="col-md-10 col-md-offset-1">
+        <div class="panel panel-default">
+            <table class="table table-hover">
+                <thead>
+                <tr>
+                    <th>#</th>
+                    <th>사용자 아이디</th>
+                    <th>이름</th>
+                    <th>이메일</th>
+                    <th></th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="user, i: ${users}">
+                    <th scope="row" th:text="${i.index + 1}">인덱스 번호</th>
+                    <td><a th:href="@{/user/profile/{userId}(userId=${user.userId})}" th:text="${user.userId}">유저 아이디</a></td>
+                    <td th:text="${user.name}">유저 이름</td>
+                    <td th:text="${user.email}">유저 이메일</td>
+                    <td><a href="#" class="btn btn-success" role="button">수정</a></td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+</body>
+
+<footer>
+    <div th:replace="footer.html::js"></div>
+</footer>
+
+</html>
