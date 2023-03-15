@@ -36,25 +36,14 @@ public class UserController {
     }
 
     @GetMapping("/users")
-    public String findUser() {
+    public String findUser(Model model) {
+        model.addAttribute("userList", userService.findUserAll());
         return "list2";
-    }
-
-    @GetMapping("/getUser")
-    @ResponseBody
-    public List<User> getUser() {
-        return userService.findUserAll();
     }
 
     @GetMapping("users/{userId}")
     public String getProfile(@PathVariable("userId") String userId, Model model) {
         model.addAttribute(userId);
         return "profile2";
-    }
-
-    @GetMapping("/findById/{userId}")
-    @ResponseBody
-    public List<User> findById(@PathVariable("userId") String userId) {
-        return userService.findUserByUserId(userId);
     }
 }
