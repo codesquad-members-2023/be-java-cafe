@@ -44,5 +44,14 @@ public class ArticleController {
         model.addAttribute("size", all.size());
         return "index";
     }
+
+    @GetMapping("/articles/{id}")
+    public String showArticle(@PathVariable Long id, Model model) {
+        Optional<Article> article = articleRepository.findById(id);
+        if (article.isEmpty()) {
+            throw new NoSuchElementException("test");
+        }
+        model.addAttribute("article", article.get());
+        return "qna/show";
     }
 }
