@@ -31,7 +31,7 @@ public class UserController {
                           @RequestParam String password,
                           @RequestParam String name,
                           @RequestParam String email
-                          ) {
+    ) {
         User user = new User.Builder()
                 .userId(userId)
                 .password(password)
@@ -62,13 +62,14 @@ public class UserController {
     }
 
     @PostConstruct
-    private void postConstruct(Model model){
+    private void postConstruct() {
         User user1 = new User.Builder()
                 .userId("first")
                 .password("first")
                 .name("first")
                 .email("first@naver.com")
                 .build();
+
         User user2 = new User.Builder()
                 .userId("second")
                 .password("second")

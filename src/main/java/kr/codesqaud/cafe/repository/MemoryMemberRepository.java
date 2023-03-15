@@ -10,6 +10,7 @@ public class MemoryMemberRepository implements MemberRepository {
 
     private List<User> store = new ArrayList<>();
     private int sequence = 0;
+
     @Override
     public void save(User user) {
         user.setSequence(++sequence);

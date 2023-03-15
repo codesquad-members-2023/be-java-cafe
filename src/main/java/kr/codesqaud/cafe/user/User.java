@@ -45,7 +45,7 @@ public class User {
         this.sequence = sequence;
     }
 
-    public static class Builder{
+    public static class Builder {
         private String userId;
         private String password;
         private String name;
@@ -71,7 +71,7 @@ public class User {
             return this;
         }
 
-        public User build(){
+        public User build() {
             return new User(this);
         }
     }
