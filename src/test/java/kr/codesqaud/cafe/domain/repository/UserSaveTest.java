@@ -8,7 +8,6 @@ import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 
@@ -16,7 +15,6 @@ class UserSaveTest {
 
     private SignUpService signUpService = new SignUpServiceImpl(new MemoryMemberRepository());
 
-    @Transactional
     @Test
     @DisplayName("회원 가입 잘 되는지 테스트")
     void signUpTest() {
