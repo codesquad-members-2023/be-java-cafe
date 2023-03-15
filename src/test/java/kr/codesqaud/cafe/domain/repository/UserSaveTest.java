@@ -9,6 +9,7 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import java.util.List;
 import java.util.Optional;
 
 class UserSaveTest {
@@ -30,8 +31,33 @@ class UserSaveTest {
         signUpService.join(user);
 
         // then
-        Optional<User> findId = signUpService.findById("userId");
-        Assertions.assertThat(user).isEqualTo(findId.get());
+        User findId = signUpService.findById("userId").get();
+        Assertions.assertThat(user).isEqualTo(findId);
+    }
+
+    @Test
+    @DisplayName("모든 회원 조회 잘 되는지 테스트")
+    void findAllTest() {
+        User user = new User.Builder()
+                .userId("userId")
+                .password("password")
+                .name("username")
+                .email("email.com")
+                .build();
+
+        User user2 = new User.Builder()
+                .userId("userId2")
+                .password("password")
+                .name("username")
+                .email("email.com")
+                .build();
+
+        signUpService.join(user);
+        signUpService.join(user2);
+
+        List<User> all = signUpService.findAll();
+
+        Assertions.assertThat(all.size()).isEqualTo(2);
     }
 
 }
