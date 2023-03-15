@@ -11,11 +11,11 @@ import java.util.List;
 
 @Controller
 @RequestMapping("/user")
-public class UserLogicController {
+public class UserController {
     UserMemoryRepository userMemoryRepository;
 
     @Autowired
-    public UserLogicController(UserMemoryRepository userMemoryRepository) {
+    public UserController(UserMemoryRepository userMemoryRepository) {
         this.userMemoryRepository = userMemoryRepository;
     }
 
