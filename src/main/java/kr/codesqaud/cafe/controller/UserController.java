@@ -31,32 +31,19 @@ public class UserController {
 
         return "/user/profile";
     }
-    @GetMapping("/user/list")
+    @GetMapping("/users/list")
     public String userList(Model model) {
         model.addAttribute("user", joinService.lookupAllUser());
 
         return "/user/list";
     }
-    @GetMapping("/user/form")
-    public String userForm() {
-        return "/user/form";
-    }
 
-    @GetMapping("/user/profile")
-    public String userProfile() {
-        return "/user/profile";
-    }
-    @GetMapping("/user/login")
-    public String userLogin() {
-        return "/user/login";
-    }
-
-    @PostMapping("/user/create")
+    @PostMapping("/users/create")
     public String joinUser(@RequestParam String userId, @RequestParam String password, @RequestParam String name,
             @RequestParam String email) {
         //POST method, /create form으로 전송하는 요청을 처리
         joinService.join(new User(userId, password, name, email));
         //redirection
-        return "redirect:/user/list";
+        return "redirect:/users/list";
     }
 }
