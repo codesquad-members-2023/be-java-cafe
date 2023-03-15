@@ -68,4 +68,10 @@ public class UserController {
         model.addAttribute("profile", profile.orElse(null));
         return "user/profile";
     }
+
+    // 글쓰기
+    @GetMapping("/qna/form.html")
+    public String showQnaForm() {
+        return "qna/form";
+    }
 }
