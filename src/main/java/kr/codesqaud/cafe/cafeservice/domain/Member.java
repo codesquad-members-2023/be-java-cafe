@@ -1,4 +1,4 @@
-package kr.codesqaud.cafe.cafeservice.domain.member;
+package kr.codesqaud.cafe.cafeservice.domain;
 
 public class Member {
     private Long id;
