@@ -7,7 +7,6 @@ import org.springframework.stereotype.Repository;
 
 import kr.codesqaud.cafe.user.Article;
 
-@Repository
 public class MemoryArticleRepository implements ArticleRepository {
     private List<Article> articleList = new ArrayList<>();
 
