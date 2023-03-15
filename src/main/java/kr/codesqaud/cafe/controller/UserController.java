@@ -9,12 +9,14 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import javax.annotation.PostConstruct;
 import java.util.List;
 
 @Controller
+@RequestMapping("/users")
 public class UserController {
 
-    private final Logger log = LoggerFactory.getLogger(getClass());
+    private Logger log = LoggerFactory.getLogger(getClass());
 
     @Autowired
     private final SignUpService signUpService;
@@ -24,22 +26,39 @@ public class UserController {
     }
 
     // 회원 가입
-    @PostMapping("/user/create")
+    @PostMapping("/create")
     public String addUser(@ModelAttribute User user) {
 
         log.info("addUser 호출");
 
         signUpService.join(user);
 
-        return "redirect:/user/list";
+        return "redirect:/users/list";
     }
 
-    @GetMapping("/user/list")
+    @GetMapping("/list")
     public String userList(Model model) {
         log.info("userList 실행");
         List<User> userList = signUpService.findAll();
         model.addAttribute("userList", userList);
 
-        return "/user/list";
+        return "users/list";
+    }
+
+    @GetMapping("/{userId}")
+    public String showUser(@PathVariable String userId, Model model) {
+        User user = signUpService.findById(userId).get();
+        model.addAttribute("user", user);
+        log.info("user 보여주는 메서드 실행");
+        return "users/profile";
+    }
+
+    @PostConstruct
+    private void postConstruct(){
+        User user1 = new User("first", "first", "first", "first@naver.com");
+        User user2 = new User("second", "second", "second", "second@naver.com");
+
+        signUpService.join(user1);
+        signUpService.join(user2);
     }
 }
