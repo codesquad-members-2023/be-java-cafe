@@ -7,9 +7,11 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import java.util.List;
+import java.util.Optional;
 
 @Controller
 public class UserController {
@@ -36,9 +38,11 @@ public class UserController {
         return "user/list";
     }
 
-    @GetMapping("/user/list")
-    public String showUserProfile(Model model) {
+    @GetMapping("/users/{userId}")
+    public String showUserProfile(Model model, @PathVariable String userId) {
+        Optional<User> profile = repository.findById(userId);
 
-        return "redirect:user/profile";
+        model.addAttribute("profile", profile.get());
+        return "user/profile";
     }
 }
