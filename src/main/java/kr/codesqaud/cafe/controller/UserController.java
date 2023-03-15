@@ -26,6 +26,11 @@ public class UserController {
         this.repository = repository;
     }
 
+    @GetMapping("/index.html")
+    public String home() {
+        return "index";
+    }
+
     // form.html Mapping
     @GetMapping("/user/form.html")
     public String showForm() {
