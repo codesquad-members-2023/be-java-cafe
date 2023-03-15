@@ -60,7 +60,7 @@ public class UserController {
         log.info("프로필 Mapping: 프로필 보러왔는감?");
 
         Optional<User> profile = repository.findById(userId);
-        model.addAttribute("profile", profile.get());
+        model.addAttribute("profile", profile.orElse(null));
         return "user/profile";
     }
 }
