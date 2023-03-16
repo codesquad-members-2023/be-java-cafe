@@ -19,9 +19,9 @@ public class MemoryArticleRepository implements ArticleRepository{
     }
 
     @Override
-    public Optional<Article> findArticleByWriter(String writer) {
+    public Optional<Article> findArticleByWriter(int id) {
         return articleStore.stream()
-                .filter(article -> article.getWriter().equals(writer))
+                .filter(article -> article.getId() == (id))
                 .findFirst();
     }
 
