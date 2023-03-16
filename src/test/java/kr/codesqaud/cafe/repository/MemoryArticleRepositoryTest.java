@@ -8,11 +8,13 @@ import org.junit.jupiter.api.Test;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.*;
 
 class MemoryArticleRepositoryTest {
 
     private final MemoryArticleRepository repository = new MemoryArticleRepository();
+
     @Test
     @DisplayName("Article 저장이 저장소에 제대로 되는지 확인")
     void save() {
@@ -41,4 +43,19 @@ class MemoryArticleRepositoryTest {
         assertThat(find).isEqualTo(article1);
     }
 
+    @Test
+    @DisplayName("저장소에 존재하지 않는 Article 검색 시 예외 발생")
+    void validateArticleExist() {
+        Article article1 = new Article("Hyun", "실화냐?", "미안하다. 이거보여줄려고 어그로끌었다.");
+        Article article2 = new Article("Yoon", "진짜 실화냐?", "미안하다. 이거보여줄려고 또 어그로끌었다.");
+
+        repository.save(article1);
+        repository.save(article2);
+
+        assertThatThrownBy(() -> {
+            repository.findById(3);
+        })
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("[ERROR] 존재하지 않는 게시글입니다!");
+    }
 }

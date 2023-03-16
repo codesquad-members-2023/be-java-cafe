@@ -53,7 +53,6 @@ public class ArticleController {
 
     @GetMapping("/articles/{index}")
     public String showDetailedArticle(@PathVariable int index, Model model) {
-        log.info("{}", index);
         Article article = repository.findById(index);
         model.addAttribute("article", article);
 

@@ -17,6 +17,10 @@ public class MemoryArticleRepository {
     }
 
     public Article findById(int id) {
+        if (!articles.stream().anyMatch(article -> article.getId() == id)) {
+            throw new IllegalArgumentException("[ERROR] 존재하지 않는 게시글입니다!");
+        }
+
         return articles.get(id - 1);
     }
 
