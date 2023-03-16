@@ -9,8 +9,10 @@ import java.util.List;
 public class UserRepository {
 
     private static final List<User> userRepository = new ArrayList<>();
+    private static long sequence = 0L;
 
     public User save(User user) {
+        user.setUserSequence(++sequence);
         userRepository.add(user);
         return user;
     }
