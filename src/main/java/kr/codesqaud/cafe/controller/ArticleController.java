@@ -2,6 +2,7 @@ package kr.codesqaud.cafe.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -19,13 +20,21 @@ public class ArticleController {
     }
 
     @GetMapping("/qna/form")
-    public String articleList() {
+    public String articleForm() {
         return "/qna/form";
     }
+
     @PostMapping("/qna/form")
     public String articlePost(@RequestParam String writer, @RequestParam String title, @RequestParam String contents) {
         qnaService.postQna(new Article(writer, title, contents));
         System.out.println(new Article(writer, title, contents));
         return "redirect:/";
+    }
+
+    @GetMapping("/")
+    public String articleList(Model model) {
+        model.addAttribute("article", qnaService.lookupAllArticles());
+
+        return "index";
     }
 }
