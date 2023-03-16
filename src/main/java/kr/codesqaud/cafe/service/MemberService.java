@@ -22,7 +22,7 @@ public class MemberService {
     }
 
     private void validateDuplicateMember(Member member) {
-        memberRepository.findOneMemberbyEmail(member.getEmail())
+        memberRepository.findOneMemberbyNickName(member.getNickName())
                 .ifPresent(m -> {
                     throw new IllegalStateException("이미 존재하는 회원입니다.");
                 });
@@ -34,6 +34,10 @@ public class MemberService {
 
     public Optional<Member> findOneMember(String userEmail) {
         return memberRepository.findOneMemberbyEmail(userEmail);
+    }
+
+    public Optional<Member> findOneMemberByNickname(String nickName) {
+        return memberRepository.findOneMemberbyNickName(nickName);
     }
 
     public int findTotalNumberOfList() {
