@@ -25,7 +25,7 @@ public class ArticleController {
 
     Logger logger = LoggerFactory.getLogger(ArticleController.class);
 
-    public ArticleController(ArticleRepository articleRepository, UserRepository userRepository) {
+    public ArticleController(ArticleRepository articleRepository) {
         this.articleRepository = articleRepository;
     }
 
@@ -48,10 +48,11 @@ public class ArticleController {
     @GetMapping("/articles/{id}")
     public String showArticle(@PathVariable Long id, Model model) {
         Optional<Article> article = articleRepository.findById(id);
-        if (article.isEmpty()) {
-            throw new NoSuchElementException("test");
+        try {
+            model.addAttribute("article", article.orElseThrow());
+        } catch (NoSuchElementException e) {
+            return "qna/show_failed";
         }
-        model.addAttribute("article", article.get());
         return "qna/show";
     }
 }

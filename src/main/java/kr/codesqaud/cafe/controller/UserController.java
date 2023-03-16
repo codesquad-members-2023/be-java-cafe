@@ -43,8 +43,12 @@ public class UserController {
 
     @GetMapping("/users/{userId}")
     public String profile(@PathVariable Long userId, Model model) {
-        User user = userService.findUser(userId);
-        model.addAttribute("profile", new UserListResponseDto(user));
+        Optional<User> user = userRepository.findById(userId);
+        try {
+            model.addAttribute("profile", user.orElseThrow());
+        } catch (NoSuchElementException e) {
+            return "user/profile_failed";
+        }
         return "user/profile";
     }
 
