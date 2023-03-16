@@ -6,6 +6,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import kr.codesqaud.cafe.domain.JoinService;
@@ -51,7 +52,7 @@ public class UserController {
         return "user/updateForm";
     }
 
-    @PostMapping("users/{id}/update")
+    @PutMapping("users/{id}/update")
     public String userUpdateCommit(@PathVariable String id, @RequestParam String userId, @RequestParam String password,
             @RequestParam String newPassword,
             @RequestParam String name, @RequestParam String email) {
