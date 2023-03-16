@@ -18,7 +18,7 @@ public class ArticleRepository {
     }
 
     public Optional<Article> findById(Long id) {
-        return store.stream().filter(article -> article.getId() == id).findFirst();
+        return store.stream().filter(article -> article.getId() == id).findAny();
     }
 
     public List<Article> findAll() {
@@ -26,6 +26,6 @@ public class ArticleRepository {
     }
 
     public Article findOne(Long id) {
-        return findById(id).get();
+        return findById(id).orElseThrow();
     }
 }
