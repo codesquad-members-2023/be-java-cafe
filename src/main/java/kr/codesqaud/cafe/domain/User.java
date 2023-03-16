@@ -15,6 +15,14 @@ public class User {
         this.userEmail = userEmail;
     }
 
+    public Long getUserSequence() {
+        return userSequence;
+    }
+
+    public void setUserSequence(Long userSequence) {
+        this.userSequence = userSequence;
+    }
+
     public String getUserId() {
         return userId;
     }
