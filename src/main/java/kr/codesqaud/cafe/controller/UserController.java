@@ -23,7 +23,6 @@ public class UserController {
         this.userRepository = userRepository;
     }
 
-    @ResponseBody
     @GetMapping("/form")
     public String findUserFormPage() {
         return "/users/form";
