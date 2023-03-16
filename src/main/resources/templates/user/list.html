@@ -25,12 +25,12 @@
                 </tr>
                 </thead>
                 <tbody>
-                <tr th:each="user, userStat : ${users}">
-                    <th scope="row" th:text="${userStat.count}">1</th>
+                <tr th:each="user : ${users}">
+                    <th scope="row" th:text="${user.id}">1</th>
                     <td ><a href="#" th:href="@{/users/{userId}(userId=${user.userId})}" th:text="${user.userId}">javajigi </a></td>
                     <td th:text="${user.name}">자바지기</td>
                     <td th:text="${user.email}">javajigi@sample.net</td>
-                    <td><a href="#" class="btn btn-success" role="button">수정</a></td>
+                    <td><a href="#" th:href="@{/users/{id}/form(id=${userStat.count})}" class="btn btn-success" role="button">수정</a></td>
                 </tr>
                 </tbody>
             </table>

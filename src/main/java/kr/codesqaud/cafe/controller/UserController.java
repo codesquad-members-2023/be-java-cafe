@@ -2,6 +2,8 @@ package kr.codesqaud.cafe.controller;
 
 import kr.codesqaud.cafe.domain.User;
 import kr.codesqaud.cafe.repository.MemoryUserRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -17,6 +19,7 @@ import java.util.List;
 public class UserController {
 
     private final MemoryUserRepository repository;
+    private final Logger log = LoggerFactory.getLogger(getClass());
 
     @Autowired
     public UserController(MemoryUserRepository repository) {
@@ -43,11 +46,18 @@ public class UserController {
         return "user/list";
     }
 
-    @GetMapping("/users/{userId}")
-    public String showUserProfile(@PathVariable String userId, Model model) {
-        User user = repository.findByUserId(userId);
+    @GetMapping("/users/{id}")
+    public String showUserProfile(@PathVariable int id, Model model) {
+        User user = repository.findByUserId(id);
         model.addAttribute("user", user);
 
         return "user/profile";
+    }
+
+    @GetMapping("/users/{id}/form")
+    public String showUpdateUserForm(@PathVariable int id) {
+        log.info("hi");
+
+        return "user/updateForm";
     }
 }

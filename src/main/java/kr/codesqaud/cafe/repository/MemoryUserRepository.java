@@ -4,33 +4,31 @@ import kr.codesqaud.cafe.domain.User;
 import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @Repository
 public class MemoryUserRepository {
 
-    private final Map<String, User> users = new HashMap<>();
+    private final List<User> users = new ArrayList<>();
 
     public void save(User user) {
-        if (users.containsKey(user.getUserId())) {
+        if (users.stream().anyMatch(u -> u.getUserId().equals(user.getUserId()))) {
             throw new IllegalArgumentException("[ERROR] ID 중복입니다.");
         }
-
-        users.put(user.getUserId(), user);
+        user.setId(users.size() + 1);
+        users.add(user);
     }
 
-    public User findByUserId(String userId) {
-        if (!users.containsKey(userId)) {
-            throw new IllegalArgumentException("[ERROR] 존재하지 않는 ID 입니다.");
+    public User findByUserId(int id) {
+        if (!users.stream().anyMatch(u -> u.getId() == id)) {
+            throw new IllegalArgumentException("[ERROR] 존재하지 않는 회원입니다.");
         }
 
-        return users.get(userId);
+        return users.get(id - 1);
     }
 
     public List<User> findAll() {
-        return new ArrayList<>(users.values());
+        return users;
     }
 
 }

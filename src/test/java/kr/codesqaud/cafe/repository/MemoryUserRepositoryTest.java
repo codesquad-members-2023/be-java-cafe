@@ -65,7 +65,7 @@ class MemoryUserRepositoryTest {
         repository.save(user1);
         repository.save(user2);
 
-        User findUser = repository.findByUserId(user1.getUserId());
+        User findUser = repository.findByUserId(user1.getId());
         assertThat(findUser).isEqualTo(user1);
     }
 
@@ -79,9 +79,9 @@ class MemoryUserRepositoryTest {
         repository.save(user2);
 
         assertThatThrownBy(() -> {
-            repository.findByUserId("Hwang");
+            repository.findByUserId(3);
         })
                 .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("[ERROR] 존재하지 않는 ID 입니다.");
+                .hasMessage("[ERROR] 존재하지 않는 회원입니다.");
     }
 }
