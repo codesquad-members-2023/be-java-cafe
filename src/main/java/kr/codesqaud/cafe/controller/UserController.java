@@ -7,6 +7,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -36,5 +37,13 @@ public class UserController {
     @GetMapping("/login")
     public String login() {
         return "/login";
+    }
+
+    @GetMapping("profile/{nickName}")
+        public String showProfile(@PathVariable String nickName, Model model) {
+            model.addAttribute("nickName", nickName);
+            String email = memberService.findOneMemberByNickname(nickName).get().getEmail();
+            model.addAttribute("email", email);
+            return "profile";
     }
 }

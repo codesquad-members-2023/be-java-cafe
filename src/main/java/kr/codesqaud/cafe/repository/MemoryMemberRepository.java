@@ -26,6 +26,11 @@ public class MemoryMemberRepository implements MemberRepository {
     }
 
     @Override
+    public Optional<Member> findOneMemberbyNickName(String nickName) {
+        return Optional.ofNullable(repository.get(nickName));
+    }
+
+    @Override
     public List<Member> findAll() {
         return repository.values().stream().collect(Collectors.toList());
     }
