@@ -1,7 +1,6 @@
 package kr.codesqaud.cafe.domain;
 
 import java.time.LocalDate;
-import java.util.Objects;
 
 public class Article {
     private final Long id;
@@ -9,7 +8,6 @@ public class Article {
     private final String title;
     private final String contents;
     private LocalDate createdDate;
-    private static Long sequence = 0L;
 
     public String getWriter() {
         return writer;
@@ -23,8 +21,8 @@ public class Article {
         return contents;
     }
 
-    public Article(String writer, String title, String contents) {
-        this.id = generateId();
+    public Article(String writer, String title, String contents, long size) {
+        this.id = size +1;
         this.writer = writer;
         this.title = title;
         this.contents = contents;
@@ -33,9 +31,5 @@ public class Article {
 
     public boolean isIdEquals(Long articleId) {
         return this.id.equals(articleId);
-    }
-
-    private static Long generateId() {
-        return ++ sequence;
     }
 }
