@@ -53,9 +53,10 @@ public class UserController {
 
     @PostMapping("users/{id}/update")
     public String userUpdateCommit(@PathVariable String id, @RequestParam String userId, @RequestParam String password,
+            @RequestParam String newPassword,
             @RequestParam String name, @RequestParam String email) {
-        System.out.println(userId + password + name + email);
         //id를 저장
+        joinService.updateUser(id, password, newPassword, name, email);
 
         return "redirect:/users/list";
     }
