@@ -2,12 +2,12 @@ package kr.codesqaud.cafe.dto;
 
 public class UserForm {
     private String email;
-    private String userNickName;
+    private String nickName;
     private String password;
 
-    public UserForm(String email, String userNickName, String password) {
+    public UserForm(String email, String nickName, String password) {
         this.email = email;
-        this.userNickName = userNickName;
+        this.nickName = nickName;
         this.password = password;
     }
 
@@ -15,8 +15,8 @@ public class UserForm {
         return email;
     }
 
-    public String getUserNickName() {
-        return userNickName;
+    public String getNickName() {
+        return nickName;
     }
 
     public String getPassword() {

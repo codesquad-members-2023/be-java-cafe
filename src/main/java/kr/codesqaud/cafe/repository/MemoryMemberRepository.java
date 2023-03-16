@@ -3,6 +3,7 @@ package kr.codesqaud.cafe.repository;
 import kr.codesqaud.cafe.domain.Member;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class MemoryMemberRepository implements MemberRepository {
     private Map<String, Member> repository;
@@ -13,20 +14,20 @@ public class MemoryMemberRepository implements MemberRepository {
 
     @Override
     public Member saveMember(Member member) {
-        repository.put(member.getUserNickName(), member);
+        repository.put(member.getNickName(), member);
         return member;
     }
 
     @Override
-    public Optional<Member> findOneMemberbyEmail(String userEmail) {
+    public Optional<Member> findOneMemberbyEmail(String email) {
         return repository.values().stream()
-                .filter(member -> member.getEmail().equals(userEmail))
+                .filter(member -> member.getEmail().equals(email))
                 .findAny();
     }
 
     @Override
     public List<Member> findAll() {
-        return new ArrayList<>(repository.values());
+        return repository.values().stream().collect(Collectors.toList());
     }
 
     public void clearRepository() {
