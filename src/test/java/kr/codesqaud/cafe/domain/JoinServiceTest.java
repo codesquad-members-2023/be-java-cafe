@@ -1,6 +1,7 @@
 package kr.codesqaud.cafe.domain;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.AssertionsForClassTypes.*;
 
 import java.util.List;
 
@@ -44,11 +45,37 @@ class JoinServiceTest {
     }
 
     private boolean isEqual(List<User> userList, List<User> expected) {
-        if (userList==null) {
-            return expected==null;
+        if (userList == null) {
+            return expected == null;
         }
         return userList.equals(expected);
     }
 
+    @Test
+    @DisplayName("비밀번호가 일치하면 회원 정보를 수정할 수 있다.")
+    void updateUserWithCorrectPassword() {
+        //given
+        User user1 = new User("conux", "asd", "J", "ho@naver.com");
+        User user2 = new User("conux", "skarnjsdn1", "Jayho", "ngw7617@naver.com");
+        joinService.join(user1);
+        //when
+        joinService.updateUser("conux", "asd", "skarnjsdn1", "Jayho", "ngw7617@naver.com");
+        //then
+        assertThat(user1).isEqualTo(user2);
+    }
+
+    @Test
+    @DisplayName("비밀번호가 틀리면 예외를 발생시킨다.")
+    void updateUserWithWrongPassword() {
+        //given
+        User user1 = new User("conux", "asd", "J", "ho@naver.com");
+        User user2 = new User("conux", "skarnjsdn1", "Jayho", "ngw7617@naver.com");
+        joinService.join(user1);
+
+        //when, then
+        assertThatThrownBy(() -> {
+            joinService.updateUser("conux", "asd123", "skarnjsdn1", "Jayho", "ngw7617@naver.com");
+        }).isInstanceOf(IllegalArgumentException.class);
+    }
 
 }
