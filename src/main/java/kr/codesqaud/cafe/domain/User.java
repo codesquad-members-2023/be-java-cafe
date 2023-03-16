@@ -2,6 +2,7 @@ package kr.codesqaud.cafe.domain;
 
 public class User {
 
+    private Long userSequence;
     private String userId;
     private String userPassword;
     private String userName;
