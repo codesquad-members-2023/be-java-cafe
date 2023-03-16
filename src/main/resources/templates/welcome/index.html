@@ -18,12 +18,12 @@
                     <div class="wrap">
                         <div class="main">
                             <strong class="subject">
-                                <a th href="@{/qna/show/{writer}(writer=${article.writer})}"
+                                <a th:href="@{/qna/show/{articleId}(articleId=${article.id})}"
                                    th:text="${article.writer}"></a>
                             </strong>
                             <div class="auth-info">
                                 <i class="icon-add-comment"></i>
-                                <span class="time" th:text="${article.localDateTime}"></span>
+                                <span class="time" th:text="${article.localDate}"></span>
                                     <a th:href="@{/users/{userId}(userId=${article.writer})}" th:text="${article.writer}">
                                     </a>
                             </div>
