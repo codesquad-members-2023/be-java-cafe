@@ -28,14 +28,13 @@ public class UserController {
         return "/users/form";
     }
 
-    @PostMapping("/form")
+    @PostMapping
     public String addUser(@ModelAttribute User user) {
         userRepository.save(user);
         log.info(" info log={}", user);
         return "redirect:/users";
     }
 
-    @ResponseBody
     @GetMapping
     public String findUsers(Model model) {
         List<User> users = userRepository.findAllUsers();
