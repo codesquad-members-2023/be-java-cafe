@@ -23,13 +23,17 @@ public class UserController {
         this.userRepository = userRepository;
     }
 
+    @ResponseBody
     @GetMapping("/form")
+    public String findUserFormPage() {
+        return "/users/form";
+    }
+
+    @PostMapping("/form")
     public String addUser(@ModelAttribute User user) {
         userRepository.save(user);
-        log.error("error log={}", user.getName());
-        log.error("error log={}", user.getPassword());
         log.info(" info log={}", user);
-        return "/users/form";
+        return "redirect:/users";
     }
 
     @ResponseBody
