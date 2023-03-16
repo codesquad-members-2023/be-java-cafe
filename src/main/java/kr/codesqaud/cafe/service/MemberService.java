@@ -35,4 +35,8 @@ public class MemberService {
     public Optional<Member> findOneMember(String userEmail) {
         return memberRepository.findOneMemberbyEmail(userEmail);
     }
+
+    public int findTotalNumberOfList() {
+        return memberRepository.getSize();
+    }
 }

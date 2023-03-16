@@ -23,7 +23,7 @@
         </div>
         <ul class="nav navbar-nav navbar-right">
             <li class="active"><a href="/">메인 페이지</a></li>
-            <li><a class="black-component" href="user/login" role="button">로그인</a></li>
+            <li><a class="black-component" href="user/login.html" role="button">로그인</a></li>
             <li><a class="black-component" href="user/form.html" role="button">회원가입</a></li>
         </ul>
     </div>
@@ -36,7 +36,7 @@
     </div>
 </div>
 
-<p class="total_num">전체 멤버 10명</p> <!-- 수정 필요 -->
+<p class="total_num">전체 멤버 {{total}}명</p>
 
     <!-- 목록 출력 영역 -->
 <div class="container" id="main">
@@ -53,6 +53,7 @@
                 <tr>
                     <th>{{nickName}}</th>
                     <th>{{email}}</th>
+                    <th>{{signUpDate}}</th>
                 </tr>
                 {{/lists}}
                 </tbody>

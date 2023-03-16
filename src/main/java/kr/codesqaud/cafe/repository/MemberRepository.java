@@ -9,4 +9,5 @@ public interface MemberRepository {
     Member saveMember(Member member);
     Optional<Member> findOneMemberbyEmail(String userName);
     List<Member> findAll();
+    int getSize();
 }

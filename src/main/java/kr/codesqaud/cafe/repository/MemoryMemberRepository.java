@@ -30,6 +30,11 @@ public class MemoryMemberRepository implements MemberRepository {
         return repository.values().stream().collect(Collectors.toList());
     }
 
+    @Override
+    public int getSize() {
+        return repository.size();
+    }
+
     public void clearRepository() {
         repository.clear();
     }
