@@ -23,7 +23,7 @@ public class UserController {
 
     @PostMapping("/users")
     public String join(UserForm form) {
-        User user = new User(form.getName(), form.getEmail(), form.getPassword());
+        User user = new User(form.getId(), form.getName(), form.getEmail(), form.getPassword());
 
         userRepository.save(user);
 
