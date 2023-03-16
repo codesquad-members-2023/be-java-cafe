@@ -32,12 +32,4 @@ public class Article {
         return contents;
     }
 
-    @Override
-    public String toString() {
-        return "Article{" +
-                "writer='" + writer + '\'' +
-                ", title='" + title + '\'' +
-                ", contents='" + contents + '\'' +
-                '}';
-    }
 }

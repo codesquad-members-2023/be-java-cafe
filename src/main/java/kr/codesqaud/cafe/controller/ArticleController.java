@@ -1,6 +1,5 @@
 package kr.codesqaud.cafe.controller;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,8 +13,6 @@ import kr.codesqaud.cafe.user.Article;
 @Controller
 public class ArticleController {
     private QnaService qnaService;
-
-    @Autowired
     public ArticleController(QnaService qnaService) {
         this.qnaService = qnaService;
     }

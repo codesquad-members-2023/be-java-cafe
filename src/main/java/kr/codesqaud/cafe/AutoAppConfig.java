@@ -1,12 +1,10 @@
 package kr.codesqaud.cafe;
 
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.Ordered;
 import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 
 import kr.codesqaud.cafe.domain.ArticleRepository;
 import kr.codesqaud.cafe.domain.JoinService;

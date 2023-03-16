@@ -15,10 +15,6 @@ public class User {
         this.email = email;
     }
 
-    public long getIndex() {
-        return index;
-    }
-
     public void setIndex(long index) {
         this.index = index;
     }
@@ -35,26 +31,8 @@ public class User {
         return id;
     }
 
-    public String getPassword() {
-        return password;
-    }
-
     public String getName() {
         return name;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    @Override
-    public String toString() {
-        return "User{" +
-                "id='" + id + '\'' +
-                ", password='" + password + '\'' +
-                ", name='" + name + '\'' +
-                ", email='" + email + '\'' +
-                '}';
     }
 
     @Override

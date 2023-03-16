@@ -1,9 +1,5 @@
 package kr.codesqaud.cafe.controller;
 
-import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.IntStream;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -18,7 +14,6 @@ import kr.codesqaud.cafe.user.User;
 
 @Controller
 public class UserController {
-    @Autowired
     private final JoinService joinService;
 
     public UserController(JoinService joinService) {
@@ -32,6 +27,7 @@ public class UserController {
 
         return "/user/profile";
     }
+
     @GetMapping("/users/list")
     public String userList(Model model) {
         model.addAttribute("user", joinService.lookupAllUser());
