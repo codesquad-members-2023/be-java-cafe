@@ -21,7 +21,6 @@ public class UserController {
 
     Logger logger = LoggerFactory.getLogger(UserController.class);
 
-    @Autowired
     public UserController(UserRepository userRepository) {
         this.userRepository = userRepository;
         System.out.println(this.getClass());
@@ -33,26 +32,18 @@ public class UserController {
         return "/index";
     }
 
-
-    @GetMapping("/form")
-    public String get() {
-        System.out.println("go form");
-        logger.info("info log={}");
-        return "user/form";
-    }
-
-    @PostMapping("/form")
+    @PostMapping("/users")
     public String addUser(@ModelAttribute("user") User user) {
+        logger.debug("addUser");
         userRepository.save(user);
-        logger.info("addUser");
-        return "redirect:/getUserList";
+        return "redirect:/users";
     }
 
-    @GetMapping("/getUserList")
+    @GetMapping("/users")
     public String getUserList(Model model) {
+        logger.debug("getUserList");
         List<User> userList = userRepository.findAll();
-        model.addAttribute("list", userList);
-        logger.info("getUserList");
+        model.addAttribute("users", userList);
         return "user/list";
     }
 
