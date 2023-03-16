@@ -1,6 +1,7 @@
 package kr.codesqaud.cafe.cafeservice.controller;
 
 import kr.codesqaud.cafe.cafeservice.domain.Article;
+import kr.codesqaud.cafe.cafeservice.domain.Member;
 import kr.codesqaud.cafe.cafeservice.repository.ArticleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 
 @Controller
 public class ArticleController {
@@ -37,8 +39,12 @@ public class ArticleController {
 
     @GetMapping("/articles/{index}")
     public String showArticle(@PathVariable Long index, Model model) {
-        Article article = repository.findOne(index);
-        model.addAttribute("article", article);
-        return "qna/show";
+        try {
+            Article article = repository.findOne(index);
+            model.addAttribute("article", article);
+            return "qna/show";
+        } catch (NoSuchElementException e) {
+            return "fail";
+        }
     }
 }
