@@ -26,4 +26,15 @@ public class UserService {
                 .filter(s -> s.getUserId().equals(userId))
                 .collect(Collectors.toList());
     }
+
+    public void updateUser(User user) {
+        final int FIRST_INDEX = 0;
+        List<User> temp = userList.stream()
+                .filter(u -> u.getUserId().equals(user.getUserId())
+                && u.getPassword().equals(user.getPassword()))
+                .collect(Collectors.toList());
+        if(temp.size() > 0) {
+            userList.set(userList.indexOf(temp.get(FIRST_INDEX)), user);
+        }
+    }
 }
