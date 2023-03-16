@@ -1,17 +1,10 @@
 package kr.codesqaud.cafe.user;
 
 public class User {
-    private final String userId;
-    private final String password;
-    private final String name;
-    private final String email;
-
-    public User(Builder builder) {
-        userId = builder.userId;
-        password = builder.password;
-        name = builder.name;
-        email = builder.email;
-    }
+    private String userId;
+    private String password;
+    private String name;
+    private String email;
 
     public User(String userId, String password, String name, String email) {
         this.userId = userId;
@@ -36,35 +29,19 @@ public class User {
         return email;
     }
 
-    public static class Builder {
-        private String userId;
-        private String password;
-        private String name;
-        private String email;
-
-        public Builder userId(String userId) {
-            this.userId = userId;
-            return this;
-        }
-
-        public Builder password(String password) {
-            this.password = password;
-            return this;
-        }
-
-        public Builder name(String name) {
-            this.name = name;
-            return this;
-        }
-
-        public Builder email(String email) {
-            this.email = email;
-            return this;
-        }
-
-        public User build() {
-            return new User(this);
-        }
+    public void setUserId(String userId) {
+        this.userId = userId;
     }
 
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
 }
