@@ -1,5 +1,7 @@
 package kr.codesqaud.cafe.domain;
 
+import java.time.LocalDateTime;
+
 public class Article {
 
     private int id;
@@ -7,10 +9,16 @@ public class Article {
     private final String title;
     private final String contents;
 
+    private final LocalDateTime createDate;
+
+    private int replyCount;
+
     public Article(String writer, String title, String contents) {
         this.writer = writer;
         this.title = title;
         this.contents = contents;
+        this.createDate = LocalDateTime.now();
+        this.replyCount = 0;
     }
 
     public int getId() {
@@ -31,5 +39,13 @@ public class Article {
 
     public String getContents() {
         return contents;
+    }
+
+    public LocalDateTime getCreateDate() {
+        return createDate;
+    }
+
+    public int getReplyCount() {
+        return replyCount;
     }
 }
