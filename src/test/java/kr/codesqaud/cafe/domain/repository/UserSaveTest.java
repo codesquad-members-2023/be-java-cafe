@@ -17,12 +17,7 @@ class UserSaveTest {
     @DisplayName("회원 가입 잘 되는지 테스트")
     void signUpTest() {
         // given
-        User user = new User.Builder()
-                .userId("userId")
-                .password("password")
-                .name("username")
-                .email("email.com")
-                .build();
+        User user = new User("userId", "password", "username", "user@email.com");
 
         // when
         signUpService.join(user);
@@ -35,19 +30,8 @@ class UserSaveTest {
     @Test
     @DisplayName("모든 회원 조회 잘 되는지 테스트")
     void findAllTest() {
-        User user = new User.Builder()
-                .userId("userId")
-                .password("password")
-                .name("username")
-                .email("email.com")
-                .build();
-
-        User user2 = new User.Builder()
-                .userId("userId2")
-                .password("password")
-                .name("username")
-                .email("email.com")
-                .build();
+        User user = new User("userId", "password", "username", "user@email.com");
+        User user2 = new User("userId", "password", "username", "user@email.com");
 
         signUpService.join(user);
         signUpService.join(user2);
@@ -57,4 +41,16 @@ class UserSaveTest {
         Assertions.assertThat(all.size()).isEqualTo(2);
     }
 
+    @Test
+    @DisplayName("회원 정보 수정 잘 되는지 테스트")
+    void updateUser() {
+        User user = new User("userId", "password", "username", "user@email.com");
+        signUpService.join(user);
+
+        User updateUser = new User("update", "password", "username", "user@email.com");
+
+        signUpService.updateUser(user.getUserId(), updateUser);
+
+        Assertions.assertThat(user.getUserId()).isEqualTo("update");
+    }
 }
