@@ -14,4 +14,12 @@ public class UserRepository {
         userRepository.add(user);
         return user;
     }
+
+    public List<User> showAllUsers() {
+        List<User> allUsers = new ArrayList<>();
+        for (int i = 0; i < userRepository.size(); i++) {
+            allUsers.add(userRepository.get(i));
+        }
+        return allUsers;
+    }
 }
