@@ -20,7 +20,6 @@ public class UserController {
         this.memberService = memberService;
     }
 
-
     @RequestMapping("/user")
     public String createUser(@RequestParam String email, @RequestParam String nickName, @RequestParam String password){
         memberService.join(new Member(email, nickName, password));
@@ -34,16 +33,6 @@ public class UserController {
         return "list";
     }
 
-    @GetMapping("/login")
-    public String login() {
-        return "login";
-    }
-
-    @GetMapping("/form")
-    public String form() {
-        return "form";
-    }
-
     @GetMapping("profile/{nickName}")
     public String showProfile(@PathVariable String nickName, Model model) {
         model.addAttribute("nickName", nickName);
@@ -51,5 +40,4 @@ public class UserController {
         model.addAttribute("email", email);
         return "profile";
     }
-
 }
