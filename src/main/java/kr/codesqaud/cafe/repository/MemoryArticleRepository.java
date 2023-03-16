@@ -14,14 +14,14 @@ public class MemoryArticleRepository implements ArticleRepository {
     private static long sequence = 0L;
 
     @Override
-    public Article save(Article article) {
+    public Article saveArticle(Article article) {
         article.setId(++sequence);
         articleStore.put(sequence, article);
         return article;
     }
 
     @Override
-    public List<Article> findAll() {
+    public List<Article> findAllArticle() {
         return new ArrayList<>(articleStore.values());
     }
 

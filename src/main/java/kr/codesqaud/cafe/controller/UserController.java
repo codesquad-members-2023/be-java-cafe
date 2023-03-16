@@ -26,19 +26,6 @@ public class UserController {
         this.repository = repository;
     }
 
-    @GetMapping("/")
-    public String home() {
-        return "index";
-    }
-
-    // form.html Mapping
-    @GetMapping("/user/form.html")
-    public String showForm() {
-        log.info("이것은 Form 인가?!");
-
-        return "user/form";
-    }
-
     // 회원가입 POST
     @PostMapping("/users")
     public String signUp(@ModelAttribute User user) {

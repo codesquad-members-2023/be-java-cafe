@@ -5,7 +5,7 @@ import kr.codesqaud.cafe.domain.Article;
 import java.util.List;
 
 public interface ArticleRepository {
-    Article save(Article article);
+    Article saveArticle(Article article);
 
-    List<Article> findAll();
+    List<Article> findAllArticle();
 }
