@@ -14,6 +14,7 @@ public class MemoryArticleRepository implements ArticleRepository{
 
     @Override
     public void save(Article article) {
+        article.setId(articleStore.size());
         articleStore.add(article);
     }
 

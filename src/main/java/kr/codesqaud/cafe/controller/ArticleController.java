@@ -50,13 +50,11 @@ public class ArticleController {
 
     @PostConstruct
     public void postConstruct() {
-        Article article1 = new Article("writer1", "title1", "content1");
-        Article article2 = new Article("writer2", "title2", "content2");
-        Article article3 = new Article("writer3", "title3", "content3");
+        Article article1 = new Article("first", "title1", "content1");
+        Article article2 = new Article("second", "title2", "content2");
 
         articleService.writeArticle(article1);
         articleService.writeArticle(article2);
-        articleService.writeArticle(article3);
     }
 
 }

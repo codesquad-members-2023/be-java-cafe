@@ -7,7 +7,8 @@ public class Article {
     private final String writer;
     private final String title;
     private final String contents;
-    private LocalDate localDateTime;
+    private final LocalDate localDateTime;
+    private int id;
 
     public Article(String writer, String title, String contents) {
         this.writer = writer;
@@ -30,5 +31,13 @@ public class Article {
 
     public LocalDate getLocalDateTime() {
         return localDateTime;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id + 1;
     }
 }
