@@ -33,10 +33,12 @@ public class AutoAppConfig implements WebMvcConfigurer {
     public QnaService qnaService() {
         return new QnaServiceImpl(articleRepository());
     }
+
     @Bean
     public ArticleRepository articleRepository() {
         return new MemoryArticleRepository();
     }
+
     @Override
     public void addViewControllers(ViewControllerRegistry registry) {
         registry.setOrder(Ordered.HIGHEST_PRECEDENCE);

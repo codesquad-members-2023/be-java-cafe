@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -36,5 +37,13 @@ public class ArticleController {
         model.addAttribute("article", qnaService.lookupAllArticles());
 
         return "index";
+    }
+
+    @GetMapping(value = "/articles/{id}")
+    public String articleDetails(@PathVariable long id, Model model) {
+        model.addAttribute("article", qnaService.lookupById(id).orElseThrow(()->new IllegalArgumentException("[ERROR]")));
+
+        System.out.println(qnaService.lookupById(id).orElseThrow(()->new IllegalArgumentException("[ERROR]")));
+        return "/qna/show";
     }
 }
