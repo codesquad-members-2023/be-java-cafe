@@ -55,7 +55,7 @@ public class UserController {
         return "user/updateForm";
     }
 
-    @PostMapping("/update/{userId}")
+    @PutMapping("/update/{userId}")
     public String update(@PathVariable String userId,
                          @RequestParam String password,
                          @RequestParam String name,
