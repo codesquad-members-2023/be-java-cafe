@@ -34,4 +34,10 @@ public class JoinServiceImpl implements JoinService{
     public List<User> lookupAllUser() {
         return userRepository.getAllUsers();
     }
+
+    @Override
+    public void updateUser(String userId, String password, String newPassword, String name, String email) {
+        //ID로 User 조회
+        userRepository.updateUser(userId, password, newPassword, name, email);
+    }
 }

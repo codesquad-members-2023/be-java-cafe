@@ -26,4 +26,15 @@ public class MemoryUserRepository implements UserRepository {
         user.setIndex(currentIndexCounter++);
         userList.add(user);
     }
+
+    @Override
+    public void updateUser(String userId, String password, String newPassword, String name, String email) {
+        User user = findById(userId).orElseThrow(()->new IllegalArgumentException("[ERROR] Wrong password"));
+        //비밀번호 일치 확인
+        user.validate(password);
+
+        user.setPassword(newPassword);
+        user.setEmail(email);
+        user.setName(name);
+    }
 }
