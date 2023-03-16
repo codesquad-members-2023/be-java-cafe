@@ -28,4 +28,8 @@ public class SignUpService {
     public Optional<User> findById(String userId) {
         return memberRepository.findById(userId);
     }
+
+    public void updateUser(String userId, User updateUser) {
+        memberRepository.updateUser(userId, updateUser);
+    }
 }

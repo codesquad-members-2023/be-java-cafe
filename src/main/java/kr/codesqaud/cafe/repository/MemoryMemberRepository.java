@@ -16,15 +16,24 @@ public class MemoryMemberRepository implements MemberRepository {
     }
 
     @Override
-    public Optional<User> findById(String memberId) {
+    public Optional<User> findById(String userId) {
         return store.stream()
-                .filter(user -> user.getUserId().equals(memberId))
+                .filter(user -> user.getUserId().equals(userId))
                 .findFirst();
     }
 
     @Override
     public List<User> findAll() {
         return store;
+    }
+
+    @Override
+    public void updateUser(String userId, User updateUser) {
+        User user = findById(userId).get();
+        user.setName(updateUser.getName());
+        user.setUserId(updateUser.getUserId());
+        user.setPassword(updateUser.getPassword());
+        user.setEmail(updateUser.getEmail());
     }
 
 }

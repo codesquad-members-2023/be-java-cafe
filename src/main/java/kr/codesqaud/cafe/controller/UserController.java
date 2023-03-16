@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.PostConstruct;
 import java.util.List;
+import java.util.Optional;
 
 @Controller
 @RequestMapping("/users")
@@ -27,17 +28,7 @@ public class UserController {
 
     // 회원 가입
     @PostMapping("/create")
-    public String addUser(@RequestParam String userId,
-                          @RequestParam String password,
-                          @RequestParam String name,
-                          @RequestParam String email
-    ) {
-        User user = new User.Builder()
-                .userId(userId)
-                .password(password)
-                .name(name)
-                .email(email)
-                .build();
+    public String addUser(@ModelAttribute User user) {
 
         signUpService.join(user);
 
@@ -61,20 +52,25 @@ public class UserController {
         return "users/profile";
     }
 
+    @GetMapping("/{userId}/updateUser")
+    public String updateUser(@PathVariable String userId, Model model) {
+
+        User findUser = signUpService.findById(userId).get();
+        model.addAttribute("findUser", findUser);
+
+        return "users/update_user";
+    }
+
+    @PutMapping("/{userId}/updateUser")
+    public String updateUserPost(@PathVariable String userId, @ModelAttribute User user) {
+        signUpService.updateUser(userId, user);
+        return "redirect:/users/list";
+    }
+
     @PostConstruct
     private void postConstruct() {
-        User user1 = new User.Builder()
-                .userId("first")
-                .password("first")
-                .name("first")
-                .email("first@naver.com")
-                .build();
-
-        User user2 = new User.Builder()
-                .userId("second")
-                .password("second")
-                .name("second")
-                .email("second@naver.com").build();
+        User user1 = new User("first", "userPassword1", "userName1", "userEmail1@naver.com");
+        User user2 = new User("second", "userPassword2", "userName2", "userEmail2@naver.com");
 
         signUpService.join(user1);
         signUpService.join(user2);
