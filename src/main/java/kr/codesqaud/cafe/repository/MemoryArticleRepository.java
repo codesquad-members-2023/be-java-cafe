@@ -17,6 +17,8 @@ public class MemoryArticleRepository {
     }
 
     public void add(Article article) {
+        int articleId = articleRepository.size() + 1;
+        article.setArticleId(articleId);
         articleRepository.add(article);
     }
 

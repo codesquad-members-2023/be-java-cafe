@@ -24,8 +24,8 @@ public class ArticleController {
     public String create(@RequestParam String writer,
                          @RequestParam String title,
                          @RequestParam String contents) {
-        int articleId = memoryArticleRepository.getSize() + 1;
-        memoryArticleRepository.add(new Article(articleId, writer, title, contents));
+
+        memoryArticleRepository.add(new Article(writer, title, contents));
         return "redirect:/qna/list";
     }
 
