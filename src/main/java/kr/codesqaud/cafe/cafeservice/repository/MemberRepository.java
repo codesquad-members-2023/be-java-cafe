@@ -19,11 +19,11 @@ public class MemberRepository {
     }
 
     public Member findOne(Long id) {
-        return findById(id).get();
+        return findById(id).orElseThrow();
     }
 
     public Optional<Member> findById(Long userId) {
-        return store.stream().filter(member -> member.getId() == userId).findFirst();
+        return store.stream().filter(member -> member.getId() == userId).findAny();
     }
 
     public List<Member> findByName(String userName) {
