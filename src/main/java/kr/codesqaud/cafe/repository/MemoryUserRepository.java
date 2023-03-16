@@ -11,11 +11,11 @@ import java.util.Map;
 
 
 @Repository
-public class UserMemoryRepository {
+public class MemoryUserRepository {
     private final Map<String, User> userRepository;
 
     @Autowired
-    public UserMemoryRepository() {
+    public MemoryUserRepository() {
         this.userRepository = new HashMap<>();
     }
 

@@ -1,7 +1,7 @@
 package kr.codesqaud.cafe.controller;
 
 import kr.codesqaud.cafe.basic.User;
-import kr.codesqaud.cafe.repository.UserMemoryRepository;
+import kr.codesqaud.cafe.repository.MemoryUserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -12,11 +12,11 @@ import java.util.List;
 @Controller
 @RequestMapping("/user")
 public class UserController {
-    UserMemoryRepository userMemoryRepository;
+    MemoryUserRepository memoryUserRepository;
 
     @Autowired
-    public UserController(UserMemoryRepository userMemoryRepository) {
-        this.userMemoryRepository = userMemoryRepository;
+    public UserController(MemoryUserRepository memoryUserRepository) {
+        this.memoryUserRepository = memoryUserRepository;
     }
 
     @PostMapping("/create")
@@ -26,14 +26,14 @@ public class UserController {
                          @RequestParam String email,
                          Model model
     ) {
-        userMemoryRepository.join(new User(userId, password, name, email));
+        memoryUserRepository.join(new User(userId, password, name, email));
 
         return "redirect:/user/list";
     }
 
     @GetMapping("/list")
     public String list(Model model) {
-        List<User> users = userMemoryRepository.findAll();
+        List<User> users = memoryUserRepository.findAll();
         model.addAttribute("users", users);
         return "user/list";
     }
@@ -41,7 +41,7 @@ public class UserController {
     @GetMapping("/profile/{userId}")
     public String profile(@PathVariable String userId,
                           Model model) {
-        User user = userMemoryRepository.findUser(userId); // null 포인트 예외 처리 필요
+        User user = memoryUserRepository.findUser(userId); // null 포인트 예외 처리 필요
         model.addAttribute("user", user);
         return "user/profile";
     }
