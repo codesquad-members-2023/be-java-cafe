@@ -21,4 +21,9 @@ public class UserRepository {
         return new ArrayList<>(store.values());
     }
 
+    public User findByUserId(String userId) {
+        User user = store.get(userId);
+        return user;
+    }
+
 }
