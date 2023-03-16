@@ -22,7 +22,7 @@ public class ArticleService {
         return articleRepository.findArticleByWriter(writer);
     }
 
-    List<Article> findAllArticle() {
+    public List<Article> findAllArticle() {
         return articleRepository.findAllArticle();
     }
 }
