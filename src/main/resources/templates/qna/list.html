@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<!--<html lang="kr">-->
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="header.html::head"></head>
+
+<body>
+<div th:replace="navigation_bar.html::navbar"></div>
+<div th:replace="navigation_bar.html::subnav"></div>
+
+
+<div class="container" id="main">
+  <div class="col-md-12 col-sm-12 col-lg-10 col-lg-offset-1">
+    <div class="panel panel-default qna-list">
+      <ul class="list">
+        <li th:each="article, i: ${articles}">
+          <div class="wrap">
+            <div class="main">
+              <strong class="subject">
+                <a th:href="@{/qna/show/{articleId}(articleId=${article.articleId})}" th:text="${article.getTitle()}">게시글 제목</a>
+              </strong>
+              <div class="auth-info">
+                <i class="icon-add-comment"></i>
+                <span class="time">????-??-?? !?:?!</span>
+                <a th:href="@{/user/profile/{userId}(userId=${article.writer})}" th:text="${article.writer}" class="author">작성자 이름</a>
+              </div>
+              <div class="reply" title="댓글">
+                <i class="icon-reply"></i>
+                <span class="point" th:text="${i.count}">게시글 인덱스</span>
+              </div>
+            </div>
+          </div>
+        </li>
+
+      </ul>
+      <div class="row">
+        <div class="col-md-3"></div>
+        <div class="col-md-6 text-center">
+          <ul class="pagination center-block" style="display:inline-block;">
+            <li><a href="#">«</a></li>
+            <li><a href="#">1</a></li>
+            <li><a href="#">2</a></li>
+            <li><a href="#">3</a></li>
+            <li><a href="#">4</a></li>
+            <li><a href="#">5</a></li>
+            <li><a href="#">»</a></li>
+          </ul>
+        </div>
+        <div class="col-md-3 qna-write">
+          <a th:href="@{/qna/form}" class="btn btn-primary pull-right" role="button">질문하기</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+</body>
+
+<footer>
+  <div th:replace="footer.html::js"></div>
+</footer>
+
+</html>
