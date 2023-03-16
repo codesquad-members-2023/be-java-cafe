@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import java.util.Optional;
+
 @Controller
 public class UserController {
 
@@ -19,12 +21,7 @@ public class UserController {
         this.userRepository = userRepository;
     }
 
-    @GetMapping("/user/form")
-    public String createUserForm() {
-        return "user/form";
-    }
-
-    @PostMapping("/user/form")
+    @PostMapping("/users")
     public String join(UserForm form) {
         User user = new User(form.getName(), form.getEmail(), form.getPassword());
 
@@ -41,8 +38,12 @@ public class UserController {
 
     @GetMapping("/users/{name}")
     public String usersProfile(Model model, @PathVariable String name) {
-        model.addAttribute("userProfile", userRepository.findByName(name).orElse(null));
+        Optional<User> user = userRepository.findByName(name);
+        if (user.isPresent()) {
+            model.addAttribute("userProfile", user.get());
+            return "user/profile";
+        }
 
-        return "user/profile";
+        return "user/profile_failed";
     }
 }
