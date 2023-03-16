@@ -171,4 +171,21 @@ public class UserController {
   - 값 오브젝트로 값을 위해 쓰인다. read-Only 특징(사용 중에 변경 불가능하며, 오직 읽기만 가능)
   - DTO와 달리 setter가 없어 값의 불변성을 보장
 
+### Mustache를 이용한 HTML 중복 제거
+- 중복되는 HTML을 별도 파일로 추출한다.
+- {{#name}} {{/name}}으로 section을 반복 출력할 수 있다.
+- Model 객체에 addAttribute를 통해서 model을 View로 전달할 수 있다.
+- Templates은 WAS에서 처리되는 것, Static 파일은 Web Server에서 처리한다.
+- 동적으로 처리하기 위해서는 templates로 옮겨주면 템플릿 엔진이 파일을 인식해서 처리 가능하다.
+- 동적 처리를 위해서는 URL에 각각 할당해야한다.
+- 로직을 구현하지않는 Templates은 MvcConfigurer를 이용해서 Configuration에서 Mapping이 가능하다.
+
+### Controller AddController를 오버라이딩해서 Logic 없는 Template을 처리하는 경우
+- View만을 처리할 Controller를 생성하는 것이기 때문에 같은 URL로 접근하는 경우 Controller간 충돌이 발생할 수 있다.
+
+### Test 객체의 LifeCycle
+- PR 참조
+
+### 질문하기 구현
+
 
