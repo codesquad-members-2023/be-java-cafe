@@ -9,10 +9,14 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 @Controller
 public class ArticleController {
@@ -30,6 +34,10 @@ public class ArticleController {
     public String writing(@ModelAttribute Article article) {
         log.info("글쓰기전 5분동안 생각하기!");
 
+        // 현재 날짜/시간 -> 포맷팅
+        String formatedNow = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"));
+
+        article.setTime(formatedNow);
         repository.saveArticle(article);
         return "redirect:/";
     }
@@ -44,5 +52,21 @@ public class ArticleController {
         model.addAttribute("articles", articles);
 
         return "index";
+    }
+
+    // 질문 상세보기 Mapping
+    @GetMapping("/articles/{index}")
+    public String showBoardDetails(Model model, @PathVariable String index) {
+        Optional<Article> article = repository.findByIndex(index);
+
+        System.out.println("ㅁㄴㅇㅁㄴ");
+        // 질문글 유무 확인후 성공/실패 넘겨주기
+        if(article.isPresent()){
+            log.info("질문글 Mapping: 맵핑 성공!!!!");
+            model.addAttribute("article", article.get());
+            return "qna/show";
+        }
+        log.info("질문글 Mapping: 맵핑 실패 ㅠㅠㅠ");
+        return "qna/show_failed";
     }
 }

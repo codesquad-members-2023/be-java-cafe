@@ -1,17 +1,22 @@
 package kr.codesqaud.cafe.domain;
 
 public class Article {
-    private long id;
+    private long index;
     private String writer;
     private String title;
     private String contents;
+    private String time;
 
-    public long getId() {
-        return id;
+    public long getIndex() {
+        return index;
     }
 
-    public void setId(long id) {
-        this.id = id;
+    public void setIndex(long index) {
+        this.index = index;
+    }
+
+    public boolean isIndexEquals(long index) {
+        return this.index == index;
     }
 
     public String getWriter() {
@@ -36,5 +41,13 @@ public class Article {
 
     public void setContents(String contents) {
         this.contents = contents;
+    }
+
+    public String getTime() {
+        return time;
+    }
+
+    public void setTime(String time) {
+        this.time = time;
     }
 }

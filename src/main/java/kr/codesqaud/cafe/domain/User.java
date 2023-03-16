@@ -15,7 +15,6 @@ public class User {
         this.userNum = userNum;
     }
 
-
     public String getUserId() {
         return userId;
     }

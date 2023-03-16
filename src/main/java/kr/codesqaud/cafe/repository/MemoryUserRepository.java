@@ -13,7 +13,7 @@ public class MemoryUserRepository implements UserRepository {
     @Override
     public boolean save(User user) {
         // id 중복 체크후 저장
-        if (isDuplicate(user.getUserId())) {
+        if (isIdDuplicate(user.getUserId())) {
             user.setUserNum(store.size() + 1);
             store.add(user);
 
@@ -41,7 +41,7 @@ public class MemoryUserRepository implements UserRepository {
         return new ArrayList<>(Collections.unmodifiableList(store));
     }
 
-    public boolean isDuplicate(String userId) {
+    public boolean isIdDuplicate(String userId) {
         return store.stream().noneMatch(user -> user.isIdEquals(userId));
     }
 

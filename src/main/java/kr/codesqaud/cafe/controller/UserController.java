@@ -51,15 +51,15 @@ public class UserController {
     // 프로필 Mapping
     @GetMapping("/users/{userId}")
     public String showUserProfile(Model model, @PathVariable String userId) {
-        log.info("프로필 Mapping: 프로필 보러왔는감?");
-
         Optional<User> profile = repository.findById(userId);
 
         // 프로필 유무 확인후 성공/실패 넘겨주기
         if(profile.isPresent()) {
+            log.info("프로필 Mapping: 프로필 맵핑 성공~~~~~!!!!?");
             model.addAttribute("profile", profile.get());
             return "user/profile";
         }
+        log.info("프로필 Mapping: 프로필 맵핑 실패");
         return "user/profile_failed";
     }
 }
