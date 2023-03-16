@@ -1,6 +1,7 @@
 package kr.codesqaud.cafe.user;
 
 public class Article {
+    private long id;
     private String writer;
     private String title;
     private String contents;
@@ -9,6 +10,14 @@ public class Article {
         this.writer = writer;
         this.title = title;
         this.contents = contents;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    public long getId() {
+        return id;
     }
 
     public String getWriter() {
