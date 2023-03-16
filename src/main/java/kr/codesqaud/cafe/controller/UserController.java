@@ -29,7 +29,6 @@ public class UserController {
     // 회원 가입
     @PostMapping("/create")
     public String addUser(@ModelAttribute User user) {
-
         signUpService.join(user);
 
         return "redirect:/users/list";
@@ -37,7 +36,6 @@ public class UserController {
 
     @GetMapping("/list")
     public String userList(Model model) {
-        log.info("userList 실행");
         List<User> userList = signUpService.findAll();
         model.addAttribute("userList", userList);
 
@@ -48,7 +46,6 @@ public class UserController {
     public String showUser(@PathVariable String userId, Model model) {
         User user = signUpService.findById(userId).get();
         model.addAttribute("user", user);
-        log.info("user 보여주는 메서드 실행");
         return "users/profile";
     }
 

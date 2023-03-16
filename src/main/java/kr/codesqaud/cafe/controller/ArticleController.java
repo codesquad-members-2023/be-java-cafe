@@ -24,7 +24,6 @@ public class ArticleController {
 
     @GetMapping("/")
     public String welcomePage(Model model) {
-
         List<Article> allArticle = articleService.findAllArticle();
         model.addAttribute(allArticle);
 
@@ -32,9 +31,6 @@ public class ArticleController {
     }
     @PostMapping("/qna/questions")
     public String addArticle(@ModelAttribute Article article) {
-        log.info("addArticle 호출");
-        log.info(article.getContents());
-
         articleService.writeArticle(article);
 
         return "redirect:/";
@@ -42,7 +38,6 @@ public class ArticleController {
 
     @GetMapping("/qna/show/{id}")
     public String showArticle(@PathVariable int id, Model model) {
-
         Article article = articleService.findArticleById(id).get();
         model.addAttribute(article);
 
