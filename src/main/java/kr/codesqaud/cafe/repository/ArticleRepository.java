@@ -11,7 +11,7 @@ public interface ArticleRepository {
 
     void save(Article article);
 
-    Optional<Article> findArticleByWriter(String writer);
+    Optional<Article> findArticleByWriter(int id);
 
     List<Article> findAllArticle();
 

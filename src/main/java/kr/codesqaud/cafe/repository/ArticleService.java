@@ -18,8 +18,8 @@ public class ArticleService {
         articleRepository.save(article);
     }
 
-    public Optional<Article> findArticleByWriter(String writer) {
-        return articleRepository.findArticleByWriter(writer);
+    public Optional<Article> findArticleById(int id) {
+        return articleRepository.findArticleByWriter(id);
     }
 
     public List<Article> findAllArticle() {
