@@ -26,8 +26,9 @@ public class UserController {
     }
 
     @GetMapping(value = "/users/{id}")
-    public String userList(Model model, @PathVariable String id) {
-        model.addAttribute("user", joinService.lookupUser(id).get());
+    public String userProfile(Model model, @PathVariable String id) {
+
+        model.addAttribute("user", joinService.lookupUser(id).orElseThrow(()->new IllegalArgumentException("ERROR")));
 
         return "/user/profile";
     }
@@ -39,7 +40,7 @@ public class UserController {
     }
 
     @PostMapping("/users/create")
-    public String joinUser(@RequestParam String userId, @RequestParam String password, @RequestParam String name,
+    public String userAdd(@RequestParam String userId, @RequestParam String password, @RequestParam String name,
             @RequestParam String email) {
         //POST method, /create form으로 전송하는 요청을 처리
         joinService.join(new User(userId, password, name, email));
