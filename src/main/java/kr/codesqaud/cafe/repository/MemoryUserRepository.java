@@ -4,22 +4,24 @@ import kr.codesqaud.cafe.domain.User;
 import org.springframework.stereotype.Repository;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Repository
 public class MemoryUserRepository implements UserRepository {
-    private static Map<String, User> store = new LinkedHashMap<>();
-    private static long sequence = 0L;
+    private final List<User> store = new ArrayList<>();
 
     @Override
     public User save(User user) {
-        user.setUserNum(++sequence);
-        store.put(user.getUserId(), user);
+        user.setUserNum(store.size() + 1);
+        store.add(user);
         return user;
     }
 
     @Override
     public Optional<User> findById(String userId) {
-        return Optional.ofNullable(store.get(userId));
+        return store.stream()
+                .filter(user -> user.isIdEquals(userId))
+                .findFirst();
     }
 
 //    @Override
@@ -31,7 +33,7 @@ public class MemoryUserRepository implements UserRepository {
 
     @Override
     public List<User> findAll() {
-        return new ArrayList<>(store.values());
+        return new ArrayList<>(Collections.unmodifiableList(store));
     }
 
     public void clearStore() {

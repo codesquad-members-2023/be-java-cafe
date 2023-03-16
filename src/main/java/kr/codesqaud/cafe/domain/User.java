@@ -24,6 +24,10 @@ public class User {
         this.userId = userId;
     }
 
+    public boolean isIdEquals(String userId) {
+        return this.userId.equals(userId);
+    }
+
     public String getPassword() {
         return password;
     }
