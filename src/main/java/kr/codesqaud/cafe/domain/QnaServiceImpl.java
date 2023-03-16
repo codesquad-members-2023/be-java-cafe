@@ -1,6 +1,7 @@
 package kr.codesqaud.cafe.domain;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
@@ -22,5 +23,10 @@ public class QnaServiceImpl implements QnaService {
     @Override
     public List<Article> lookupAllArticles() {
         return articleRepository.getArticleList();
+    }
+
+    @Override
+    public Optional<Article> lookupById(long id) {
+        return articleRepository.findById(id);
     }
 }
