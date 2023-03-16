@@ -93,7 +93,7 @@
                 <tbody>
                 <tr th:each="user:${users}">
                     <th scope="row" th:text="${user.userSequence}">사용자 번호</th>
-                    <td><a th:href="@{|/user/${user.userId}/profile|}" th:text="${user.userId}">사용자 ID</a></td>
+                    <td><a th:href="@{|/user/profile/${user.userId}|}" th:text="${user.userId}">사용자 ID</a></td>
                     <td th:text="${user.userName}">사용자 이름</td>
                     <td th:text="${user.userEmail}">사용자 메일</td>
                 </tr>
