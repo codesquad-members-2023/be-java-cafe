@@ -5,7 +5,6 @@ public class User {
     private final String password;
     private final String name;
     private final String email;
-    private int sequence;
 
     public User(Builder builder) {
         userId = builder.userId;
@@ -35,14 +34,6 @@ public class User {
 
     public String getEmail() {
         return email;
-    }
-
-    public int getSequence() {
-        return sequence;
-    }
-
-    public void setSequence(int sequence) {
-        this.sequence = sequence;
     }
 
     public static class Builder {
