@@ -21,8 +21,8 @@
                 </tr>
                 </thead>
                 <tbody>
-                <tr th:each="user : ${userList}">
-                    <td th:text="${user.sequence}"></td>
+                <tr th:each="user, loop : ${userList}">
+                    <td th:text="${loop.count}"></td>
                     <td>
                         <a th:href="@{/users/{userId}(userId=${user.userId})}" th:text="${user.userId}">
 
