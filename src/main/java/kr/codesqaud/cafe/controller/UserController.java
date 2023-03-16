@@ -55,8 +55,9 @@ public class UserController {
     }
 
     @GetMapping("/users/{id}/form")
-    public String showUpdateUserForm(@PathVariable int id) {
-        log.info("hi");
+    public String showUpdateUserForm(@PathVariable int id, Model model) {
+        User updateUser = repository.findByUserId(id);
+        model.addAttribute("user", updateUser);
 
         return "user/updateForm";
     }
