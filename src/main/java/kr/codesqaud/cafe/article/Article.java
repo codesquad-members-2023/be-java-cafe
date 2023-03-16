@@ -1,20 +1,19 @@
 package kr.codesqaud.cafe.article;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 
 public class Article {
     private final String writer;
     private final String title;
     private final String contents;
-    private final LocalDate localDateTime;
+    private final LocalDate localDate;
     private int id;
 
     public Article(String writer, String title, String contents) {
         this.writer = writer;
         this.title = title;
         this.contents = contents;
-        this.localDateTime = LocalDate.now();
+        this.localDate = LocalDate.now();
     }
 
     public String getWriter() {
@@ -29,8 +28,8 @@ public class Article {
         return contents;
     }
 
-    public LocalDate getLocalDateTime() {
-        return localDateTime;
+    public LocalDate getLocalDate() {
+        return localDate;
     }
 
     public int getId() {
