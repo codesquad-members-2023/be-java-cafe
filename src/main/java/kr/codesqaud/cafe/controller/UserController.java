@@ -7,10 +7,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Optional;
@@ -61,5 +58,31 @@ public class UserController {
         }
         log.info("프로필 Mapping: 프로필 맵핑 실패");
         return "user/profile_failed";
+    }
+
+    // 사용자 정보 수정 GET
+    @GetMapping("/users/{userId}/form")
+    public String updateForm(Model model, @PathVariable String userId){
+        Optional<User> user = repository.findById(userId);
+
+        if(user.isPresent()) {
+            log.info("사용자 정보 수정: 정보수정 브라우저 맵핑 성공~~~~~!!!!?");
+            model.addAttribute("user", user.get());
+        }
+        return "user/updateForm";
+    }
+
+    //
+    @PutMapping("users/{userId}/update")
+    public String updateUser(@ModelAttribute User user, @PathVariable String userId) {
+        log.info("사용자 정보 수정: put 전달 완료");
+
+        Optional<User> temp = repository.findById(userId);
+        if(temp.isPresent()) {
+            log.info("사용자 정보 수정: 정보 수정 & 저장 성공");
+            user.setUserNum(temp.get().getUserNum());
+            repository.save(user, user.getUserNum());
+        }
+        return "redirect:/users";
     }
 }

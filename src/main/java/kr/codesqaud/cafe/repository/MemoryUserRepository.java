@@ -11,7 +11,7 @@ public class MemoryUserRepository implements UserRepository {
     private final List<User> store = new ArrayList<>();
 
     @Override
-    public boolean save(User user, int index) {
+    public boolean save(User user, long index) {
         if (index == 0 && isIdDuplicate(user.getUserId())) {
             // id 중복 체크후 저장
             user.setUserNum(store.size() + 1);
@@ -21,7 +21,7 @@ public class MemoryUserRepository implements UserRepository {
         }
         if (user.getUserNum() == index) {
             // 인덱스 번호가 일치하면 회원정보 수정
-            store.set(index - 1, user);
+            store.set(Long.valueOf(index).intValue() - 1, user);
 
             return true;
         }

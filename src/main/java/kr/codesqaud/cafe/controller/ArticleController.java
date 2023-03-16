@@ -59,7 +59,6 @@ public class ArticleController {
     public String showBoardDetails(Model model, @PathVariable String index) {
         Optional<Article> article = repository.findByIndex(index);
 
-        System.out.println("ㅁㄴㅇㅁㄴ");
         // 질문글 유무 확인후 성공/실패 넘겨주기
         if(article.isPresent()){
             log.info("질문글 Mapping: 맵핑 성공!!!!");
