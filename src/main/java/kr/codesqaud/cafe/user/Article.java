@@ -1,5 +1,7 @@
 package kr.codesqaud.cafe.user;
 
+import java.util.Objects;
+
 public class Article {
     private long id;
     private String writer;

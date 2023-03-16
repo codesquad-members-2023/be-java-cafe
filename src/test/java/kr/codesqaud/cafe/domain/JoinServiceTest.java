@@ -2,6 +2,7 @@ package kr.codesqaud.cafe.domain;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.AssertionsForClassTypes.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 import java.util.List;
 
@@ -34,34 +35,29 @@ class JoinServiceTest {
     @Test
     @DisplayName("모든 회원을 Repository에서 조회한다.")
     void lookupAllUsers() {
+        User user1 = new User("conux", "asd", "J", "ho@naver.com");
+        User user2 = new User("tonux", "asd", "Js", "ho2@naver.com");
         //given
-        joinService.join(new User("conux", "asd", "J", "ho@naver.com"));
-        joinService.join(new User("tonux", "asd", "Js", "ho2@naver.com"));
-        List<User> expected = List.of(new User("conux", "asd", "J", "ho@naver.com"),
-                new User("tonux", "asd", "Js", "ho2@naver.com"));
-
+        joinService.join(user1);
+        joinService.join(user2);
         //then
-        assertThat(isEqual(joinService.lookupAllUser(), expected)).isTrue();
-    }
-
-    private boolean isEqual(List<User> userList, List<User> expected) {
-        if (userList == null) {
-            return expected == null;
-        }
-        return userList.equals(expected);
+        assertThat(joinService.lookupAllUser()).contains(user1, user2);
     }
 
     @Test
     @DisplayName("비밀번호가 일치하면 회원 정보를 수정할 수 있다.")
     void updateUserWithCorrectPassword() {
         //given
-        User user1 = new User("conux", "asd", "J", "ho@naver.com");
-        User user2 = new User("conux", "skarnjsdn1", "Jayho", "ngw7617@naver.com");
-        joinService.join(user1);
+        User user = new User("conux", "asd", "J", "ho@naver.com");
+        joinService.join(user);
         //when
         joinService.updateUser("conux", "asd", "skarnjsdn1", "Jayho", "ngw7617@naver.com");
         //then
-        assertThat(user1).isEqualTo(user2);
+        assertAll(
+                () -> assertThat(user.getName()).isEqualTo("Jayho"),
+                () -> assertThat(user.getPassword()).isEqualTo("skarnjsdn1"),
+                () -> assertThat(user.getEmail()).isEqualTo("ngw7617@naver.com")
+        );
     }
 
     @Test
