@@ -11,11 +11,17 @@ public class MemoryUserRepository implements UserRepository {
     private final List<User> store = new ArrayList<>();
 
     @Override
-    public boolean save(User user) {
-        // id 중복 체크후 저장
-        if (isIdDuplicate(user.getUserId())) {
+    public boolean save(User user, int index) {
+        if (index == 0 && isIdDuplicate(user.getUserId())) {
+            // id 중복 체크후 저장
             user.setUserNum(store.size() + 1);
             store.add(user);
+
+            return true;
+        }
+        if (user.getUserNum() == index) {
+            // 인덱스 번호가 일치하면 회원정보 수정
+            store.set(index - 1, user);
 
             return true;
         }
