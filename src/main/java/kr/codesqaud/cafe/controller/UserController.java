@@ -62,8 +62,9 @@ public class UserController {
     }
 
     @PutMapping("/{userId}/updateUser")
-    public String updateUserPost(@PathVariable String userId, @ModelAttribute User user) {
-        if (!user.getPassword().equals(signUpService.findById(userId).get().getPassword())) {
+    public String updateUserPost(@PathVariable String userId, @ModelAttribute User user, @RequestParam String newPassword) {
+
+        if (!user.getPassword().equals(signUpService.findById(userId).get().getPassword()) || !user.getPassword().equals(newPassword)) {
             return "users/error_page";
         }
         signUpService.updateUser(userId, user);
