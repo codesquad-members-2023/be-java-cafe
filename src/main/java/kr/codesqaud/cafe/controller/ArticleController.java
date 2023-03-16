@@ -9,6 +9,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import javax.annotation.PostConstruct;
@@ -48,5 +49,14 @@ public class ArticleController {
         repository.save(article);
 
         return "redirect:/";
+    }
+
+    @GetMapping("/articles/{index}")
+    public String showDetailedArticle(@PathVariable int index, Model model) {
+        log.info("{}", index);
+        Article article = repository.findById(index);
+        model.addAttribute("article", article);
+
+        return "qna/show";
     }
 }
