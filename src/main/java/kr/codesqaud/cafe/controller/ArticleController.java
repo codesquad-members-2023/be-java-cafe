@@ -4,13 +4,9 @@ import kr.codesqaud.cafe.article.Article;
 import kr.codesqaud.cafe.repository.ArticleService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.PostConstruct;
 import java.util.List;
@@ -32,8 +28,6 @@ public class ArticleController {
         List<Article> allArticle = articleService.findAllArticle();
         model.addAttribute(allArticle);
 
-        log.info(allArticle.get(1).getContents());
-
         return "welcome/index";
     }
     @PostMapping("/qna/questions")
@@ -46,6 +40,14 @@ public class ArticleController {
         return "redirect:/";
     }
 
+    @GetMapping("/qna/show/{id}")
+    public String showArticle(@PathVariable int id, Model model) {
+
+        Article article = articleService.findArticleById(id).get();
+        model.addAttribute(article);
+
+        return "qna/show";
+    }
 
 
     @PostConstruct
