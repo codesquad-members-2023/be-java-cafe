@@ -11,10 +11,15 @@ public class MemoryUserRepository implements UserRepository {
     private final List<User> store = new ArrayList<>();
 
     @Override
-    public User save(User user) {
-        user.setUserNum(store.size() + 1);
-        store.add(user);
-        return user;
+    public boolean save(User user) {
+        // id 중복 체크후 저장
+        if (isDuplicate(user.getUserId())) {
+            user.setUserNum(store.size() + 1);
+            store.add(user);
+
+            return true;
+        }
+        return false;
     }
 
     @Override
@@ -34,6 +39,10 @@ public class MemoryUserRepository implements UserRepository {
     @Override
     public List<User> findAll() {
         return new ArrayList<>(Collections.unmodifiableList(store));
+    }
+
+    public boolean isDuplicate(String userId) {
+        return store.stream().noneMatch(user -> user.isIdEquals(userId));
     }
 
     public void clearStore() {

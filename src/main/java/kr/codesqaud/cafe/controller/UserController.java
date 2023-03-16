@@ -31,8 +31,10 @@ public class UserController {
     public String signUp(@ModelAttribute User user) {
         log.info("회원가입 POST: 보내졌는가?");
 
-        repository.save(user);
-        return "redirect:users";
+        if(repository.save(user)){
+            return "redirect:users";
+        }
+        return "user/form_failed";
     }
 
     // 사용자 목록 Mapping
