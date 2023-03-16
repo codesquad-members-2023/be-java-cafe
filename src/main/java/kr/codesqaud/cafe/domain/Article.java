@@ -1,6 +1,7 @@
 package kr.codesqaud.cafe.domain;
 
 import java.time.LocalDate;
+import java.util.concurrent.atomic.AtomicLong;
 
 public class Article {
     private final Long id;
@@ -8,6 +9,7 @@ public class Article {
     private final String title;
     private final String contents;
     private LocalDate createdDate;
+    private static AtomicLong sequence = new AtomicLong(0L);
 
     public String getWriter() {
         return writer;
@@ -21,8 +23,8 @@ public class Article {
         return contents;
     }
 
-    public Article(String writer, String title, String contents, long size) {
-        this.id = size +1;
+    public Article(String writer, String title, String contents) {
+        this.id = generateId();
         this.writer = writer;
         this.title = title;
         this.contents = contents;
@@ -31,5 +33,9 @@ public class Article {
 
     public boolean isIdEquals(Long articleId) {
         return this.id.equals(articleId);
+    }
+
+    public long generateId() {
+        return sequence.incrementAndGet();
     }
 }

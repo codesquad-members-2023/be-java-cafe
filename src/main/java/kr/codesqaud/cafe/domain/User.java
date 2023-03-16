@@ -3,6 +3,7 @@ package kr.codesqaud.cafe.domain;
 
 import java.time.LocalDate;
 import java.util.Objects;
+import java.util.concurrent.atomic.AtomicLong;
 
 public class User {
     private long userId;
@@ -10,6 +11,7 @@ public class User {
     private String nickname;
     private String password;
     private LocalDate createdDate;
+    private static AtomicLong sequence = new AtomicLong(0L);
 
     public long getUserId() {
         return userId;
@@ -31,8 +33,8 @@ public class User {
         return createdDate;
     }
 
-    public User(String email, String nickname, String password, long size) {
-        this.userId = size + 1;
+    public User(String email, String nickname, String password) {
+        this.userId = generateId();
         this.email = email;
         this.nickname = nickname;
         this.password = password;
@@ -53,5 +55,9 @@ public class User {
 
     public boolean isNameEquals(String userName) {
         return Objects.equals(this.nickname, userName);
+    }
+
+    public long generateId() {
+        return sequence.incrementAndGet();
     }
 }
