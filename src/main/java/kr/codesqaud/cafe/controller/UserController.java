@@ -63,6 +63,10 @@ public class UserController {
 
     @PutMapping("/{userId}/updateUser")
     public String updateUserPost(@PathVariable String userId, @ModelAttribute User user) {
+        if (!user.getPassword().equals(signUpService.findById(userId).get().getPassword())) {
+            log.info("비밀번호를 잘못 입력했습니다.");
+            return "redirect:/users/list";
+        }
         signUpService.updateUser(userId, user);
         return "redirect:/users/list";
     }
