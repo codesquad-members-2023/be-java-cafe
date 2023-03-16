@@ -1,11 +1,13 @@
 package kr.codesqaud.cafe.cafeservice.domain;
 
+import java.util.concurrent.atomic.AtomicLong;
+
 public class Article {
     private String writer;
     private String title;
     private String content;
     private Long id;
-    private static long sequence = 0L; //static 사용
+    private static AtomicLong sequence = new AtomicLong(0L);
     private Integer views;
 
     public Article(String writer, String title, String content, String views) {
@@ -32,15 +34,11 @@ public class Article {
         return id;
     }
 
-    public static long getSequence() {
-        return sequence;
-    }
-
     public Integer getViews() {
         return views;
     }
 
-    private Long idIncrease() {
-        return ++sequence;
+    private  Long idIncrease() {
+        return sequence.incrementAndGet();
     }
 }

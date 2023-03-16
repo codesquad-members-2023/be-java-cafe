@@ -1,11 +1,13 @@
 package kr.codesqaud.cafe.cafeservice.domain;
 
+import java.util.concurrent.atomic.AtomicLong;
+
 public class Member {
     private Long id;
     private String userName;
     private String password;
     private String email;
-    private static long sequence = 0L; //static 사용
+    private static AtomicLong sequence = new AtomicLong(0L);
 
     public Member(Long id, String userName, String password, String email) {
         this.id = idIncrease();
@@ -14,8 +16,8 @@ public class Member {
         this.email = email;
     }
 
-    private Long idIncrease() {
-        return ++sequence;
+    private synchronized Long idIncrease() {
+        return sequence.incrementAndGet();
     }
 
     public Long getId() {
