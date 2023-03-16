@@ -2,7 +2,8 @@ package kr.codesqaud.cafe.cafeservice.controller;
 
 import kr.codesqaud.cafe.cafeservice.domain.Member;
 import kr.codesqaud.cafe.cafeservice.repository.MemberRepository;
-import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -12,15 +13,16 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 
 @Controller
-@Slf4j
-public class AddMemberController {
+public class MemberController {
 
     private final MemberRepository repository;
+    private final Logger log = LoggerFactory.getLogger(MemberController.class);
 
     @Autowired
-    public AddMemberController(MemberRepository repository) {
+    public MemberController(MemberRepository repository) {
         this.repository = repository;
     }
 
@@ -44,9 +46,14 @@ public class AddMemberController {
 
     @GetMapping("/users/{userId}")
     public String findByProfile(@PathVariable Long userId, Model model) {
-        Member member = repository.findOne(userId);
-        model.addAttribute("member", member);
-        return "user/profile";
+        try {
+            Member member = repository.findOne(userId);
+            model.addAttribute("member", member);
+            return "user/profile";
+        } catch (NoSuchElementException e) {
+            log.debug("예외발생");
+            return "fail";
+        }
     }
 }
 
