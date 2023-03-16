@@ -12,7 +12,7 @@ public class ViewController implements WebMvcConfigurer {
     public void addViewControllers(ViewControllerRegistry registry) {
         registry.addViewController("/user/form").setViewName("user/form");
         registry.addViewController("/user/login").setViewName("user/login");
-        registry.addViewController("/user/login_failed").setViewName("user/login_failed");
+        registry.addViewController("/user/login-failed").setViewName("user/login-failed");
         registry.addViewController("/qna/form").setViewName("qna/form");
         registry.addViewController("/qna/show").setViewName("qna/show");
     }
