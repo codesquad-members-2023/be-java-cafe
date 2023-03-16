@@ -47,15 +47,15 @@ public class UserController {
         return "/user/profile";
     }
 
-    @GetMapping("/{userId}/form")
-    public String updatePre(@PathVariable String userId,
+    @GetMapping("/{userId}/update")
+    public String updateForm(@PathVariable String userId,
                          Model model) {
         User user = memoryUserRepository.findUser(userId);
         model.addAttribute("user", user);
         return "user/updateForm";
     }
 
-    @PutMapping("/update/{userId}")
+    @PutMapping("/{userId}/update")
     public String update(@PathVariable String userId,
                          @RequestParam String password,
                          @RequestParam String name,

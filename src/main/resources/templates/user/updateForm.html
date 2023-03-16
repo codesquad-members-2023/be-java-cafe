@@ -13,7 +13,7 @@
         <div class="panel panel-default content-main">
             <h2 th:text="|${user.userId} 사용자 정보 변경하기|"> 소제목 : 사용자 정보 변경하기</h2>
             <br>
-            <form name="question" method="post" th:action="@{/user/update/{userId}(userId=${userId})}">
+            <form name="question" method="post" th:action="@{/user/{userId}/update(userId=${userId})}">
                 <input type="hidden" name="_method" value="PUT">
                 <div class="form-group">
                     <label for="password">비밀번호</label>
