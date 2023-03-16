@@ -17,12 +17,8 @@ public class ArticleController {
         this.qnaService = qnaService;
     }
 
-    @GetMapping("/qna/form")
-    public String articleForm() {
-        return "/qna/form";
-    }
 
-    @PostMapping("/qna/form")
+    @PostMapping("/qna/create")
     public String articlePost(@RequestParam String writer, @RequestParam String title, @RequestParam String contents) {
         qnaService.postQna(new Article(writer, title, contents));
         System.out.println(new Article(writer, title, contents));

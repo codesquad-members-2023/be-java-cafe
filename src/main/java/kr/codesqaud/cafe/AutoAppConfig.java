@@ -45,6 +45,6 @@ public class AutoAppConfig implements WebMvcConfigurer {
         registry.addViewController("/users/login").setViewName("user/login");
         registry.addViewController("/users/profile").setViewName("user/profile");
 
-        //registry.addViewController("/qna/form").setViewName("qna/form");
+        registry.addViewController("/qna/form").setViewName("qna/form");
     }
 }
