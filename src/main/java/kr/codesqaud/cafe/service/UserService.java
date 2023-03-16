@@ -31,9 +31,9 @@ public class UserService {
         final int FIRST_INDEX = 0;
         List<User> temp = userList.stream()
                 .filter(u -> u.getUserId().equals(user.getUserId())
-                && u.getPassword().equals(user.getPassword()))
+                        && u.getPassword().equals(user.getPassword()))
                 .collect(Collectors.toList());
-        if(temp.size() > 0) {
+        if (temp.size() > 0) {
             userList.set(userList.indexOf(temp.get(FIRST_INDEX)), user);
         }
     }
