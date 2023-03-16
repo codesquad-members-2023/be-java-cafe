@@ -60,12 +60,8 @@ public class UserController {
     }
 
     @PutMapping("/users/{id}")
-    public String updateUser(@PathVariable int id, @ModelAttribute User user) {
-        User findUser = repository.findByUserId(id);
-
-        findUser.setName(user.getName());
-        findUser.setPassword(user.getPassword());
-        findUser.setEmail(user.getEmail());
+    public String updateUser(@PathVariable int id, @ModelAttribute User updateUser, @RequestParam String newPassword) {
+        repository.update(id, updateUser, newPassword);
 
         return "redirect:/users";
     }

@@ -31,4 +31,16 @@ public class MemoryUserRepository {
         return users;
     }
 
+    public void update(int id, User updateUser, String newPassword) {
+        User existUser = findByUserId(id);
+
+        if (!existUser.getPassword().equals(updateUser.getPassword())) {
+            throw new IllegalArgumentException("[ERROR] 비밀번호가 틀립니다.");
+        }
+
+        existUser.setName(updateUser.getName());
+        existUser.setPassword(newPassword);
+        existUser.setEmail(updateUser.getEmail());
+    }
+
 }
