@@ -52,7 +52,9 @@ public class H2DBUserRepository implements UserRepository{
 
     @Override
     public List<User> findAll() {
-        return null;
+        String sql = "select id, user_id, password, name, email from users";
+
+        return template.query(sql, userRowMapper());
     }
 
     @Override

@@ -8,6 +8,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.jdbc.datasource.SimpleDriverDataSource;
 
+import java.util.List;
+
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -42,5 +44,19 @@ class H2DBUserRepositoryTest {
         assertThat(findUser.getPassword()).isEqualTo(user.getPassword());
         assertThat(findUser.getName()).isEqualTo(user.getName());
         assertThat(findUser.getEmail()).isEqualTo(user.getEmail());
+    }
+
+    @Test
+    @DisplayName("h2 DB 에서 모든 User를 조회할 수 있다.")
+    void findAll() {
+        User user1 = new User("hyun", "1234", "황현", "ghkdgus29@naver.com");
+        User user2 = new User("yoon", "4321", "황윤", "ghkddbs28@naver.com");
+
+        repository.save(user1);
+        repository.save(user2);
+
+        List<User> users = repository.findAll();
+
+        assertThat(users.size()).isEqualTo(2);
     }
 }
