@@ -33,12 +33,21 @@ class H2DBArticleRepositoryTest {
     }
 
     @Test
-    @DisplayName("게시글 번호로 단 건 조회가 가능")
+    @DisplayName("게시글 번호로 DB에서 단 건 조회가 가능")
     void findById() {
 
         Article article = repository.findById(1);
 
         assertThat(article.getWriter()).isEqualTo("Hyun");
         assertThat(article.getContents()).isEqualTo("미안하다. 이거보여줄려고 어그로끌었다.");
+    }
+
+    @Test
+    @DisplayName("게시글을 DB 에서 모두 조회 가능")
+    void findAll() {
+
+        List<Article> articles = repository.findAll();
+
+        assertThat(articles.size()).isEqualTo(4);
     }
 }

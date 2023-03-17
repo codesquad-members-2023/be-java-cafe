@@ -14,6 +14,8 @@ public class Article {
     private int replyCount;
 
     public Article() {
+        this.createDate = LocalDateTime.now();
+        this.replyCount = 0;
     }
 
     public Article(String writer, String title, String contents) {

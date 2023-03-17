@@ -47,6 +47,13 @@ public class H2DBArticleRepository implements ArticleRepository{
         }
     }
 
+    @Override
+    public List<Article> findAll() {
+        String sql = "select id, writer, title, contents, createDate from article";
+
+        return template.query(sql, articleRowMapper());
+    }
+
     private RowMapper<Article> articleRowMapper() {
         return ((rs, rowNum) -> {
             Article article = new Article();
@@ -58,10 +65,5 @@ public class H2DBArticleRepository implements ArticleRepository{
 
             return article;
         });
-    }
-
-    @Override
-    public List<Article> findAll() {
-        return null;
     }
 }
