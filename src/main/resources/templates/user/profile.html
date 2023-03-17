@@ -1,56 +1,29 @@
 {{>layout/header}}
-<link href="../css/user/list.css" rel="stylesheet">
-</head>
 <body>
-<div class="background">
-    {{>layout/nav}}
-
-    <div class="description">
-        <div class="desc-container">
-            <p class="desc-small">회원 정보</p>
-            <p class="desc-big">회원 정보를 조회할 수 있습니다.</p>
-        </div>
-    </div>
-
-    <div class="container" id="main">
-        <div class="col-md-10 col-md-offset-1">
-            <div class="panel panel-default">
-                <table class="table table-hover">
-                    <thead>
-                    <tr>
-                        <th>항목</th><th>정보</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    {{#profile}}
-                    <tr>
-                        <td>회원코드</td>
-                        <td>{{userId}}</td>
-                    </tr>
-                    <tr>
-                        <td>닉네임</td>
-                        <td>{{nickname}}</td>
-                    </tr>
-                    <tr>
-                        <td>메일</td>
-                        <td>{{email}}</td>
-                    </tr>
-                    <tr>
-                        <td>가입일</td>
-                        <td>{{createdDate}}</td>
-                    </tr>
-                    {{/profile}}
-                    </tbody>
-                </table>
+{{>layout/nav}}
+<div class="container" id="main">
+    <div class="col-md-6 col-md-offset-3">
+        <div class="panel panel-default">
+            <div class="panel-heading"><h4>Profiles</h4></div>
+            <div class="panel-body">
+                <div class="well well-sm">
+                    <div class="media">
+                        <a class="thumbnail pull-left" href="#">
+                            <img class="media-object" src="../images/80-text.png">
+                        </a>
+                        {{#profile}}
+                        <div class="media-body">
+                            <h4 class="media-heading">{{nickname}}</h4>
+                            <p>
+                                <a href="#" class="btn btn-xs btn-default"><span class="glyphicon glyphicon-envelope"></span>{{email}}</a>
+                            </p>
+                        </div>
+                        {{/profile}}
+                    </div>
+                </div>
             </div>
         </div>
     </div>
 </div>
-</body>
 
-<!-- script references -->
-<script src="../../static/js/jquery-2.2.0.min.js"></script>
-<script src="../../static/js/bootstrap.min.js"></script>
-<script src="../../static/js/scripts.js"></script>
-	</body>
-</html>
+{{>layout/footer}}
