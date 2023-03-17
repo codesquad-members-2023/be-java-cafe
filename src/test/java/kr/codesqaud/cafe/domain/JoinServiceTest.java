@@ -21,7 +21,7 @@ class JoinServiceTest {
         //when
         joinService.join(new User("honux", "asd", "jeong", "ho@naver.com"));
         //then
-        assertThat(joinService.lookupUser("honux").get().getName()).isEqualTo("jeong");
+        assertThat(joinService.lookupUser("honux").getName()).isEqualTo("jeong");
     }
 
     @Test
@@ -30,7 +30,7 @@ class JoinServiceTest {
         //given
         joinService.join(new User("conux", "asd", "J", "ho@naver.com"));
         //then
-        assertThat(joinService.lookupUser("conux").get().getName()).isEqualTo("J");
+        assertThat(joinService.lookupUser("conux").getName()).isEqualTo("J");
     }
 
     @Test

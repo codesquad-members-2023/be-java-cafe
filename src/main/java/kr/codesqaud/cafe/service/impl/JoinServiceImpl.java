@@ -34,7 +34,7 @@ public class JoinServiceImpl implements JoinService {
     }
 
     @Override
-    public void updateUser(String userId, String password, String newPassword, String name, String email) {
+    public void updateUser(String userId, String password, String newPassword, String name, String email) throws IllegalArgumentException {
         //ID로 User 조회
         userRepository.updateUser(userId, password, newPassword, name, email);
     }

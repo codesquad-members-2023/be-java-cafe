@@ -39,7 +39,7 @@ class QnaServiceTest {
         Article article2 = new Article("k", "3", "4");
         qnaService.postQna(article1);
         qnaService.postQna(article2);
-        assertAll(()-> assertThat(qnaService.lookupById(1).get()).isEqualTo(article1),
-                ()-> assertThat(qnaService.lookupById(2).get()).isEqualTo(article2));
+        assertAll(()-> assertThat(qnaService.lookupById(1)).isEqualTo(article1),
+                ()-> assertThat(qnaService.lookupById(2)).isEqualTo(article2));
     }
 }

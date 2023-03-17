@@ -28,11 +28,11 @@ public class MemoryUserRepository implements UserRepository {
     }
 
     @Override
-    public void updateUser(String userId, String password, String newPassword, String name, String email) {
-        User user = findById(userId).orElseThrow(()->new IllegalArgumentException("[ERROR] Wrong password"));
-        //비밀번호 일치 확인
+    public void updateUser(String userId, String password, String newPassword, String name, String email) throws IllegalArgumentException {
+        User user = findById(userId).orElseThrow(() -> new IllegalArgumentException("[ERROR] Wrong password"));
         user.validate(password);
 
         user.updateUserInfo(name, newPassword, email);
     }
+
 }
