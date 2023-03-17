@@ -12,6 +12,13 @@ public class User {
         this.name = name;
         this.email = email;
     }
+    public User(String id, String password, String name, String email, int index) {
+        this.id = id;
+        this.password = password;
+        this.name = name;
+        this.email = email;
+        this.index = index;
+    }
 
     public void validate(String password) {
         if (!this.password.equals(password)) {
