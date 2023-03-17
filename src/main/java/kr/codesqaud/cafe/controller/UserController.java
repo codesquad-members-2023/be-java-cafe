@@ -41,7 +41,7 @@ public class UserController {
     public String profile(@PathVariable Long userId, Model model) {
         Optional<Member> user = userRepository.findById(userId);
         try {
-            model.addAttribute("profile", user.orElseThrow(() -> new NoSuchElementException("해당하는 회원이 없습니다.")));
+            model.addAttribute("profile", user.orElseThrow(() -> new NoSuchElementException("[exception] 해당하는 회원이 없습니다.")));
         } catch (NoSuchElementException e) {
             model.addAttribute("message", e.getMessage());
             return "layout/error";

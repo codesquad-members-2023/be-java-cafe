@@ -58,10 +58,6 @@ public class Member {
         this.password = password;
     }
 
-    public void setCreatedDate(LocalDateTime createdDate) {
-        this.createdDate = createdDate;
-    }
-
     public Member() { // JDBC 템플릿 쓸 때 기본 생성자를 열어야함
     }
 
