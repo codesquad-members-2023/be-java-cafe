@@ -12,7 +12,6 @@ import kr.codesqaud.cafe.user.User;
 
 
 public class JoinServiceImpl implements JoinService{
-    private final Logger logger = LoggerFactory.getLogger(getClass());
     private final UserRepository userRepository;
 
     public JoinServiceImpl(UserRepository userRepository) {
@@ -23,8 +22,6 @@ public class JoinServiceImpl implements JoinService{
     public void join(User user) {
         //회원 저장
         userRepository.addUser(user);
-        logger.info("userRepository = {}", userRepository.toString());
-
     }
 
     @Override
@@ -36,5 +33,11 @@ public class JoinServiceImpl implements JoinService{
     @Override
     public List<User> lookupAllUser() {
         return userRepository.getAllUsers();
+    }
+
+    @Override
+    public void updateUser(String userId, String password, String newPassword, String name, String email) {
+        //ID로 User 조회
+        userRepository.updateUser(userId, password, newPassword, name, email);
     }
 }

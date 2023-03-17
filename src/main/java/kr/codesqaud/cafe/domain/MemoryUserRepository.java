@@ -1,20 +1,15 @@
 package kr.codesqaud.cafe.domain;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 
-import org.springframework.stereotype.Repository;
-
 import kr.codesqaud.cafe.user.User;
-import lombok.ToString;
-
 
 public class MemoryUserRepository implements UserRepository {
     private ArrayList<User> userList = new ArrayList<>();
     private long currentIndexCounter = 1;
+
     @Override
     public Optional<User> findById(String id) {
         //id가 일치하는 User 객체를 반환
@@ -30,5 +25,16 @@ public class MemoryUserRepository implements UserRepository {
     public void addUser(User user) {
         user.setIndex(currentIndexCounter++);
         userList.add(user);
+    }
+
+    @Override
+    public void updateUser(String userId, String password, String newPassword, String name, String email) {
+        User user = findById(userId).orElseThrow(()->new IllegalArgumentException("[ERROR] Wrong password"));
+        //비밀번호 일치 확인
+        user.validate(password);
+
+        user.setPassword(newPassword);
+        user.setEmail(email);
+        user.setName(name);
     }
 }

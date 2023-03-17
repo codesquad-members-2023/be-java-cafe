@@ -15,8 +15,10 @@ public class User {
         this.email = email;
     }
 
-    public long getIndex() {
-        return index;
+    public void validate(String password) {
+        if (!this.password.equals(password)) {
+            throw new IllegalArgumentException("[ERROR] wrong password");
+        }
     }
 
     public void setIndex(long index) {
@@ -31,45 +33,27 @@ public class User {
         this.name = name;
     }
 
-    public String getId() {
-        return id;
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public String getPassword() {
         return password;
     }
 
-    public String getName() {
-        return name;
-    }
-
     public String getEmail() {
         return email;
     }
 
-    @Override
-    public String toString() {
-        return "User{" +
-                "id='" + id + '\'' +
-                ", password='" + password + '\'' +
-                ", name='" + name + '\'' +
-                ", email='" + email + '\'' +
-                '}';
+    public String getId() {
+        return id;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o)
-            return true;
-        if (o == null || getClass() != o.getClass())
-            return false;
-        User user = (User)o;
-        return id.equals(user.id) && password.equals(user.password) && name.equals(user.name)
-                && email.equals(user.email);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, password, name, email);
+    public String getName() {
+        return name;
     }
 }
