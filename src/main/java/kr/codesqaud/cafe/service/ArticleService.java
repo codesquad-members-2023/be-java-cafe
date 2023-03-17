@@ -24,6 +24,6 @@ public class ArticleService {
     }
 
     public List<Article> findArticles() {
-        return articleRepository.findArticles();
+        return articleRepository.getArticles();
     }
 }
