@@ -52,4 +52,16 @@ public class UserController {
         return "user/profile";
     }
 
+    @GetMapping("/user/{userId}/updateForm")
+    public String updateProfileForm(@PathVariable Long userId, Model model) {
+        try {
+            Member byId = userRepository.findById(userId).orElseThrow(() -> new NoSuchElementException("[exception] 정보를 수정할 회원이 없습니다."));
+            model.addAttribute("profile", byId);
+            LOG.info("test={}", byId.getNickname());
+            return "user/updateForm";
+        } catch (NoSuchElementException e) {
+            model.addAttribute("message", e.getMessage());
+            return "layout/error";
+        }
+    }
 }
