@@ -54,8 +54,8 @@ public class UserController {
     }
 
     @PutMapping("/users/{id}")
-    public String updateUser(@PathVariable int id, @ModelAttribute User updateUser, @RequestParam String newPassword) {
-        repository.update(id, updateUser, newPassword);
+    public String updateUser(@PathVariable int id, @ModelAttribute User updateUser, @RequestParam String oldPassword) {
+        repository.update(id, updateUser, oldPassword);
 
         return "redirect:/users";
     }

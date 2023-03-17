@@ -35,15 +35,15 @@ public class MemoryUserRepository implements UserRepository{
     }
 
     @Override
-    public void update(int id, User updateUser, String newPassword) {
+    public void update(int id, User updateUser, String oldPassword) {
         User existUser = findById(id);
 
-        if (!existUser.getPassword().equals(updateUser.getPassword())) {
+        if (!existUser.getPassword().equals(oldPassword)) {
             throw new IllegalArgumentException("[ERROR] 비밀번호가 틀립니다.");
         }
 
         existUser.setName(updateUser.getName());
-        existUser.setPassword(newPassword);
+        existUser.setPassword(updateUser.getPassword());
         existUser.setEmail(updateUser.getEmail());
     }
 
