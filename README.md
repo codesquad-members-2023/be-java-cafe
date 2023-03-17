@@ -188,4 +188,36 @@ public class UserController {
 
 ### 질문하기 구현
 
+### DDD?
+- Domain : 해결하고자하는 영역(관심 영역)
+- Domain Driven Design
+
+### 패키지 나누기
+- 핵심 비즈니스 로직이 도메인에 존재해야한다.
+- Repository, Controller 등 그룹별로 나누는 방법.
+- 도메인끼리 묶는 방법. (User, Article 등)
+
+### 빈이 thread safe?
+- 지역변수 : 스레드 세이프
+- 객체 : 힙을 공유하기 때문에 not safe
+- HashTable, HashMap : HashTable은 safe
+- Collection : not safe
+- 빈은 상태를 저장하면 안된다.
+- 스태틱도 안됨
+
+### 그런 레스트 API로 괜찮은가?
+
+### Adapter Pattern이 deprecated된 이유?
+- interface의 default 메서드가 생기면서 adapter 패턴이 필요없어짐.
+- 인터페이스에 구현을 못넣어서 하나만 구현+나머지는 비워둔 메서드로 extends 후 메서드를 사용 - Adapter 패턴
+- JAVA8 이후로 implements로 바뀌면서 디폴트 메서드가 가능해져 deprecated된것
+
+### DB 클래스
+- User, Article
+- ORM : 객체를 관계형 데이터로 Mapping해서 저장
+- ODBC : 데이터베이스에 접근하기 위한 소프트웨어의 표준 규격
+- JDBC : 자바에서 DB에 접근하기 위한 JAVA API
+
+- Not Opinionated : 취향에 따라 사용가능 Spring
+- Strong Opinionated : 의견이 반영됨(변경해서 사용 가능) SpringBoot
 
