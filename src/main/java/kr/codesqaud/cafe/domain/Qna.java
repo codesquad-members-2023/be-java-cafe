@@ -7,8 +7,7 @@ public class Qna {
     private String title;
     private String contents;
 
-    public Qna(int qnaIndex, String writer, String title, String contents) {
-        this.qnaIndex = qnaIndex;
+    public Qna(String writer, String title, String contents) {
         this.writer = writer;
         this.title = title;
         this.contents = contents;

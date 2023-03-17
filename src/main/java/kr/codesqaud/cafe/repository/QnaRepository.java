@@ -14,7 +14,10 @@ public class QnaRepository {
     private static final Map<Integer, Qna> store = new ConcurrentHashMap<>();
 
     public void save(Qna qna) {
-        store.put(store.size(), qna);
+
+        int size = store.isEmpty() ? 0 : store.size();
+        qna.setQnaIndex(size);
+        store.put(size, qna);
     }
 
     public List<Qna> findAllQnas() {
