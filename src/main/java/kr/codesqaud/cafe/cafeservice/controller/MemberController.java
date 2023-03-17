@@ -7,10 +7,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -50,6 +47,29 @@ public class MemberController {
             Member member = repository.findOne(userId);
             model.addAttribute("member", member);
             return "user/profile";
+        } catch (NoSuchElementException e) {
+            log.debug("예외발생");
+            return "fail";
+        }
+    }
+
+    @GetMapping("/users/{id}form")
+    public String showUpdateForm(@PathVariable Long id, Model model) {
+        try {
+            Member member = repository.findOne(id);
+            model.addAttribute("user", member);
+            return "user/updateForm";
+        } catch (NoSuchElementException e) {
+            log.debug("예외발생");
+            return "fail";
+        }
+    }
+
+    @PutMapping("/users/{id}/update")
+    public String memberUpdateForm(@PathVariable Long id, @ModelAttribute Member member) {
+        try {
+            repository.update(id, member);
+            return "redirect:/users";
         } catch (NoSuchElementException e) {
             log.debug("예외발생");
             return "fail";
