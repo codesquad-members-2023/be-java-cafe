@@ -1,6 +1,6 @@
 package kr.codesqaud.cafe.repository;
 
-import kr.codesqaud.cafe.article.Article;
+import kr.codesqaud.cafe.domain.Article;
 import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;

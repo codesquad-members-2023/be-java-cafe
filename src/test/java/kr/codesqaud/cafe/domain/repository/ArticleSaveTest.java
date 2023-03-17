@@ -1,14 +1,11 @@
 package kr.codesqaud.cafe.domain.repository;
 
-import kr.codesqaud.cafe.article.Article;
-import kr.codesqaud.cafe.repository.ArticleRepository;
+import kr.codesqaud.cafe.domain.Article;
 import kr.codesqaud.cafe.repository.ArticleService;
 import kr.codesqaud.cafe.repository.MemoryArticleRepository;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-
-import java.util.Optional;
 
 class ArticleSaveTest {
 

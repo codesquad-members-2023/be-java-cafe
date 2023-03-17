@@ -1,6 +1,6 @@
 package kr.codesqaud.cafe.controller;
 
-import kr.codesqaud.cafe.article.Article;
+import kr.codesqaud.cafe.domain.Article;
 import kr.codesqaud.cafe.repository.ArticleService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
