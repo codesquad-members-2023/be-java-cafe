@@ -18,25 +18,25 @@ public class UserController {
         this.memberService = memberService;
     }
 
-    @PostMapping("/list")
+    @PostMapping("user/join")
     public String createUser(Member member){
-
         memberService.join(member);
-        return "redirect:user/list";
+        return "redirect:/user/list";
     }
 
-    @GetMapping("user/list")
+    @GetMapping("/user/list")
     public String showList(Model model) {
         model.addAttribute("lists", memberService.findMembers());
         model.addAttribute("total", memberService.findTotalNumberOfList());
         return "user/list";
     }
 
-    @GetMapping("profile/{nickName}")
+    @GetMapping("/profile/{nickName}")
     public String showProfile(@PathVariable String nickName, Model model) {
         model.addAttribute("nickName", nickName);
         String email = memberService.findOneMemberByNickname(nickName).get().getEmail();
         model.addAttribute("email", email);
         return "user/profile";
     }
+
 }
