@@ -11,25 +11,27 @@ import java.util.Map;
 
 
 @Repository
-public class UserMemoryRepository {
-    private final Map<String, User> userRepository;
+public class MemoryUserRepository {
+    private final List<User> userRepository;
 
     @Autowired
-    public UserMemoryRepository() {
-        this.userRepository = new HashMap<>();
+    public MemoryUserRepository() {
+        this.userRepository = new ArrayList();
     }
 
     public void join(User user) {
-        String userId = user.getUserId();
-        userRepository.put(userId, user);
+        userRepository.add(user);
     }
 
     public User findUser(String userId) {
-        return userRepository.get(userId);
+        return userRepository.stream()
+                .filter(user -> user.getUserId().equals(userId))
+                .findFirst()
+                .orElseThrow();
     }
 
     public List<User> findAll() {
-        return new ArrayList<>(userRepository.values());
+        return new ArrayList<>(userRepository);
     }
 
     public void clear() {

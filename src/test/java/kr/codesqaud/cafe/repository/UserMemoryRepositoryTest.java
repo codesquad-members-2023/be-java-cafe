@@ -10,11 +10,11 @@ import java.util.List;
 
 public class UserMemoryRepositoryTest {
 
-    UserMemoryRepository repository;
+    MemoryUserRepository repository;
 
     @BeforeEach
     public void init() {
-        repository = new UserMemoryRepository();
+        repository = new MemoryUserRepository();
     }
 
     @Test

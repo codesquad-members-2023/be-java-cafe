@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <!--<html lang="kr">-->
 <html xmlns:th="http://www.thymeleaf.org">
-<head>
-    <div th:replace="header.html::head"></div>
-</head>
+
+<head th:replace="header.html::head"></head>
+
 <body>
 <div th:replace="navigation_bar.html::navbar"></div>
 <div th:replace="navigation_bar.html::subnav"></div>
@@ -27,7 +27,7 @@
                     <td><a th:href="@{/user/profile/{userId}(userId=${user.userId})}" th:text="${user.userId}">유저 아이디</a></td>
                     <td th:text="${user.name}">유저 이름</td>
                     <td th:text="${user.email}">유저 이메일</td>
-                    <td><a href="#" class="btn btn-success" role="button">수정</a></td>
+                    <td><a th:href="@{/user/{userId}/update(userId=${user.userId})}" class="btn btn-success" role="button">수정</a></td>
                 </tr>
                 </tbody>
             </table>

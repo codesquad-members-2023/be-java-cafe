@@ -1,8 +1,5 @@
 package kr.codesqaud.cafe.basic;
 
-
-import lombok.Data;
-
 public class User {
     private String userId;
     private String password;

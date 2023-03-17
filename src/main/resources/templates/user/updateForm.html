@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="header.html::head"></head>
+
+<body>
+
+<div th:replace="navigation_bar.html::navbar"></div>
+<div th:replace="navigation_bar.html::subnav"></div>
+
+<div class="container" id="main">
+    <div class="col-md-6 col-md-offset-3">
+        <div class="panel panel-default content-main">
+            <h2 th:text="|${user.userId} 사용자 정보 변경하기|"> 소제목 : 사용자 정보 변경하기</h2>
+            <br>
+            <form name="question" method="post" th:action="@{/user/{userId}/update(userId=${userId})}">
+                <input type="hidden" name="_method" value="PUT">
+                <div class="form-group">
+                    <label for="password">비밀번호</label>
+                    <input type="password" class="form-control" id="password" name="password" placeholder="Password">
+                </div>
+                <div class="form-group">
+                    <label for="name">변경할 이름</label>
+                    <input class="form-control" id="name" name="name" placeholder="Name">
+                </div>
+                <div class="form-group">
+                    <label for="email">변경할 이메일</label>
+                    <input type="email" class="form-control" id="email" name="email" placeholder="Email">
+                </div>
+                <button type="submit" class="btn btn-success clearfix pull-right">회원가입</button>
+                <div class="clearfix"/>
+            </form>
+        </div>
+    </div>
+</div>
+
+</body>
+
+<footer>
+    <div th:replace="footer.html::js"></div>
+</footer>
+
+</html>
