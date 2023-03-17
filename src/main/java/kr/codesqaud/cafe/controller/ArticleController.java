@@ -38,13 +38,7 @@ public class ArticleController {
 
     @GetMapping("/articles/{index}")
     public String articleShow(Model model, @PathVariable int index) {
-        Optional<Article> article = articleRepository.findByIndex(index);
-
-        if (article.isPresent()) {
-            model.addAttribute("article", article.get());
-            return "qna/show";
-        }
-
-        return "/";
+        model.addAttribute("article", articleRepository.findByIndex(index));
+        return "qna/show";
     }
 }
