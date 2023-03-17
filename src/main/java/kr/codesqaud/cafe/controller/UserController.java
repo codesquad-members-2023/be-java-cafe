@@ -50,7 +50,6 @@ public class UserController {
 
     @PutMapping("users/update")
     public RedirectView updateUser(@ModelAttribute("user") User user) {
-        System.out.println(user);
         userService.updateUser(user);
         RedirectView redirectView = new RedirectView();
         redirectView.setUrl("/users");
