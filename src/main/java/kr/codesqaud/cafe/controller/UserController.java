@@ -26,12 +26,6 @@ public class UserController {
         System.out.println(this.getClass());
     }
 
-
-    @GetMapping("/")
-    public String home() {
-        return "/index";
-    }
-
     @PostMapping("/users")
     public String addUser(@ModelAttribute("user") User user) {
         logger.debug("addUser");

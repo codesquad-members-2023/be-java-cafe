@@ -16,7 +16,8 @@ public class UserRepository {
     }
 
     public Optional<User> findById(String userId) {
-        return users.stream().filter(user -> user.getUserId().equals(userId)).findFirst();    }
+        return users.stream().filter(user -> user.getUserId().equals(userId)).findFirst();
+    }
 
     public Optional<User> findByName(String userName) {
         return users.stream().filter(user -> user.getUserName().equals(userName)).findAny();
@@ -25,8 +26,8 @@ public class UserRepository {
     public List<User> findAll() {
         return new ArrayList<>(users);
     }
-    
-    public void clearStore(){
+
+    public void clearStore() {
         users.clear();
     }
 }
