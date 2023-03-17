@@ -1,9 +1,11 @@
-package kr.codesqaud.cafe.domain;
+package kr.codesqaud.cafe.service.impl;
 
 import java.util.List;
 import java.util.Optional;
 
-import kr.codesqaud.cafe.user.Article;
+import kr.codesqaud.cafe.repository.ArticleRepository;
+import kr.codesqaud.cafe.service.QnaService;
+import kr.codesqaud.cafe.model.Article;
 
 public class QnaServiceImpl implements QnaService {
 

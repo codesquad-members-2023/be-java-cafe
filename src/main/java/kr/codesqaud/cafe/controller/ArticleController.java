@@ -7,12 +7,12 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import kr.codesqaud.cafe.domain.QnaService;
-import kr.codesqaud.cafe.user.Article;
+import kr.codesqaud.cafe.service.QnaService;
+import kr.codesqaud.cafe.model.Article;
 
 @Controller
 public class ArticleController {
-    private QnaService qnaService;
+    private final QnaService qnaService;
     public ArticleController(QnaService qnaService) {
         this.qnaService = qnaService;
     }

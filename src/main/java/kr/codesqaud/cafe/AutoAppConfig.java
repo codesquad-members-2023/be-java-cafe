@@ -6,14 +6,14 @@ import org.springframework.core.Ordered;
 import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
-import kr.codesqaud.cafe.domain.ArticleRepository;
-import kr.codesqaud.cafe.domain.JoinService;
-import kr.codesqaud.cafe.domain.JoinServiceImpl;
-import kr.codesqaud.cafe.domain.MemoryArticleRepository;
-import kr.codesqaud.cafe.domain.MemoryUserRepository;
-import kr.codesqaud.cafe.domain.QnaService;
-import kr.codesqaud.cafe.domain.QnaServiceImpl;
-import kr.codesqaud.cafe.domain.UserRepository;
+import kr.codesqaud.cafe.repository.ArticleRepository;
+import kr.codesqaud.cafe.service.JoinService;
+import kr.codesqaud.cafe.service.impl.JoinServiceImpl;
+import kr.codesqaud.cafe.repository.MemoryArticleRepository;
+import kr.codesqaud.cafe.repository.MemoryUserRepository;
+import kr.codesqaud.cafe.service.QnaService;
+import kr.codesqaud.cafe.service.impl.QnaServiceImpl;
+import kr.codesqaud.cafe.repository.UserRepository;
 
 @Configuration
 public class AutoAppConfig implements WebMvcConfigurer {

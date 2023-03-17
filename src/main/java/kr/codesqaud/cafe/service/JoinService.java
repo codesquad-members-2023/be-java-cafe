@@ -1,9 +1,9 @@
-package kr.codesqaud.cafe.domain;
+package kr.codesqaud.cafe.service;
 
 import java.util.List;
 import java.util.Optional;
 
-import kr.codesqaud.cafe.user.User;
+import kr.codesqaud.cafe.model.User;
 
 public interface JoinService {
     void join(User user);

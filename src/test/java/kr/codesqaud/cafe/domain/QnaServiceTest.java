@@ -6,7 +6,10 @@ import static org.assertj.core.api.Assertions.assertThat;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import kr.codesqaud.cafe.user.Article;
+import kr.codesqaud.cafe.repository.MemoryArticleRepository;
+import kr.codesqaud.cafe.service.QnaService;
+import kr.codesqaud.cafe.service.impl.QnaServiceImpl;
+import kr.codesqaud.cafe.model.Article;
 
 class QnaServiceTest {
     QnaService qnaService = new QnaServiceImpl(new MemoryArticleRepository());

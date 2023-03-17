@@ -1,17 +1,14 @@
-package kr.codesqaud.cafe.domain;
+package kr.codesqaud.cafe.service.impl;
 
 import java.util.List;
 import java.util.Optional;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
-import kr.codesqaud.cafe.user.User;
+import kr.codesqaud.cafe.repository.UserRepository;
+import kr.codesqaud.cafe.service.JoinService;
+import kr.codesqaud.cafe.model.User;
 
 
-public class JoinServiceImpl implements JoinService{
+public class JoinServiceImpl implements JoinService {
     private final UserRepository userRepository;
 
     public JoinServiceImpl(UserRepository userRepository) {

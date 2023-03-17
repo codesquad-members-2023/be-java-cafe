@@ -4,12 +4,13 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.AssertionsForClassTypes.*;
 import static org.junit.jupiter.api.Assertions.*;
 
-import java.util.List;
-
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import kr.codesqaud.cafe.user.User;
+import kr.codesqaud.cafe.repository.MemoryUserRepository;
+import kr.codesqaud.cafe.service.JoinService;
+import kr.codesqaud.cafe.service.impl.JoinServiceImpl;
+import kr.codesqaud.cafe.model.User;
 
 class JoinServiceTest {
     private JoinService joinService = new JoinServiceImpl(new MemoryUserRepository());

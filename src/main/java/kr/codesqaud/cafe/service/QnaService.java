@@ -1,9 +1,9 @@
-package kr.codesqaud.cafe.domain;
+package kr.codesqaud.cafe.service;
 
 import java.util.List;
 import java.util.Optional;
 
-import kr.codesqaud.cafe.user.Article;
+import kr.codesqaud.cafe.model.Article;
 
 public interface QnaService {
     void postQna(Article article);

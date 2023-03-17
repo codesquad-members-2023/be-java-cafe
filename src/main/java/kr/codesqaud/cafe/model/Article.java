@@ -1,6 +1,4 @@
-package kr.codesqaud.cafe.user;
-
-import java.util.Objects;
+package kr.codesqaud.cafe.model;
 
 public class Article {
     private long id;
