@@ -18,6 +18,11 @@ public class UserRepository {
         users.add(user);
         logger.info("save");
     }
+    public Optional<User> findById(String id) {
+        return users.stream()
+                .filter(user -> user.getId().equals(id))
+                .findAny();
+    }
 
     public Optional<User> findByName(String name) {
         return users.stream()
