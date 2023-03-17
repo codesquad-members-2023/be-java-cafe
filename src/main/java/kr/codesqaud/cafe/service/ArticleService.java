@@ -2,9 +2,12 @@ package kr.codesqaud.cafe.service;
 
 import kr.codesqaud.cafe.domain.Article;
 import kr.codesqaud.cafe.repository.ArticleRepository;
+import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
+@Service
 public class ArticleService {
     private ArticleRepository articleRepository;
 
@@ -18,5 +21,9 @@ public class ArticleService {
 
     public Optional<Article> findOneArticleByTitle(String title) {
         return articleRepository.findOneArticleByTitle(title);
+    }
+
+    public List<Article> findArticles() {
+        return articleRepository.findArticles();
     }
 }

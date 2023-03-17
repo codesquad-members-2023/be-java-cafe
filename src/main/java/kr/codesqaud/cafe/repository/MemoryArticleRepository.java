@@ -28,7 +28,7 @@ public class MemoryArticleRepository implements ArticleRepository {
 
     @Override
     public List<Article> findArticles() {
-        return null;
+        return articlesRepository;
     }
 
     @Override
