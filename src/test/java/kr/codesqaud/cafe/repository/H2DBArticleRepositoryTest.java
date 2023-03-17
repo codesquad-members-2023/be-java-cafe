@@ -31,4 +31,14 @@ class H2DBArticleRepositoryTest {
         repository.save(article1);
         repository.save(article2);
     }
+
+    @Test
+    @DisplayName("게시글 번호로 단 건 조회가 가능")
+    void findById() {
+
+        Article article = repository.findById(1);
+
+        assertThat(article.getWriter()).isEqualTo("Hyun");
+        assertThat(article.getContents()).isEqualTo("미안하다. 이거보여줄려고 어그로끌었다.");
+    }
 }

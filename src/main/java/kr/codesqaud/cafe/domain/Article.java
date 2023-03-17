@@ -5,13 +5,16 @@ import java.time.LocalDateTime;
 public class Article {
 
     private int id;
-    private final String writer;
-    private final String title;
-    private final String contents;
+    private String writer;
+    private String title;
+    private String contents;
 
-    private final LocalDateTime createDate;
+    private LocalDateTime createDate;
 
     private int replyCount;
+
+    public Article() {
+    }
 
     public Article(String writer, String title, String contents) {
         this.writer = writer;
@@ -33,19 +36,36 @@ public class Article {
         return writer;
     }
 
+    public void setWriter(String writer) {
+        this.writer = writer;
+    }
+
     public String getTitle() {
         return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
     }
 
     public String getContents() {
         return contents;
     }
 
+    public void setContents(String contents) {
+        this.contents = contents;
+    }
+
     public LocalDateTime getCreateDate() {
         return createDate;
+    }
+
+    public void setCreateDate(LocalDateTime createDate) {
+        this.createDate = createDate;
     }
 
     public int getReplyCount() {
         return replyCount;
     }
+
 }
