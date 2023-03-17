@@ -22,9 +22,10 @@ public class ArticleService {
         return articleList;
     }
 
-    public List<Article> findArticleContentById(int articleId) {
+    public Article findArticleContentById(int articleId) {
         return articleList.stream()
                 .filter(s -> s.getId() == articleId)
-                .collect(Collectors.toList());
+                .collect(Collectors.toList())
+                .get(0);
     }
 }
