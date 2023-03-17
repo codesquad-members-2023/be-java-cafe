@@ -5,14 +5,14 @@ import kr.codesqaud.cafe.domain.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.PostConstruct;
 import java.util.List;
+import java.util.Optional;
 
 @Controller
-@RequestMapping("/user/list")
+@RequestMapping("/users")
 public class UserController {
 
     private final UserRepository userRepository;
@@ -22,11 +22,29 @@ public class UserController {
         this.userRepository = userRepository;
     }
 
-    @GetMapping
+    @GetMapping("/add")
+    public String addForm() {
+        return "user/form";
+    }
+
+    @PostMapping("/add")
+    public String saveUser(@ModelAttribute("user") User user) {
+        userRepository.save(user);
+        return "redirect:/users/list";
+    }
+
+    @GetMapping("/list")
     public String users(Model model) {
         List<User> users = userRepository.showAllUsers();
         model.addAttribute("users", users);
         return "user/list";
+    }
+
+    @GetMapping("/profile/{userId}")
+    public String userProfile(@PathVariable String userId, Model model) {
+        User findUser = userRepository.findByUserId(userId);
+        model.addAttribute("user", findUser);
+        return "user/profile";
     }
 
     /**
@@ -37,5 +55,6 @@ public class UserController {
         userRepository.save(new User("GOMUNGNAM", "247597", "고건호", "rhrjsgh97@gmail.com"));
         userRepository.save(new User("Roy", "123456", "이승로", "roy@gmail.com"));
         userRepository.save(new User("Birdie", "123456", "임동현", "birdie@gmail.com"));
+        userRepository.save(new User("Hana", "1234", "왕하나", "hana@gmail.com"));
     }
 }
