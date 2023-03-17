@@ -1,16 +1,26 @@
 package kr.codesqaud.cafe.domain;
 
+import java.time.LocalDate;
+
 public class Article {
-    private String author;
+    private String writer;
     private String title;
-    private String content;
+    private String contents;
+    private LocalDate registrationDate;
+
+    public Article(String writer, String title, String contents) {
+        this.writer = writer;
+        this.title = title;
+        this.contents = contents;
+        this.registrationDate = LocalDate.now();
+    }
 
     public String getAuthor() {
-        return author;
+        return writer;
     }
 
     public void setAuthor(String author) {
-        this.author = author;
+        this.writer = author;
     }
 
     public String getTitle() {
@@ -22,16 +32,10 @@ public class Article {
     }
 
     public String getContent() {
-        return content;
+        return contents;
     }
 
-    public void setContent(String content) {
-        this.content = content;
-    }
-
-    public Article(String author, String title, String content) {
-        this.author = author;
-        this.title = title;
-        this.content = content;
+    public void setContent(String contents) {
+        this.contents = contents;
     }
 }
