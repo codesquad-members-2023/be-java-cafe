@@ -23,13 +23,10 @@ public class ArticleController {
         logger.debug("articleController");
     }
 
-//    @GetMapping("/questions")
-//    public String
     @PostMapping("/questions")
-    public String addContents(@ModelAttribute Article article){
+    public String addContents(@RequestParam String title, @RequestParam String writer, @RequestParam String contents){
         logger.debug("addContents");
-        articleRepository.addContents(article);
-        System.out.println(article);
+        articleRepository.addContents(new Article(title,writer,contents));
         return "redirect:/";
     }
 
@@ -42,9 +39,13 @@ public class ArticleController {
     }
 
     @GetMapping("/articles/{id}")
-    public String getContent(@PathVariable("id") long id, Model model) {
-        Article contentList = articleRepository.findByIndex(id).get();
-        model.addAttribute("articles", contentList);
-        return "qna/show";
+    public String getContent(@PathVariable Long id, Model model) {
+        Optional<Article> article = articleRepository.findByIndex(id-1);
+        if (article.isPresent()) {
+            model.addAttribute("article", article.get());
+            return "qna/show";
+        } else {
+            return "redirect:/";
+        }
     }
 }
