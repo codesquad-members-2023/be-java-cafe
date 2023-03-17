@@ -10,7 +10,7 @@
     <div class="col-md-12 col-sm-12 col-lg-12">
         <div class="panel panel-default">
             <header class="qna-header">
-                <h2 th:text="${articleList.get(0).getTitle()}" class="qna-title"></h2>
+                <h2 th:text="${article.getTitle()}" class="qna-title"></h2>
             </header>
             <div class="content-main">
                 <article class="article">
@@ -20,17 +20,17 @@
                                  class="article-author-thumb" alt="">
                         </div>
                         <div class="article-header-text">
-                            <a th:href="@{users/{userId}(userId=${articleList.get(0).getWriter()})}"
-                               th:text="${articleList.get(0).getWriter()}" class="article-author-name"></a>
-                            <a th:href="@{{articleId}(articleId=${articleList.get(0).getId()})}"
-                               th:text="${articleList.get(0).getTime()}"
+                            <a th:href="@{users/{userId}(userId=${article.getWriter()})}"
+                               th:text="${article.getWriter()}" class="article-author-name"></a>
+                            <a th:href="@{{articleId}(articleId=${article.getId()})}"
+                               th:text="${article.getTime()}"
                                class="article-header-time" title="퍼머링크">
                                 <i class="icon-link"></i>
                             </a>
                         </div>
                     </div>
                     <div class="article-doc">
-                        <p th:text="${articleList.get(0).getContents()}"></p>
+                        <p th:text="${article.getContents()}"></p>
                     </div>
                     <div class="article-util">
                         <ul class="article-util-list">
