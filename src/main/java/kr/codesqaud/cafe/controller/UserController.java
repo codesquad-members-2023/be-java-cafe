@@ -64,4 +64,23 @@ public class UserController {
             return "layout/error";
         }
     }
+
+    @PutMapping ("/users/{id}/update")
+    public String updateProfile(@ModelAttribute Member member,
+                                @PathVariable Long id,
+                                @RequestParam String exPassword,
+                                Model model) {
+        try {
+            Member exMember = userRepository.findById(id).orElseThrow();
+            if (!exMember.isValidPassword(exPassword)) {
+                throw new IllegalAccessException("[exception] 비밀번호가 다릅니다.");
+            }
+            userRepository.update(exMember, member);
+        } catch (NoSuchElementException | IllegalAccessException e) {    // e만쓰지 말고 다 적어주는 것이 올바름.
+            model.addAttribute("message", e.getMessage());
+            return "layout/error";
+        }
+        return "redirect:/users";
+    }
+
 }
