@@ -29,4 +29,11 @@ public class MemberRepository {
     public List<Member> findByName(String userName) {
         return store.stream().filter(member -> member.getUserName() == userName).collect(Collectors.toList());
     }
+
+    public void update(Long id, Member updateMember){
+        Member findMember = findById(id).orElseThrow();
+        findMember.setEmail(updateMember.getEmail());
+        findMember.setPassword(updateMember.getPassword());
+        findMember.setUserName(updateMember.getUserName());
+    }
 }
