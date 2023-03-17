@@ -39,7 +39,8 @@ public class AutoAppConfig implements WebMvcConfigurer {
 
     @Bean
     public ArticleRepository articleRepository() {
-        return new JdbcArticleRepository();
+        return new JdbcArticleRepository(dataSource);
+        //return new MemoryArticleRepository();
     }
 
     public AutoAppConfig(DataSource dataSource) {
