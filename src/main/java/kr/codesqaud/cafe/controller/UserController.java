@@ -44,7 +44,7 @@ public class UserController {
     @RequestMapping("/profile/{userId}")
     public String getUser(@PathVariable String userId, Model model) {
         Optional<User> user = userRepository.findById(userId);
-        model.addAttribute("profile", user.get());
+        model.addAttribute("profile", user.orElseThrow(IllegalArgumentException::new));
         return "user/profile";
     }
 

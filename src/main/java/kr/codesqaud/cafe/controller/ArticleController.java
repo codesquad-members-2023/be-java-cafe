@@ -24,9 +24,9 @@ public class ArticleController {
     }
 
     @PostMapping("/questions")
-    public String addContents(@RequestParam String title, @RequestParam String writer, @RequestParam String contents){
+    public String addContents(@RequestParam String title, @RequestParam String writer, @RequestParam String contents) {
         logger.debug("addContents");
-        articleRepository.addContents(new Article(title,writer,contents));
+        articleRepository.addContents(new Article(title, writer, contents));
         return "redirect:/";
     }
 
@@ -40,12 +40,15 @@ public class ArticleController {
 
     @GetMapping("/articles/{id}")
     public String getContent(@PathVariable Long id, Model model) {
-        Optional<Article> article = articleRepository.findByIndex(id-1);
+        Optional<Article> article = articleRepository.findByIndex(id);
+        System.out.println(article.isPresent());
         if (article.isPresent()) {
-            model.addAttribute("article", article.get());
+            model.addAttribute("articles", article.orElseThrow(IllegalArgumentException::new));
             return "qna/show";
         } else {
             return "redirect:/";
         }
     }
+
 }
+
