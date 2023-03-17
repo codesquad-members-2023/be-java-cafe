@@ -65,7 +65,7 @@ class MemoryUserRepositoryTest {
         repository.save(user1);
         repository.save(user2);
 
-        User findUser = repository.findByUserId(user1.getUserId());
+        User findUser = repository.findByUserId(user1.getId());
         assertThat(findUser).isEqualTo(user1);
     }
 
@@ -79,9 +79,43 @@ class MemoryUserRepositoryTest {
         repository.save(user2);
 
         assertThatThrownBy(() -> {
-            repository.findByUserId("Hwang");
+            repository.findByUserId(3);
         })
                 .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("[ERROR] 존재하지 않는 ID 입니다.");
+                .hasMessage("[ERROR] 존재하지 않는 회원입니다.");
+    }
+
+    @Test
+    @DisplayName("메모리 저장소에 존재하는 회원은 수정이 가능")
+    void update() {
+        User user = new User("Hyun", "1234", "황현", "ghkdgus29@naver.com");
+        User updateUser = new User("Yoon", "1234", "황윤", "ghkddbs28@naver.com");
+
+        repository.save(user);
+        int userId = repository.findByUserId(1).getId();
+
+        repository.update(userId, updateUser, "4321");
+
+        User updatedUser = repository.findByUserId(userId);
+
+        assertThat(updatedUser.getName()).isEqualTo(updateUser.getName());
+        assertThat(updatedUser.getPassword()).isEqualTo("4321");
+        assertThat(updatedUser.getEmail()).isEqualTo(updateUser.getEmail());
+    }
+
+    @Test
+    @DisplayName("회원의 비밀번호가 일치하지 않는 경우 수정이 불가능")
+    void validatePasswordCheck() {
+        User user = new User("Hyun", "1234", "황현", "ghkdgus29@naver.com");
+        User updateUser = new User("Yoon", "4321", "황윤", "ghkddbs28@naver.com");
+
+        repository.save(user);
+        int userId = repository.findByUserId(1).getId();
+
+        assertThatThrownBy(() -> {
+            repository.update(userId, updateUser, "3333");
+        })
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("[ERROR] 비밀번호가 틀립니다.");
     }
 }
