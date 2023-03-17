@@ -1,31 +1,33 @@
 package kr.codesqaud.cafe.repository;
 
-import kr.codesqaud.cafe.domain.User;
+import kr.codesqaud.cafe.domain.Member;
 import org.springframework.stereotype.Repository;
 
-import java.util.*;
+import java.util.List;
+import java.util.NoSuchElementException;
+import java.util.Optional;
+import java.util.Queue;
+import java.util.concurrent.ConcurrentLinkedQueue;
 
 @Repository
-public class MemoryUserRepository implements UserRepository{
-    private final List<User> store = new ArrayList<>();
+public class MemoryUserRepository implements UserRepository {
+    private final Queue<Member> store = new ConcurrentLinkedQueue<>();
 
     @Override
-    public void save(User user) {
+    public void save(Member user) {
         if (vaildName(user.getNickname())) {
             store.add(user);
         }
     }
 
     @Override
-    public Optional<User> findById(long userId) {
-           return store.stream()
-                   .filter(user -> user.isIdEquals(userId))
-                   .findFirst();
+    public Optional<Member> findById(long userId) {
+        return store.stream().filter(user -> user.equals(userId)).findAny();
     }
 
     @Override
-    public List<User> findAll() {
-        return new ArrayList<>(Collections.unmodifiableList(store));
+    public List<Member> findAll() {
+        return List.copyOf(store);
     }
 
     @Override
@@ -36,5 +38,10 @@ public class MemoryUserRepository implements UserRepository{
     @Override
     public boolean vaildName(String userName) {
         return store.stream().noneMatch(e -> e.isNameEquals(userName));
+    }
+    
+    @Override
+    public void update(Member exMember, Member newUser) throws NoSuchElementException {
+        exMember.update(newUser);
     }
 }
