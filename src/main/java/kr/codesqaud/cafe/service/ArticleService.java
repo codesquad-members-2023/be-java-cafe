@@ -26,4 +26,8 @@ public class ArticleService {
     public List<Article> findArticles() {
         return articleRepository.getArticles();
     }
+
+    public int getTotalNumberOfArticles() {
+        return articleRepository.getSize();
+    }
 }

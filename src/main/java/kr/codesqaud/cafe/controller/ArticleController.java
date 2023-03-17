@@ -26,6 +26,7 @@ public class ArticleController {
     @GetMapping("/index")
     public String printArticleList(Model model) {
         model.addAttribute("article", articleService.findArticles());
+        model.addAttribute("total", articleService.getTotalNumberOfArticles());
         return "/index";
     }
 }

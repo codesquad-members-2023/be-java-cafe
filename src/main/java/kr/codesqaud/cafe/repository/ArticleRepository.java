@@ -11,4 +11,5 @@ public interface ArticleRepository {
     Optional<Article> findOneArticleByTitle(String title);
     List<Article> getArticles();
     void deleteArticle(Member member);
+    int getSize();
 }

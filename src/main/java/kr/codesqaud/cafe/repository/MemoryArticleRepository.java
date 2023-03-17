@@ -32,6 +32,11 @@ public class MemoryArticleRepository implements ArticleRepository {
     }
 
     @Override
+    public int getSize() {
+        return articlesRepository.size();
+    }
+
+    @Override
     public void deleteArticle(Member member) {
 
     }
