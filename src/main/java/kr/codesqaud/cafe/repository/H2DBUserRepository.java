@@ -3,6 +3,8 @@ package kr.codesqaud.cafe.repository;
 import kr.codesqaud.cafe.domain.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Primary;
+import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
@@ -12,6 +14,7 @@ import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
 import java.util.List;
+import java.util.Map;
 
 @Repository
 @Primary
@@ -35,8 +38,16 @@ public class H2DBUserRepository implements UserRepository{
     }
 
     @Override
-    public User findByUserId(int id) {
-        return null;
+    public User findById(int id) {
+        String sql = "select id, user_id, password, name, email from users where id=:id";
+
+        try {
+            Map<String, Integer> param = Map.of("id", id);
+            User user = template.queryForObject(sql, param, userRowMapper());
+            return user;
+        } catch (EmptyResultDataAccessException e) {
+            throw new IllegalArgumentException("[ERROR] 존재하지 않는 회원입니다.");
+        }
     }
 
     @Override
@@ -47,5 +58,17 @@ public class H2DBUserRepository implements UserRepository{
     @Override
     public void update(int id, User updateUser, String newPassword) {
 
+    }
+
+    private RowMapper<User> userRowMapper() {
+        return ((rs, rowNum) -> {
+            int id = rs.getInt("id");
+            String userId = rs.getString("user_id");
+            String password = rs.getString("password");
+            String name = rs.getString("name");
+            String email = rs.getString("email");
+
+            return new User(id, userId, password, name, email);
+        });
     }
 }
