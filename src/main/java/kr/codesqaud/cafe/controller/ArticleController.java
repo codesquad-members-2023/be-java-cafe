@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import java.util.Optional;
+
 @Controller
 public class ArticleController {
     private final ArticleRepository articleRepository;
@@ -32,5 +34,17 @@ public class ArticleController {
         model.addAttribute("articles", articleRepository.findAll());
 
         return "index";
+    }
+
+    @GetMapping("/articles/{index}")
+    public String articleShow(Model model, @PathVariable int index) {
+        Optional<Article> article = articleRepository.findByIndex(index);
+
+        if (article.isPresent()) {
+            model.addAttribute("article", article.get());
+            return "qna/show";
+        }
+
+        return "/";
     }
 }
