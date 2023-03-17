@@ -1,6 +1,7 @@
 package kr.codesqaud.cafe.controller;
 
 import kr.codesqaud.cafe.domain.Article;
+import kr.codesqaud.cafe.repository.ArticleRepository;
 import kr.codesqaud.cafe.repository.MemoryArticleRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,11 +19,11 @@ import java.util.List;
 @Controller
 public class ArticleController {
 
-    private final MemoryArticleRepository repository;
+    private final ArticleRepository repository;
     private final Logger log = LoggerFactory.getLogger(getClass());
 
     @Autowired
-    public ArticleController(MemoryArticleRepository repository) {
+    public ArticleController(ArticleRepository repository) {
         this.repository = repository;
     }
 
