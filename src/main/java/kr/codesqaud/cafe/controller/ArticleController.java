@@ -1,22 +1,17 @@
 package kr.codesqaud.cafe.controller;
 
 import kr.codesqaud.cafe.domain.Article;
-import kr.codesqaud.cafe.domain.User;
 import kr.codesqaud.cafe.repository.ArticleRepository;
-import kr.codesqaud.cafe.repository.UserRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 import java.util.NoSuchElementException;
-import java.util.Optional;
 
 @Controller
 public class ArticleController {
@@ -47,9 +42,8 @@ public class ArticleController {
 
     @GetMapping("/articles/{id}")
     public String showArticle(@PathVariable Long id, Model model) {
-        Optional<Article> article = articleRepository.findById(id);
         try {
-            model.addAttribute("article", article.orElseThrow());
+            model.addAttribute("article", articleRepository.findById(id).orElseThrow());
         } catch (NoSuchElementException e) {
             return "qna/show_failed";
         }
