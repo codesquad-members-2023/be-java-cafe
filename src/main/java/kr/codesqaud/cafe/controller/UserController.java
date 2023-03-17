@@ -19,8 +19,9 @@ public class UserController {
     }
 
     @PostMapping("/list")
-    public String createUser(@RequestParam String email, @RequestParam String nickName, @RequestParam String password){
-        memberService.join(new Member(email, nickName, password));
+    public String createUser(Member member){
+
+        memberService.join(member);
         return "redirect:user/list";
     }
 
@@ -38,6 +39,4 @@ public class UserController {
         model.addAttribute("email", email);
         return "user/profile";
     }
-
-
 }
