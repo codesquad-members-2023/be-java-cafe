@@ -1,7 +1,6 @@
 package kr.codesqaud.cafe.controller;
 
 import kr.codesqaud.cafe.domain.User;
-import kr.codesqaud.cafe.repository.MemoryUserRepository;
 import kr.codesqaud.cafe.repository.UserRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,14 +19,8 @@ public class UserController {
     private final Logger log = LoggerFactory.getLogger(getClass());
 
     @Autowired
-    public UserController(MemoryUserRepository repository) {
+    public UserController(UserRepository repository) {
         this.repository = repository;
-    }
-
-    @PostConstruct
-    void init() {
-        repository.save(new User("Hyun", "1234", "황현", "ghkdgus29@naver.com"));
-        repository.save(new User("Yoon", "4321", "황윤", "ghkddbs28@naver.com"));
     }
 
     @PostMapping("/users")
