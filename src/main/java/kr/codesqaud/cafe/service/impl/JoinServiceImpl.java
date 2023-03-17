@@ -22,9 +22,10 @@ public class JoinServiceImpl implements JoinService {
     }
 
     @Override
-    public Optional<User> lookupUser(String userId) {
+    public User lookupUser(String userId) {
         //회원 이름으로 조회
-        return userRepository.findById(userId);
+        return userRepository.findById(userId).orElseThrow(() -> new IllegalArgumentException("[ERROR]"));
+
     }
 
     @Override

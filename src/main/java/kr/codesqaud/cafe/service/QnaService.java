@@ -9,6 +9,6 @@ public interface QnaService {
     void postQna(Article article);
     List<Article> lookupAllArticles();
 
-    Optional<Article> lookupById(long id);
+    Article lookupById(long id);
 
 }

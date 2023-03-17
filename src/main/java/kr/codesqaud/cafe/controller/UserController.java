@@ -22,7 +22,7 @@ public class UserController {
     @GetMapping(value = "/users/{id}")
     public String userProfile(Model model, @PathVariable String id) {
 
-        model.addAttribute("user", joinService.lookupUser(id).orElseThrow(() -> new IllegalArgumentException("ERROR")));
+        model.addAttribute("user", joinService.lookupUser(id));
 
         return "/user/profile";
     }

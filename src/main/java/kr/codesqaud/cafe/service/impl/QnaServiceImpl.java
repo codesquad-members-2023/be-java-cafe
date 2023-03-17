@@ -26,7 +26,7 @@ public class QnaServiceImpl implements QnaService {
     }
 
     @Override
-    public Optional<Article> lookupById(long id) {
-        return articleRepository.findById(id);
+    public Article lookupById(long id) {
+        return articleRepository.findById(id).orElseThrow(()-> new IllegalArgumentException("[ERROR]"));
     }
 }

@@ -7,7 +7,7 @@ import kr.codesqaud.cafe.model.User;
 
 public interface JoinService {
     void join(User user);
-    Optional<User> lookupUser(String userId);
+    User lookupUser(String userId);
     List<User> lookupAllUser();
     void updateUser(String userId, String password, String newPassword, String name, String email);
 }
