@@ -15,13 +15,16 @@ public class User {
         this.userNum = userNum;
     }
 
-
     public String getUserId() {
         return userId;
     }
 
     public void setUserId(String userId) {
         this.userId = userId;
+    }
+
+    public boolean isIdEquals(String userId) {
+        return this.userId.equals(userId);
     }
 
     public String getPassword() {
