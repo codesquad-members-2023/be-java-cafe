@@ -23,6 +23,7 @@ dependencies {
 	testImplementation('org.projectlombok:lombok')
 	testAnnotationProcessor('org.projectlombok:lombok')
 	implementation 'org.springframework.boot:spring-boot-starter-jdbc'
+	implementation group: 'com.h2database', name: 'h2', version: '2.0.206'
 	runtimeOnly 'com.h2database:h2'
 }
 
