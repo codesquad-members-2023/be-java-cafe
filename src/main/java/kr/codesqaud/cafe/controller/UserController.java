@@ -46,7 +46,7 @@ public class UserController {
 
     @GetMapping("/users/{id}")
     public String showUserProfile(@PathVariable int id, Model model) {
-        User user = repository.findByUserId(id);
+        User user = repository.findById(id);
         model.addAttribute("user", user);
 
         return "user/profile";
@@ -54,7 +54,7 @@ public class UserController {
 
     @GetMapping("/users/{id}/form")
     public String showUpdateUserForm(@PathVariable int id, Model model) {
-        User updateUser = repository.findByUserId(id);
+        User updateUser = repository.findById(id);
         model.addAttribute("user", updateUser);
 
         return "user/updateForm";

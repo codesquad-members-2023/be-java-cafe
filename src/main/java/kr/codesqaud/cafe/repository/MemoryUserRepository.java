@@ -21,7 +21,7 @@ public class MemoryUserRepository implements UserRepository{
     }
 
     @Override
-    public User findByUserId(int id) {
+    public User findById(int id) {
         if (!users.stream().anyMatch(u -> u.getId() == id)) {
             throw new IllegalArgumentException("[ERROR] 존재하지 않는 회원입니다.");
         }
@@ -36,7 +36,7 @@ public class MemoryUserRepository implements UserRepository{
 
     @Override
     public void update(int id, User updateUser, String newPassword) {
-        User existUser = findByUserId(id);
+        User existUser = findById(id);
 
         if (!existUser.getPassword().equals(updateUser.getPassword())) {
             throw new IllegalArgumentException("[ERROR] 비밀번호가 틀립니다.");
