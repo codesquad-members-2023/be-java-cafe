@@ -4,15 +4,15 @@ public class User {
 
     private Long userSequence;
     private String userId;
-    private String userPassword;
-    private String userName;
-    private String userEmail;
+    private String password;
+    private String name;
+    private String email;
 
-    public User(String userId, String userPassword, String userName, String userEmail) {
+    public User(String userId, String password, String name, String email) {
         this.userId = userId;
-        this.userPassword = userPassword;
-        this.userName = userName;
-        this.userEmail = userEmail;
+        this.password = password;
+        this.name = name;
+        this.email = email;
     }
 
     public Long getUserSequence() {
@@ -31,27 +31,27 @@ public class User {
         this.userId = userId;
     }
 
-    public String getUserPassword() {
-        return userPassword;
+    public String getPassword() {
+        return password;
     }
 
-    public void setUserPassword(String userPassword) {
-        this.userPassword = userPassword;
+    public void setPassword(String password) {
+        this.password = password;
     }
 
-    public String getUserName() {
-        return userName;
+    public String getName() {
+        return name;
     }
 
-    public void setUserName(String userName) {
-        this.userName = userName;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public String getUserEmail() {
-        return userEmail;
+    public String getEmail() {
+        return email;
     }
 
-    public void setUserEmail(String userEmail) {
-        this.userEmail = userEmail;
+    public void setEmail(String email) {
+        this.email = email;
     }
 }
