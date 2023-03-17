@@ -4,6 +4,9 @@ import kr.codesqaud.cafe.domain.Article;
 import kr.codesqaud.cafe.repository.ArticleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
 @Controller
@@ -22,5 +25,12 @@ public class ArticleController {
         articleRepository.save(article);
 
         return "redirect:/";
+    }
+
+    @GetMapping("/")
+    public String articleList(Model model) {
+        model.addAttribute("articles", articleRepository.findAll());
+
+        return "index";
     }
 }
