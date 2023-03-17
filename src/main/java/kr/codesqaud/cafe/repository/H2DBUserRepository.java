@@ -6,6 +6,7 @@ import org.springframework.context.annotation.Primary;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
+import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
@@ -59,7 +60,23 @@ public class H2DBUserRepository implements UserRepository{
 
     @Override
     public void update(int id, User updateUser, String newPassword) {
+        User existUser = findById(id);
 
+        if (!existUser.getPassword().equals(updateUser.getPassword())) {
+            throw new IllegalArgumentException("[ERROR] 비밀번호가 틀립니다.");
+        }
+
+        existUser.setName(updateUser.getName());
+        existUser.setPassword(newPassword);
+        existUser.setEmail(updateUser.getEmail());
+
+        String sql = "update users " +
+                "set user_id=:userId, password=:password, name=:name, email=:email " +
+                "where id=:id";
+
+        SqlParameterSource param = new BeanPropertySqlParameterSource(existUser);
+
+        template.update(sql, param);
     }
 
     private RowMapper<User> userRowMapper() {

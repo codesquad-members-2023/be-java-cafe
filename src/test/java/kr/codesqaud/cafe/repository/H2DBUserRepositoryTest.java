@@ -59,4 +59,19 @@ class H2DBUserRepositoryTest {
 
         assertThat(users.size()).isEqualTo(2);
     }
+
+    @Test
+    @DisplayName("h2 DB 에서 특정 User를 수정할 수 있다.")
+    void update() {
+        User user1 = new User("hyun", "1234", "황현", "ghkdgus29@naver.com");
+        User user2 = new User("yoon", "4321", "황윤", "ghkddbs28@naver.com");
+
+        repository.save(user1);
+        repository.save(user2);
+
+        User updateUser = new User("hyun", "1234", "황현태", "ghkdgus29@gmail.com");
+
+        repository.update(1, updateUser, "0429");
+    }
+
 }
