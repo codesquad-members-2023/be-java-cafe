@@ -6,11 +6,13 @@ import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @Configuration
+//@RequestMapping("/user")
 public class MyConfig implements WebMvcConfigurer {
     @Override
     public void addViewControllers(ViewControllerRegistry registry) {
         registry.setOrder(Ordered.HIGHEST_PRECEDENCE);
-        registry.addViewController("/login").setViewName("login");
-        registry.addViewController("/form").setViewName("form");
+        registry.addViewController("/login").setViewName("/user/login");
+        registry.addViewController("/form").setViewName("/user/form");
+        registry.addViewController("/index").setViewName("/user/index");
     }
 }
