@@ -9,7 +9,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 @Controller
-//@RequestMapping("/user")  // 기본 경로를 설정해줌
 public class UserController {
     private MemberService memberService;
     private Logger logger = LoggerFactory.getLogger(UserController.class);
@@ -18,7 +17,7 @@ public class UserController {
         this.memberService = memberService;
     }
 
-    @PostMapping("user/join")
+    @PostMapping("/user/join")
     public String createUser(Member member){
         memberService.join(member);
         return "redirect:/user/list";
@@ -38,5 +37,4 @@ public class UserController {
         model.addAttribute("email", email);
         return "user/profile";
     }
-
 }
