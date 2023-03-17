@@ -22,10 +22,11 @@
                 <tr th:each="user, iter : ${userList}">
                     <td th:text="${iter.count}"></td>
                     <td><a th:href="@{users/{userId}(userId=${user.getUserId()})}"
-                        th:text="${user.getUserId()}"></a></td>
+                           th:text="${user.getUserId()}"></a></td>
                     <td th:text="${user.getName()}"></td>
                     <td th:text="${user.getEmail()}"></td>
-                    <td><a href="#" class="btn btn-success" role="button">수정</a></td>
+                    <td><a th:href="@{users/{userId}/form(userId=${user.getUserId()})}" class="btn btn-success"
+                           role="button">수정</a></td>
                 </tr>
                 </tbody>
             </table>
