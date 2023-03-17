@@ -36,9 +36,9 @@ public class UserController {
         return "user/list";
     }
 
-    @GetMapping("/users/{name}")
-    public String usersProfile(Model model, @PathVariable String name) {
-        Optional<User> user = userRepository.findByName(name);
+    @GetMapping("/users/{id}")
+    public String userProfile(Model model, @PathVariable String id) {
+        Optional<User> user = userRepository.findById(id);
         if (user.isPresent()) {
             model.addAttribute("userProfile", user.get());
             return "user/profile";
@@ -46,4 +46,16 @@ public class UserController {
 
         return "user/profile_failed";
     }
+
+    @GetMapping("/users/{id}/form")
+    public String userProfileCorrection(Model model, @PathVariable String id) {
+        Optional<User> user = userRepository.findById(id);
+        if (user.isPresent()) {
+            model.addAttribute("user", user.get());
+            return "user/updateForm";
+        }
+
+        return "user/list";
+    }
+    
 }
