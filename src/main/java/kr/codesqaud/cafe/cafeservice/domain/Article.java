@@ -1,21 +1,20 @@
 package kr.codesqaud.cafe.cafeservice.domain;
 
-import java.util.concurrent.atomic.AtomicLong;
 
 public class Article {
     private String writer;
     private String title;
     private String content;
     private Long id;
-    private static AtomicLong sequence = new AtomicLong(0L);
     private Integer views;
 
-    public Article(String writer, String title, String content, String views) {
+    public Article(String writer, String title, String content) {
         this.writer = writer;
         this.title = title;
         this.content = content;
-        this.id = idIncrease();
-        this.views = 0;
+    }
+
+    public Article() {
     }
 
     public String getWriter() {
@@ -38,7 +37,27 @@ public class Article {
         return views;
     }
 
-    private  Long idIncrease() {
-        return sequence.incrementAndGet();
+
+    public void setWriter(String writer) {
+        this.writer = writer;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
+    }
+
+    @Override
+    public String toString() {
+        return "Article{" +
+                "writer='" + writer + '\'' +
+                ", title='" + title + '\'' +
+                ", content='" + content + '\'' +
+                ", id=" + id +
+                ", views=" + views +
+                '}';
     }
 }
