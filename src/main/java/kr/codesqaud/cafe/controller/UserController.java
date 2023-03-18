@@ -60,10 +60,12 @@ public class UserController {
     }
 
     @PutMapping("/users/{userId}")
-    public String updateUser(@ModelAttribute("user") User user, @PathVariable String userId, @RequestParam String password) {
+    public String updateUser(@ModelAttribute("user") User user, @PathVariable String userId, @RequestParam("newPassword") String newPassword) {
 
         System.out.println("/user/updateUser : POST");
-        userRepository.updateUser(user, userId, password);
+        System.out.println(user.getPassword());
+        System.out.println(newPassword);
+        userRepository.updateUser(user, userId, newPassword);
 
         return "redirect:/users";
     }

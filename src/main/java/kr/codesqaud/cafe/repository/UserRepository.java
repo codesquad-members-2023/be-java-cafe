@@ -28,10 +28,12 @@ public class UserRepository {
     }
 
     public void updateUser(User user,String userId,String password){
-        Optional<User> findUser = findById(userId);
-        if(!user.getPassword().equals(password)){
+        User findUser = findById(userId).orElseThrow();
+        if(!findUser.getPassword().equals(password)){
             throw new IllegalArgumentException("비밀번호가 일치하지 않음");
         }
+        int userIndex = users.indexOf(user);
+        users.set(userIndex,user);
     }
 
 
