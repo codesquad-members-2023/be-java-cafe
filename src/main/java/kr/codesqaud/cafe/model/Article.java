@@ -2,27 +2,29 @@ package kr.codesqaud.cafe.model;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import kr.codesqaud.cafe.service.ArticleService;
 
 public class Article {
-    private int id;
-    private final String writer;
+    private int articleId;
+    private final String userId;
     private String title;
     private String contents;
     private String time;
 
-    public Article(String writer, String title, String contents) {
-        this.writer = writer;
+    public Article(String userId, String title, String contents) {
+        this.articleId = ArticleService.getArticleSize();
+        this.userId = userId;
         this.title = title;
         this.contents = contents;
         this.time = formattingTime();
     }
 
     public int getId() {
-        return id;
+        return articleId;
     }
 
-    public String getWriter() {
-        return writer;
+    public String getUserId() {
+        return userId;
     }
 
     public String getTitle() {
@@ -37,11 +39,15 @@ public class Article {
         return time;
     }
 
+    public int getArticleId() {
+        return articleId;
+    }
+
     @Override
     public String toString() {
         return "Article{" +
-                "id=" + id +
-                ", writer='" + writer + '\'' +
+                "articleId=" + articleId +
+                ", userId='" + userId + '\'' +
                 ", title='" + title + '\'' +
                 ", contents='" + contents + '\'' +
                 ", time='" + time + '\'' +
@@ -51,9 +57,5 @@ public class Article {
     public String formattingTime() {
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
         return dateFormat.format(Calendar.getInstance().getTime());
-    }
-
-    public void giveId(int listSize) {
-        id = listSize;
     }
 }
