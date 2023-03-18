@@ -1,4 +1,4 @@
-package kr.codesqaud.cafe.repository;
+package kr.codesqaud.cafe.repository.member;
 
 import kr.codesqaud.cafe.domain.User;
 
@@ -8,7 +8,7 @@ import java.util.Optional;
 public interface MemberRepository {
     void save(User user);
 
-    Optional<User> findById(String userId);
+    User findById(String userId);
 
     List<User> findAll();
 

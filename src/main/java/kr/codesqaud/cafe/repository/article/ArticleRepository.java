@@ -1,4 +1,4 @@
-package kr.codesqaud.cafe.repository;
+package kr.codesqaud.cafe.repository.article;
 
 import kr.codesqaud.cafe.domain.Article;
 
@@ -10,7 +10,7 @@ public interface ArticleRepository {
 
     void save(Article article);
 
-    Optional<Article> findArticleByWriter(int id);
+    Article findArticleByWriter(int id);
 
     List<Article> findAllArticle();
 
