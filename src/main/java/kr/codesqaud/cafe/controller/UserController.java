@@ -1,6 +1,6 @@
 package kr.codesqaud.cafe.controller;
 
-import kr.codesqaud.cafe.repository.SignUpService;
+import kr.codesqaud.cafe.repository.member.MemberRepository;
 import kr.codesqaud.cafe.domain.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -9,7 +9,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import javax.annotation.PostConstruct;
 import java.util.List;
 
 @Controller
@@ -19,23 +18,24 @@ public class UserController {
     private Logger log = LoggerFactory.getLogger(getClass());
 
     @Autowired
-    private final SignUpService signUpService;
+    private final MemberRepository memberRepository;
 
-    public UserController(SignUpService signUpService) {
-        this.signUpService = signUpService;
+
+    public UserController(MemberRepository memberRepository) {
+        this.memberRepository = memberRepository;
     }
 
     // 회원 가입
     @PostMapping("/create")
     public String addUser(@ModelAttribute User user) {
-        signUpService.join(user);
+        memberRepository.save(user);
 
         return "redirect:/users/list";
     }
 
     @GetMapping("/list")
     public String userList(Model model) {
-        List<User> userList = signUpService.findAll();
+        List<User> userList = memberRepository.findAll();
         model.addAttribute("userList", userList);
 
         return "users/list";
@@ -43,7 +43,7 @@ public class UserController {
 
     @GetMapping("/{userId}")
     public String showUser(@PathVariable String userId, Model model) {
-        User user = signUpService.findById(userId).get();
+        User user = memberRepository.findById(userId);
         model.addAttribute("user", user);
         return "users/profile";
     }
@@ -51,28 +51,21 @@ public class UserController {
     @GetMapping("/{userId}/updateUser")
     public String updateUser(@PathVariable String userId, Model model) {
 
-        User findUser = signUpService.findById(userId).get();
+        User findUser = memberRepository.findById(userId);
         model.addAttribute("findUser", findUser);
 
         return "users/update_user";
     }
 
-    @PutMapping("/{userId}/updateUser")
+    @PutMapping("/{userId}/updateUser") // TODO : DTO 고려해보기, 로직을 service로 넘기기
     public String updateUserPost(@PathVariable String userId, @ModelAttribute User user, @RequestParam String newPassword) {
 
-        if (!user.getPassword().equals(signUpService.findById(userId).get().getPassword()) || !user.getPassword().equals(newPassword)) {
+        if (!user.getPassword().equals(memberRepository.findById(userId).getPassword()) || !user.getPassword().equals(newPassword)) {
             return "users/error_page";
         }
-        signUpService.updateUser(userId, user);
+
+        memberRepository.updateUser(userId, user);
         return "redirect:/users/list";
     }
 
-    @PostConstruct
-    private void postConstruct() {
-        User user1 = new User("first", "userPassword1", "userName1", "userEmail1@naver.com");
-        User user2 = new User("second", "userPassword2", "userName2", "userEmail2@naver.com");
-
-        signUpService.join(user1);
-        signUpService.join(user2);
-    }
 }
