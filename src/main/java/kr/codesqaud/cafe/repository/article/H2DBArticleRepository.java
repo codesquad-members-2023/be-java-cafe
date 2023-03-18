@@ -5,6 +5,7 @@ import kr.codesqaud.cafe.repository.DBConnectionUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Primary;
+import org.springframework.jdbc.support.JdbcUtils;
 import org.springframework.stereotype.Repository;
 
 import java.sql.*;
@@ -140,27 +141,8 @@ public class H2DBArticleRepository implements ArticleRepository {
     }
 
     private void close(Connection con, PreparedStatement pstmt, ResultSet rs) {
-        if (rs != null) {
-            try {
-                rs.close();
-            } catch (SQLException e) {
-                throw new RuntimeException(e);
-            }
-
-        }
-        if (pstmt != null) {
-            try {
-                pstmt.close();
-            } catch (SQLException e) {
-                throw new RuntimeException(e);
-            }
-        }
-        if (con != null) {
-            try {
-                con.close();
-            } catch (SQLException e) {
-                throw new RuntimeException(e);
-            }
-        }
+        JdbcUtils.closeResultSet(rs);
+        JdbcUtils.closeStatement(pstmt);
+        JdbcUtils.closeConnection(con);
     }
 }
