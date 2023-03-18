@@ -27,6 +27,15 @@ public class UserRepository {
         return new ArrayList<>(users);
     }
 
+    public void updateUser(User user,String userId,String password){
+        Optional<User> findUser = findById(userId);
+        if(!user.getPassword().equals(password)){
+            throw new IllegalArgumentException("비밀번호가 일치하지 않음");
+        }
+    }
+
+
+
     public void clearStore() {
         users.clear();
     }

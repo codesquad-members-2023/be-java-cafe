@@ -48,4 +48,25 @@ public class UserController {
         return "user/profile";
     }
 
+    @GetMapping("/users/{userId}/form")
+    public String updateUser(@PathVariable("userId") String userId, Model model) {
+
+        System.out.println("/user/updateUser : GET");
+        //Business Logic
+        Optional<User> updateUser = userRepository.findById(userId);
+        // Model 과 View 연결
+        model.addAttribute("user", updateUser.orElseThrow());
+        return "user/updateForm";
+    }
+
+    @PutMapping("/users/{userId}")
+    public String updateUser(@ModelAttribute("user") User user, @PathVariable String userId, @RequestParam String password) {
+
+        System.out.println("/user/updateUser : POST");
+        userRepository.updateUser(user, userId, password);
+
+        return "redirect:/users";
+    }
+
+
 }
