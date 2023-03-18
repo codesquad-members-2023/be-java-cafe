@@ -1,19 +1,21 @@
 package kr.codesqaud.cafe.domain;
 
+import java.sql.Timestamp;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 public class Article {
     private final String writer;
     private final String title;
     private final String contents;
-    private final LocalDate localDate;
+    private final Timestamp timestamp;
     private int id;
 
-    public Article(String writer, String title, String contents) {
+    public Article(String writer, String title, String contents, Timestamp timestamp) {
         this.writer = writer;
         this.title = title;
         this.contents = contents;
-        this.localDate = LocalDate.now();
+        this.timestamp = timestamp;
     }
 
     public String getWriter() {
@@ -28,8 +30,8 @@ public class Article {
         return contents;
     }
 
-    public LocalDate getLocalDate() {
-        return localDate;
+    public Timestamp getTimestamp() {
+        return timestamp;
     }
 
     public int getId() {
@@ -37,6 +39,6 @@ public class Article {
     }
 
     public void setId(int id) {
-        this.id = id + 1;
+        this.id = id;
     }
 }
