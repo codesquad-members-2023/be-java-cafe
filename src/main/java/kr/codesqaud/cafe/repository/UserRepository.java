@@ -27,11 +27,7 @@ public class UserRepository {
         return new ArrayList<>(users);
     }
 
-    public void updateUser(User user,String userId,String password){
-        User findUser = findById(userId).orElseThrow();
-        if(!findUser.getPassword().equals(password)){
-            throw new IllegalArgumentException("비밀번호가 일치하지 않음");
-        }
+    public void updateUser(User user){
         int userIndex = users.indexOf(user);
         users.set(userIndex,user);
     }

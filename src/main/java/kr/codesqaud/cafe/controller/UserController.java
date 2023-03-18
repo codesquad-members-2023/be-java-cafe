@@ -50,9 +50,8 @@ public class UserController {
 
     @GetMapping("/users/{userId}/form")
     public String updateUser(@PathVariable("userId") String userId, Model model) {
+        logger.debug("updateUser : GET");
 
-        System.out.println("/user/updateUser : GET");
-        //Business Logic
         Optional<User> updateUser = userRepository.findById(userId);
         // Model 과 View 연결
         model.addAttribute("user", updateUser.orElseThrow());
@@ -60,13 +59,9 @@ public class UserController {
     }
 
     @PutMapping("/users/{userId}")
-    public String updateUser(@ModelAttribute("user") User user, @PathVariable String userId, @RequestParam("newPassword") String newPassword) {
-
-        System.out.println("/user/updateUser : POST");
-        System.out.println(user.getPassword());
-        System.out.println(newPassword);
-        userRepository.updateUser(user, userId, newPassword);
-
+    public String updateUser(@ModelAttribute("user") User user) {
+        logger.debug("updateUser : PUT");
+        userRepository.updateUser(user);
         return "redirect:/users";
     }
 
