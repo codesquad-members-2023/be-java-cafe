@@ -2,6 +2,7 @@ package kr.codesqaud.cafe.repository;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.jdbc.datasource.DriverManagerDataSource;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -16,8 +17,9 @@ public class DBConnectionUtil {
         final String USERNAME = "sa";
         final String PASSWORD = "1234";
 
+        DriverManagerDataSource dataSource = new DriverManagerDataSource(URL, USERNAME, PASSWORD);
         try {
-            Connection con = DriverManager.getConnection(URL, USERNAME, PASSWORD);
+            Connection con = dataSource.getConnection();
             log.info(String.valueOf(con.getClass()));
             return con;
         } catch (SQLException e) {
