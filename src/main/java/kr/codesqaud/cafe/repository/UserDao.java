@@ -32,7 +32,6 @@ public class UserDao {
 
     public List<UserDto> findUserByUserId(String userId) {
         String sql = "SELECT * FROM USER WHERE USER_ID = ?";
-        List<String> list = new CopyOnWriteArrayList<>();
         return jdbcTemplate.query(sql, new BeanPropertyRowMapper<>(UserDto.class), userId);
     }
 
