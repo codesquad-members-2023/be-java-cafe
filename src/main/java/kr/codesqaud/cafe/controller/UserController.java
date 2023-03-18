@@ -22,7 +22,7 @@ public class UserController {
         this.userService = userService;
     }
 
-    @PostMapping("user/create")
+    @PostMapping("user/creation")
     public RedirectView creatUser(@ModelAttribute("user") User user) {
         userService.createUser(user);
         RedirectView redirectView = new RedirectView();
