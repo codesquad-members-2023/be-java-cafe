@@ -1,10 +1,9 @@
-package kr.codesqaud.cafe.domain;
+package kr.codesqaud.cafe.domain.user;
 
 import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Repository
 public class UserRepository {
