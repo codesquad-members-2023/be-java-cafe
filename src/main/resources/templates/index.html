@@ -105,18 +105,18 @@
                         </div>
                     </div>
                 </li>
-                <li th:each="article : ${articleList}">
+                <li th:each="article : ${articleDto}">
                     <div class="wrap">
                         <div class="main">
                             <strong class="subject">
-                                <a th:href="@{article/{articleId}(articleId=${article.getId()})}"
+                                <a th:href="@{article/{articleId}(articleId=${article.getArticleId()})}"
                                    th:text="${article.getTitle()}"></a>
                             </strong>
                             <div class="auth-info">
                                 <i class="icon-add-comment"></i>
                                 <span class="time" th:text="${article.getTime()}"></span>
-                                <a th:href="@{users/{userId}(userId=${article.getWriter()})}"
-                                   th:text="${article.getWriter()}" class="author"></a>
+                                <a th:href="@{users/{userId}(userId=${article.getUserId()})}"
+                                   th:text="${article.getUserId()}" class="author"></a>
                             </div>
                             <div class="reply" title="댓글">
                                 <i class="icon-reply"></i>
