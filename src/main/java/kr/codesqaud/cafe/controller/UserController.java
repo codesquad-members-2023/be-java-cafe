@@ -32,13 +32,13 @@ public class UserController {
 
     @GetMapping("/users")
     public String findUserList(Model model) {
-        model.addAttribute("userList", userService.findUserAll());
+        model.addAttribute("userDto", userService.findUserAll());
         return "list2";
     }
 
     @GetMapping("users/{userId}")
     public String findUserProfile(@PathVariable("userId") String userId, Model model) {
-        model.addAttribute("userList", userService.findUserByUserId(userId));
+        model.addAttribute("user", userService.findUserByUserId(userId));
         return "profile2";
     }
 
