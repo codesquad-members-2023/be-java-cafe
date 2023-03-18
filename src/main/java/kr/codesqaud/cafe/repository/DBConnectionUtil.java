@@ -12,9 +12,9 @@ public class DBConnectionUtil {
     Logger log = LoggerFactory.getLogger(getClass());
 
     public Connection getConnection() {
-        final String URL = "jdbc:h2:tcp://localhost/~/test";
+        final String URL = "jdbc:h2:/Users/birdie/Desktop/h2/test";
         final String USERNAME = "sa";
-        final String PASSWORD = "";
+        final String PASSWORD = "1234";
 
         try {
             Connection con = DriverManager.getConnection(URL, USERNAME, PASSWORD);
