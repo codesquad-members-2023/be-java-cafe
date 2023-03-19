@@ -27,7 +27,7 @@ public class JdbcUserRepository implements UserRepository {
     private RowMapper<User> userRowMapper() {
         return (rs, rowNum) ->
                 new User(rs.getString("id"), rs.getString("password"), rs.getString("name"),
-                        rs.getString("email"), rs.getInt("index"));
+                        rs.getString("email"), rs.getInt("idx"));
     }
 
     @Override

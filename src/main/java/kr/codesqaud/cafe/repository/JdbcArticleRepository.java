@@ -20,7 +20,7 @@ public class JdbcArticleRepository implements ArticleRepository {
 
     @Override
     public void addArticle(Article article) {
-        jdbcTemplate.update("insert into ARTICLES(writer,title,contents) values(?, ?, ?)", article.getWriter(),
+        jdbcTemplate.update("insert into articles(writer,title,contents) values(?, ?, ?)", article.getWriter(),
                 article.getTitle(), article.getContents());
 
     }
@@ -32,7 +32,7 @@ public class JdbcArticleRepository implements ArticleRepository {
 
     @Override
     public Optional<Article> findById(long id) {
-        return Optional.ofNullable(jdbcTemplate.query("select * from ARTICLES where id = ?", articleRowMapper(), id).get(0));
+        return Optional.ofNullable(jdbcTemplate.query("select * from articles where id = ?", articleRowMapper(), id).get(0));
     }
 
     private RowMapper<Article> articleRowMapper() {
