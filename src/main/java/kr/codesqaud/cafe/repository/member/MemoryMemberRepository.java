@@ -38,4 +38,9 @@ public class MemoryMemberRepository implements MemberRepository {
         user.setEmail(updateUser.getEmail());
     }
 
+    @Override
+    public void delete(String userId) {
+
+    }
+
 }

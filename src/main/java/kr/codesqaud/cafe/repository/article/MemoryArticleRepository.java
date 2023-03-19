@@ -31,4 +31,9 @@ public class MemoryArticleRepository implements ArticleRepository {
     public List<Article> findAllArticle() {
         return articleStore;
     }
+
+    @Override
+    public void delete(int id) {
+
+    }
 }
