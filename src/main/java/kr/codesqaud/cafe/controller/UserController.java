@@ -24,7 +24,7 @@ public class UserController {
 
     @PostMapping("/users")
     public String addUser(String userId, String email, String nickname, String password) {
-        userRepository.save(new Member(userId, email, nickname, password));
+        userRepository.save(new Member(userId, nickname, email, password));
         return "redirect:/users";
     }
 
