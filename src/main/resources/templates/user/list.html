@@ -13,13 +13,14 @@
                 </tr>
               </thead>
               <tbody>
-              {{#list}}
+              {{#users}}
               <tr>
                   <td> <a href="/profile/{{userId}}">{{userId}}</a></td>
                   <td>{{userName}}</td>
                   <td>{{email}}</td>
+                  <td><a href="/users/{{userId}}/form" role="button">개인정보수정</a></td>
               </tr>
-              {{/list}}
+              {{/users}}
               </tbody>
           </table>
         </div>

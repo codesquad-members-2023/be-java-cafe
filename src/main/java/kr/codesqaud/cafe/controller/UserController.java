@@ -21,46 +21,49 @@ public class UserController {
 
     Logger logger = LoggerFactory.getLogger(UserController.class);
 
-    @Autowired
     public UserController(UserRepository userRepository) {
         this.userRepository = userRepository;
         System.out.println(this.getClass());
     }
 
-
-    @GetMapping("/")
-    public String home() {
-        return "/index";
-    }
-
-
-    @GetMapping("/form")
-    public String get() {
-        System.out.println("go form");
-        logger.info("info log={}");
-        return "user/form";
-    }
-
-    @PostMapping("/form")
+    @PostMapping("/users")
     public String addUser(@ModelAttribute("user") User user) {
+        logger.debug("addUser");
         userRepository.save(user);
-        logger.info("addUser");
-        return "redirect:/getUserList";
+        return "redirect:/users";
     }
 
-    @GetMapping("/getUserList")
+    @GetMapping("/users")
     public String getUserList(Model model) {
+        logger.debug("getUserList");
         List<User> userList = userRepository.findAll();
-        model.addAttribute("list", userList);
-        logger.info("getUserList");
+        model.addAttribute("users", userList);
         return "user/list";
     }
 
     @RequestMapping("/profile/{userId}")
     public String getUser(@PathVariable String userId, Model model) {
         Optional<User> user = userRepository.findById(userId);
-        model.addAttribute("profile", user.get());
+        model.addAttribute("profile", user.orElseThrow(IllegalArgumentException::new));
         return "user/profile";
     }
+
+    @GetMapping("/users/{userId}/form")
+    public String updateUser(@PathVariable("userId") String userId, Model model) {
+        logger.debug("updateUser : GET");
+
+        Optional<User> updateUser = userRepository.findById(userId);
+        // Model 과 View 연결
+        model.addAttribute("user", updateUser.orElseThrow());
+        return "user/updateForm";
+    }
+
+    @PutMapping("/users/{userId}")
+    public String updateUser(@ModelAttribute("user") User user) {
+        logger.debug("updateUser : PUT");
+        userRepository.updateUser(user);
+        return "redirect:/users";
+    }
+
 
 }

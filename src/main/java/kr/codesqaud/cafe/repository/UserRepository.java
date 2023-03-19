@@ -8,30 +8,33 @@ import java.util.*;
 @Repository
 public class UserRepository {
 
-    private static List<User> store = new ArrayList<>();
-    private static UserRepository instance;
-
-    public static UserRepository getInstance() {
-        return instance;
-    }
+    private static List<User> users = new ArrayList<>();
 
     public User save(User user) {
-        store.add(user);
+        users.add(user);
         return user;
     }
 
     public Optional<User> findById(String userId) {
-        return store.stream().filter(user -> user.getUserId().equals(userId)).findFirst();    }
+        return users.stream().filter(user -> user.getUserId().equals(userId)).findFirst();
+    }
 
     public Optional<User> findByName(String userName) {
-        return store.stream().filter(user -> user.getUserName().equals(userName)).findAny();
+        return users.stream().filter(user -> user.getUserName().equals(userName)).findAny();
     }
 
     public List<User> findAll() {
-        return new ArrayList<>(store);
+        return new ArrayList<>(users);
     }
-    
-    public void clearStore(){
-        store.clear();
+
+    public void updateUser(User user){
+        int userIndex = users.indexOf(user);
+        users.set(userIndex,user);
+    }
+
+
+
+    public void clearStore() {
+        users.clear();
     }
 }

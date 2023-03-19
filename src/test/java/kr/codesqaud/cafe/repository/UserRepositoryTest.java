@@ -5,10 +5,11 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
+import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.*;
 
-class MemoryUserRepositoryTest {
+class UserRepositoryTest {
 
     UserRepository repository = new UserRepository();
 
@@ -20,9 +21,7 @@ class MemoryUserRepositoryTest {
     @Test
     public void save() {
 //given
-        User user = new User();
-        user.setUserId("1");
-        user.setUserName("spring");
+        User user = new User("aa","1234","aaName","aa@aa");
 //when
         repository.save(user);
 //then
@@ -32,27 +31,25 @@ class MemoryUserRepositoryTest {
 
     @Test
     void findByName() {
-        User user1 = new User();
-        user1.setUserName("aa");
+        User user1 = new User("aa","1234","aaName","aa@aa");
         repository.save(user1);
 
-        User user2 = new User();
-        user2.setUserName("spring4");
+        User user2 = new User("bb","1234","bbName","bb@bb");
         repository.save(user2);
 
-        User result = repository.findByName("aa").get();
+        Optional<User> result = repository.findByName("aaName");
 
-        assertThat(result.getUserName()).isEqualTo(user1.getUserName());
+        assertThat(result.isPresent()).isTrue();
+        assertThat(result.get().getUserName()).isEqualTo(user1.getUserName());
+
     }
 
     @Test
     void findAll() {
-        User user1 = new User();
-        user1.setUserName("spring3");
+        User user1 = new User("aa","1234","aaName","aa@aa");
         repository.save(user1);
 
-        User user2 = new User();
-        user2.setUserName("spring4");
+        User user2 = new User("bb","1234","bbName","bb@bb");
         repository.save(user2);
 
         List<User> result = repository.findAll();
