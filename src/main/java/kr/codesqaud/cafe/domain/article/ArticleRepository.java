@@ -25,4 +25,8 @@ public class ArticleRepository {
         }
         return allArticles;
     }
+
+    public Article findByArticleSequence(Long articleSequence) {
+        return articleRepository.stream().filter(user -> user.getArticleSequence().equals(articleSequence)).findFirst().orElseThrow();
+    }
 }
