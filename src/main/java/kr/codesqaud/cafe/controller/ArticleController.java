@@ -1,46 +1,47 @@
 package kr.codesqaud.cafe.controller;
 
 import kr.codesqaud.cafe.domain.Article;
-import kr.codesqaud.cafe.repository.ArticleRepository;
+import kr.codesqaud.cafe.repository.article.JdbcArticleRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
 @Controller
 public class ArticleController {
 
-    private ArticleRepository articleRepository;
+    private JdbcArticleRepository jdbcArticleRepository;
 
     Logger logger = LoggerFactory.getLogger(getClass());
 
-    public ArticleController(ArticleRepository articleRepository) {
-        this.articleRepository = articleRepository;
+    public ArticleController(JdbcArticleRepository jdbcArticleRepository) {
+        this.jdbcArticleRepository = jdbcArticleRepository;
         logger.debug("articleController");
     }
 
     @PostMapping("/questions")
-    public String addContents(@RequestParam String title, @RequestParam String writer, @RequestParam String contents) {
-        logger.debug("addContents");
-        articleRepository.addContents(new Article(title, writer, contents));
+    public String addContents(@ModelAttribute Article article) {
+        logger.error("addContents {}",LocalDateTime.now());
+        jdbcArticleRepository.save(article);
         return "redirect:/";
     }
 
     @GetMapping("/")
     public String getContentList(Model model) {
         logger.debug("getContentList");
-        List<Article> contentList = articleRepository.findAll();
+        List<Article> contentList = jdbcArticleRepository.findAll();
         model.addAttribute("contents", contentList);
         return "index";
     }
 
     @GetMapping("/articles/{id}")
     public String getContent(@PathVariable Long id, Model model) {
-        Optional<Article> article = articleRepository.findByIndex(id);
+        Optional<Article> article = jdbcArticleRepository.findById(id);
         System.out.println(article.isPresent());
         if (article.isPresent()) {
             model.addAttribute("articles", article.orElseThrow(IllegalArgumentException::new));

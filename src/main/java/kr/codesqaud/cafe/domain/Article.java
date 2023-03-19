@@ -1,5 +1,9 @@
 package kr.codesqaud.cafe.domain;
 
+import org.springframework.jdbc.core.RowMapper;
+
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.Date;
 
 public class Article {
@@ -8,19 +12,19 @@ public class Article {
     private String writer;
     private String title;
     private String contents;
+    private LocalDateTime writeDate;
 
-    public Article(String writer, String title, String contents) {
+
+    public Article(Long id, String writer, String title, String contents, LocalDateTime writeDate) {
+        this.id = id;
         this.writer = writer;
         this.title = title;
         this.contents = contents;
+        this.writeDate = LocalDateTime.now();
     }
 
     public long getId() {
         return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
     }
 
     public String getWriter() {
@@ -34,5 +38,7 @@ public class Article {
     public String getContents() {
         return contents;
     }
+
+    public LocalDateTime getWriteDate() {return writeDate;}
 
 }
