@@ -125,3 +125,8 @@ backend란 정확히 무엇이며, 앞으로 backend개발자가 되면 무엇�
 - `store.stream().filter(article -> article.getId() == id).findAny();` ,`return store.stream().filter(member -> member.getId() == userId).findFirst();`
 findAny와 findfirst의 차이는 병렬성차이.
 
+
+
+### 해결
+@modelAttribute에 관하여
+> 참고자료 : https://hyeon9mak.github.io/model-attribute-without-setter/
