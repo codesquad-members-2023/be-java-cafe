@@ -3,6 +3,8 @@ package kr.codesqaud.cafe.cafeservice.controller;
 import kr.codesqaud.cafe.cafeservice.domain.Article;
 import kr.codesqaud.cafe.cafeservice.domain.Member;
 import kr.codesqaud.cafe.cafeservice.repository.ArticleRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -18,14 +20,20 @@ import java.util.NoSuchElementException;
 public class ArticleController {
 
     private final ArticleRepository repository;
+    private final Logger log = LoggerFactory.getLogger(MemberController.class);
 
     @Autowired
     public ArticleController(ArticleRepository repository) {
+
         this.repository = repository;
     }
 
     @PostMapping("/questions")
     public String questions(@ModelAttribute Article article) {
+        log.info(" articlId={}", article.getId());
+        log.info(" articlContent={}", article.getContent());
+        log.info(" articlegetTitle={}", article.getTitle());
+        log.info(" articlwriter={}", article.getWriter());
         repository.save(article);
         return "redirect:/";
     }
