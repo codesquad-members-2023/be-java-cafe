@@ -25,10 +25,13 @@ public class MemberController {
 
     @PostMapping("/users")
     public String addMember(@ModelAttribute Member member) {
+        log.info(" member", member);
         repository.save(member);
+        log.info(" memberID={}", member.getId());
         log.info(" memberEmail={}", member.getEmail());
-        log.info(" memberpwd={}", member.getPassword());
-        log.info(" memberid={}", member.getId());
+        log.info(" memberName={}", member.getUserName());
+        log.info(" memberPwd={}", member.getPassword());
+        log.info(" memberCerateDate={}", member.getCreatedDate());
         return "redirect:/users";
     }
 
@@ -36,6 +39,7 @@ public class MemberController {
     public String memberList(Model model) {
         List<Member> members = repository.findAll();
         model.addAttribute("users", members);
+        model.addAttribute("size", members.size());
         log.info(" member={}", members.get(0).getId());
         log.info("model={}", model);
         return "user/list";
@@ -53,7 +57,7 @@ public class MemberController {
         }
     }
 
-    @GetMapping("/users/{id}form")
+    @GetMapping("/users/{id}/updateForm")
     public String showUpdateForm(@PathVariable Long id, Model model) {
         try {
             Member member = repository.findOne(id);
@@ -65,7 +69,7 @@ public class MemberController {
         }
     }
 
-    @PutMapping("/users/{id}/update")
+    @PutMapping("/users/{id}/updateForm")
     public String memberUpdateForm(@PathVariable Long id, @ModelAttribute Member member) {
         try {
             repository.update(id, member);
