@@ -1,5 +1,6 @@
 package kr.codesqaud.cafe.cafeservice.domain;
 
+import java.time.LocalDateTime;
 import java.util.concurrent.atomic.AtomicLong;
 
 public class Member {
@@ -7,16 +8,23 @@ public class Member {
     private String userName;
     private String password;
     private String email;
-    private static AtomicLong sequence = new AtomicLong(0L);
+    private LocalDateTime createdDate;
+    private static final AtomicLong sequence = new AtomicLong(0L);
 
-    public Member(Long id, String userName, String password, String email) {
+
+    public Member(String userName, String password, String email) {
         this.id = idIncrease();
         this.userName = userName;
         this.password = password;
         this.email = email;
+        this.createdDate = LocalDateTime.now();
     }
 
-    private synchronized Long idIncrease() {
+    public LocalDateTime getCreatedDate() {
+        return createdDate;
+    }
+
+    private Long idIncrease() {
         return sequence.incrementAndGet();
     }
 
@@ -46,5 +54,17 @@ public class Member {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+
+    @Override
+    public String toString() {
+        return "Member{" +
+                "id=" + id +
+                ", userName='" + userName + '\'' +
+                ", password='" + password + '\'' +
+                ", email='" + email + '\'' +
+                ", createdDate=" + createdDate +
+                '}';
     }
 }
