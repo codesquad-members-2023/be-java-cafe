@@ -1,0 +1,24 @@
+CREATE TABLE users
+(
+id VARCHAR(255) PRIMARY KEY,
+password VARCHAR(255),
+name VARCHAR(255),
+email VARCHAR(255),
+index INT AUTO_INCREMENT,
+);
+
+CREATE TABLE users (
+  id VARCHAR(255),
+  password VARCHAR(255),
+  name VARCHAR(255),
+  email VARCHAR(255),
+  idx INT(10) AUTO_INCREMENT PRIMARY KEY
+);
+
+CREATE TABLE articles
+(
+writer VARCHAR(255),
+title VARCHAR(255),
+contents VARCHAR(500),
+id INT(10) AUTO_INCREMENT PRIMARY KEY
+);
