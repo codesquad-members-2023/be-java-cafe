@@ -41,7 +41,7 @@ public class UserController {
     public String profile(@PathVariable Long userId, Model model) {
         Optional<Member> user = userRepository.findById(userId);
         try {
-            model.addAttribute("profile", user.orElseThrow(() -> new NoSuchElementException("[exception] 해당하는 회원이 없습니다.")));
+            model.addAttribute("profile", user.orElseThrow(() -> new NoSuchElementException("해당하는 회원이 없습니다.")));
         } catch (NoSuchElementException e) {
             model.addAttribute("message", e.getMessage());
             return "layout/error";
@@ -52,7 +52,7 @@ public class UserController {
     @GetMapping("/user/{userId}/updateForm")
     public String updateProfileForm(@PathVariable Long userId, Model model) {
         try {
-            Member byId = userRepository.findById(userId).orElseThrow(() -> new NoSuchElementException("[exception] 정보를 수정할 회원이 없습니다."));
+            Member byId = userRepository.findById(userId).orElseThrow(() -> new NoSuchElementException("정보를 수정할 회원이 없습니다."));
             model.addAttribute("profile", byId);
             LOG.info("test={}", byId.getNickname());
             return "user/updateForm";
@@ -70,7 +70,7 @@ public class UserController {
         try {
             Member exMember = userRepository.findById(id).orElseThrow();
             if (!exMember.isValidPassword(exPassword)) {
-                throw new IllegalAccessException("[exception] 비밀번호가 다릅니다.");
+                throw new IllegalAccessException("비밀번호가 다릅니다.");
             }
             userRepository.update(exMember, member);
         } catch (NoSuchElementException | IllegalAccessException e) {    // e만쓰지 말고 다 적어주는 것이 올바름.

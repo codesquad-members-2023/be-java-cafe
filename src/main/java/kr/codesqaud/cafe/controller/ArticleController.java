@@ -45,7 +45,8 @@ public class ArticleController {
         try {
             model.addAttribute("article", articleRepository.findById(id).orElseThrow());
         } catch (NoSuchElementException e) {
-            return "qna/show_failed";
+            model.addAttribute("message", "해당하는 게시글이 없습니다.");
+            return "layout/error";
         }
         return "qna/show";
     }
