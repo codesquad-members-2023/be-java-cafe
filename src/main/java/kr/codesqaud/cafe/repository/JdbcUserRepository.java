@@ -7,7 +7,6 @@ import javax.sql.DataSource;
 
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
-import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 
 import kr.codesqaud.cafe.model.User;
 
@@ -16,7 +15,6 @@ public class JdbcUserRepository implements UserRepository {
 
     public JdbcUserRepository(DataSource dataSource) {
         jdbcTemplate = new JdbcTemplate(dataSource);
-        //System.out.println();
     }
 
     @Override
@@ -32,7 +30,7 @@ public class JdbcUserRepository implements UserRepository {
 
     @Override
     public void addUser(User user) {
-        jdbcTemplate.update("insert into USERS(id,password,name,email) values(?, ?, ?, ?)", user.getId(),
+        jdbcTemplate.update("insert into users(id,password,name,email) values(?, ?, ?, ?)", user.getId(),
                 user.getPassword(), user.getName(), user.getEmail());
     }
 

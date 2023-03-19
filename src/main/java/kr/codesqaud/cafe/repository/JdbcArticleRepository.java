@@ -27,7 +27,7 @@ public class JdbcArticleRepository implements ArticleRepository {
 
     @Override
     public List<Article> getArticleList() {
-        return jdbcTemplate.query("select * from ARTICLES", articleRowMapper());
+        return jdbcTemplate.query("select * from articles", articleRowMapper());
     }
 
     @Override
