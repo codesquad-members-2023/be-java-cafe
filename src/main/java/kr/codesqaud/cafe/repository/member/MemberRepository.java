@@ -13,4 +13,6 @@ public interface MemberRepository {
     List<User> findAll();
 
     void updateUser(String userId, User updateUser);
+
+    void delete(String userId);
 }

@@ -111,6 +111,26 @@ public class H2DBArticleRepository implements ArticleRepository {
         return articles;
     }
 
+    // 테스트용 코드
+    @Override
+    public void delete(int userId) {
+        String sql = "delete from article where id=?";
+
+        Connection con = null;
+        PreparedStatement pstmt = null;
+
+        try {
+            con = connect();
+            pstmt = con.prepareStatement(sql);
+            pstmt.setInt(1, userId);
+            pstmt.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }finally {
+            close(con, pstmt, null);
+        }
+    }
+
 
     private int getDBSize() {
         String sql = "select count(id) as row_count from article";

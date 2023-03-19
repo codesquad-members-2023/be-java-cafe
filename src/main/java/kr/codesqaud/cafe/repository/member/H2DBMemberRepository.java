@@ -74,7 +74,7 @@ public class H2DBMemberRepository implements MemberRepository {
             }
 
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            throw new NoSuchElementException("member find error " + userId);
         } finally {
             close(con, pstmt, rs);
         }
@@ -130,8 +130,7 @@ public class H2DBMemberRepository implements MemberRepository {
             pstmt.setString(1, updateUser.getName());
             pstmt.setString(2, updateUser.getEmail());
             pstmt.setString(3, userId);
-            int resultSet = pstmt.executeUpdate();
-            log.info("resultSet={}", resultSet);
+            pstmt.executeUpdate();
 
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -148,6 +147,26 @@ public class H2DBMemberRepository implements MemberRepository {
         JdbcUtils.closeResultSet(rs);
         JdbcUtils.closeStatement(pstmt);
         JdbcUtils.closeConnection(con);
+    }
+
+    // 테스트용 코드
+    public void delete(String userId) {
+        String sql = "delete from member where userid=?";
+
+        Connection con = null;
+        PreparedStatement pstmt = null;
+
+        try {
+            con = connect();
+            pstmt = con.prepareStatement(sql);
+            log.info("delete user={}", userId);
+            pstmt.setString(1, userId);
+            pstmt.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }finally {
+            close(con, pstmt, null);
+        }
     }
 
 }
