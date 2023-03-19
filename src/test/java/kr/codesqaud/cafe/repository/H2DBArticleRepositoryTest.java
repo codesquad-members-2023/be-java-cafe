@@ -5,6 +5,7 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 
@@ -13,8 +14,8 @@ import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.junit.jupiter.api.Assertions.*;
 
+@SpringBootTest
 class H2DBArticleRepositoryTest {
 
     private DataSource dataSource;
@@ -22,7 +23,7 @@ class H2DBArticleRepositoryTest {
 
     @BeforeEach
     void init() {
-        dataSource = new DriverManagerDataSource("jdbc:h2:tcp://localhost/~/projects/be-java-cafe/step-3-db", "sa", "");
+        dataSource = new DriverManagerDataSource("jdbc:h2:mem:test", "sa", "");
         repository = new H2DBArticleRepository(dataSource);
     }
 
