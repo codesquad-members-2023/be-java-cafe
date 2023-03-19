@@ -7,10 +7,8 @@ import java.util.Optional;
 
 public interface UserRepository {
     void save(Member user);
-    Optional<Member> findById(long userId);
+    Optional<Member> findById(Long userId);
     List<Member> findAll();
-    void clear();
-    boolean vaildName(String userName);
-
+    boolean vaildMemberId(String userName);
     void update(Member exMember, Member newMember);
 }
