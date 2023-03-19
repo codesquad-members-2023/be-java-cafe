@@ -89,12 +89,12 @@ class MemoryUserRepositoryTest {
     @DisplayName("메모리 저장소에 존재하는 회원은 수정이 가능")
     void update() {
         User user = new User("Hyun", "1234", "황현", "ghkdgus29@naver.com");
-        User updateUser = new User("Yoon", "1234", "황윤", "ghkddbs28@naver.com");
+        User updateUser = new User("Yoon", "4321", "황윤", "ghkddbs28@naver.com");
 
         repository.save(user);
         int userId = repository.findById(1).getId();
 
-        repository.update(userId, updateUser, "4321");
+        repository.update(userId, updateUser, "1234");
 
         User updatedUser = repository.findById(userId);
 
