@@ -1,63 +1,85 @@
 package kr.codesqaud.cafe.cafeservice.domain;
 
 
+import java.time.LocalDateTime;
+
 public class Article {
+    private int id;
     private String writer;
     private String title;
     private String content;
-    private Long id;
-    private Integer views;
+    private LocalDateTime createDate;
+    private int replyCount;
 
-    public Article(String writer, String title, String content) {
+    public Article(String writer, String title, String contents) {
         this.writer = writer;
         this.title = title;
-        this.content = content;
+        this.content = contents;
+        this.createDate = LocalDateTime.now();
+        this.replyCount = 0;
     }
 
     public Article() {
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getWriter() {
         return writer;
     }
 
-    public String getTitle() {
-        return title;
-    }
-
-    public String getContent() {
-        return content;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public Integer getViews() {
-        return views;
-    }
-
-
     public void setWriter(String writer) {
         this.writer = writer;
+    }
+
+    public String getTitle() {
+        return title;
     }
 
     public void setTitle(String title) {
         this.title = title;
     }
 
+    public String getContent() {
+        return content;
+    }
+
     public void setContent(String content) {
         this.content = content;
+    }
+
+    public LocalDateTime getCreateDate() {
+        return createDate;
+    }
+
+    public void setCreateDate(LocalDateTime createDate) {
+        this.createDate = createDate;
+    }
+
+    public int getReplyCount() {
+        return replyCount;
+    }
+
+    public void setReplyCount(int replyCount) {
+        this.replyCount = replyCount;
     }
 
     @Override
     public String toString() {
         return "Article{" +
-                "writer='" + writer + '\'' +
+                "id=" + id +
+                ", writer='" + writer + '\'' +
                 ", title='" + title + '\'' +
                 ", content='" + content + '\'' +
-                ", id=" + id +
-                ", views=" + views +
+                ", createDate=" + createDate +
+                ", replyCount=" + replyCount +
                 '}';
     }
+
 }
