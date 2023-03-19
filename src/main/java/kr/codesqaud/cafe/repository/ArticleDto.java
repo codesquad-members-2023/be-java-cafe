@@ -1,25 +1,24 @@
-package kr.codesqaud.cafe.model;
+package kr.codesqaud.cafe.repository;
 
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import kr.codesqaud.cafe.service.ArticleService;
-
-public class Article {
+public class ArticleDto {
     private int articleId;
-    private final String userId;
+    private String userId;
     private String title;
     private String contents;
     private String time;
 
-    public Article(String userId, String title, String contents) {
-        this.articleId = ArticleService.getArticleSize();
+    public ArticleDto() {
+    }
+
+    public ArticleDto(int articleId, String userId, String title, String contents, String time) {
+        this.articleId = articleId;
         this.userId = userId;
         this.title = title;
         this.contents = contents;
-        this.time = formattingTime();
+        this.time = time;
     }
 
-    public int getId() {
+    public int getArticleId() {
         return articleId;
     }
 
@@ -39,23 +38,34 @@ public class Article {
         return time;
     }
 
-    public int getArticleId() {
-        return articleId;
+    public void setArticleId(int articleId) {
+        this.articleId = articleId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public void setContents(String contents) {
+        this.contents = contents;
+    }
+
+    public void setTime(String time) {
+        this.time = time;
     }
 
     @Override
     public String toString() {
-        return "Article{" +
+        return "ArticleDto{" +
                 "articleId=" + articleId +
                 ", userId='" + userId + '\'' +
                 ", title='" + title + '\'' +
                 ", contents='" + contents + '\'' +
                 ", time='" + time + '\'' +
                 '}';
-    }
-
-    public String formattingTime() {
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
-        return dateFormat.format(Calendar.getInstance().getTime());
     }
 }

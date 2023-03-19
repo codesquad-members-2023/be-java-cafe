@@ -19,7 +19,7 @@
                 </tr>
                 </thead>
                 <tbody>
-                <tr th:each="user, iter : ${userList}">
+                <tr th:each="user, iter : ${userDto}">
                     <td th:text="${iter.count}"></td>
                     <td><a th:href="@{users/{userId}(userId=${user.getUserId()})}"
                            th:text="${user.getUserId()}"></a></td>

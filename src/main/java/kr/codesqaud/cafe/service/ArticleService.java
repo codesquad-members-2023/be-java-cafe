@@ -1,30 +1,34 @@
 package kr.codesqaud.cafe.service;
 
 import java.util.List;
-import java.util.stream.Collectors;
 import kr.codesqaud.cafe.model.Article;
+import kr.codesqaud.cafe.repository.ArticleDao;
+import kr.codesqaud.cafe.repository.ArticleDto;
 import org.springframework.stereotype.Service;
 
 @Service
 public class ArticleService {
-    private final List<Article> articleList;
+    private final ArticleDao articleDao;
+    private static int articleId = 0;
 
-    public ArticleService(List<Article> articleList) {
-        this.articleList = articleList;
+    public ArticleService(ArticleDao articleDao) {
+        this.articleDao = articleDao;
     }
 
     public void creatArticle(Article article) {
-        article.giveId(articleList.size() + 1);
-        articleList.add(article);
+        articleDao.addArticle(article);
     }
 
-    public List<Article> findAllArticle() {
-        return articleList;
+    public List<ArticleDto> findAllArticle() {
+        return articleDao.findAllArticle();
     }
 
-    public List<Article> findArticleContentById(int articleId) {
-        return articleList.stream()
-                .filter(s -> s.getId() == articleId)
-                .collect(Collectors.toList());
+    public ArticleDto findArticleContentById(int articleId) {
+        final int FIRST_ARTICLE = 0;
+        return articleDao.findArticleContentById(articleId).get(FIRST_ARTICLE);
+    }
+
+    public static int getArticleSize() {
+        return ++articleId;
     }
 }

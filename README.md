@@ -12,15 +12,15 @@
   * 트러블 슈팅
 * 화 (03.14)
   * 강의 수강
-    * [ ] HTTP 헤더2, 다음으로 수강 및 정리
+    * [x] HTTP 헤더2, 다음으로 수강 및 정리
   * 키워드 학습
-    * [ ] MVC 패턴 학습 2
+    * [x] MVC 패턴 학습 2
   * 미션 구현
     * [x] 회원 가입 구현 2
   * 트러블 슈팅
 * 수 (03.15)
   * 강의 수강
-    * [ ] 스프링 핵심 원리 기본편 섹션 1
+    * [x] 스프링 핵심 원리 기본편 섹션 1
   * 키워드 학습
     * [x] 템플릿 엔진
   * 미션 구현
@@ -28,7 +28,7 @@
   * 트러블 슈팅
 * 목 (03.16)
   * 강의 수강
-    * [ ] 스프링 핵심 원리 기본편 섹션 2
+    * [x] 스프링 핵심 원리 기본편 섹션 2
   * 키워드 학습
   * 미션 구현
     * [x] 회원 목록 조회 기능 구현 2
@@ -47,3 +47,46 @@
   * 미션 구현
     * [x] 회원 프로필 조회 기능 구현
   * 트러블 슈팅
+
+
+### SQL 설계
+
+* ARTICLE TABLE
+```h2
+CREATE TABLE ARTICLE (
+ARTICLE_ID INT PRIMARY KEY,
+USER_ID VARCHAR2 NOT NULL,
+TITLE VARCHAR2 NOT NULL,
+CONTENTS VARCHAR2 NOT NULL,
+TIME VARCHAR2 NOT NULL
+)
+```
+
+```mysql
+CREATE TABLE ARTICLE (
+ARTICLE_ID INT PRIMARY KEY,
+USER_ID VARCHAR(255) NOT NUll,
+TITLE VARCHAR(255) NOT NUll,
+CONTENTS VARCHAR(255) NOT NUll,
+TIME VARCHAR(255) NOT NUll
+)
+```
+
+* USER TABLE
+```h2
+CREATE TABLE USER (
+USER_ID VARCHAR2 PRIMARY KEY,
+PASSWORD VARCHAR2 NOT NULL,
+NAME VARCHAR2 NOT NULL,
+EMAIL VARCHAR2 NOT NULL
+)
+```
+
+```mysql
+CREATE TABLE USER (
+USER_ID VARCHAR2 PRIMARY KEY,
+PASSWORD VARCHAR(255) NOT NULL,
+NAME VARCHAR(255) NOT NULL,
+EMAIL VARCHAR(255) NOT NULL
+)
+```

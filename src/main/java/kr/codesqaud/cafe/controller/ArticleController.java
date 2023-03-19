@@ -2,6 +2,8 @@ package kr.codesqaud.cafe.controller;
 
 import kr.codesqaud.cafe.model.Article;
 import kr.codesqaud.cafe.service.ArticleService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,15 +15,15 @@ import org.springframework.web.servlet.view.RedirectView;
 @Controller
 public class ArticleController {
     private final ArticleService articleService;
+    private final Logger logger = LoggerFactory.getLogger(UserController.class);
 
     public ArticleController(ArticleService articleService) {
         this.articleService = articleService;
     }
 
     @PostMapping("/questions")
-    public RedirectView creatQna(@ModelAttribute("Article") Article article) {
+    public RedirectView creatArticle(@ModelAttribute("ArticleDto") Article article) {
         articleService.creatArticle(article);
-        System.out.println(article.toString());
         RedirectView redirectView = new RedirectView();
         redirectView.setUrl("/");
         return redirectView;
@@ -29,7 +31,7 @@ public class ArticleController {
 
     @GetMapping("/")
     public String findArticleList(Model model) {
-        model.addAttribute("articleList", articleService.findAllArticle());
+        model.addAttribute("articleDto", articleService.findAllArticle());
         return "index";
     }
 
