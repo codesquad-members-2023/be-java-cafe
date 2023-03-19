@@ -1,9 +1,11 @@
 package kr.codesqaud.cafe.domain;
 
 
+import java.sql.Date;
+import java.sql.Timestamp;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Objects;
-import java.util.concurrent.atomic.AtomicLong;
 
 public class Member {
     private Long id;
@@ -11,8 +13,8 @@ public class Member {
     private String nickname;
     private String email;
     private String password;
-    private LocalDateTime createdDate;
-    private static final AtomicLong sequence = new AtomicLong(0L);
+    private Timestamp createdDate;
+    private Timestamp updatedDate;
 
     public Long getId() {
         return id;
@@ -34,8 +36,12 @@ public class Member {
         return password;
     }
 
-    public LocalDateTime getCreatedDate() {
-        return createdDate;
+    public String getCreatedDate() {
+        return createdDate.toLocalDateTime().format(DateTimeFormatter.ofPattern("yyyy-MM-dd hh:mm:ss"));
+    }
+
+    public String getUpdatedDate() {
+        return updatedDate.toLocalDateTime().format(DateTimeFormatter.ofPattern("yyyy-MM-dd hh:mm:ss"));
     }
 
     public void setId(Long id) {
@@ -58,31 +64,22 @@ public class Member {
         this.password = password;
     }
 
+    public void setCreatedDate(Timestamp createdDate) {
+        this.createdDate = createdDate;
+    }
+
+    public void setUpdatedDate(Timestamp updatedDate) {
+        this.updatedDate = updatedDate;
+    }
+
     public Member() { // JDBC 템플릿 쓸 때 기본 생성자를 열어야함
     }
 
-    public Member(String email, String nickname, String password) {
-        this.email = email;
-        this.nickname = nickname;
-        this.password = password;
-    }
-
-    public Member(String userId, String email, String nickname, String password) {
-        this.id = generateId();
-        this.userId = userId;
-        this.email = email;
-        this.nickname = nickname;
-        this.password = password;
-        this.createdDate = LocalDateTime.now();
-    }
-
-    public Member(Long id, String userId, String nickname, String email, String password, LocalDateTime createdDate) {
-        this.id = id;
+    public Member(String userId, String nickname, String email, String password) {
         this.userId = userId;
         this.nickname = nickname;
         this.email = email;
         this.password = password;
-        this.createdDate = createdDate;
     }
 
     public boolean equals(long userId) {
@@ -93,16 +90,15 @@ public class Member {
         return Objects.equals(this.nickname, userName);
     }
 
-    public long generateId() {
-        return sequence.incrementAndGet();
-    }
-
     public boolean isValidPassword(String password) {
         return this.password.equals(password);
     }
-    public void update(Member user) {
+    public Member update(Member user) {
         this.nickname = user.nickname;
         this.email = user.email;
         this.password = user.password;
+        return this;
     }
+
+
 }
