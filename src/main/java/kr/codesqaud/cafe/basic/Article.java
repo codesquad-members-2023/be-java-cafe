@@ -13,6 +13,13 @@ public class Article {
         this.contents = contents;
     }
 
+    public Article(int articleId, String writer, String title, String contents) {
+        this.articleId = articleId;
+        this.writer = writer;
+        this.title = title;
+        this.contents = contents;
+    }
+
     public Article(Article article) {
         this.articleId = article.articleId;
         this.writer = article.writer;

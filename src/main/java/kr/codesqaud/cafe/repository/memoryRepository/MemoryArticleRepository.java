@@ -1,17 +1,20 @@
-package kr.codesqaud.cafe.repository;
+package kr.codesqaud.cafe.repository.memoryRepository;
 
 
 import kr.codesqaud.cafe.basic.Article;
+import kr.codesqaud.cafe.repository.ArticleRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Repository
-public class MemoryArticleRepository {
+public class MemoryArticleRepository implements ArticleRepository {
 
     private final List<Article> articleRepository;
 
+    @Autowired
     public MemoryArticleRepository() {
         this.articleRepository = new ArrayList<>();
     }
@@ -28,12 +31,6 @@ public class MemoryArticleRepository {
 
     public List<Article> findAll() {
         return new ArrayList<>(articleRepository);
-    }
-
-    public void clear() {articleRepository.clear();}
-
-    public int getSize() {
-        return articleRepository.size();
     }
 
 }
