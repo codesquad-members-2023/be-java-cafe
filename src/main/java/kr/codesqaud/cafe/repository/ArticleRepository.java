@@ -3,24 +3,26 @@ package kr.codesqaud.cafe.repository;
 import kr.codesqaud.cafe.domain.Article;
 import org.springframework.stereotype.Repository;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
+import java.util.concurrent.ConcurrentLinkedDeque;
+import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.stream.Collectors;
 
 @Repository
 public class ArticleRepository {
-    List<Article> store = new ArrayList<>();
+    private final Queue<Article> store = new ConcurrentLinkedQueue<>();
 
     public void save(Article article) {
         store.add(article);
     }
 
     public Optional<Article> findById(Long id) {
-        return store.stream().filter(e -> e.isIdEquals(id)).findFirst();
+        return store.stream()
+                .filter(e -> e.equals(id))
+                .findAny();
     }
 
     public List<Article> findAll() {
-        return new ArrayList<>(Collections.unmodifiableList(store));
+        return List.copyOf(store);
     }
 }
