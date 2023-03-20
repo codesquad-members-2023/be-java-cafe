@@ -5,22 +5,23 @@
 <script>
     function dateFormat() {
         const writeDate = document.querySelectorAll('.writeDate');
-        writeDate.forEach(function(w) {
-            const now = new Date(Date.parse(w.textContent));
+
+        for(let index = 0; writeDate.length; index++) {
+            const now = new Date(Date.parse(writeDate[index].textContent));
             const month = (now.getMonth() + 1).toString().padStart(2, '0');
             const day = now.getDate().toString().padStart(2, '0');
             const hour = now.getMinutes().toString().padStart(2, '0');
             const minutes = now.getMinutes().toString().padStart(2, '0');
             const seconds = now.getSeconds().toString().padStart(2, '0');
-            w.textContent = `${now.getFullYear()}-${month}-${day} ${hour}:${minutes}:${seconds}`;
-        });
+            writeDate[index].textContent = `${now.getFullYear()}-${month}-${day} ${hour}:${minutes}:${seconds}`;
+        }
     }
+
 
     document.addEventListener("DOMContentLoaded", function(){
         dateFormat();
     });
 </script>
-
 
 
 <div class="container" id="main">
