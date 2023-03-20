@@ -1,18 +1,20 @@
 package kr.codesqaud.cafe.domain;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 public class Article {
     private String writer;
     private String title;
     private String contents;
-    private LocalDate registrationDate;
+    private LocalDateTime registrationDate;
+    private int articleId;
 
     public Article(String writer, String title, String contents) {
         this.writer = writer;
         this.title = title;
         this.contents = contents;
-        this.registrationDate = LocalDate.now();
+        this.registrationDate = LocalDateTime.now();
     }
 
     public String getAuthor() {
@@ -23,8 +25,20 @@ public class Article {
         this.writer = author;
     }
 
+    public void setArticleId(int id) {
+        articleId = id;
+    }
+
     public String getTitle() {
         return title;
+    }
+
+    public LocalDateTime getRegistrationDate() {
+        return registrationDate;
+    }
+
+    public int getId() {
+        return articleId;
     }
 
     public void setTitle(String title) {

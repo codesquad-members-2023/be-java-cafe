@@ -19,8 +19,8 @@ public class ArticleService {
         articleRepository.saveArticle(article);
     }
 
-    public Optional<Article> findOneArticleByTitle(String title) {
-        return articleRepository.findOneArticleByTitle(title);
+    public Optional<Article> findOneArticleById(int id) {
+        return articleRepository.findOneArticleById(id);
     }
 
     public List<Article> findArticles() {

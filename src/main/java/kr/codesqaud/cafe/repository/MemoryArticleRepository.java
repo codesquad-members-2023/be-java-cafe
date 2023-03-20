@@ -9,6 +9,7 @@ import java.util.Optional;
 
 public class MemoryArticleRepository implements ArticleRepository {
     private List<Article> articlesRepository;
+    private final int ID_PLUS = 1;
 
     public MemoryArticleRepository() {
         articlesRepository = new ArrayList<>();
@@ -16,13 +17,14 @@ public class MemoryArticleRepository implements ArticleRepository {
 
     @Override
     public void saveArticle(Article article) {
+        article.setArticleId(articlesRepository.size() + ID_PLUS);
         articlesRepository.add(article);
     }
 
     @Override
-    public Optional<Article> findOneArticleByTitle(String title) {
+    public Optional<Article> findOneArticleById(int id) {
         return articlesRepository.stream()
-                .filter(article -> article.getTitle().equals(title))
+                .filter(article -> article.getId() == id)
                 .findAny();
     }
 
@@ -39,5 +41,9 @@ public class MemoryArticleRepository implements ArticleRepository {
     @Override
     public void deleteArticle(Member member) {
 
+    }
+
+    public void clearRepository() {
+        articlesRepository.clear();
     }
 }
