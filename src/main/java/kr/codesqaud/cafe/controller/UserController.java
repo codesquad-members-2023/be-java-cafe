@@ -26,7 +26,7 @@ public class UserController {
     // 회원가입 POST
     @PostMapping("/users")
     public String signUp(@ModelAttribute User user) {
-        log.info("회원가입 POST: 보내졌는가?");
+        log.debug("회원가입 POST: 보내졌는가?");
 
         if(repository.save(user, 0)){
             return "redirect:users";
@@ -37,7 +37,7 @@ public class UserController {
     // 사용자 목록 Mapping
     @GetMapping("/users")
     public String showUsers(Model model) {
-        log.info("사용자 목록 Mapping: 받았는가?");
+        log.debug("사용자 목록 Mapping: 받았는가?");
 
         List<User> users = repository.findAll();
         model.addAttribute("users", users);
@@ -52,11 +52,11 @@ public class UserController {
 
         // 프로필 유무 확인후 성공/실패 넘겨주기
         if(profile.isPresent()) {
-            log.info("프로필 Mapping: 프로필 맵핑 성공~~~~~!!!!?");
+            log.debug("프로필 Mapping: 프로필 맵핑 성공~~~~~!!!!?");
             model.addAttribute("profile", profile.get());
             return "user/profile";
         }
-        log.info("프로필 Mapping: 프로필 맵핑 실패");
+        log.debug("프로필 Mapping: 프로필 맵핑 실패");
         return "user/profile_failed";
     }
 
@@ -66,7 +66,7 @@ public class UserController {
         Optional<User> user = repository.findById(userId);
 
         if(user.isPresent()) {
-            log.info("사용자 정보 수정: 정보수정 브라우저 맵핑 성공~~~~~!!!!?");
+            log.debug("사용자 정보 수정: 정보수정 브라우저 맵핑 성공~~~~~!!!!?");
             model.addAttribute("user", user.get());
         }
         return "user/updateForm";
@@ -75,11 +75,11 @@ public class UserController {
     //
     @PutMapping("users/{userId}/update")
     public String updateUser(@ModelAttribute User user, @PathVariable String userId) {
-        log.info("사용자 정보 수정: put 전달 완료");
+        log.debug("사용자 정보 수정: put 전달 완료");
 
         Optional<User> temp = repository.findById(userId);
         if(temp.isPresent()) {
-            log.info("사용자 정보 수정: 정보 수정 & 저장 성공");
+            log.debug("사용자 정보 수정: 정보 수정 & 저장 성공");
             user.setUserNum(temp.get().getUserNum());
             repository.save(user, user.getUserNum());
         }

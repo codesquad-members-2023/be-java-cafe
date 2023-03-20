@@ -1,11 +1,23 @@
 package kr.codesqaud.cafe.domain;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import org.springframework.format.annotation.DateTimeFormat;
+
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+
 public class Article {
     private long index;
     private String writer;
     private String title;
     private String contents;
-    private String time;
+
+    private LocalDateTime createdTime;
+
+    public Article(){
+        this.createdTime = LocalDateTime.now();
+        System.out.println(createdTime);
+    }
 
     public long getIndex() {
         return index;
@@ -43,11 +55,11 @@ public class Article {
         this.contents = contents;
     }
 
-    public String getTime() {
-        return time;
+    public LocalDateTime getCreatedTime() {
+        return createdTime;
     }
 
-    public void setTime(String time) {
-        this.time = time;
+    public void setCreatedTime(LocalDateTime createdTime) {
+        this.createdTime = createdTime;
     }
 }

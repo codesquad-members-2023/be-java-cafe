@@ -32,12 +32,8 @@ public class ArticleController {
     // 질문하기 POST
     @PostMapping("/questions")
     public String writing(@ModelAttribute Article article) {
-        log.info("글쓰기전 5분동안 생각하기!");
+        log.debug("글쓰기전 5분동안 생각하기!");
 
-        // 현재 날짜/시간 -> 포맷팅
-        String formatedNow = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"));
-
-        article.setTime(formatedNow);
         repository.saveArticle(article);
         return "redirect:/";
     }
@@ -45,7 +41,7 @@ public class ArticleController {
     // 질문하기 목록 Mapping
     @GetMapping("/")
     public String showBoard(Model model) {
-        log.info("내가 싼 글(똥) 목록");
+        log.debug("내가 싼 글(똥) 목록");
 
         List<Article> articles = repository.findAllArticle();
         Collections.reverse(articles); // 오래전 글이 아래로 내려 가야함
@@ -61,11 +57,11 @@ public class ArticleController {
 
         // 질문글 유무 확인후 성공/실패 넘겨주기
         if(article.isPresent()){
-            log.info("질문글 Mapping: 맵핑 성공!!!!");
+            log.debug("질문글 Mapping: 맵핑 성공!!!!");
             model.addAttribute("article", article.get());
             return "qna/show";
         }
-        log.info("질문글 Mapping: 맵핑 실패 ㅠㅠㅠ");
+        log.debug("질문글 Mapping: 맵핑 실패 ㅠㅠㅠ");
         return "qna/show_failed";
     }
 }
