@@ -37,10 +37,4 @@ public class MemoryMemberRepository implements MemberRepository {
         user.setPassword(updateUser.getPassword());
         user.setEmail(updateUser.getEmail());
     }
-
-    @Override
-    public void delete(String userId) {
-
-    }
-
 }

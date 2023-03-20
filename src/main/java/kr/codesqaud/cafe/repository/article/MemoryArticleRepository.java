@@ -20,7 +20,7 @@ public class MemoryArticleRepository implements ArticleRepository {
     }
 
     @Override
-    public Article findArticleByWriter(int id) {
+    public Article findArticleById(int id) {
         return articleStore.stream()
                 .filter(article -> article.getId() == (id))
                 .findAny()
@@ -30,10 +30,5 @@ public class MemoryArticleRepository implements ArticleRepository {
     @Override
     public List<Article> findAllArticle() {
         return articleStore;
-    }
-
-    @Override
-    public void delete(int id) {
-
     }
 }
