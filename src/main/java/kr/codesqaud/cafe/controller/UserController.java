@@ -52,6 +52,12 @@ public class UserController {
         return "user/updateForm";
     }
 
+    @PostMapping("/update/{userId}")
+    public String edit(@PathVariable String userId, @ModelAttribute User user) {
+        userRepository.updateUser(userId, user);
+        return "redirect:/users/list";
+    }
+
     /**
      * 테스트 용 데이터 추가
      */
