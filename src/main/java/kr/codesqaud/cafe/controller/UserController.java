@@ -34,16 +34,21 @@ public class UserController {
     @GetMapping("/profile/{nickName}")
     public String showProfile(@PathVariable String nickName, Model model) {
         model.addAttribute("nickName", nickName);
-        String email = memberService.findOneMemberByNickname(nickName).get().getEmail();
+        String email = memberService.findOneMemberByNickname(nickName).getEmail();
         model.addAttribute("email", email);
         return "user/profile";
     }
 
-    @GetMapping("/users/{nickName}/updateForm")
-    public String updateUser(@PathVariable String nickName, Model model) {
-        String email = memberService.findOneMemberByNickname(nickName).get().getEmail();
-        model.addAttribute("email", email);
+    @GetMapping("/users/{emailurl}/updateForm")
+    public String showUpdateForm(@PathVariable String emailurl, Model model) {
+//        String email = memberService.findOneMemberByEmail(emailurl).getEmail();
+        model.addAttribute("email", emailurl);
         return "user/updateForm";
     }
 
+    @PutMapping("/user/{emailurl}/updateUser")
+    public String updateUser(@PathVariable String emailurl, @ModelAttribute Member member) {
+        memberService.editeMember(member, emailurl);
+        return "redirect:/user/list";
+    }
 }

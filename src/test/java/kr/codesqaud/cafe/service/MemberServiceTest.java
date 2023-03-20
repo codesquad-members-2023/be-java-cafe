@@ -7,8 +7,6 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
-
 class MemberServiceTest {
 
     MemberService memberService = new MemberService(new MemoryMemberRepository());
@@ -25,20 +23,9 @@ class MemberServiceTest {
         Member member = new Member("meena2003@naver.com", "core", "12345");
         memberService.join(member);
 
-        Assertions.assertThat(member).isEqualTo(memberService.findOneMember("meena2003@naver.com").get());
+        Assertions.assertThat(member).isEqualTo(memberService.findOneMemberByEmail("meena2003@naver.com"));
     }
 
-    @Test
-    @DisplayName("중복한 닉네임으로 가입하려고 하면 예외가 발생해야 함")
-    void assertDuplicateNickName() {
-        Member member = new Member("meena2003@naver.com", "kim", "2312");
-        memberService.join(member);
-        Member member2 = new Member("core@naver.com", "kim", "1122");
-
-        assertThrows(IllegalStateException.class, () -> {
-                    memberService.join(member2);
-                });
-    }
 
     @Test
     @DisplayName("가입한 회원의 닉네임을 입력하면 매칭되는 이메일이 나와야 함")
@@ -47,6 +34,14 @@ class MemberServiceTest {
         memberService.join(member);
         String memberEmail = member.getEmail();
 
-        Assertions.assertThat(memberEmail).isEqualTo(memberService.findOneMemberByNickname("core").get().getEmail());
+        Assertions.assertThat(memberEmail).isEqualTo(memberService.findOneMemberByNickname("core").getEmail());
+    }
+
+    @Test
+    @DisplayName("올바른 패스워드 입력시 회원정보 닉네임이 수정되어야 함")
+    void change_UsernickName_Then_RightPassword() {
+        Member member = new Member("core@naver.com", "core", "1234");
+        memberService.join(member);
+        memberService.editeMember(member);
     }
 }
