@@ -9,6 +9,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.util.List;
 import java.util.Optional;
 
@@ -62,6 +65,25 @@ public class MemberController {
         logger.debug("updateUser : PUT");
         jdbcMemberRepository.update(member);
         return "redirect:/users";
+    }
+
+    @PostMapping("/login")
+    public String login(@ModelAttribute("user")Member member, HttpSession session, HttpServletRequest request){
+        Optional<Member> existUser = jdbcMemberRepository.findById(member.getUserId());
+        session = request.getSession();
+        boolean isExist = false;
+
+        if(existUser.isPresent() && member.getUserId() != null){
+            session.setAttribute("sessionedUser",existUser);
+            if(!member.getPassword().equals(existUser.get().getPassword())){
+                isExist = true;
+                return "user/login";
+            }
+            return "redirect:/";
+        } else {
+            isExist = true;
+            return "user/login";
+        }
     }
 
 
