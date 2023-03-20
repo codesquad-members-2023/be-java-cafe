@@ -1,6 +1,7 @@
 package kr.codesqaud.cafe.controller;
 
 import kr.codesqaud.cafe.domain.Member;
+import kr.codesqaud.cafe.repository.MemoryMemberRepository;
 import kr.codesqaud.cafe.service.MemberService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -37,4 +38,12 @@ public class UserController {
         model.addAttribute("email", email);
         return "user/profile";
     }
+
+    @GetMapping("/users/{nickName}/updateForm")
+    public String updateUser(@PathVariable String nickName, Model model) {
+        String email = memberService.findOneMemberByNickname(nickName).get().getEmail();
+        model.addAttribute("email", email);
+        return "user/updateForm";
+    }
+
 }

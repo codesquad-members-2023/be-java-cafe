@@ -1,5 +1,5 @@
 {{>user/header}}
-    <link href="../css/user/form.css" rel="stylesheet">
+    <link href="/css/user/form.css" rel="stylesheet">
 </head>
 <body>
 <div class="background">
@@ -21,12 +21,12 @@
 
     <div class="container" id="main">
         <header class="post-header">
-            <p class="title">회원가입</p>
+            <p class="title">회원수정</p>
         </header>
         <form name="question" class="info-container" method="post" action="/user/join">
             <div class="form-group">
                 <label for="email">이메일</label>
-                <input type="email" class="form-control" id="email" name="email" placeholder="이메일을 입력하세요">
+                <input type="email" class="form-control" id="email" name="email" placeholder={{email}} readonly>
             </div>
             <div class="form-group">
                 <label for="nickName">닉네임</label>
