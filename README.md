@@ -9,3 +9,7 @@
 ### URL 컨벤션 학습하기
 ### 템플릿 엔진 학습하기
 #### 템플릿 엔진을 사용해 HTML 중복 제거하기
+
+# 끄적끄적
+### H2 DB 시퀸스 초기화
+  - `alter table <테이블명> alter column <컬럼명> restart with 1`

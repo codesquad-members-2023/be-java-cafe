@@ -7,15 +7,17 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Repository
-public class MemoryArticleRepository {
+public class MemoryArticleRepository implements ArticleRepository{
 
     private final List<Article> articles = new ArrayList<>();
 
+    @Override
     public void save(Article article) {
         article.setId(articles.size() + 1);
         articles.add(article);
     }
 
+    @Override
     public Article findById(int id) {
         if (!articles.stream().anyMatch(article -> article.getId() == id)) {
             throw new IllegalArgumentException("[ERROR] 존재하지 않는 게시글입니다!");
@@ -24,6 +26,7 @@ public class MemoryArticleRepository {
         return articles.get(id - 1);
     }
 
+    @Override
     public List<Article> findAll() {
         return articles;
     }
