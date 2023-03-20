@@ -7,8 +7,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.jdbc.support.JdbcUtils;
 import org.springframework.stereotype.Repository;
 
+import javax.sql.DataSource;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -22,8 +24,12 @@ public class H2UserRepository implements UserRepository {
 
     private static final Logger logger = LoggerFactory.getLogger("user database");
 
+    private final DataSource dataSource;
+
     @Autowired
-    public H2UserRepository() {};
+    public H2UserRepository(DataSource dataSource) {
+        this.dataSource = dataSource;
+    };
 
     @Override
     public void join(User user) {
@@ -134,29 +140,17 @@ public class H2UserRepository implements UserRepository {
 
     private Connection getConnection() {
         try {
-            return DriverManager.getConnection(URL, USERNAME, PASSWORD);
+            return dataSource.getConnection();
         } catch (SQLException e) {
             logger.error("Failed to connect DB :" + e);
-            // TODO : 어떤 예외 처리가 필요할까 고민해보기
             return null;
         }
     }
 
+
     private void close(Connection conn, Statement stmt, ResultSet rs) {
-        try {
-            if (rs != null) rs.close();
-        } catch (SQLException e) {
-            logger.error("Failed to close ResultSet");
-        }
-        try {
-            stmt.close();
-        } catch (SQLException e) {
-            logger.error("Failed to close Statement");
-        }
-        try {
-            conn.close();
-        } catch (SQLException e) {
-            logger.error("Failed to close Connection");
-        }
+        JdbcUtils.closeResultSet(rs);
+        JdbcUtils.closeStatement(stmt);
+        JdbcUtils.closeConnection(conn);
     }
 }

@@ -8,10 +8,13 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.jdbc.support.JdbcUtils;
 import org.springframework.stereotype.Repository;
 
+import javax.sql.DataSource;
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import static kr.codesqaud.cafe.config.repositoryConfig.ConnectionConfig.*;
@@ -21,8 +24,12 @@ import static kr.codesqaud.cafe.config.repositoryConfig.ConnectionConfig.*;
 public class H2ArticleRepository implements ArticleRepository {
     private static final Logger logger = LoggerFactory.getLogger("article database");
 
+    public final DataSource dataSource;
+
     @Autowired
-    public H2ArticleRepository()  {}
+    public H2ArticleRepository(DataSource dataSource) {
+        this.dataSource = dataSource;
+    }
 
     public void add(Article article) {
         String sql = "insert into articles(articleId, writer, title, contents) values (?, ?, ?, ?)";
@@ -132,7 +139,7 @@ public class H2ArticleRepository implements ArticleRepository {
 
     private Connection getConnection() {
         try {
-            return DriverManager.getConnection(URL, USERNAME, PASSWORD);
+            return dataSource.getConnection();
         } catch (SQLException e) {
             logger.error("Failed to connect DB :" + e);
             // TODO : 어떤 예외 처리가 필요할까 고민해보기
@@ -142,21 +149,9 @@ public class H2ArticleRepository implements ArticleRepository {
 
     // TODO : 왜 ResultSet과 Statement를 close 해주는 것이 좋은지 알아보기
     private void close(Connection conn, Statement stmt, ResultSet rs) {
-        try {
-            if (rs != null) rs.close();
-        } catch (SQLException e) {
-            logger.error("Failed to close ResultSet");
-        }
-        try {
-            stmt.close();
-        } catch (SQLException e) {
-            logger.error("Failed to close Statement");
-        }
-        try {
-            conn.close();
-        } catch (SQLException e) {
-            logger.error("Failed to close Connection");
-        }
+        JdbcUtils.closeResultSet(rs);
+        JdbcUtils.closeStatement(stmt);
+        JdbcUtils.closeConnection(conn);
     }
 
 }
