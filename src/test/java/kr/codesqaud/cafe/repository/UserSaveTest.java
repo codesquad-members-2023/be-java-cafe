@@ -1,26 +1,27 @@
 package kr.codesqaud.cafe.repository;
 
-import kr.codesqaud.cafe.repository.member.H2DBMemberRepository;
+import kr.codesqaud.cafe.repository.member.H2JDBCMemberRepository;
 import kr.codesqaud.cafe.repository.member.MemberRepository;
 import kr.codesqaud.cafe.domain.User;
 import org.assertj.core.api.Assertions;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.transaction.annotation.Transactional;
 
+import javax.sql.DataSource;
 import java.util.List;
 
 @SpringBootTest
+@Transactional
 class UserSaveTest {
 
-    @Autowired
-    private MemberRepository memberRepository = new H2DBMemberRepository();
+    private final MemberRepository memberRepository;
 
-    @AfterEach
-    void afterEach() {
-        memberRepository.delete("userId");
+    @Autowired
+    public UserSaveTest(DataSource dataSource) {
+        this.memberRepository = new H2JDBCMemberRepository(dataSource);
     }
 
     @Test
