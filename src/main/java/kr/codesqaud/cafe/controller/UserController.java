@@ -1,7 +1,7 @@
 package kr.codesqaud.cafe.controller;
 
 import kr.codesqaud.cafe.domain.User;
-import kr.codesqaud.cafe.repository.MemoryUserRepository;
+import kr.codesqaud.cafe.repository.JdbcTemplateUserRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,10 +16,11 @@ import java.util.Optional;
 public class UserController {
     private final Logger log = LoggerFactory.getLogger(UserController.class);
 
-    private final MemoryUserRepository repository;
+    // private final MemoryUserRepository repository;
+    private final JdbcTemplateUserRepository repository;
 
     @Autowired
-    public UserController(MemoryUserRepository repository) {
+    public UserController(JdbcTemplateUserRepository repository) {
         this.repository = repository;
     }
 
@@ -28,7 +29,7 @@ public class UserController {
     public String signUp(@ModelAttribute User user) {
         log.debug("회원가입 POST: 보내졌는가?");
 
-        if(repository.save(user, 0)){
+        if(repository.save(user)){
             return "redirect:users";
         }
         return "user/form_failed";
@@ -81,7 +82,7 @@ public class UserController {
         if(temp.isPresent()) {
             log.debug("사용자 정보 수정: 정보 수정 & 저장 성공");
             user.setUserNum(temp.get().getUserNum());
-            repository.save(user, user.getUserNum());
+            repository.update(user);
         }
         return "redirect:/users";
     }

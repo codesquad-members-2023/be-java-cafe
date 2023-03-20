@@ -3,7 +3,10 @@ package kr.codesqaud.cafe.repository;
 import kr.codesqaud.cafe.domain.Article;
 import org.springframework.stereotype.Repository;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Optional;
 
 @Repository
 public class MemoryArticleRepository implements ArticleRepository {

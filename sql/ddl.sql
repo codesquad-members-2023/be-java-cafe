@@ -1,7 +1,7 @@
-CREATE TABLE user
+CREATE TABLE cafe_user
 (
-    userNum  INT         NOT NULL AUTO_INCREMENT PRIMARY KEY,
-    userId   VARCHAR(20) NOT NULL,
+    userNum  BIGINT      NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    userId   VARCHAR(20) NOT NULL UNIQUE,
     password VARCHAR(20) NOT NULL,
     name     VARCHAR(20) NOT NULL,
     email    VARCHAR(50) NOT NULL
