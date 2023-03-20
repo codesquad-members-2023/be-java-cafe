@@ -11,11 +11,11 @@ import java.sql.SQLException;
 import java.util.*;
 
 @Repository
-public class MemoryUserRepository implements UserRepository {
+public class JdbcUserRepository implements UserRepository {
 
     private final JdbcTemplate jdbcTemplate;
 
-    public MemoryUserRepository(DataSource dataSource) {
+    public JdbcUserRepository(DataSource dataSource) {
         this.jdbcTemplate = new JdbcTemplate(dataSource);
     }
 
