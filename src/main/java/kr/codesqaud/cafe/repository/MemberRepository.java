@@ -11,5 +11,5 @@ public interface MemberRepository {
     Member findOneMemberbyNickName(String nickName);
     List<Member> findAll();
     int getSize();
-    void editeMember(Member member, String email);
+    void editeMember(Member member);
 }

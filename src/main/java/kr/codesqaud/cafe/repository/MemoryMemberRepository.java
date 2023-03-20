@@ -41,8 +41,8 @@ public class MemoryMemberRepository implements MemberRepository {
     }
 
     @Override
-    public void editeMember(Member member, String email) {
-        repository.put(email, member);
+    public void editeMember(Member member) {
+        repository.put(member.getEmail(), member);
     }
 
     public void clearRepository() {

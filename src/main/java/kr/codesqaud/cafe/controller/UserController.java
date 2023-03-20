@@ -46,9 +46,9 @@ public class UserController {
         return "user/updateForm";
     }
 
-    @PutMapping("/user/{emailurl}/updateUser")
-    public String updateUser(@PathVariable String emailurl, @ModelAttribute Member member) {
-        memberService.editeMember(member, emailurl);
+    @PutMapping("/user/updateUser")
+    public String updateUser(@ModelAttribute Member member) {
+        memberService.editeMember(member);
         return "redirect:/user/list";
     }
 }

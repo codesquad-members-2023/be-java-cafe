@@ -35,9 +35,11 @@ public class MemberService {
         return memberRepository.getSize();
     }
 
-    public void editeMember(Member member, String email) {
-//        String passward = memberRepository(findOneMemberByEmail(member.getEmail()).getPassword());
-//        if (member.getPassword().equals())
-        memberRepository.editeMember(member, email);
+    public void editeMember(Member member) {
+        String password = memberRepository.findOneMemberbyEmail(member.getEmail()).getPassword();
+        if (!member.getPassword().equals(password)) {
+            return;
+        }
+        memberRepository.editeMember(member);
     }
 }
