@@ -18,12 +18,12 @@ import static org.assertj.core.api.Assertions.assertThat;
 class MemoryUserRepositoryTest {
 
     DataSource dataSource;
-    MemoryUserRepository memoryUserRepository;
+    JdbcUserRepository memoryUserRepository;
 
     @BeforeEach
     void init() {
-        dataSource = new DriverManagerDataSource("jdbc:h2:~/db/CAFEDB", "sa", "");
-        memoryUserRepository = new MemoryUserRepository(dataSource);
+        dataSource = new DriverManagerDataSource("jdbc:h2:~/db/CAFEDB;DB_CLOSE_ON_EXIT=FALSE", "sa", "");
+        memoryUserRepository = new JdbcUserRepository(dataSource);
     }
     
     @Test
