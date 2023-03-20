@@ -1,4 +1,4 @@
-package kr.codesqaud.cafe.cafeservice.repository;
+package kr.codesqaud.cafe.cafeservice.repository.article;
 
 import kr.codesqaud.cafe.cafeservice.domain.Article;
 import org.slf4j.Logger;
@@ -100,10 +100,6 @@ public class H2ArticleRepository {
             close(con, pstmt, rs);
         }
     }
-
-//    public Article findOne(Long id) {
-//        return findById(id).orElseThrow();
-//    }
 
     private void close(Connection con, Statement stmt, ResultSet rs) {
         JdbcUtils.closeResultSet(rs);
