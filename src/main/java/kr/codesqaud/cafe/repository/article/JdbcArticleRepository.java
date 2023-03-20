@@ -49,7 +49,7 @@ public class JdbcArticleRepository implements ArticleRepository {
         try{
             String sql = "select id, title, contents, writer, write_date from article where id = :id";
             SqlParameterSource param = new MapSqlParameterSource("id", id);
-            return Optional.of(template.queryForObject(sql, param, rowMapperPost()));
+            return Optional.of(template.queryForObject(sql, param, rowMapperArticle()));
         } catch (EmptyResultDataAccessException e) {
             return Optional.empty();
         }
@@ -59,7 +59,7 @@ public class JdbcArticleRepository implements ArticleRepository {
     @Override
     public List<Article> findAll() {
         String sql = "select id, writer, title, contents, write_date from article";
-        return template.query(sql, rowMapperPost());
+        return template.query(sql, rowMapperArticle());
     }
 
     @Override
@@ -78,7 +78,7 @@ public class JdbcArticleRepository implements ArticleRepository {
     }
 
     // db값은 ResultSet에서 가져와야하는게 그걸 객체로 만들어줌
-    private RowMapper<Article> rowMapperPost() {
+    private RowMapper<Article> rowMapperArticle() {
         return (rs, rowNum) ->
                 new Article(rs.getLong("id"), rs.getString("title"), rs.getString("contents"),
                         rs.getString("writer"), rs.getTimestamp("write_date").toLocalDateTime());
