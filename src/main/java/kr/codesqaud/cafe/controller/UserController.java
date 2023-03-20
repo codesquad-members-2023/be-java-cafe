@@ -2,6 +2,8 @@ package kr.codesqaud.cafe.controller;
 
 import kr.codesqaud.cafe.domain.user.User;
 import kr.codesqaud.cafe.domain.user.UserRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -15,6 +17,7 @@ import java.util.List;
 public class UserController {
 
     private final UserRepository userRepository;
+    private final Logger log = LoggerFactory.getLogger(UserController.class);
 
     @Autowired
     public UserController(UserRepository userRepository) {
@@ -29,6 +32,9 @@ public class UserController {
     @PostMapping("/add")
     public String saveUser(@ModelAttribute("user") User user) {
         userRepository.save(user);
+        log.trace("사용자 ID: {}", user.getUserId());
+        log.trace("사용자 이름: {}", user.getName());
+        log.trace("사용자 email: {}", user.getEmail());
         return "redirect:/users/list";
     }
 
@@ -36,6 +42,7 @@ public class UserController {
     public String users(Model model) {
         List<User> users = userRepository.showAllUsers();
         model.addAttribute("users", users);
+        log.trace("사용자 수: {}", users.size());
         return "user/list";
     }
 
