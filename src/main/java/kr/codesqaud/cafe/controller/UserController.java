@@ -44,7 +44,7 @@ public class UserController {
     @GetMapping("/profile/{userId}")
     public String profile(@PathVariable String userId,
                           Model model) {
-        User user = userRepository.findUser(userId); // null 포인트 예외 처리 필요
+        User user = userRepository.findUser(userId);
         model.addAttribute("user", user);
         return "/user/profile";
     }
