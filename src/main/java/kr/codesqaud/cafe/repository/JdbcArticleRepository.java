@@ -3,13 +3,12 @@ package kr.codesqaud.cafe.repository;
 import kr.codesqaud.cafe.domain.Article;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.datasource.DataSourceUtils;
+import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.List;
 
 @Repository
@@ -31,11 +30,20 @@ public class JdbcArticleRepository implements ArticleRepository {
 
     @Override
     public List<Article> findAll() {
-        return null;
+        return jdbcTemplate.query("select * from article", articleRowMapper());
     }
 
     @Override
     public Article findByIndex(int index) {
         return null;
+    }
+
+    private RowMapper<Article> articleRowMapper() { //sql 결과를 받기위해 row mapping 필요
+        return new RowMapper<Article>() {
+            @Override
+            public Article mapRow(ResultSet rs, int rowNum) throws SQLException {
+                return new Article(rs.getString("writer"), rs.getString("title"), rs.getString("content"), rs.getInt("index"));
+            }
+        };
     }
 }
