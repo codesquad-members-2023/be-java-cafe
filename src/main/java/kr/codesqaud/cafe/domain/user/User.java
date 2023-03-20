@@ -15,6 +15,12 @@ public class User {
         this.email = email;
     }
 
+    public User(String password, String name, String email) {
+        this.password = password;
+        this.name = name;
+        this.email = email;
+    }
+
     public Long getUserSequence() {
         return userSequence;
     }
