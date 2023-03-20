@@ -130,3 +130,8 @@ findAny와 findfirst의 차이는 병렬성차이.
 ### 해결
 @modelAttribute에 관하여
 > 참고자료 : https://hyeon9mak.github.io/model-attribute-without-setter/
+
+
+처음 jdbc sql문 사용 너무 지저 분하고 가독성이 떨어짐
+두번째 jdbc 템플릿 사용 가독성이 증가했지만 여전히 지저분하고 중복이 많음
+세번째 BeanPropertyRowMapper 를 사용 중복을 많이제거함
