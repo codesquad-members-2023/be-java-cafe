@@ -31,6 +31,10 @@ public class UserRepository {
 
     public void updateUser(String userId, User updateParam) {
         User user = findByUserId(userId);
+        String originalPassword = user.getPassword();
+        if (!originalPassword.equals(updateParam.getPassword())) {
+            return;
+        }
         user.setPassword(updateParam.getPassword());
         user.setName(updateParam.getName());
         user.setEmail(updateParam.getEmail());
