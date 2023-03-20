@@ -15,6 +15,7 @@ public class UserRepository {
     private static final Logger logger = LoggerFactory.getLogger(UserRepository.class);
 
     public void save(User user) {
+        users.removeIf(preUser -> preUser.getId().equals(user.getId()));
         users.add(user);
         logger.info("save");
     }
