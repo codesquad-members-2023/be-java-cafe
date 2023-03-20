@@ -38,7 +38,7 @@ public class ArticleController {
 
     @GetMapping("/qna/show/{id}")
     public String showArticle(@PathVariable int id, Model model) {
-        Article article = articleRepository.findArticleByWriter(id);
+        Article article = articleRepository.findArticleById(id);
         model.addAttribute(article);
 
         return "qna/show";
