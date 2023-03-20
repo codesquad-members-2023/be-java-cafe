@@ -42,12 +42,8 @@ public class ArticleController {
 
     @GetMapping("/articles/{id}")
     public String showArticle(@PathVariable Long id, Model model) {
-        try {
-            model.addAttribute("article", articleRepository.findById(id).orElseThrow());
-        } catch (NoSuchElementException e) {
-            model.addAttribute("message", "해당하는 게시글이 없습니다.");
-            return "layout/error";
-        }
+        model.addAttribute("article", articleRepository.findById(id)
+                .orElseThrow(() -> new NoSuchElementException("해당하는 글이 없습니다.")));
         return "qna/show";
     }
 }
