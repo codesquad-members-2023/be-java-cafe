@@ -7,33 +7,13 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 @Repository
-public class MemberRepository {
-    final List<Member> store = new ArrayList<>();
+public interface MemberRepository {
 
-    public void save(Member member) {
-        store.add(member);
-    }
+    void save(Member member);
 
-    public List<Member> findAll() {
-        return new ArrayList<>(Collections.unmodifiableList(store));
-    }
+    List<Member> findAll();
 
-    public Member findOne(Long id) {
-        return findById(id).orElseThrow();
-    }
+    Optional<Member> findById(Long userId);
 
-    public Optional<Member> findById(Long userId) {
-        return store.stream().filter(member -> member.getId() == userId).findAny();
-    }
-
-    public List<Member> findByName(String userName) {
-        return store.stream().filter(member -> member.getUserName() == userName).collect(Collectors.toList());
-    }
-
-    public void update(Long id, Member updateMember){
-        Member findMember = findById(id).orElseThrow();
-        findMember.setEmail(updateMember.getEmail());
-        findMember.setPassword(updateMember.getPassword());
-        findMember.setUserName(updateMember.getUserName());
-    }
+    void update(Long id, Member updateMember);
 }

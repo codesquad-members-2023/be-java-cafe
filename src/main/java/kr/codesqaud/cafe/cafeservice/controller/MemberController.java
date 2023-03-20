@@ -5,12 +5,14 @@ import kr.codesqaud.cafe.cafeservice.repository.MemberRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.Optional;
 
 @Controller
 public class MemberController {
@@ -48,8 +50,8 @@ public class MemberController {
     @GetMapping("/users/{userId}")
     public String findByProfile(@PathVariable Long userId, Model model) {
         try {
-            Member member = repository.findOne(userId);
-            model.addAttribute("member", member);
+            Optional<Member> byId = repository.findById(userId);
+            model.addAttribute("member", byId.orElseThrow());
             return "user/profile";
         } catch (NoSuchElementException e) {
             log.debug("예외발생");
@@ -60,8 +62,10 @@ public class MemberController {
     @GetMapping("/users/{id}/updateForm")
     public String showUpdateForm(@PathVariable Long id, Model model) {
         try {
-            Member member = repository.findOne(id);
-            model.addAttribute("user", member);
+            Optional<Member> byId = repository.findById(id);
+            model.addAttribute("user", byId.orElseThrow());
+            log.info("1111model={}",model);
+            log.info("111111id={}",id);
             return "user/updateForm";
         } catch (NoSuchElementException e) {
             log.debug("예외발생");
@@ -72,6 +76,8 @@ public class MemberController {
     @PutMapping("/users/{id}/updateForm")
     public String memberUpdateForm(@PathVariable Long id, @ModelAttribute Member member) {
         try {
+            log.info("22222222member={}",member);
+            log.info("22222222id={}",id);
             repository.update(id, member);
             return "redirect:/users";
         } catch (NoSuchElementException e) {
