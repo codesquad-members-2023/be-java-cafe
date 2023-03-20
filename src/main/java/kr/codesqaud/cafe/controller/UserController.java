@@ -46,6 +46,12 @@ public class UserController {
         return "user/profile";
     }
 
+    @GetMapping("/update/{userId}")
+    public String editUserForm(@PathVariable String userId, Model model) {
+        model.addAttribute("user", userRepository.findByUserId(userId));
+        return "user/updateForm";
+    }
+
     /**
      * 테스트 용 데이터 추가
      */
