@@ -28,4 +28,11 @@ public class UserRepository {
     public User findByUserId(String userId) {
         return userRepository.stream().filter(user -> user.getUserId().equals(userId)).findFirst().orElseThrow();
     }
+
+    public void updateUser(String userId, User updateParam) {
+        User user = findByUserId(userId);
+        user.setPassword(updateParam.getPassword());
+        user.setName(updateParam.getName());
+        user.setEmail(updateParam.getEmail());
+    }
 }
