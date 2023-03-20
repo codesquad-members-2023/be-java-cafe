@@ -1,6 +1,8 @@
 package kr.codesqaud.cafe.repository;
 
 import kr.codesqaud.cafe.domain.Qna;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
@@ -11,6 +13,7 @@ import java.util.concurrent.ConcurrentHashMap;
 @Repository
 public class QnaRepository {
 
+    private Logger log = LoggerFactory.getLogger(getClass());
     private static final Map<Integer, Qna> store = new ConcurrentHashMap<>();
 
     public void save(Qna qna) {
