@@ -18,3 +18,6 @@
 섹션, 쿠키 및 인증 관련해서 공부한다. (생활 코딩 + 김영한)
 
 ## 금, 토, 일 : 루카스 미션 코드 완성하기
+
+
+https://24hours-beginner.tistory.com/295#could_not_establish_connection_to_%22test%22
