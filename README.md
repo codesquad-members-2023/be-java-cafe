@@ -115,3 +115,21 @@
   - [참고링크2](https://www.tutorialspoint.com/spring/spring_jdbc_framework.htm)
 - [x] `Member` H2 DB와 연결
 - [ ] `Article` H2 DB와 연결
+
+### 새로 안 것
+- `Spring JDBC` 라이브러리에 대해 공부했다.
+  - 특히 `JDBC Template`를 사용해 보았다.
+- `DataSource`
+
+---
+## 3월 20일 월요일
+### 개인 학습 목표
+1. `AWS` 배포에 대해 공부하기 : `EC2`
+2. 개발서적 읽기 : 코쿼에 있는 것 중 1개
+
+### TODO
+- [ ] `Article` H2 DB 연결
+- [ ] `AWS` 배포
+- [ ] 스프링 강의 1시간 듣기
+- [ ] 스프링 기본 강의 수강 (1시간가량하고 시간 남으면 더 듣기)
+- [ ] 웹 어필리케이션 예외처리 리팩토링
