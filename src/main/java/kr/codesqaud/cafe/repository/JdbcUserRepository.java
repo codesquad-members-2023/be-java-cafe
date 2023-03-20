@@ -45,6 +45,6 @@ public class JdbcUserRepository implements UserRepository {
 
     @Override
     public List<User> getAllUsers() {
-        return jdbcTemplate.query("select * from users", userRowMapper());
+        return jdbcTemplate.query("select id, password, name, email, idx from users", userRowMapper());
     }
 }

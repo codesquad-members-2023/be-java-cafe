@@ -27,12 +27,12 @@ public class JdbcArticleRepository implements ArticleRepository {
 
     @Override
     public List<Article> getArticleList() {
-        return jdbcTemplate.query("select * from articles", articleRowMapper());
+        return jdbcTemplate.query("select writer,title,contents,id from articles", articleRowMapper());
     }
 
     @Override
     public Optional<Article> findById(long id) {
-        return Optional.ofNullable(jdbcTemplate.query("select * from articles where id = ?", articleRowMapper(), id).get(0));
+        return Optional.ofNullable(jdbcTemplate.query("select writer,title,contents,id from articles where id = ?", articleRowMapper(), id).get(0));
     }
 
     private RowMapper<Article> articleRowMapper() {
