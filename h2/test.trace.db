@@ -1,0 +1,6 @@
+2023-03-20 10:18:18 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "ARTICLE" not found (this database is empty); SQL statement:
+select * from article [42104-214]
+2023-03-20 10:18:21 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "ARTICLE" not found (this database is empty); SQL statement:
+select * from article [42104-214]
