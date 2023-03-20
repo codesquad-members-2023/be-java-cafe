@@ -52,7 +52,7 @@ public class UserController {
         return "user/updateForm";
     }
 
-    @PostMapping("/update/{userId}")
+    @PutMapping("/update/{userId}")
     public String edit(@PathVariable String userId, @ModelAttribute User user) {
         userRepository.updateUser(userId, user);
         return "redirect:/users/list";
