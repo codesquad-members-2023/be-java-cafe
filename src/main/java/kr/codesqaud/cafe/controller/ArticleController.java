@@ -34,9 +34,8 @@ public class ArticleController {
 
     @GetMapping("/")
     public String index(Model model) {
-        List<Article> all = articleRepository.findAll();
-        model.addAttribute("list", all);
-        model.addAttribute("size", all.size());
+        model.addAttribute("list", articleRepository.findAll());
+        model.addAttribute("size", articleRepository.findAll().size());
         return "index";
     }
 
