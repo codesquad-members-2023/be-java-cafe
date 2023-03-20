@@ -43,9 +43,11 @@ public class AutoAppConfig implements WebMvcConfigurer {
         //return new MemoryArticleRepository();
     }
 
+
     public AutoAppConfig(DataSource dataSource) {
         this.dataSource = dataSource;
     }
+
     @Override
     public void addViewControllers(ViewControllerRegistry registry) {
         registry.setOrder(Ordered.HIGHEST_PRECEDENCE);

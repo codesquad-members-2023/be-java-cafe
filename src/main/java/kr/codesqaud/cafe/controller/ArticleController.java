@@ -36,7 +36,7 @@ public class ArticleController {
     public String articleDetails(@PathVariable long id, Model model) {
         model.addAttribute("article", qnaService.lookupById(id));
 
-        return "/qna/show";
+        return "qna/show";
     }
 
 }
