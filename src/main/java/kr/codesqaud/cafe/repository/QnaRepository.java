@@ -14,21 +14,19 @@ import java.util.concurrent.ConcurrentHashMap;
 public class QnaRepository {
 
     private Logger log = LoggerFactory.getLogger(getClass());
-    private static final Map<Integer, Qna> store = new ConcurrentHashMap<>();
+    private static final Map<String, Qna> store = new ConcurrentHashMap<>();
 
     public void save(Qna qna) {
-
-        int size = store.isEmpty() ? 0 : store.size();
-        qna.setQnaIndex(size);
-        store.put(size, qna);
+        String key = qna.getTitle();
+        store.put(key, qna);
     }
 
     public List<Qna> findAllQnas() {
         return new ArrayList<>(store.values());
     }
 
-    public Qna findByQnaIndex(Integer index) {
-        Qna qna = store.get(index);
+    public Qna findByQnaTitle(String title) {
+        Qna qna = store.get(title);
         return qna;
     }
 

@@ -1,16 +1,14 @@
 package kr.codesqaud.cafe.controller;
 
 import kr.codesqaud.cafe.domain.Qna;
+import kr.codesqaud.cafe.domain.User;
 import kr.codesqaud.cafe.repository.QnaRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -38,5 +36,13 @@ public class QnaController {
         model.addAttribute("qnaList", qnaList);
         log.info("debug log={}", qnaList.size());
         return "/qna/list";
+    }
+
+    @GetMapping("/qna/{title}")
+    public String findQna(@PathVariable String title, Model model) {
+        Qna qna = qnaRepository.findByQnaTitle(title);
+        model.addAttribute("qna", qna);
+        log.info("debug log={}", "findQna");
+        return "/qna/show";
     }
 }

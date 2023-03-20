@@ -8,8 +8,8 @@ public class Qna {
     private String contents;
 
     public Qna(String writer, String title, String contents) {
-        this.writer = writer;
         this.title = title;
+        this.writer = writer;
         this.contents = contents;
     }
 
