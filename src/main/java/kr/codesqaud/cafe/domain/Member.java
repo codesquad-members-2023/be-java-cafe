@@ -1,9 +1,7 @@
 package kr.codesqaud.cafe.domain;
 
 
-import java.sql.Date;
 import java.sql.Timestamp;
-import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Objects;
 
@@ -72,14 +70,23 @@ public class Member {
         this.updatedDate = updatedDate;
     }
 
-    public Member() { // JDBC 템플릿 쓸 때 기본 생성자를 열어야함
-    }
+    public Member() {}
 
     public Member(String userId, String nickname, String email, String password) {
         this.userId = userId;
         this.nickname = nickname;
         this.email = email;
         this.password = password;
+    }
+
+    public Member(Long id, String userId, String nickname, String email, String password, Timestamp createdDate, Timestamp updatedDate) {
+        this.id = id;
+        this.userId = userId;
+        this.nickname = nickname;
+        this.email = email;
+        this.password = password;
+        this.createdDate = createdDate;
+        this.updatedDate = updatedDate;
     }
 
     public boolean equals(long userId) {

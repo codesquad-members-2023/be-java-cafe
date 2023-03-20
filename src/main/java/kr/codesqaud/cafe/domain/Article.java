@@ -1,43 +1,75 @@
 package kr.codesqaud.cafe.domain;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.util.concurrent.atomic.AtomicLong;
+import java.sql.Timestamp;
+import java.time.format.DateTimeFormatter;
 
 public class Article {
-    private final Long id;
-    private final String writer;
-    private final String title;
-    private final String contents;
-    private LocalDateTime createdDate;
-    private static AtomicLong sequence = new AtomicLong(0L);
+    private Long id;
+    private String writer;
+    private String title;
+    private String contents;
+    private Timestamp createdDate;
+    private Timestamp updatedDate;
 
+    public Long getId() {
+        return id;
+    }
 
-    public Article(String writer, String title, String contents) {
-        this.id = generateId();
-        this.writer = writer;
-        this.title = title;
-        this.contents = contents;
-        this.createdDate = LocalDateTime.now();
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getWriter() {
         return writer;
     }
 
+    public void setWriter(String writer) {
+        this.writer = writer;
+    }
+
     public String getTitle() {
         return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
     }
 
     public String getContents() {
         return contents;
     }
 
+    public void setContents(String contents) {
+        this.contents = contents;
+    }
+
+    public String getCreatedDate() {
+        return createdDate.toLocalDateTime().format(DateTimeFormatter.ofPattern("yyyy-MM-dd hh:mm:ss"));
+    }
+
+    public void setCreatedDate(Timestamp createdDate) {
+        this.createdDate = createdDate;
+    }
+
+    public String getUpdatedDate() {
+        return createdDate.toLocalDateTime().format(DateTimeFormatter.ofPattern("yyyy-MM-dd hh:mm:ss"));
+    }
+
+    public void setUpdatedDate(Timestamp updatedDate) {
+        this.updatedDate = updatedDate;
+    }
+
+    public Article() {
+    }
+
+    public Article(String writer, String title, String contents) {
+        this.writer = writer;
+        this.title = title;
+        this.contents = contents;
+    }
+
     public boolean equals(Long articleId) {
         return this.id.equals(articleId);
     }
 
-    public long generateId() {
-        return sequence.incrementAndGet();
-    }
 }
