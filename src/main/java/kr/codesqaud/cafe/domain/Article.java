@@ -12,6 +12,13 @@ public class Article {
         this.content = content;
     }
 
+    public Article(String writer, String title, String content, int index) {
+        this.writer = writer;
+        this.title = title;
+        this.content = content;
+        this.index = index;
+    }
+
     public void setIndex(int index) {
         this.index = index;
     }
