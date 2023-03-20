@@ -44,7 +44,7 @@ public class JdbcMemberRepository implements MemberRepository {
     @Override
     public Optional<Member> findById(String userId) {
         try {
-            String sql = "select userId, password, userName, email from member where id = :userId";
+            String sql = "select userId, password, userName, email from member where userId = :userId";
             SqlParameterSource param = new MapSqlParameterSource("userId", userId);
             return Optional.of(template.queryForObject(sql, param, rowMapperMember()));
         } catch (EmptyResultDataAccessException e) {
