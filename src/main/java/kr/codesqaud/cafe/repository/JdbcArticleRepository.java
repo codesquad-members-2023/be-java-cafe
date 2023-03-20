@@ -35,7 +35,7 @@ public class JdbcArticleRepository implements ArticleRepository {
 
     @Override
     public Article findByIndex(int index) {
-        return null;
+        return jdbcTemplate.queryForObject("select * from article where index = ?", articleRowMapper(), index);
     }
 
     private RowMapper<Article> articleRowMapper() { //sql 결과를 받기위해 row mapping 필요
