@@ -25,7 +25,7 @@ public class ArticleController {
     }
 
     @PostMapping("/questions")
-    public String addContents(@ModelAttribute Article article) {
+    public String save(@ModelAttribute Article article) {
         logger.error("addContents {}",LocalDateTime.now());
         jdbcArticleRepository.save(article);
         return "redirect:/";
