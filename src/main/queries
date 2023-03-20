@@ -22,3 +22,16 @@ title VARCHAR(255),
 contents VARCHAR(500),
 id INT(10) AUTO_INCREMENT PRIMARY KEY
 );
+
+
+## H2 init
+
+
+CREATE TABLE articles
+(
+writer VARCHAR(255),
+title VARCHAR(255),
+contents VARCHAR(500),
+id int AUTO_INCREMENT,
+PRIMARY KEY (id)
+);

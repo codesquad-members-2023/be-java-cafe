@@ -38,4 +38,5 @@ public class ArticleController {
 
         return "/qna/show";
     }
+
 }
