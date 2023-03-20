@@ -19,6 +19,7 @@ public class Article {
         this.replyCount = 0;
     }
 
+
     public Article() {
     }
 
