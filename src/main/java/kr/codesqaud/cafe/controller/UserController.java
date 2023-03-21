@@ -54,23 +54,35 @@ public class UserController {
     }
 
     @GetMapping("/{userId}/updateUser")
-    public String updateUser(@PathVariable String userId, Model model) {
+    public String updateUser(@PathVariable String userId, Model model, HttpSession session) {
 
-        User findUser = memberRepository.findById(userId);
-        model.addAttribute("findUser", findUser);
+        User user = memberRepository.findById(userId);
+        Object value = session.getAttribute("user");
 
-        return "users/update_user";
+        if (value != null) {
+            User loginedUser = (User) value;
+            if (loginedUser.getUserId().equals(user.getUserId())) {
+                memberRepository.updateUser(user);
+                model.addAttribute("user", user);
+
+                return "users/update_user";
+            }
+        }
+
+
+        return "redirect:/users/list";
     }
 
     @PutMapping("/{userId}/updateUser") // TODO : DTO 고려해보기, 로직을 service로 넘기기
-    public String updateUserPost(@ModelAttribute User user, @PathVariable String userId, HttpSession session) {
+    public String updateUserPost(@ModelAttribute User user, HttpSession session) {
 
-        if (memberRepository.findById(userId).getPassword().equals(user.getPassword())) {
+
+        if (memberRepository.findById(user.getUserId()).getPassword().equals(user.getPassword())) {
             return "users/error_page";
         }
 
         memberRepository.updateUser(user);
-        return "redirect:/users/list";
+        return "users/list";
     }
 
     @GetMapping("/login")
@@ -81,7 +93,6 @@ public class UserController {
     @PostMapping("/login") //TODO: 아이디를 잘못 입력했을 경우 예외처리
     public String loginUser(@RequestParam String userId, @RequestParam String password, HttpSession session) {
         User user = memberRepository.findById(userId);
-        log.info("user password={}, input password={}", user.getPassword(), password);
 
         if (user.getPassword().equals(password)) {
             session.setAttribute("user", user);
@@ -93,7 +104,8 @@ public class UserController {
 
     @GetMapping("/logout")
     public String logoutUser(HttpSession session) {
+        session.invalidate();
 
-        return "";
+        return "redirect:/users/list";
     }
 }
