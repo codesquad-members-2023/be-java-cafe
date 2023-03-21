@@ -78,5 +78,22 @@ public class UserController {
         return "users/login";
     }
 
+    @PostMapping("/login")
+    public String loginUser(@RequestParam String userId, @RequestParam String password, HttpSession session) {
+        User user = memberRepository.findById(userId);
+        log.info("user password={}, input password={}", user.getPassword(), password);
 
+        if (user.getPassword().equals(password)) {
+            session.setAttribute("user", user);
+            return "redirect:/users/list";
+        }
+
+        return "redirect:/user/login.html";
+    }
+
+    @GetMapping("/logout")
+    public String logoutUser(HttpSession session) {
+
+        return "";
+    }
 }
