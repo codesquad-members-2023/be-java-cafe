@@ -1,7 +1,7 @@
 package kr.codesqaud.cafe.controller;
 
 import kr.codesqaud.cafe.domain.Article;
-import kr.codesqaud.cafe.repository.ArticleRepository;
+import kr.codesqaud.cafe.repository.article.ArticleRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

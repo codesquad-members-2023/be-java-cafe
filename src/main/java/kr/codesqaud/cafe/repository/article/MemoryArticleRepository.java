@@ -1,4 +1,4 @@
-package kr.codesqaud.cafe.repository;
+package kr.codesqaud.cafe.repository.article;
 
 import kr.codesqaud.cafe.domain.Article;
 import org.slf4j.Logger;
@@ -11,7 +11,7 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 @Repository
-public class ArticleRepository {
+public class MemoryArticleRepository implements ArticleRepository {
 
     private Logger log = LoggerFactory.getLogger(getClass());
     private static final Map<Integer, Article> store = new ConcurrentHashMap<>();
