@@ -34,7 +34,7 @@ public class JdbcArticleRepository implements ArticleRepository {
 
     @Override
     public List<Article> findAll() {
-        String sql = "SELECT ID, TITLE, BODY, WRITER, CREATED_AT, UPDATED_AT FROM ARTICLE";
+        String sql = "SELECT ID, TITLE, BODY, WRITER, CREATED_AT, UPDATED_AT FROM ARTICLE ORDER BY ID DESC";
         return jdbcTemplate.query(sql, new ArticleRowMapper());
     }
 
