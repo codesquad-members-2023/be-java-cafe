@@ -46,9 +46,7 @@ public class ArticleController {
     public String articleShow(@PathVariable Long articleSequence, Model model) {
         Article findArticle = articleRepository.findByArticleSequence(articleSequence);
         model.addAttribute("article", findArticle);
-        log.trace("제목: {}", findArticle.getTitle());
-        log.trace("글쓴이: {}", findArticle.getWriter());
-        log.trace("내용: {}", findArticle.getContents());
+        log.trace("제목: {}, 글쓴이: {}, 내용: {}", findArticle.getTitle(), findArticle.getWriter(), findArticle.getContents());
         return "qna/show";
     }
 }
