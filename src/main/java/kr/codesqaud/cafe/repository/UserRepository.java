@@ -15,8 +15,14 @@ public class UserRepository {
     private static final Logger logger = LoggerFactory.getLogger(UserRepository.class);
 
     public void save(User user) {
+        users.removeIf(preUser -> preUser.getId().equals(user.getId()));
         users.add(user);
         logger.info("save");
+    }
+    public Optional<User> findById(String id) {
+        return users.stream()
+                .filter(user -> user.getId().equals(id))
+                .findAny();
     }
 
     public Optional<User> findByName(String name) {
