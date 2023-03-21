@@ -6,9 +6,9 @@ import java.util.List;
 import java.util.Optional;
 
 public interface ArticleRepository {
-    void saveArticle(Article article);
+    boolean saveArticle(Article article);
 
-    Optional<Article> findByIndex(String index);
+    Optional<Article> findByIndex(long index);
 
     List<Article> findAllArticle();
 }

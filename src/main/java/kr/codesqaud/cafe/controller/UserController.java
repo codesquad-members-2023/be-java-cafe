@@ -16,7 +16,6 @@ import java.util.Optional;
 public class UserController {
     private final Logger log = LoggerFactory.getLogger(UserController.class);
 
-    // private final MemoryUserRepository repository;
     private final JdbcTemplateUserRepository repository;
 
     @Autowired

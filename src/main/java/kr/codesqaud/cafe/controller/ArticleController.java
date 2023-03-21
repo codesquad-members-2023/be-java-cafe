@@ -1,7 +1,7 @@
 package kr.codesqaud.cafe.controller;
 
 import kr.codesqaud.cafe.domain.Article;
-import kr.codesqaud.cafe.repository.MemoryArticleRepository;
+import kr.codesqaud.cafe.repository.JdbcTemplateArticleRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,10 +20,10 @@ import java.util.Optional;
 public class ArticleController {
     private final Logger log = LoggerFactory.getLogger(UserController.class);
 
-    private final MemoryArticleRepository repository;
+    private final JdbcTemplateArticleRepository repository;
 
     @Autowired
-    public ArticleController(MemoryArticleRepository repository) {
+    public ArticleController(JdbcTemplateArticleRepository repository) {
         this.repository = repository;
     }
 
@@ -50,7 +50,7 @@ public class ArticleController {
 
     // 질문 상세보기 Mapping
     @GetMapping("/articles/{index}")
-    public String showBoardDetails(Model model, @PathVariable String index) {
+    public String showBoardDetails(Model model, @PathVariable long index) {
         Optional<Article> article = repository.findByIndex(index);
 
         // 질문글 유무 확인후 성공/실패 넘겨주기

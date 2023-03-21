@@ -13,15 +13,17 @@ public class MemoryArticleRepository implements ArticleRepository {
     private final List<Article> articleStore = new ArrayList<>();
 
     @Override
-    public void saveArticle(Article article) {
+    public boolean saveArticle(Article article) {
         article.setIndex(articleStore.size() + 1);
         articleStore.add(article);
+
+        return true;
     }
 
     @Override
-    public Optional<Article> findByIndex(String index) {
+    public Optional<Article> findByIndex(long index) {
         return articleStore.stream()
-                .filter(user -> user.isIndexEquals(Long.parseLong(index)))
+                .filter(user -> user.isIndexEquals(index))
                 .findFirst();
     }
 

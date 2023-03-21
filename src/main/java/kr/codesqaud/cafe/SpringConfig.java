@@ -1,5 +1,7 @@
 package kr.codesqaud.cafe;
 
+import kr.codesqaud.cafe.repository.ArticleRepository;
+import kr.codesqaud.cafe.repository.JdbcTemplateArticleRepository;
 import kr.codesqaud.cafe.repository.JdbcTemplateUserRepository;
 import kr.codesqaud.cafe.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,5 +22,10 @@ public class SpringConfig {
     @Bean
     public UserRepository userRepository() {
         return new JdbcTemplateUserRepository(dataSource);
+    }
+
+    @Bean
+    public ArticleRepository articleRepository() {
+        return new JdbcTemplateArticleRepository(dataSource);
     }
 }
