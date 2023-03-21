@@ -1,7 +1,6 @@
 package kr.codesqaud.cafe.cafeservice.repository;
 
 import kr.codesqaud.cafe.cafeservice.domain.Member;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
@@ -11,7 +10,6 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Repository
-@Qualifier
 public class MemoryMemberRepository implements MemberRepository {
     final List<Member> store = new ArrayList<>();
 
@@ -45,5 +43,12 @@ public class MemoryMemberRepository implements MemberRepository {
         findMember.setEmail(updateMember.getEmail());
         findMember.setPassword(updateMember.getPassword());
         findMember.setUserName(updateMember.getUserName());
+    }
+
+    @Override
+    public Optional<Member> findByLoginId(String loginId) {
+        return findAll().stream()
+                .filter(member -> member.getEmail().equals(loginId))
+                .findFirst();
     }
 }
