@@ -70,7 +70,7 @@ public class JdbcMemberRepository implements MemberRepository {
 
     @Override
     public void update(Member member) {
-        String sql = "update memeber set password = :password, userName = :userName, email = :email where =:userId";
+        String sql = "update member set password = :password, userName = :userName, email = :email where =:userId";
         SqlParameterSource param = new BeanPropertySqlParameterSource(member); // 객체를 찾아야하니까 bean
         template.update(sql,param); // template.update -> int 반환
     }
