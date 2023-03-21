@@ -22,7 +22,7 @@ public class UserController {
         this.userService = userService;
     }
 
-    @PostMapping("user/creation")
+    @PostMapping("/user/creation")
     public RedirectView creatUser(@ModelAttribute("user") User user) {
         userService.createUser(user);
         RedirectView redirectView = new RedirectView();
@@ -36,19 +36,19 @@ public class UserController {
         return "list2";
     }
 
-    @GetMapping("users/{userId}")
+    @GetMapping("/users/{userId}")
     public String findUserProfile(@PathVariable("userId") String userId, Model model) {
         model.addAttribute("user", userService.findUserByUserId(userId));
         return "profile2";
     }
 
-    @GetMapping("users/{userId}/form")
+    @GetMapping("/users/{userId}/form")
     public String findUserProfileEdit(@PathVariable("userId") String userId, Model model) {
         model.addAttribute(userService.findUserByUserId(userId));
         return "updateForm";
     }
 
-    @PutMapping("users/update")
+    @PutMapping("/users/update")
     public RedirectView updateUser(@ModelAttribute("user") User user) {
         userService.updateUser(user);
         RedirectView redirectView = new RedirectView();
