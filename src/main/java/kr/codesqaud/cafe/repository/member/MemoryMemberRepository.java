@@ -30,8 +30,8 @@ public class MemoryMemberRepository implements MemberRepository {
     }
 
     @Override
-    public void updateUser(String userId, User updateUser) {
-        User user = findById(userId);
+    public void updateUser(User updateUser) {
+        User user = findById(updateUser.getUserId());
         user.setName(updateUser.getName());
         user.setUserId(updateUser.getUserId());
         user.setPassword(updateUser.getPassword());

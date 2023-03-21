@@ -63,13 +63,13 @@ public class UserController {
     }
 
     @PutMapping("/{userId}/updateUser") // TODO : DTO 고려해보기, 로직을 service로 넘기기
-    public String updateUserPost(@PathVariable String userId, @ModelAttribute User user, @RequestParam String newPassword) {
+    public String updateUserPost(@ModelAttribute User user, @PathVariable String userId, HttpSession session) {
 
-        if (!user.getPassword().equals(memberRepository.findById(userId).getPassword()) || !user.getPassword().equals(newPassword)) {
+        if (memberRepository.findById(userId).getPassword().equals(user.getPassword())) {
             return "users/error_page";
         }
 
-        memberRepository.updateUser(userId, user);
+        memberRepository.updateUser(user);
         return "redirect:/users/list";
     }
 

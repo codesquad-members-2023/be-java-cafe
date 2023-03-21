@@ -43,9 +43,9 @@ public class H2JDBCMemberRepository implements MemberRepository {
     }
 
     @Override
-    public void updateUser(String userId, User updateUser) {
+    public void updateUser(User updateUser) {
         String sql = "update member set name=?, email=? where userid=?";
 
-            template.update(sql, updateUser.getName(), updateUser.getEmail(), userId);
+            template.update(sql, updateUser.getName(), updateUser.getEmail(), updateUser.getUserId());
     }
 }

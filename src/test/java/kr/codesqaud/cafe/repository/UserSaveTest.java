@@ -54,7 +54,7 @@ class UserSaveTest {
 
         User after = new User("userId", "password", "update", "user@email.com");
 
-        memberRepository.updateUser(user.getUserId(), after);
+        memberRepository.updateUser(after);
         User updatedUser = memberRepository.findById(user.getUserId());
 
         Assertions.assertThat(updatedUser.getName()).isEqualTo("update");
