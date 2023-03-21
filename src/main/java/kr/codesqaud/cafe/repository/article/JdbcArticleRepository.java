@@ -64,7 +64,7 @@ public class JdbcArticleRepository implements ArticleRepository {
 
     @Override
     public void update(Article article) {
-        String sql = "update article set title = :title, contents = :contents where = :id ";
+        String sql = "update article set title = :title, contents = :contents where id = :id ";
         SqlParameterSource param = new BeanPropertySqlParameterSource(article); // 객체를 찾아야하니까 bean
         template.update(sql,param); // template.update -> int 반환
     }
