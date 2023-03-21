@@ -1,26 +1,23 @@
 package kr.codesqaud.cafe.cafeservice.domain;
 
 
-import jdk.jshell.Snippet;
-
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 public class Article {
     private Long id;
     private String writer;
     private String title;
     private String content;
-    private LocalDateTime createDate;
+    private LocalDateTime createdDate;
     private int replyCount;
 
     public Article(String writer, String title, String contents) {
         this.writer = writer;
         this.title = title;
         this.content = contents;
-        this.createDate = LocalDateTime.now();
         this.replyCount = 0;
     }
-
 
     public Article() {
     }
@@ -57,12 +54,12 @@ public class Article {
         this.content = content;
     }
 
-    public LocalDateTime getCreateDate() {
-        return createDate;
+    public LocalDateTime getCreatedDate() {
+        return LocalDateTime.parse(createdDate.format(DateTimeFormatter.ofPattern("yyyy-MM-dd hh:mm:ss")));
     }
 
-    public void setCreateDate(LocalDateTime createDate) {
-        this.createDate = createDate;
+    public void setCreatedDate(LocalDateTime createdDate) {
+        this.createdDate = createdDate;
     }
 
     public int getReplyCount() {
@@ -80,7 +77,7 @@ public class Article {
                 ", writer='" + writer + '\'' +
                 ", title='" + title + '\'' +
                 ", content='" + content + '\'' +
-                ", createDate=" + createDate +
+                ", createDate=" + createdDate +
                 ", replyCount=" + replyCount +
                 '}';
     }
