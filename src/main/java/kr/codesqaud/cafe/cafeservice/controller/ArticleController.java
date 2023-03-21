@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import java.util.List;
+import java.util.Locale;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 
@@ -29,11 +30,7 @@ public class ArticleController {
 
     @PostMapping("/questions")
     public String questions(@ModelAttribute Article article) {
-        log.info(" articlId={}", article.getId());
-        log.info(" articlContent={}", article.getContent());
-        log.info(" articlegetTitle={}", article.getTitle());
-        log.info(" articleCreateDate={}", article.getCreateDate());
-        log.info(" articlwriter={}", article.getWriter());
+        log.debug("article{}=", article);
         repository.save(article);
         return "redirect:/";
     }
@@ -48,8 +45,8 @@ public class ArticleController {
     @GetMapping("/articles/{index}")
     public String showArticle(@PathVariable Long index, Model model) {
         try {
-            Optional<Article> byArticle = repository.findById(index);
-            model.addAttribute("article", byArticle);
+            Optional<Article> findArticle = repository.findById(index);
+            model.addAttribute("article", findArticle);
             return "qna/show";
         } catch (NoSuchElementException e) {
             return "fail";
