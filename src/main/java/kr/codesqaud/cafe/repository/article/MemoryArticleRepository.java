@@ -1,6 +1,7 @@
-package kr.codesqaud.cafe.repository;
+package kr.codesqaud.cafe.repository.article;
 
-import kr.codesqaud.cafe.article.Article;
+import kr.codesqaud.cafe.domain.Article;
+import kr.codesqaud.cafe.repository.article.ArticleRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
@@ -8,7 +9,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public class MemoryArticleRepository implements ArticleRepository{
+public class MemoryArticleRepository implements ArticleRepository {
 
     private List<Article> articleStore = new ArrayList<>();
 
@@ -19,10 +20,11 @@ public class MemoryArticleRepository implements ArticleRepository{
     }
 
     @Override
-    public Optional<Article> findArticleByWriter(int id) {
+    public Article findArticleById(int id) {
         return articleStore.stream()
                 .filter(article -> article.getId() == (id))
-                .findFirst();
+                .findAny()
+                .orElseThrow();
     }
 
     @Override

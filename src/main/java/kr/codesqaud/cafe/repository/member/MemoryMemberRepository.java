@@ -1,6 +1,7 @@
-package kr.codesqaud.cafe.repository;
+package kr.codesqaud.cafe.repository.member;
 
-import kr.codesqaud.cafe.user.User;
+import kr.codesqaud.cafe.domain.User;
+import kr.codesqaud.cafe.repository.member.MemberRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.*;
@@ -16,10 +17,11 @@ public class MemoryMemberRepository implements MemberRepository {
     }
 
     @Override
-    public Optional<User> findById(String userId) {
+    public User findById(String userId) {
         return store.stream()
                 .filter(user -> user.getUserId().equals(userId))
-                .findFirst();
+                .findAny()
+                .get();
     }
 
     @Override
@@ -29,11 +31,10 @@ public class MemoryMemberRepository implements MemberRepository {
 
     @Override
     public void updateUser(String userId, User updateUser) {
-        User user = findById(userId).get();
+        User user = findById(userId);
         user.setName(updateUser.getName());
         user.setUserId(updateUser.getUserId());
         user.setPassword(updateUser.getPassword());
         user.setEmail(updateUser.getEmail());
     }
-
 }

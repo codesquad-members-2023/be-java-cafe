@@ -1,10 +1,13 @@
-package kr.codesqaud.cafe.user;
+package kr.codesqaud.cafe.domain;
 
 public class User {
     private String userId;
     private String password;
     private String name;
     private String email;
+
+    public User() {
+    }
 
     public User(String userId, String password, String name, String email) {
         this.userId = userId;
