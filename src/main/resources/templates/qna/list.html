@@ -20,13 +20,12 @@
               </div>
           </div>
           <ul class="list">
-
-              {{#qnaList}}
+              {{#articleList}}
               <li>
                   <div class="wrap">
                       <div class="main">
                           <strong class="subject">
-                              <a href="./qna/show">{{title}}</a>
+                              <a href="/qna/{{id}}">{{title}}</a>
                           </strong>
                           <div class="auth-info">
                               <i class="icon-add-comment"></i>
@@ -35,12 +34,12 @@
                           </div>
                           <div class="reply" title="댓글">
                               <i class="icon-reply"></i>
-                              <span class="point">{{qnaIndex}}</span>
+                              <span class="point">{{id}}</span>
                           </div>
                       </div>
                   </div>
               </li>
-              {{/qnaList}}
+              {{/articleList}}
 
           </ul>
       </div>
