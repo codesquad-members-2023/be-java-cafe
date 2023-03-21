@@ -1,9 +1,11 @@
 package kr.codesqaud.cafe.repository;
 
 import kr.codesqaud.cafe.domain.Article;
+import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 @Repository
@@ -28,6 +30,8 @@ public class MemoryArticleRepository implements ArticleRepository{
 
     @Override
     public List<Article> findAll() {
+        ArrayList<Article> articles = new ArrayList<>(this.articles);
+        Collections.reverse(articles);
         return articles;
     }
 }

@@ -50,7 +50,7 @@ public class H2DBArticleRepository implements ArticleRepository{
 
     @Override
     public List<Article> findAll() {
-        String sql = "select id, writer, title, contents, createDate from article";
+        String sql = "select id, writer, title, contents, createDate from article order by id desc";
 
         return template.query(sql, BeanPropertyRowMapper.newInstance(Article.class));
     }
