@@ -44,7 +44,7 @@
                     </ul>
                 </li>
                 <li><a th:href="@{users/list}"
-                       href="/users/list"><i class="glyphicon glyphicon-user"></i></a></li>
+                       href="/members/list"><i class="glyphicon glyphicon-user"></i></a></li>
             </ul>
         </div>
     </div>
@@ -75,7 +75,7 @@
                                       href="index.html">Posts</a></li>
                 <li><a href="user/login.html" role="button">로그인</a></li>
                 <li><a th:href="@{users/add}"
-                       href="users/add" role="button">회원가입</a></li>
+                       href="members/add" role="button">회원가입</a></li>
                 <!--
                 <li><a href="#loginModal" role="button" data-toggle="modal">로그인</a></li>
                 <li><a href="#registerModal" role="button" data-toggle="modal">회원가입</a></li>
@@ -101,7 +101,7 @@
                             <div class="auth-info">
                                 <i class="icon-add-comment"></i>
                                 <span class="time">2016-01-15 18:47</span>
-                                <a th:href="@{/user/profile}"
+                                <a th:href="@{|/users/profile/${article.writer}|}"
                                    href="./user/profile.html" class="author" th:text="${article.writer}">글쓴이</a>
                             </div>
                             <div class="reply" title="댓글">
