@@ -9,6 +9,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpSession;
 import java.util.List;
 
 @Controller
@@ -25,12 +26,16 @@ public class UserController {
         this.memberRepository = memberRepository;
     }
 
-    // 회원 가입
     @PostMapping("/create")
     public String addUser(@ModelAttribute User user) {
         memberRepository.save(user);
 
         return "redirect:/users/list";
+    }
+
+    @GetMapping("/form")
+    public String goSignUpPage() {
+        return "users/form";
     }
 
     @GetMapping("/list")
@@ -67,5 +72,11 @@ public class UserController {
         memberRepository.updateUser(userId, user);
         return "redirect:/users/list";
     }
+
+    @GetMapping("/login")
+    public String goLoginPage() {
+        return "users/login";
+    }
+
 
 }
