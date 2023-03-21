@@ -10,7 +10,6 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-@Qualifier
 public class MemoryArticleRepository implements ArticleRepository {
     final List<Article> store = new ArrayList<>();
 
