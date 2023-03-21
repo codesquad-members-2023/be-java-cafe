@@ -3,11 +3,8 @@ package kr.codesqaud.cafe.controller;
 
 import kr.codesqaud.cafe.basic.Article;
 import kr.codesqaud.cafe.repository.ArticleRepository;
-import kr.codesqaud.cafe.repository.h2Repository.H2ArticleRepository;
-import kr.codesqaud.cafe.repository.memoryRepository.MemoryArticleRepository;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
@@ -30,7 +27,7 @@ public class ArticleController {
                          @RequestParam String title,
                          @RequestParam String contents) {
 
-        articleRepository.add(new Article(writer, title, contents));
+        articleRepository.save(new Article(writer, title, contents));
         return "redirect:/qna/list";
     }
 

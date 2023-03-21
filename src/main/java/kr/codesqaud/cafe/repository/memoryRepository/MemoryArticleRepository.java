@@ -19,7 +19,7 @@ public class MemoryArticleRepository implements ArticleRepository {
         this.articleRepository = new ArrayList<>();
     }
 
-    public void add(Article article) {
+    public void save(Article article) {
         int articleId = articleRepository.size() + 1;
         article.setArticleId(articleId);
         articleRepository.add(article);
