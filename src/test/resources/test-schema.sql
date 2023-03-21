@@ -1,6 +1,6 @@
 create table users
 (
-    id       int         not null auto_increment primary key,
+    id       int         primary key auto_increment ,
     user_id  varchar(30) not null,
     password varchar(30) not null,
     name     varchar(30) not null,
