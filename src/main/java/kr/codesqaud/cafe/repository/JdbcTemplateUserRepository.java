@@ -44,7 +44,7 @@ public class JdbcTemplateUserRepository implements UserRepository {
 
     public boolean update(User user) {
         // 해당 번호 존재여부 체크
-        if(!findByUserNum(user.getUserNum()).isEmpty()) {
+        if (!findByUserNum(user.getUserNum()).isEmpty()) {
             jdbcTemplate.update("update cafe_user set userId=?, password=?, name=?, email=? where userNum=?",
                     user.getUserId(), user.getPassword(), user.getName(), user.getEmail(), user.getUserNum());
             return true;

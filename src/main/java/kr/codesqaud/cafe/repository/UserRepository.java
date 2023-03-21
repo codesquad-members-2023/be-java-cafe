@@ -9,6 +9,7 @@ public interface UserRepository {
     boolean save(User user);
 
     Optional<User> findById(String id);
-//    Optional<User> findByName(String name);
+
+    //    Optional<User> findByName(String name);
     List<User> findAll();
 }

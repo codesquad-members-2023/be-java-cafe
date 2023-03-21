@@ -10,7 +10,7 @@ public class Article {
 
     private LocalDateTime createdTime;
 
-    public Article(){
+    public Article() {
         this.createdTime = LocalDateTime.now();
         System.out.println(createdTime);
     }

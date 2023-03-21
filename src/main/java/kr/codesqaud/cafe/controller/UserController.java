@@ -28,7 +28,7 @@ public class UserController {
     public String signUp(@ModelAttribute User user) {
         log.debug("회원가입 POST: 보내졌는가?");
 
-        if(repository.save(user)){
+        if (repository.save(user)) {
             return "redirect:users";
         }
         return "user/form_failed";
@@ -51,7 +51,7 @@ public class UserController {
         Optional<User> profile = repository.findById(userId);
 
         // 프로필 유무 확인후 성공/실패 넘겨주기
-        if(profile.isPresent()) {
+        if (profile.isPresent()) {
             log.debug("프로필 Mapping: 프로필 맵핑 성공~~~~~!!!!?");
             model.addAttribute("profile", profile.get());
             return "user/profile";
@@ -62,10 +62,10 @@ public class UserController {
 
     // 사용자 정보 수정 GET
     @GetMapping("/users/{userId}/form")
-    public String updateForm(Model model, @PathVariable String userId){
+    public String updateForm(Model model, @PathVariable String userId) {
         Optional<User> user = repository.findById(userId);
 
-        if(user.isPresent()) {
+        if (user.isPresent()) {
             log.debug("사용자 정보 수정: 정보수정 브라우저 맵핑 성공~~~~~!!!!?");
             model.addAttribute("user", user.get());
         }
@@ -78,7 +78,7 @@ public class UserController {
         log.debug("사용자 정보 수정: put 전달 완료");
 
         Optional<User> temp = repository.findById(userId);
-        if(temp.isPresent()) {
+        if (temp.isPresent()) {
             log.debug("사용자 정보 수정: 정보 수정 & 저장 성공");
             user.setUserNum(temp.get().getUserNum());
             repository.update(user);

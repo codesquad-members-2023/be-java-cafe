@@ -14,6 +14,7 @@ public class MemoryUserRepository implements UserRepository {
 
     @Override
     public boolean save(User user) {
+        // 로직 변경으로 인해 에러 발생 제거 + 이전 기록 보관용
 //        if (index == 0 && isIdDuplicate(user.getUserId())) {
 //            // id 중복 체크후 저장
 //            user.setUserNum(store.size() + 1);
