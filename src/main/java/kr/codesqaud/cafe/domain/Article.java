@@ -1,24 +1,24 @@
 package kr.codesqaud.cafe.domain;
 
-public class Qna {
+public class Article {
 
-    private int qnaIndex;
+    private int id;
     private String writer;
     private String title;
     private String contents;
 
-    public Qna(String writer, String title, String contents) {
-        this.writer = writer;
+    public Article(String writer, String title, String contents) {
         this.title = title;
+        this.writer = writer;
         this.contents = contents;
     }
 
-    public int getQnaIndex() {
-        return qnaIndex;
+    public int getId() {
+        return id;
     }
 
-    public void setQnaIndex(int qnaIndex) {
-        this.qnaIndex = qnaIndex;
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getWriter() {
