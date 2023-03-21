@@ -14,16 +14,16 @@ public class MemoryArticleRepository implements ArticleRepository {
 
     @Override
     public boolean saveArticle(Article article) {
-        article.setIndex(articleStore.size() + 1);
+        article.setId(articleStore.size() + 1);
         articleStore.add(article);
 
         return true;
     }
 
     @Override
-    public Optional<Article> findByIndex(long index) {
+    public Optional<Article> findById(long id) {
         return articleStore.stream()
-                .filter(user -> user.isIndexEquals(index))
+                .filter(user -> user.isIndexEquals(id))
                 .findFirst();
     }
 

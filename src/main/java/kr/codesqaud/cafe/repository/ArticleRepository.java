@@ -8,7 +8,7 @@ import java.util.Optional;
 public interface ArticleRepository {
     boolean saveArticle(Article article);
 
-    Optional<Article> findByIndex(long index);
+    Optional<Article> findById(long id);
 
     List<Article> findAllArticle();
 }

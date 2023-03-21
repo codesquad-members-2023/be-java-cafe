@@ -38,13 +38,6 @@ public class MemoryUserRepository implements UserRepository {
                 .findFirst();
     }
 
-//    @Override
-//    public Optional<User> findByName(String name) {
-//        return store.values().stream()
-//                .filter(user -> user.getName().equals(name))
-//                .findAny();
-//    }
-
     @Override
     public List<User> findAll() {
         return new ArrayList<>(Collections.unmodifiableList(store));

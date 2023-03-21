@@ -27,10 +27,10 @@ public class JdbcTemplateUserRepository implements UserRepository {
         // 아이디 중복 여부 확인
         if (findById(user.getUserId()).isEmpty()) {
             SimpleJdbcInsert jdbcInsert = new SimpleJdbcInsert(jdbcTemplate);
-            jdbcInsert.withTableName("cafe_user").usingGeneratedKeyColumns("userNum");
+            jdbcInsert.withTableName("cafe_user").usingGeneratedKeyColumns("id");
 
             Map<String, Object> parameters = new HashMap<>();
-            parameters.put("userId", user.getUserId());
+            parameters.put("id", user.getUserId());
             parameters.put("password", user.getPassword());
             parameters.put("name", user.getName());
             parameters.put("email", user.getEmail());
@@ -71,7 +71,7 @@ public class JdbcTemplateUserRepository implements UserRepository {
     private RowMapper<User> userRowMapper() {
         return (rs, rowNum) -> {
             User user = new User();
-            user.setUserNum(rs.getLong("userNum"));
+            user.setUserNum(rs.getLong("id"));
             user.setUserId(rs.getString("userId"));
             user.setPassword(rs.getString("password"));
             user.setName(rs.getString("name"));

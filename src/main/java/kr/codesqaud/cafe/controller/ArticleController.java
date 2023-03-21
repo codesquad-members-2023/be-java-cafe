@@ -42,19 +42,18 @@ public class ArticleController {
         log.debug("내가 싼 글(똥) 목록");
 
         List<Article> articles = repository.findAllArticle();
-        Collections.reverse(articles); // 오래전 글이 아래로 내려 가야함
         model.addAttribute("articles", articles);
 
         return "index";
     }
 
     // 질문 상세보기 Mapping
-    @GetMapping("/articles/{index}")
-    public String showBoardDetails(Model model, @PathVariable long index) {
-        Optional<Article> article = repository.findByIndex(index);
+    @GetMapping("/articles/{id}")
+    public String showBoardDetails(Model model, @PathVariable long id) {
+        Optional<Article> article = repository.findById(id);
 
         // 질문글 유무 확인후 성공/실패 넘겨주기
-        if(article.isPresent()){
+        if (article.isPresent()) {
             log.debug("질문글 Mapping: 맵핑 성공!!!!");
             model.addAttribute("article", article.get());
             return "qna/show";
