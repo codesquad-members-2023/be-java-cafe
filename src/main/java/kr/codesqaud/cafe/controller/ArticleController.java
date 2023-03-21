@@ -1,7 +1,7 @@
 package kr.codesqaud.cafe.controller;
 
 import kr.codesqaud.cafe.domain.Article;
-import kr.codesqaud.cafe.repository.ArticleRepository;
+import kr.codesqaud.cafe.repository.JdbcArticleRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
@@ -16,11 +16,11 @@ import java.util.NoSuchElementException;
 @Controller
 public class ArticleController {
 
-    private final ArticleRepository articleRepository;
+    private final JdbcArticleRepository articleRepository;
 
     Logger logger = LoggerFactory.getLogger(ArticleController.class);
 
-    public ArticleController(ArticleRepository articleRepository) {
+    public ArticleController(JdbcArticleRepository articleRepository) {
         this.articleRepository = articleRepository;
     }
 
@@ -34,19 +34,15 @@ public class ArticleController {
 
     @GetMapping("/")
     public String index(Model model) {
-        List<Article> all = articleRepository.findAll();
-        model.addAttribute("list", all);
-        model.addAttribute("size", all.size());
+        model.addAttribute("list", articleRepository.findAll());
+        model.addAttribute("size", articleRepository.findAll().size());
         return "index";
     }
 
     @GetMapping("/articles/{id}")
     public String showArticle(@PathVariable Long id, Model model) {
-        try {
-            model.addAttribute("article", articleRepository.findById(id).orElseThrow());
-        } catch (NoSuchElementException e) {
-            return "qna/show_failed";
-        }
+        model.addAttribute("article", articleRepository.findById(id)
+                .orElseThrow(() -> new NoSuchElementException("해당하는 글이 없습니다.")));
         return "qna/show";
     }
 }
