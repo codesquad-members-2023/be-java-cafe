@@ -1,11 +1,10 @@
 package kr.codesqaud.cafe.controller;
 
 
-import kr.codesqaud.cafe.domain.User;
-import kr.codesqaud.cafe.repository.UserRepository;
+import kr.codesqaud.cafe.domain.Member;
+import kr.codesqaud.cafe.repository.Member.JdbcMemberRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -14,36 +13,36 @@ import java.util.List;
 import java.util.Optional;
 
 @Controller
-public class UserController {
+public class MemberController {
 
-    private UserRepository userRepository;
+    private JdbcMemberRepository jdbcMemberRepository;
 
 
-    Logger logger = LoggerFactory.getLogger(UserController.class);
+    Logger logger = LoggerFactory.getLogger(MemberController.class);
 
-    public UserController(UserRepository userRepository) {
-        this.userRepository = userRepository;
+    public MemberController(JdbcMemberRepository jdbcMemberRepository) {
+        this.jdbcMemberRepository = jdbcMemberRepository;
         System.out.println(this.getClass());
     }
 
     @PostMapping("/users")
-    public String addUser(@ModelAttribute("user") User user) {
+    public String addUser(@ModelAttribute("user") Member member) {
         logger.debug("addUser");
-        userRepository.save(user);
+        jdbcMemberRepository.save(member);
         return "redirect:/users";
     }
 
     @GetMapping("/users")
     public String getUserList(Model model) {
         logger.debug("getUserList");
-        List<User> userList = userRepository.findAll();
+        List<Member> userList = jdbcMemberRepository.findAll();
         model.addAttribute("users", userList);
         return "user/list";
     }
 
     @RequestMapping("/profile/{userId}")
     public String getUser(@PathVariable String userId, Model model) {
-        Optional<User> user = userRepository.findById(userId);
+        Optional<Member> user = jdbcMemberRepository.findById(userId);
         model.addAttribute("profile", user.orElseThrow(IllegalArgumentException::new));
         return "user/profile";
     }
@@ -52,16 +51,16 @@ public class UserController {
     public String updateUser(@PathVariable("userId") String userId, Model model) {
         logger.debug("updateUser : GET");
 
-        Optional<User> updateUser = userRepository.findById(userId);
+        Optional<Member> updateUser = jdbcMemberRepository.findById(userId);
         // Model 과 View 연결
         model.addAttribute("user", updateUser.orElseThrow());
         return "user/updateForm";
     }
 
     @PutMapping("/users/{userId}")
-    public String updateUser(@ModelAttribute("user") User user) {
+    public String updateUser(@ModelAttribute("user") Member member) {
         logger.debug("updateUser : PUT");
-        userRepository.updateUser(user);
+        jdbcMemberRepository.update(member);
         return "redirect:/users";
     }
 
