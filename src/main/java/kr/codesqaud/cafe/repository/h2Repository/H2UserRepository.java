@@ -1,6 +1,5 @@
 package kr.codesqaud.cafe.repository.h2Repository;
 
-import kr.codesqaud.cafe.basic.Article;
 import kr.codesqaud.cafe.basic.User;
 import kr.codesqaud.cafe.repository.UserRepository;
 import org.slf4j.Logger;
@@ -9,16 +8,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.support.JdbcUtils;
 import org.springframework.stereotype.Repository;
-
 import javax.sql.DataSource;
-import java.sql.*;
-import java.util.ArrayList;
 import java.util.List;
-
-import static kr.codesqaud.cafe.config.repositoryConfig.ConnectionConfig.*;
-
 
 @Repository
 @Qualifier
