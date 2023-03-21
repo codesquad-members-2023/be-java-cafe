@@ -1,28 +1,6 @@
-{{>/layout/header}}
-{{>/layout/navigation}}
-{{>/layout/top}}
-
-<script>
-    function dateFormat() {
-        const writeDate = document.querySelectorAll('.writeDate');
-
-        for(let index = 0; writeDate.length; index++) {
-            const now = new Date(Date.parse(writeDate[index].textContent));
-            const month = (now.getMonth() + 1).toString().padStart(2, '0');
-            const day = now.getDate().toString().padStart(2, '0');
-            const hour = now.getMinutes().toString().padStart(2, '0');
-            const minutes = now.getMinutes().toString().padStart(2, '0');
-            const seconds = now.getSeconds().toString().padStart(2, '0');
-            writeDate[index].textContent = `${now.getFullYear()}-${month}-${day} ${hour}:${minutes}:${seconds}`;
-        }
-    }
-
-
-    document.addEventListener("DOMContentLoaded", function(){
-        dateFormat();
-    });
-</script>
-
+{{>layout/header}}
+{{>layout/navigation}}
+{{>layout/top}}
 
 <div class="container" id="main">
    <div class="col-md-12 col-sm -12 col-lg-10 col-lg-offset-1">
