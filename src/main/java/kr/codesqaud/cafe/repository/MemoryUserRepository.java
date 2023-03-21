@@ -30,6 +30,16 @@ public class MemoryUserRepository implements UserRepository{
     }
 
     @Override
+    public User findByUserId(String userId) {
+        return users.stream()
+                .filter(u -> u.getUserId().equals(userId))
+                .findAny()
+                .orElseThrow(() -> {
+                    throw new IllegalArgumentException("[ERROR] 존재하지 않는 회원입니다.");
+                });
+    }
+
+    @Override
     public List<User> findAll() {
         return users;
     }

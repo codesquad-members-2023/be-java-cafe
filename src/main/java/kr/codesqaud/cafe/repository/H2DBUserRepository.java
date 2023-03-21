@@ -50,6 +50,19 @@ public class H2DBUserRepository implements UserRepository{
     }
 
     @Override
+    public User findByUserId(String userId) {
+        String sql = "select id, user_id, password, name, email from users where user_id=:user_id";
+
+        try {
+            Map<String, String> param = Map.of("user_id", userId);
+            User user = template.queryForObject(sql, param, BeanPropertyRowMapper.newInstance(User.class));
+            return user;
+        } catch (EmptyResultDataAccessException e) {
+            throw new IllegalArgumentException("[ERROR] 존재하지 않는 회원입니다.");
+        }
+    }
+
+    @Override
     public List<User> findAll() {
         String sql = "select id, user_id, password, name, email from users";
 
