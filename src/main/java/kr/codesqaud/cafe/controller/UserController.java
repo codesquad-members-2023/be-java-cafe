@@ -78,7 +78,7 @@ public class UserController {
         return "users/login";
     }
 
-    @PostMapping("/login")
+    @PostMapping("/login") //TODO: 아이디를 잘못 입력했을 경우 예외처리
     public String loginUser(@RequestParam String userId, @RequestParam String password, HttpSession session) {
         User user = memberRepository.findById(userId);
         log.info("user password={}, input password={}", user.getPassword(), password);
@@ -88,7 +88,7 @@ public class UserController {
             return "redirect:/users/list";
         }
 
-        return "redirect:/user/login.html";
+        return "users/error_page";
     }
 
     @GetMapping("/logout")
