@@ -33,19 +33,19 @@ public class MemoryUserRepository implements UserRepository {
     }
 
     @Override
-    public boolean update(User user) {
+    public int update(User user) {
         // TODO : 사용자 찾는 부분과 비밀번호 검증의 부분을 분리하는게 맞을 것 같음
         Optional<User> optionalUser = userRepository.stream()
                 .filter((u) -> Objects.equals(u.getUserId(), user.getUserId()))
                 .findAny()
                 .filter((u) -> Objects.equals(u.getPassword(), user.getPassword()));
-        if (optionalUser.isEmpty()) return false;
+        if (optionalUser.isEmpty()) return 0;
 
         User findedUser = optionalUser.get();
         findedUser.setPassword(user.getPassword());
         findedUser.setName(user.getName());
         findedUser.setEmail(user.getEmail());
-        return true;
+        return 1;
     }
 
     public void clear() {

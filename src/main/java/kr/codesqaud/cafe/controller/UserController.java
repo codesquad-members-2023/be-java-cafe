@@ -63,7 +63,7 @@ public class UserController {
                          @RequestParam String name,
                          @RequestParam String email) {
         User user = new User(userId, password, name , email);
-        if (!userRepository.update(user))  return "/fail-something";
+        if (userRepository.update(user) < 1)  return "/fail-something";
 
         return "redirect:/user/list";
     }
