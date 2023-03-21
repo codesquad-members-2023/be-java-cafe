@@ -23,6 +23,7 @@ public class ArticleController {
 
     @PostMapping("/questions")
     public RedirectView creatArticle(@ModelAttribute("ArticleDto") Article article) {
+        logger.info("questions mapping");
         articleService.creatArticle(article);
         RedirectView redirectView = new RedirectView();
         redirectView.setUrl("/");
