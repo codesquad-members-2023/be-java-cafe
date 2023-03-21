@@ -48,7 +48,7 @@ public class UserController {
     // 프로필 Mapping
     @GetMapping("/users/{userId}")
     public String showUserProfile(Model model, @PathVariable String userId) {
-        Optional<User> profile = repository.findById(userId);
+        Optional<User> profile = repository.findByUserId(userId);
 
         // 프로필 유무 확인후 성공/실패 넘겨주기
         if (profile.isPresent()) {
@@ -63,7 +63,7 @@ public class UserController {
     // 사용자 정보 수정 GET
     @GetMapping("/users/{userId}/form")
     public String updateForm(Model model, @PathVariable String userId) {
-        Optional<User> user = repository.findById(userId);
+        Optional<User> user = repository.findByUserId(userId);
 
         if (user.isPresent()) {
             log.debug("사용자 정보 수정: 정보수정 브라우저 맵핑 성공~~~~~!!!!?");
@@ -77,10 +77,10 @@ public class UserController {
     public String updateUser(@ModelAttribute User user, @PathVariable String userId) {
         log.debug("사용자 정보 수정: put 전달 완료");
 
-        Optional<User> temp = repository.findById(userId);
+        Optional<User> temp = repository.findByUserId(userId);
         if (temp.isPresent()) {
             log.debug("사용자 정보 수정: 정보 수정 & 저장 성공");
-            user.setUserNum(temp.get().getUserNum());
+            user.setId(temp.get().getId());
             repository.update(user);
         }
         return "redirect:/users";

@@ -25,18 +25,18 @@ public class JdbcTemplateUserRepository implements UserRepository {
     @Override
     public boolean save(User user) {
         // 아이디 중복 여부 확인
-        if (findById(user.getUserId()).isEmpty()) {
+        if (findByUserId(user.getUserId()).isEmpty()) {
             SimpleJdbcInsert jdbcInsert = new SimpleJdbcInsert(jdbcTemplate);
-            jdbcInsert.withTableName("cafe_user").usingGeneratedKeyColumns("id");
+            jdbcInsert.withTableName("CAFE_USER").usingGeneratedKeyColumns("ID");
 
             Map<String, Object> parameters = new HashMap<>();
-            parameters.put("id", user.getUserId());
-            parameters.put("password", user.getPassword());
-            parameters.put("name", user.getName());
-            parameters.put("email", user.getEmail());
+            parameters.put("USERID", user.getUserId());
+            parameters.put("PASSWORD", user.getPassword());
+            parameters.put("NAME", user.getName());
+            parameters.put("EMAIL", user.getEmail());
 
             Number key = jdbcInsert.executeAndReturnKey(new MapSqlParameterSource(parameters));
-            user.setUserNum(key.longValue());
+            user.setId(key.longValue());
             return true;
         }
         return false;
@@ -44,22 +44,22 @@ public class JdbcTemplateUserRepository implements UserRepository {
 
     public boolean update(User user) {
         // 해당 번호 존재여부 체크
-        if (!findByUserNum(user.getUserNum()).isEmpty()) {
-            jdbcTemplate.update("update cafe_user set userId=?, password=?, name=?, email=? where userNum=?",
-                    user.getUserId(), user.getPassword(), user.getName(), user.getEmail(), user.getUserNum());
+        if (!findById(user.getId()).isEmpty()) {
+            jdbcTemplate.update("update cafe_user set USERID=?, PASSWORD=?, NAME=?, EMAIL=? where ID=?",
+                    user.getUserId(), user.getPassword(), user.getName(), user.getEmail(), user.getId());
             return true;
         }
         return false;
     }
 
     @Override
-    public Optional<User> findById(String userId) {
-        List<User> result = jdbcTemplate.query("select * from cafe_user where userId = ?", userRowMapper(), userId);
+    public Optional<User> findByUserId(String userId) {
+        List<User> result = jdbcTemplate.query("select * from cafe_user where USERID = ?", userRowMapper(), userId);
         return result.stream().findAny();
     }
 
-    public Optional<User> findByUserNum(long userNum) {
-        List<User> result = jdbcTemplate.query("select * from cafe_user where userNum = ?", userRowMapper(), userNum);
+    public Optional<User> findById(long id) {
+        List<User> result = jdbcTemplate.query("select * from cafe_user where ID = ?", userRowMapper(), id);
         return result.stream().findAny();
     }
 
@@ -71,11 +71,11 @@ public class JdbcTemplateUserRepository implements UserRepository {
     private RowMapper<User> userRowMapper() {
         return (rs, rowNum) -> {
             User user = new User();
-            user.setUserNum(rs.getLong("id"));
-            user.setUserId(rs.getString("userId"));
-            user.setPassword(rs.getString("password"));
-            user.setName(rs.getString("name"));
-            user.setEmail(rs.getString("email"));
+            user.setId(rs.getLong("ID"));
+            user.setUserId(rs.getString("USERID"));
+            user.setPassword(rs.getString("PASSWORD"));
+            user.setName(rs.getString("NAME"));
+            user.setEmail(rs.getString("EMAIL"));
             return user;
         };
     }

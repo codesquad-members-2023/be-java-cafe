@@ -7,11 +7,11 @@ public class User {
     private String name;
     private String email;
 
-    public long getUserNum() {
+    public long getId() {
         return id;
     }
 
-    public void setUserNum(long id) {
+    public void setId(long id) {
         this.id = id;
     }
 

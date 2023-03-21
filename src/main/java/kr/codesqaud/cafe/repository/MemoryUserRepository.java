@@ -32,7 +32,7 @@ public class MemoryUserRepository implements UserRepository {
     }
 
     @Override
-    public Optional<User> findById(String userId) {
+    public Optional<User> findByUserId(String userId) {
         return store.stream()
                 .filter(user -> user.isIdEquals(userId))
                 .findFirst();
