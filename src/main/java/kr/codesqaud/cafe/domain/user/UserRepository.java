@@ -1,10 +1,9 @@
-package kr.codesqaud.cafe.domain;
+package kr.codesqaud.cafe.domain.user;
 
 import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Repository
 public class UserRepository {
@@ -28,5 +27,16 @@ public class UserRepository {
 
     public User findByUserId(String userId) {
         return userRepository.stream().filter(user -> user.getUserId().equals(userId)).findFirst().orElseThrow();
+    }
+
+    public void updateUser(String userId, User updateParam) {
+        User user = findByUserId(userId);
+        String originalPassword = user.getPassword();
+        if (!originalPassword.equals(updateParam.getPassword())) {
+            return;
+        }
+        user.setPassword(updateParam.getPassword());
+        user.setName(updateParam.getName());
+        user.setEmail(updateParam.getEmail());
     }
 }
