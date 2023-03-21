@@ -9,6 +9,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -39,5 +40,15 @@ class MemoryArticleRepositoryTest {
         repository.save(article);
         Optional<Article> byId = repository.findById(0L);
         assertEquals(article, byId.orElseThrow());
+    }
+
+    @Test
+    @DisplayName("Article 모두 출력")
+    void all() {
+        List<Article> all = repository.findAll();
+        for (Article article : all) {
+            System.out.println(article);
+        }
+        System.out.println();
     }
 }
