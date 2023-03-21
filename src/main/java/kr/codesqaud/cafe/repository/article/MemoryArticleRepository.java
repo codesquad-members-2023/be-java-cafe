@@ -14,10 +14,10 @@ import java.util.concurrent.ConcurrentHashMap;
 public class MemoryArticleRepository implements ArticleRepository {
 
     private Logger log = LoggerFactory.getLogger(getClass());
-    private static final Map<Integer, Article> store = new ConcurrentHashMap<>();
+    private static final Map<Long, Article> store = new ConcurrentHashMap<>();
 
     public void save(Article article) {
-        int key = article.getId();
+        long key = article.getId();
         store.put(key, article);
     }
 
@@ -25,7 +25,7 @@ public class MemoryArticleRepository implements ArticleRepository {
         return new ArrayList<>(store.values());
     }
 
-    public Article findByArticleId(int id) {
+    public Article findByArticleId(long id) {
         Article article = store.get(id);
         return article;
     }

@@ -10,5 +10,5 @@ public interface ArticleRepository {
 
     List<Article> findAllArticles();
 
-    Article findByArticleId(int id);
+    Article findByArticleId(long id);
 }

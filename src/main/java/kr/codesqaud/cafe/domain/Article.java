@@ -1,11 +1,16 @@
 package kr.codesqaud.cafe.domain;
 
+import java.time.LocalDateTime;
+
 public class Article {
 
-    private int id;
+    private long id;
     private String writer;
     private String title;
     private String contents;
+    private LocalDateTime createdAt;
+    private LocalDateTime updatedAt;
+    private LocalDateTime deletedAt;
 
     public Article(String writer, String title, String contents) {
         this.title = title;
@@ -13,7 +18,7 @@ public class Article {
         this.contents = contents;
     }
 
-    public int getId() {
+    public long getId() {
         return id;
     }
 
