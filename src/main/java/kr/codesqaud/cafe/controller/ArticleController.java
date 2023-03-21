@@ -7,6 +7,7 @@ import kr.codesqaud.cafe.repository.h2Repository.H2ArticleRepository;
 import kr.codesqaud.cafe.repository.memoryRepository.MemoryArticleRepository;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
@@ -37,16 +38,16 @@ public class ArticleController {
     public String list(Model model) {
         List<Article> articles = new ArrayList<>(articleRepository.findAll());
         model.addAttribute("articles", articles);
-        return "/qna/list";
+        return "qna/list";
     }
 
-    @GetMapping("/show/{articleId}")
+    @GetMapping("show/{articleId}")
     public String show(@PathVariable int articleId,
                        Model model) {
         int articleIndex = articleId;
         Article article = articleRepository.findByIndex(articleIndex);
         model.addAttribute(article);
-        return "/qna/show";
+        return "qna/show";
     }
 
 }
