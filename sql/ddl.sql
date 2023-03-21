@@ -14,7 +14,6 @@ CREATE TABLE cafe_article
     title    VARCHAR(50)  NOT NULL,
     contents VARCHAR(500) NOT NULL,
     time     TIMESTAMP    not null default now()
---     time     TIMESTAMP    NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
 
 -- 컬럼명 변경
