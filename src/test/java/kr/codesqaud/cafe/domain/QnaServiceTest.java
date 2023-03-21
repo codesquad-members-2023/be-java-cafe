@@ -6,7 +6,10 @@ import static org.assertj.core.api.Assertions.assertThat;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import kr.codesqaud.cafe.user.Article;
+import kr.codesqaud.cafe.repository.MemoryArticleRepository;
+import kr.codesqaud.cafe.service.QnaService;
+import kr.codesqaud.cafe.service.impl.QnaServiceImpl;
+import kr.codesqaud.cafe.model.Article;
 
 class QnaServiceTest {
     QnaService qnaService = new QnaServiceImpl(new MemoryArticleRepository());
@@ -36,7 +39,7 @@ class QnaServiceTest {
         Article article2 = new Article("k", "3", "4");
         qnaService.postQna(article1);
         qnaService.postQna(article2);
-        assertAll(()-> assertThat(qnaService.lookupById(1).get()).isEqualTo(article1),
-                ()-> assertThat(qnaService.lookupById(2).get()).isEqualTo(article2));
+        assertAll(()-> assertThat(qnaService.lookupById(1)).isEqualTo(article1),
+                ()-> assertThat(qnaService.lookupById(2)).isEqualTo(article2));
     }
 }

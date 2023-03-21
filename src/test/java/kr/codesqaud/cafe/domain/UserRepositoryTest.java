@@ -6,7 +6,9 @@ import static org.assertj.core.api.Assertions.assertThat;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import kr.codesqaud.cafe.user.User;
+import kr.codesqaud.cafe.model.User;
+import kr.codesqaud.cafe.repository.MemoryUserRepository;
+import kr.codesqaud.cafe.repository.UserRepository;
 
 class UserRepositoryTest {
     private UserRepository userRepository = new MemoryUserRepository();

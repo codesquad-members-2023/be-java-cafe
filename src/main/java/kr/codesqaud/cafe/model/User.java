@@ -1,6 +1,4 @@
-package kr.codesqaud.cafe.user;
-
-import java.util.Objects;
+package kr.codesqaud.cafe.model;
 
 public class User {
     private String id;
@@ -14,6 +12,13 @@ public class User {
         this.name = name;
         this.email = email;
     }
+    public User(String id, String password, String name, String email, int index) {
+        this.id = id;
+        this.password = password;
+        this.name = name;
+        this.email = email;
+        this.index = index;
+    }
 
     public void validate(String password) {
         if (!this.password.equals(password)) {
@@ -25,19 +30,9 @@ public class User {
         this.index = index;
     }
 
-    public void setId(String id) {
-        this.id = id;
-    }
-
-    public void setName(String name) {
+    public void updateUserInfo(String name, String password, String email) {
         this.name = name;
-    }
-
-    public void setPassword(String password) {
         this.password = password;
-    }
-
-    public void setEmail(String email) {
         this.email = email;
     }
 

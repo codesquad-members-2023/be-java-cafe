@@ -7,7 +7,9 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import kr.codesqaud.cafe.user.Article;
+import kr.codesqaud.cafe.model.Article;
+import kr.codesqaud.cafe.repository.ArticleRepository;
+import kr.codesqaud.cafe.repository.MemoryArticleRepository;
 
 class ArticleRepositoryTest {
     private ArticleRepository articleRepository = new MemoryArticleRepository();

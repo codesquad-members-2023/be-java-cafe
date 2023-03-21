@@ -1,22 +1,27 @@
 package kr.codesqaud.cafe;
 
+import javax.sql.DataSource;
+
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.Ordered;
 import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
-import kr.codesqaud.cafe.domain.ArticleRepository;
-import kr.codesqaud.cafe.domain.JoinService;
-import kr.codesqaud.cafe.domain.JoinServiceImpl;
-import kr.codesqaud.cafe.domain.MemoryArticleRepository;
-import kr.codesqaud.cafe.domain.MemoryUserRepository;
-import kr.codesqaud.cafe.domain.QnaService;
-import kr.codesqaud.cafe.domain.QnaServiceImpl;
-import kr.codesqaud.cafe.domain.UserRepository;
+import kr.codesqaud.cafe.repository.ArticleRepository;
+import kr.codesqaud.cafe.repository.JdbcArticleRepository;
+import kr.codesqaud.cafe.repository.JdbcUserRepository;
+import kr.codesqaud.cafe.service.JoinService;
+import kr.codesqaud.cafe.service.impl.JoinServiceImpl;
+import kr.codesqaud.cafe.repository.MemoryArticleRepository;
+import kr.codesqaud.cafe.repository.MemoryUserRepository;
+import kr.codesqaud.cafe.service.QnaService;
+import kr.codesqaud.cafe.service.impl.QnaServiceImpl;
+import kr.codesqaud.cafe.repository.UserRepository;
 
 @Configuration
 public class AutoAppConfig implements WebMvcConfigurer {
+    private final DataSource dataSource;
     @Bean
     public JoinService joinService() {
         return new JoinServiceImpl(userRepository());
@@ -24,7 +29,7 @@ public class AutoAppConfig implements WebMvcConfigurer {
 
     @Bean
     public UserRepository userRepository() {
-        return new MemoryUserRepository();
+        return new JdbcUserRepository(dataSource);
     }
 
     @Bean
@@ -34,7 +39,13 @@ public class AutoAppConfig implements WebMvcConfigurer {
 
     @Bean
     public ArticleRepository articleRepository() {
-        return new MemoryArticleRepository();
+        return new JdbcArticleRepository(dataSource);
+        //return new MemoryArticleRepository();
+    }
+
+
+    public AutoAppConfig(DataSource dataSource) {
+        this.dataSource = dataSource;
     }
 
     @Override

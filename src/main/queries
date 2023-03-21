@@ -1,0 +1,43 @@
+CREATE TABLE users
+(
+id VARCHAR(255) PRIMARY KEY,
+password VARCHAR(255),
+name VARCHAR(255),
+email VARCHAR(255),
+index INT AUTO_INCREMENT,
+);
+
+CREATE TABLE users (
+  id VARCHAR(255),
+  password VARCHAR(255),
+  name VARCHAR(255),
+  email VARCHAR(255),
+  idx INT(10) AUTO_INCREMENT PRIMARY KEY
+);
+
+CREATE TABLE articles
+(
+writer VARCHAR(255),
+title VARCHAR(255),
+contents VARCHAR(500),
+id INT(10) AUTO_INCREMENT PRIMARY KEY
+);
+
+
+## H2 init
+
+
+CREATE TABLE articles
+(
+writer VARCHAR(255),
+title VARCHAR(255),
+contents VARCHAR(500),
+id int AUTO_INCREMENT,
+PRIMARY KEY (id)
+);
+
+TCP 실행
+java -cp h2-1.4.200.jar org.h2.tools.Console -tcp
+
+파일 집어넣기
+scp -i ~/Downloads/new_poro_key.pem test.mv.db ubuntu@ec2-3-135-208-179.us-east-2.compute.amazonaws.com:/home/ubuntu
