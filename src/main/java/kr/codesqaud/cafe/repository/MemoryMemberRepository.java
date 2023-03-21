@@ -14,20 +14,20 @@ public class MemoryMemberRepository implements MemberRepository {
 
     @Override
     public Member saveMember(Member member) {
-        repository.put(member.getNickName(), member);
+        repository.put(member.getEmail(), member);
         return member;
     }
 
     @Override
-    public Optional<Member> findOneMemberbyEmail(String email) {
-        return repository.values().stream()
-                .filter(member -> member.getEmail().equals(email))
-                .findAny();
+    public Member findOneMemberbyEmail(String email) {
+        return repository.get(email);
     }
 
     @Override
-    public Optional<Member> findOneMemberbyNickName(String nickName) {
-        return Optional.ofNullable(repository.get(nickName));
+    public Member findOneMemberbyNickName(String nickName) {
+        return repository.values().stream()
+                .filter(member -> member.getNickName().equals(nickName))
+                .findAny().get();
     }
 
     @Override
@@ -38,6 +38,11 @@ public class MemoryMemberRepository implements MemberRepository {
     @Override
     public int getSize() {
         return repository.size();
+    }
+
+    @Override
+    public void editeMember(Member member) {
+        repository.put(member.getEmail(), member);
     }
 
     public void clearRepository() {

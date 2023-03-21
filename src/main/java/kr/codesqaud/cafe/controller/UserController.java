@@ -1,15 +1,13 @@
 package kr.codesqaud.cafe.controller;
 
 import kr.codesqaud.cafe.domain.Member;
+import kr.codesqaud.cafe.repository.MemoryMemberRepository;
 import kr.codesqaud.cafe.service.MemberService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 @Controller
 public class UserController {
@@ -20,24 +18,37 @@ public class UserController {
         this.memberService = memberService;
     }
 
-    @RequestMapping("/user")
-    public String createUser(@RequestParam String email, @RequestParam String nickName, @RequestParam String password){
-        memberService.join(new Member(email, nickName, password));
-        return "redirect:/list";
+    @PostMapping("/user/join")
+    public String createUser(Member member){
+        memberService.join(member);
+        return "redirect:/user/list";
     }
 
-    @GetMapping("/list")
+    @GetMapping("/user/list")
     public String showList(Model model) {
         model.addAttribute("lists", memberService.findMembers());
         model.addAttribute("total", memberService.findTotalNumberOfList());
-        return "list";
+        return "user/list";
     }
 
-    @GetMapping("profile/{nickName}")
+    @GetMapping("/profile/{nickName}")
     public String showProfile(@PathVariable String nickName, Model model) {
         model.addAttribute("nickName", nickName);
-        String email = memberService.findOneMemberByNickname(nickName).get().getEmail();
+        String email = memberService.findOneMemberByNickname(nickName).getEmail();
         model.addAttribute("email", email);
-        return "profile";
+        return "user/profile";
+    }
+
+    @GetMapping("/users/{emailurl}/updateForm")
+    public String showUpdateForm(@PathVariable String emailurl, Model model) {
+//        String email = memberService.findOneMemberByEmail(emailurl).getEmail();
+        model.addAttribute("email", emailurl);
+        return "user/updateForm";
+    }
+
+    @PutMapping("/user/updateUser")
+    public String updateUser(@ModelAttribute Member member) {
+        memberService.editeMember(member);
+        return "redirect:/user/list";
     }
 }
