@@ -25,21 +25,21 @@ public class H2JdbcTemplateArticleRepository implements ArticleRepository {
 
     @Override
     public void save(Article article) {
-        String sql = "INSERT INTO articles (writer, title, content) VALUES ( ?, ?, ?)";
+        String sql = "INSERT INTO article (writer, title, content) VALUES ( ?, ?, ?)";
         template.update(sql, article.getWriter(), article.getTitle(), article.getContent());
     }
 
     @Override
     public List<Article> findAll() {
-        String sql = "SELECT * FROM articles";
+        String sql = "SELECT * FROM article";
         return template.query(sql, new ArticleRowMapper());
     }
 
     @Override
     public Optional<Article> findById(Long id) {
-        String sql = "SELECT * FROM articles WHERE id = ?";
+        String sql = "SELECT * FROM article WHERE id = ?";
         try {
-            return  template.query(sql, new ArticleRowMapper(), id).stream().findAny();
+            return template.query(sql, new ArticleRowMapper(), id).stream().findAny();
         } catch (EmptyResultDataAccessException e) {
             return Optional.empty();
         }
@@ -53,13 +53,9 @@ public class H2JdbcTemplateArticleRepository implements ArticleRepository {
             article.setWriter(rs.getString("writer"));
             article.setTitle(rs.getString("title"));
             article.setContent(rs.getString("content"));
-            article.setCreateDate(rs.getTimestamp("create_date").toLocalDateTime());
+            article.setCreatedDate(rs.getTimestamp("created_date").toLocalDateTime());
             article.setReplyCount(rs.getInt("reply_count"));
             return article;
         }
-    }
-
-    public JdbcTemplate getTemplate() {
-        return template;
     }
 }
