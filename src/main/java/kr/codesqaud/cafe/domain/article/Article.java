@@ -2,6 +2,9 @@ package kr.codesqaud.cafe.domain.article;
 
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.Date;
 
 public class Article {
 
@@ -9,14 +12,16 @@ public class Article {
 	private String writer;
 	private String title;
 	private String contents;
-	private String writtenTime;
+	private LocalDateTime writtenTime;
 
-	public Article(String writer, String title, String contents) {
+	public Article() {
+	}
+
+	public Article(String writer, String title, String contents, LocalDateTime writtenTime) {
 		this.writer = writer;
 		this.title = title;
 		this.contents = contents;
-		Timestamp timestamp = new Timestamp(System.currentTimeMillis());
-		writtenTime = formattingDate(timestamp);
+		this.writtenTime = writtenTime;
 	}
 
 	public Long getArticleSequence() {
@@ -51,13 +56,12 @@ public class Article {
 		this.contents = contents;
 	}
 
-	public String getWrittenTime() {
-		return writtenTime;
+	public void setWrittenTime(LocalDateTime writtenTime) {
+		this.writtenTime = writtenTime;
 	}
 
-	private String formattingDate(Timestamp timestamp) {
-		SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
-		String formattedDate = simpleDateFormat.format(timestamp).toString();
-		return formattedDate;
+	public String getWrittenTime() {
+		String date = writtenTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+		return date;
 	}
 }
