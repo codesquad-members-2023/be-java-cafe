@@ -4,6 +4,7 @@ import org.springframework.jdbc.core.RowMapper;
 
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
 
 public class Article {
@@ -20,10 +21,10 @@ public class Article {
         this.writer = writer;
         this.title = title;
         this.contents = contents;
-        this.writeDate = LocalDateTime.now();
+        this.writeDate = writeDate;
     }
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
@@ -39,6 +40,9 @@ public class Article {
         return contents;
     }
 
-    public LocalDateTime getWriteDate() {return writeDate;}
+    public String getWriteDate() {
+        return writeDate.format(DateTimeFormatter.ofPattern("yy-MM-dd HH:mm:ss"));
+    }
 
 }
+
