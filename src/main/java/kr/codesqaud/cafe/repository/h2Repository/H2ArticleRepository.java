@@ -6,6 +6,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.context.annotation.Primary;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
@@ -14,7 +15,7 @@ import java.sql.*;
 import java.util.List;
 
 @Repository
-@Qualifier
+@Primary
 public class H2ArticleRepository implements ArticleRepository {
     private static final Logger logger = LoggerFactory.getLogger("article database");
 

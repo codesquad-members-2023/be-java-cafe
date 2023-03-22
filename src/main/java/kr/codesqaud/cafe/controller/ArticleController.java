@@ -20,7 +20,7 @@ public class ArticleController {
 
     ArticleRepository articleRepository;
 
-    public ArticleController(@Qualifier ArticleRepository articleRepository) {
+    public ArticleController(ArticleRepository articleRepository) {
         this.articleRepository = articleRepository;
 
     }
