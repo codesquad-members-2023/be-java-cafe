@@ -10,6 +10,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.PostConstruct;
+import java.sql.SQLException;
 import java.util.List;
 
 @Controller
@@ -30,7 +31,7 @@ public class MemberController {
     }
 
     @PostMapping("/add")
-    public String saveUser(@ModelAttribute("user") Member user) {
+    public String saveUser(@ModelAttribute("user") Member user) throws SQLException {
         memberRepository.save(user);
         log.trace("사용자 ID: {}", user.getUserId());
         log.trace("사용자 이름: {}", user.getName());
@@ -65,14 +66,14 @@ public class MemberController {
         return "redirect:/users/list";
     }
 
-    /**
-     * 테스트 용 데이터 추가
-     */
-    @PostConstruct
-    public void init() {
-        memberRepository.save(new Member("GOMUNGNAM", "247597", "고건호", "rhrjsgh97@gmail.com"));
-        memberRepository.save(new Member("Roy", "123456", "이승로", "roy@gmail.com"));
-        memberRepository.save(new Member("Birdie", "123456", "임동현", "birdie@gmail.com"));
-        memberRepository.save(new Member("Hana", "1234", "왕하나", "hana@gmail.com"));
-    }
+//    /**
+//     * 테스트 용 데이터 추가
+//     */
+//    @PostConstruct
+//    public void init() throws SQLException {
+//        memberRepository.save(new Member("GOMUNGNAM", "247597", "고건호", "rhrjsgh97@gmail.com"));
+//        memberRepository.save(new Member("Roy", "123456", "이승로", "roy@gmail.com"));
+//        memberRepository.save(new Member("Birdie", "123456", "임동현", "birdie@gmail.com"));
+//        memberRepository.save(new Member("Hana", "1234", "왕하나", "hana@gmail.com"));
+//    }
 }
