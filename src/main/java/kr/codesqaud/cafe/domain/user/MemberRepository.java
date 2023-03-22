@@ -6,6 +6,7 @@ import org.springframework.stereotype.Repository;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 @Repository
 public class MemberRepository {
@@ -49,12 +50,42 @@ public class MemberRepository {
 		return allMembers;
 	}
 
-	public Member findByUserId(String userId) {
-		return userRepository.stream().filter(user -> user.getUserId().equals(userId)).findFirst().orElseThrow();
+	public Member findById(String memberId) throws SQLException {
+		String sql = "select * from member where member_id = ?";
+
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet resultSet = null;
+
+		try {
+			con = getConnection();
+			pstmt = con.prepareStatement(sql);
+			pstmt.setString(1, memberId);
+
+			resultSet = pstmt.executeQuery();
+			if (resultSet.next()) {
+				Member member = new Member();
+				member.setUserId(resultSet.getString("member_id"));
+				member.setPassword(resultSet.getString("member_password"));
+				member.setName(resultSet.getString("member_name"));
+				member.setEmail(resultSet.getString("member_email"));
+				return member;
+			} else {
+				throw new NoSuchElementException("member not found memberId=" + memberId);
+			}
+		} catch (SQLException e) {
+			throw e;
+		} finally {
+			close(con, pstmt, resultSet);
+		}
 	}
 
-	public void updateUser(String userId, Member updateParam) {
-		Member user = findByUserId(userId);
+//	public Member findByUserId(String userId) {
+//		return userRepository.stream().filter(user -> user.getUserId().equals(userId)).findFirst().orElseThrow();
+//	}
+
+	public void updateUser(String userId, Member updateParam) throws SQLException {
+		Member user = findById(userId);
 		String originalPassword = user.getPassword();
 		if (!originalPassword.equals(updateParam.getPassword())) {
 			return;
