@@ -50,5 +50,15 @@ class MemberRepositoryTest {
 		assertThat(findMember2.getPassword()).isEqualTo(member2.getPassword());
 		assertThat(findMember2.getName()).isEqualTo(member2.getName());
 		assertThat(findMember2.getEmail()).isEqualTo(member2.getEmail());
+
+		// update: name: 서혜선 -> 서혜뭉
+		repository.update(member2.getUserId(), new Member("noeseyhoes", "7290", "서혜뭉", "hseon0927@gmail.com"));
+		Member updatedMember1 = repository.findById(member2.getUserId());
+		assertThat(updatedMember1.getName()).isEqualTo("서혜뭉");
+
+		// update fail: name: 고건호 -> 고봉렬
+		repository.update(member1.getUserId(), new Member("rhrjsgh97", "1234", "고봉렬", "rhrjsgh97@gmail.com"));
+		Member updatedMember2 = repository.findById(member1.getUserId());
+		assertThat(updatedMember2.getName()).isEqualTo("고건호");
 	}
 }
