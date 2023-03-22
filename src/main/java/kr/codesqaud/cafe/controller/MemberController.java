@@ -39,13 +39,14 @@ public class MemberController {
 
     @PostMapping("/login")
     public String loginUser(String userId, String password, HttpSession httpSession) {
-        try {
-            Member loginedMember = memberService.login(userId, password);
-            httpSession.setAttribute("sessionedUser", loginedMember);
-            return "redirect:/";
-        } catch (NoSuchElementException e) {
+        Member member = memberRepository.findByMemberId(userId).orElseThrow(() -> new NoSuchElementException("해당하는 유저가 없습니다."));
+
+        if (!member.getPassword().equals(password)) {
             return "user/login_failed";
         }
+
+        httpSession.setAttribute("sessionedUser", member);
+        return "redirect:/";
     }
 
     @PostMapping("/users")
