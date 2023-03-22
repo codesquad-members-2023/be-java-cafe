@@ -57,6 +57,7 @@ public class MemberRepository {
 			resultSet = pstmt.executeQuery();
 			while (resultSet.next()) {
 				Member member = new Member();
+				member.setUserSequence(resultSet.getLong("member_number"));
 				member.setUserId(resultSet.getString("member_id"));
 				member.setPassword(resultSet.getString("member_password"));
 				member.setName(resultSet.getString("member_name"));
