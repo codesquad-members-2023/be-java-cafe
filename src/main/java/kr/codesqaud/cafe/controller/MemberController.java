@@ -51,12 +51,14 @@ public class MemberController {
     }
 
     @GetMapping("/users/{userId}/form")
-    public String updateUser(@PathVariable("userId") String userId, Model model) {
+    public String updateUser(@PathVariable("userId") String userId, Model model,HttpSession session) {
         logger.debug("updateUser : GET");
-
-        Optional<Member> updateUser = jdbcMemberRepository.findById(userId);
-        // Model 과 View 연결
-        model.addAttribute("user", updateUser.orElseThrow());
+        Object value = session.getAttribute("sessionedUser");
+        if(value != null){
+            Optional<Member> updateUser = jdbcMemberRepository.findById(userId);
+            // Model 과 View 연결
+            model.addAttribute("user", updateUser.orElseThrow());
+        }
         return "user/updateForm";
     }
 
