@@ -13,4 +13,7 @@ public interface ArticleRepository {
 
     List<Article> findAllArticle();
 
+    void updateArticle(String title, String contents, int articleId);
+
+    void deleteArticle(int articleId);
 }

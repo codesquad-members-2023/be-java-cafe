@@ -56,4 +56,29 @@ public class ArticleController {
 
         return "qna/qna_form";
     }
+
+    @GetMapping("/qna/update_article/{articleId}") // TODO: 상태코드 변경
+    public String updateArticleForm(@PathVariable int articleId, Model model, HttpSession session) {
+        Article article = articleRepository.findArticleById(articleId);
+        Object value = session.getAttribute("user");
+
+        if (value != null) {
+            User user = (User) value;
+            if (user.getUserId().equals(article.getWriter())) {
+                model.addAttribute("article", article);
+                return "qna/update_article";
+            }
+        }
+        log.info("글 작성자만 수정할 수 있습니다.");
+        return "redirect:/";
+    }
+
+    @PutMapping("/qna/update_article/{articleId}")
+    public String updateArticle(@ModelAttribute Article article, @PathVariable int articleId) {
+        articleRepository.updateArticle(article.getTitle(), article.getContents(), articleId);
+
+        return "redirect:/qna/show/{articleId}";
+    }
+
+
 }

@@ -48,6 +48,14 @@ public class H2JDBCArticleRepository implements ArticleRepository{
         return template.query(sql, new BeanPropertyRowMapper<>(Article.class));
     }
 
+    public void updateArticle(String title, String contents, int articleId) {
+        String sql = "update article set title=?, contents=? where id=?";
+
+        template.update(sql, title, contents, articleId);
+    }
+
+
+
     private int findDbSize() {
         String sql = "select count(id) as row_count from article";
         return template.queryForObject(sql, Integer.class);
