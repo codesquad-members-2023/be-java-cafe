@@ -13,29 +13,25 @@
 <div class="container" id="main">
     <div class="col-md-6 col-md-offset-3">
         <div class="panel panel-default content-main">
-            <form name="question" th:method="post" th:action="@{/users/{userId}/updateUser(userId=${findUser.userId})}" th:object="${findUser}">
+            <form name="question" th:method="post" th:action="@{/users/{userId}/updateUser(userId=${user.userId})}" th:object="${user}">
                 <input type="hidden" name="_method" value="PUT">
                 <div class="form-group">
                     <label for="userId">사용자 아이디</label>
-                    <input class="form-control" id="userId" name="userId" th:placeholder="${findUser.userId}" th:readonly="edit eq 1 ? 'readonly': true" th:value="${findUser.userId}">
+                    <input class="form-control" id="userId" name="userId" th:placeholder="${user.userId}" th:readonly="edit eq 1 ? 'readonly': true" th:value="${user.userId}">
                 </div>
                 <div class="form-group">
                     <label for="password">비밀번호</label>
                     <input type="password" class="form-control" id="password" name="password" placeholder="Password">
                 </div>
                 <div class="form-group">
-                    <label for="password">비밀번호 확인</label>
-                    <input type="password" class="form-control" id="newPassword" name="newPassword" placeholder="Password">
-                </div>
-                <div class="form-group">
                     <label for="name">이름</label>
-                    <input class="form-control" id="name" name="name" th:placeholder="${findUser.name}" th:value="${findUser.name}">
+                    <input class="form-control" id="name" name="name" th:placeholder="${user.name}" th:value="${user.name}">
                 </div>
                 <div class="form-group">
                     <label for="email">이메일</label>
-                    <input type="email" class="form-control" id="email" name="email" th:placeholder="${findUser.email}" th:value="${findUser.email}">
+                    <input type="email" class="form-control" id="email" name="email" th:placeholder="${user.email}" th:value="${user.email}">
                 </div>
-                <button type="submit" class="btn btn-success clearfix pull-right"><a th:href="@{/users/{userId}/updateUser/(userId=${findUser.userId})}"></a>정보 수정</button>
+                <button type="submit" class="btn btn-success clearfix pull-right"><a th:href="@{/users/{userId}/updateUser/(userId=${user.userId})}"></a>정보 수정</button>
                 <div class="clearfix"/>
             </form>
         </div>
