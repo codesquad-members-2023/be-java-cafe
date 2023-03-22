@@ -16,12 +16,11 @@ import java.util.List;
 @RequestMapping("/users")
 public class UserController {
 
-    private Logger log = LoggerFactory.getLogger(getClass());
+    private final Logger log = LoggerFactory.getLogger(getClass());
 
-    @Autowired
     private final MemberRepository memberRepository;
 
-
+    @Autowired
     public UserController(MemberRepository memberRepository) {
         this.memberRepository = memberRepository;
     }
@@ -69,9 +68,7 @@ public class UserController {
     }
 
     @PutMapping("/{userId}/updateUser") // TODO : DTO 고려해보기, 로직을 service로 넘기기
-    public String updateUserPost(@ModelAttribute User user, HttpSession session) {
-
-
+    public String updateUserPost(@ModelAttribute User user) {
         if (memberRepository.findById(user.getUserId()).getPassword().equals(user.getPassword())) {
             return "users/error_page";
         }

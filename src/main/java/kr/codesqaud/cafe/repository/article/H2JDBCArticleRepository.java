@@ -19,7 +19,7 @@ import java.util.List;
 public class H2JDBCArticleRepository implements ArticleRepository {
 
     private final JdbcTemplate template;
-    private Logger log = LoggerFactory.getLogger(getClass());
+    private final Logger log = LoggerFactory.getLogger(getClass());
 
     @Autowired
     public H2JDBCArticleRepository(DataSource dataSource) {
