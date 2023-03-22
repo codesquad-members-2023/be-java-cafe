@@ -9,6 +9,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,7 +25,7 @@ public class ArticleController {
     }
 
     @GetMapping("/")
-    public String articles(Model model) {
+    public String articles(Model model) throws SQLException {
         List<Article> articles = articleRepository.showAllArticles();
         model.addAttribute("articles", articles);
         log.trace("게시글 갯수: {}", articles.size());
@@ -37,13 +38,13 @@ public class ArticleController {
     }
 
     @PostMapping("/qna/questions")
-    public String saveQuestion(@ModelAttribute("article") Article article) {
+    public String saveQuestion(@ModelAttribute("article") Article article) throws SQLException {
         articleRepository.write(article);
         return "redirect:/";
     }
 
     @GetMapping("/articles/{articleSequence}")
-    public String articleShow(@PathVariable Long articleSequence, Model model) {
+    public String articleShow(@PathVariable Long articleSequence, Model model) throws SQLException {
         Article findArticle = articleRepository.findByArticleSequence(articleSequence);
         model.addAttribute("article", findArticle);
         log.trace("제목: {}, 글쓴이: {}, 내용: {}", findArticle.getTitle(), findArticle.getWriter(), findArticle.getContents());
