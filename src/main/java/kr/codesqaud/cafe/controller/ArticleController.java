@@ -80,5 +80,21 @@ public class ArticleController {
         return "redirect:/qna/show/{articleId}";
     }
 
+    @DeleteMapping("/qna/show/{articleId}/delete") // TODO : 상태코드 변경
+    public String deleteArticle(@PathVariable int articleId, HttpSession session) {
+        Article findArticle = articleRepository.findArticleById(articleId);
 
+        Object value = session.getAttribute("user");
+
+        if (value != null) {
+            User user = (User) value;
+            if (user.getUserId().equals(findArticle.getWriter())) {
+                articleRepository.deleteArticle(articleId);
+                return "redirect:/";
+            }
+        }
+
+        log.info("글 작성자만 삭제할 수 있습니다.");
+        return "redirect:/";
+    }
 }

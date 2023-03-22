@@ -7,7 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Primary;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
@@ -17,7 +16,7 @@ import java.util.List;
 
 @Repository
 @Primary
-public class H2JDBCArticleRepository implements ArticleRepository{
+public class H2JDBCArticleRepository implements ArticleRepository {
 
     private final JdbcTemplate template;
     private Logger log = LoggerFactory.getLogger(getClass());
@@ -54,7 +53,11 @@ public class H2JDBCArticleRepository implements ArticleRepository{
         template.update(sql, title, contents, articleId);
     }
 
+    public void deleteArticle(int articleId) {
+        String sql = "delete from article where id=?";
 
+        template.update(sql, articleId);
+    }
 
     private int findDbSize() {
         String sql = "select count(id) as row_count from article";
