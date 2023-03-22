@@ -1,7 +1,7 @@
 package kr.codesqaud.cafe.controller;
 
 import kr.codesqaud.cafe.domain.Article;
-import kr.codesqaud.cafe.repository.JdbcArticleRepository;
+import kr.codesqaud.cafe.repository.ArticleRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
@@ -10,17 +10,16 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
-import java.util.List;
 import java.util.NoSuchElementException;
 
 @Controller
 public class ArticleController {
 
-    private final JdbcArticleRepository articleRepository;
+    private final ArticleRepository articleRepository;
 
     Logger logger = LoggerFactory.getLogger(ArticleController.class);
 
-    public ArticleController(JdbcArticleRepository articleRepository) {
+    public ArticleController(ArticleRepository articleRepository) {
         this.articleRepository = articleRepository;
     }
 
