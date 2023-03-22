@@ -7,7 +7,17 @@ public class Article {
     private String title;
     private String contents;
 
+    public Article() {
+    }
+
     public Article(String writer, String title, String contents) {
+        this.writer = writer;
+        this.title = title;
+        this.contents = contents;
+    }
+
+    public Article(int articleId, String writer, String title, String contents) {
+        this.articleId = articleId;
         this.writer = writer;
         this.title = title;
         this.contents = contents;
