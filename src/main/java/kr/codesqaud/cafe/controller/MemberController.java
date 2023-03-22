@@ -68,20 +68,18 @@ public class MemberController {
     }
 
     @PostMapping("/login")
-    public String login(@ModelAttribute("user")Member member, HttpSession session, HttpServletRequest request){
-        Optional<Member> existUser = jdbcMemberRepository.findById(member.getUserId());
-        session = request.getSession();
-        boolean isExist = false;
+    public String login(@ModelAttribute("user")Member member, HttpSession session,Model model){
+        Member existUser = jdbcMemberRepository.findById(member.getUserId()).orElseThrow();
 
-        if(existUser.isPresent() && member.getUserId() != null){
+        if(member.getUserId() != null){
             session.setAttribute("sessionedUser",existUser);
-            if(!member.getPassword().equals(existUser.get().getPassword())){
-                isExist = true;
+            if(!member.getPassword().equals(existUser.getPassword())){
+                model.addAttribute("notExist", "fail");
                 return "user/login";
             }
             return "redirect:/";
         } else {
-            isExist = true;
+            model.addAttribute("notExist", "fail");
             return "user/login";
         }
     }
