@@ -1,5 +1,6 @@
 package kr.codesqaud.cafe.controller;
 
+import javax.servlet.http.HttpSession;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,6 +14,7 @@ import kr.codesqaud.cafe.model.User;
 
 @Controller
 public class UserController {
+
     private final JoinService joinService;
 
     public UserController(JoinService joinService) {
@@ -34,8 +36,9 @@ public class UserController {
     }
 
     @PostMapping("/users/create")
-    public String userAdd(@RequestParam String userId, @RequestParam String password, @RequestParam String name,
-            @RequestParam String email) {
+    public String userAdd(@RequestParam String userId, @RequestParam String password,
+        @RequestParam String name,
+        @RequestParam String email) {
         //POST method, /create form으로 전송하는 요청을 처리
         joinService.join(new User(userId, password, name, email));
         //redirection
@@ -51,12 +54,29 @@ public class UserController {
     }
 
     @PutMapping("/users/{id}/update")
-    public String userUpdateCommit(@PathVariable String id, @RequestParam String userId, @RequestParam String password,
-            @RequestParam String newPassword,
-            @RequestParam String name, @RequestParam String email) {
+    public String userUpdateCommit(@PathVariable String id, @RequestParam String userId,
+        @RequestParam String password,
+        @RequestParam String newPassword,
+        @RequestParam String name, @RequestParam String email) {
         //id를 저장
         joinService.updateUser(id, password, newPassword, name, email);
 
         return "redirect:/users/list";
+    }
+
+    @PostMapping("/users/login/validate")
+    public String login(@RequestParam String userId, @RequestParam String password,
+        HttpSession session) {
+        User sessionedUser = joinService.lookupUser(userId);
+        sessionedUser.validate(password);
+
+        session.setAttribute("sessionedUser", sessionedUser);
+        return "redirect:/";
+    }
+
+    @GetMapping("/users/logout")
+    public String logout(HttpSession session) {
+        session.setAttribute("sessionedUser", null);
+        return "redirect:/";
     }
 }
