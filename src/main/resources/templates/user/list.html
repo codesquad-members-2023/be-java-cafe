@@ -17,7 +17,8 @@
                     <th scope="row"><a href="/users/{{id}}">{{id}}</a></th>
                     <td>{{nickname}}</td>
                     <td>{{email}}</td>
-                    <td>{{createdDate}}</td><td><a href="/user/{{id}}/updateForm" class="btn btn-success" role="button">수정</a></td>
+                    <td>{{formattedCreatedDate}}</td>
+                    <td><a href="/user/{{id}}/updateForm" class="btn btn-success" role="button">수정</a></td>
                 </tr>
               {{/list}}
               </tbody>
