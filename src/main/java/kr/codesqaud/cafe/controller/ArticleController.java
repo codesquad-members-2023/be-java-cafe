@@ -14,8 +14,8 @@ import java.util.List;
 @Controller
 public class ArticleController {
 
-    private Logger log = LoggerFactory.getLogger(getClass());
-    private ArticleRepository articleRepository;
+    private final Logger log = LoggerFactory.getLogger(getClass());
+    private final ArticleRepository articleRepository;
 
     @Autowired
     public ArticleController(ArticleRepository articleRepository) {
