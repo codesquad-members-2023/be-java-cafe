@@ -6,6 +6,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import java.sql.SQLException;
+import java.util.List;
 
 import static org.assertj.core.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.*;
@@ -60,5 +61,15 @@ class MemberRepositoryTest {
 		repository.update(member1.getUserId(), new Member("rhrjsgh97", "1234", "고봉렬", "rhrjsgh97@gmail.com"));
 		Member updatedMember2 = repository.findById(member1.getUserId());
 		assertThat(updatedMember2.getName()).isEqualTo("고건호");
+
+		// showAll
+		List<Member> allMembers = repository.showAllUsers();
+		log.info("allMembers.size():{}", allMembers.size());
+		for (int i = 0; i < allMembers.size(); i++) {
+			log.info("이름:{}", allMembers.get(i).getUserId());
+			log.info("ID:{}", allMembers.get(i).getName());
+			log.info("PW:{}", allMembers.get(i).getPassword());
+			log.info("email:{}", allMembers.get(i).getEmail());
+		}
 	}
 }
