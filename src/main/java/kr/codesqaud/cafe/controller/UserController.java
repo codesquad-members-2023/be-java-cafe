@@ -33,11 +33,6 @@ public class UserController {
         return "redirect:/users/list";
     }
 
-    @GetMapping("/form")
-    public String goSignUpPage() {
-        return "users/form";
-    }
-
     @GetMapping("/list")
     public String userList(Model model) {
         List<User> userList = memberRepository.findAll();
