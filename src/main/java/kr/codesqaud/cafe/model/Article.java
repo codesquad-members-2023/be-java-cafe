@@ -17,6 +17,16 @@ public class Article {
         this.writer = writer;
         this.title = title;
         this.contents = contents;
+        creationTime = LocalDateTime.now();
+    }
+
+    public LocalDateTime getCreationTime() {
+        return creationTime;
+    }
+
+    public String getFormattedCreationTime() {
+        return creationTime.format(
+                DateTimeFormatter.ofPattern("yyyy-MM-dd hh:mm:ss"));
     }
 
     public void setId(long id) {

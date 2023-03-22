@@ -13,8 +13,6 @@ import kr.codesqaud.cafe.repository.JdbcArticleRepository;
 import kr.codesqaud.cafe.repository.JdbcUserRepository;
 import kr.codesqaud.cafe.service.JoinService;
 import kr.codesqaud.cafe.service.impl.JoinServiceImpl;
-import kr.codesqaud.cafe.repository.MemoryArticleRepository;
-import kr.codesqaud.cafe.repository.MemoryUserRepository;
 import kr.codesqaud.cafe.service.QnaService;
 import kr.codesqaud.cafe.service.impl.QnaServiceImpl;
 import kr.codesqaud.cafe.repository.UserRepository;
@@ -22,6 +20,9 @@ import kr.codesqaud.cafe.repository.UserRepository;
 @Configuration
 public class AutoAppConfig implements WebMvcConfigurer {
     private final DataSource dataSource;
+    public AutoAppConfig(DataSource dataSource) {
+        this.dataSource = dataSource;
+    }
     @Bean
     public JoinService joinService() {
         return new JoinServiceImpl(userRepository());
@@ -41,11 +42,6 @@ public class AutoAppConfig implements WebMvcConfigurer {
     public ArticleRepository articleRepository() {
         return new JdbcArticleRepository(dataSource);
         //return new MemoryArticleRepository();
-    }
-
-
-    public AutoAppConfig(DataSource dataSource) {
-        this.dataSource = dataSource;
     }
 
     @Override
