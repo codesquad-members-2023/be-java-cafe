@@ -1,22 +1,34 @@
 package kr.codesqaud.cafe.domain;
 
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
+
 public class Article {
-    private long index;
+    private long id;
     private String writer;
     private String title;
     private String contents;
-    private String time;
 
-    public long getIndex() {
-        return index;
+    private LocalDateTime time;
+
+    public Timestamp getTime() {
+        return Timestamp.valueOf(time);
     }
 
-    public void setIndex(long index) {
-        this.index = index;
+    public void setTime(Timestamp time) {
+        this.time = time.toLocalDateTime();
     }
 
-    public boolean isIndexEquals(long index) {
-        return this.index == index;
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    public boolean isIndexEquals(long id) {
+        return this.id == id;
     }
 
     public String getWriter() {
@@ -41,13 +53,5 @@ public class Article {
 
     public void setContents(String contents) {
         this.contents = contents;
-    }
-
-    public String getTime() {
-        return time;
-    }
-
-    public void setTime(String time) {
-        this.time = time;
     }
 }

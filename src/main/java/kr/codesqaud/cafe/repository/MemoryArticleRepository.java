@@ -3,22 +3,27 @@ package kr.codesqaud.cafe.repository;
 import kr.codesqaud.cafe.domain.Article;
 import org.springframework.stereotype.Repository;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Optional;
 
 @Repository
 public class MemoryArticleRepository implements ArticleRepository {
     private final List<Article> articleStore = new ArrayList<>();
 
     @Override
-    public void saveArticle(Article article) {
-        article.setIndex(articleStore.size() + 1);
+    public boolean saveArticle(Article article) {
+        article.setId(articleStore.size() + 1);
         articleStore.add(article);
+
+        return true;
     }
 
     @Override
-    public Optional<Article> findByIndex(String index) {
+    public Optional<Article> findById(long id) {
         return articleStore.stream()
-                .filter(user -> user.isIndexEquals(Long.parseLong(index)))
+                .filter(user -> user.isIndexEquals(id))
                 .findFirst();
     }
 

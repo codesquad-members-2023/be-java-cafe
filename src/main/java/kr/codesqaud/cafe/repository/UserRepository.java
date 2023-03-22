@@ -6,9 +6,10 @@ import java.util.List;
 import java.util.Optional;
 
 public interface UserRepository {
-    boolean save(User user, long index);
+    boolean save(User user);
 
-    Optional<User> findById(String id);
-//    Optional<User> findByName(String name);
+    Optional<User> findByUserId(String id);
+
+    //    Optional<User> findByName(String name);
     List<User> findAll();
 }
