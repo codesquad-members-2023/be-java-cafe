@@ -37,7 +37,7 @@ public class JdbcMemberRepository implements MemberRepository {
     @Override
     public String save(Member member) {
         SqlParameterSource param = new BeanPropertySqlParameterSource(member);
-        jdbcInsert.execute(param);
+        template.update("insert into Member (userId,password,userName,email) values (:userId, :password, :userName, :email)",param);
         return member.getUserId();
     }
 

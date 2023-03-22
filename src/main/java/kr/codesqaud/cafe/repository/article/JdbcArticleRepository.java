@@ -26,14 +26,9 @@ public class JdbcArticleRepository implements ArticleRepository {
 
     // insert를 제외한 모든 쿼리문 실행
     private final NamedParameterJdbcTemplate template;
-    // 간단한 insert문 만들기
-    //private final SimpleJdbcInsert jdbcInsert;
 
     public JdbcArticleRepository(NamedParameterJdbcTemplate template) {
         this.template = template;
-//        this.jdbcInsert = new SimpleJdbcInsert(template.getJdbcTemplate())
-//                .withTableName("Article")
-//                .usingGeneratedKeyColumns("id");
     }
 
     // executeAndReturnKey : usingGeneratedKeyColumns가 insert할 때 아이디 값을 자동으로 만들어 주니까 지정해주는거
