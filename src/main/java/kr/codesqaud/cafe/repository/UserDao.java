@@ -35,14 +35,19 @@ public class UserDao {
         return jdbcTemplate.query(sql, new BeanPropertyRowMapper<>(UserDto.class), userId);
     }
 
-    public void updateUser(User user) {
-        String sql = "UPDATE USER SET CAFEPASSWORD = ?, NAME = ?, EMAIL = ? WHERE USER_ID = ? AND PASSWORD = ?";
+    public void updateUser(UserDto userDto) {
+        String sql = "UPDATE CAFEUSER SET PASSWORD = ?, NAME = ?, EMAIL = ? WHERE USER_ID = ? AND PASSWORD = ?";
         jdbcTemplate.update(sql,
-                user.getPassword(),
-                user.getName(),
-                user.getEmail(),
-                user.getUserId(),
-                user.getPassword()
+                userDto.getPassword(),
+                userDto.getName(),
+                userDto.getEmail(),
+                userDto.getUserId(),
+                userDto.getPassword()
         );
+    }
+
+    public List<UserDto> findUserByUserPassword(String password) {
+        String sql = "SELECT * FROM CAFEUSER WHERE PASSWORD = ?";
+        return jdbcTemplate.query(sql, new BeanPropertyRowMapper<>(UserDto.class), password);
     }
 }
