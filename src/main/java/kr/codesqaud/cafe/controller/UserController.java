@@ -80,7 +80,7 @@ public class UserController {
         return "users/list";
     }
 
-    @PostMapping("/process_login") //TODO: 아이디를 잘못 입력했을 경우 예외처리
+    @PostMapping("/process_login") //TODO: 아이디를 잘못 입력했을 경우 예외처리, 틀릴 경우에만 에러 페이지 나오도록 수정
     public String loginUser(@RequestParam String userId, @RequestParam String password, HttpSession session) {
         User user = memberRepository.findById(userId);
 
@@ -88,8 +88,9 @@ public class UserController {
             session.setAttribute("user", user);
             return "redirect:/users/list";
         }
+        log.info("비밀번호 에러 로그인 페이지");
 
-        return "users/error_page";
+        return "redirect:/users/login_failed";
     }
 
     @GetMapping("/logout")
