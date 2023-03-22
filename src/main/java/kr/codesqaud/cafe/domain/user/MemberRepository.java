@@ -11,7 +11,7 @@ import java.util.NoSuchElementException;
 @Repository
 public class MemberRepository {
 
-	private static final List<Member> userRepository = new ArrayList<>();
+//	private static final List<Member> userRepository = new ArrayList<>();
 //	private static long sequence = 0L;
 
 	public Member save(Member member) throws SQLException {
@@ -42,13 +42,42 @@ public class MemberRepository {
 //			return user;
 //		}
 
-	public List<Member> showAllUsers() {
+	public List<Member> showAllUsers() throws SQLException {
+		String sql = "select * from member";
+
 		List<Member> allMembers = new ArrayList<>();
-		for (int i = 0; i < userRepository.size(); i++) {
-			allMembers.add(userRepository.get(i));
+
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet resultSet = null;
+
+		try {
+			con = getConnection();
+			pstmt = con.prepareStatement(sql);
+			resultSet = pstmt.executeQuery();
+			while (resultSet.next()) {
+				Member member = new Member();
+				member.setUserId(resultSet.getString("member_id"));
+				member.setPassword(resultSet.getString("member_password"));
+				member.setName(resultSet.getString("member_name"));
+				member.setEmail(resultSet.getString("member_email"));
+				allMembers.add(member);
+			}
+			return allMembers;
+		} catch (SQLException e) {
+			throw e;
+		} finally {
+			close(con, pstmt, resultSet);
 		}
-		return allMembers;
 	}
+
+//	public List<Member> showAllUsers() {
+//		List<Member> allMembers = new ArrayList<>();
+//		for (int i = 0; i < userRepository.size(); i++) {
+//			allMembers.add(userRepository.get(i));
+//		}
+//		return allMembers;
+//	}
 
 	public Member findById(String memberId) throws SQLException {
 		String sql = "select * from member where member_id = ?";
