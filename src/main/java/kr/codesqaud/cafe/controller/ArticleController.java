@@ -33,7 +33,7 @@ public class ArticleController {
     public String findArticleList(Model model) {
         List<Article> articleList = articleRepository.findAllArticles();
         model.addAttribute("articleList", articleList);
-        log.info("debug log={}", articleList.size());
+        log.info("createdAt={}", articleList.get(0).getFormattedCreatedAt());
         return "/qna/list";
     }
 
