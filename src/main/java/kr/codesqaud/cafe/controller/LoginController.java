@@ -7,6 +7,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -31,14 +32,14 @@ public class LoginController {
     }
 
     @PostMapping("/login")
-    public String login(@RequestParam String userId, @RequestParam String password, HttpSession session) {
+    public String login(@RequestParam String userId, @RequestParam String password, HttpSession session, Model model) {
         User loginUser;
 
         try {
             loginUser = loginService.login(userId, password);
         } catch (IllegalArgumentException e) {
-            log.error("로그인중 에러 발생", e);
-            return "redirect:/user/login.html";
+            model.addAttribute("errorMessage", e.getMessage());
+            return "error";
         }
 
         session.setAttribute(SessionConstant.LOGIN_USER_ID, loginUser.getId());

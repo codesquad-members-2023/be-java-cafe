@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="kr" xmlns:th=http://www.thymeleaf.org>
+<head th:replace="base :: common_header()">
+</head>
+
+<body>
+<nav th:replace="base :: common_nav()">
+</nav>
+<div class="navbar navbar-default" id="subnav" th:replace="base :: common_sub_nav()">
+</div>
+
+<h1 style="padding-top: 180px">에러 발생</h1>
+
+<h3>에러 발생 원인</h3>
+<h4 th:text="${errorMessage}">발생 원인</h4>
+
+<a href="/login">다시 로그인하기</a>
+
+<script src="../static/js/jquery-2.2.0.min.js"></script>
+<script src="../static/js/bootstrap.min.js"></script>
+<script src="../static/js/scripts.js"></script>
+</body>
+</html>
