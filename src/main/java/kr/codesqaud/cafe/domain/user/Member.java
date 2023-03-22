@@ -2,7 +2,7 @@ package kr.codesqaud.cafe.domain.user;
 
 public class Member {
 
-//    private Long userSequence;
+    private Long userSequence;
     private String userId;
     private String password;
     private String name;
@@ -18,13 +18,13 @@ public class Member {
         this.email = email;
     }
 
-//    public Long getUserSequence() {
-//        return userSequence;
-//    }
-//
-//    public void setUserSequence(Long userSequence) {
-//        this.userSequence = userSequence;
-//    }
+    public Long getUserSequence() {
+        return userSequence;
+    }
+
+    public void setUserSequence(Long userSequence) {
+        this.userSequence = userSequence;
+    }
 
     public String getUserId() {
         return userId;
