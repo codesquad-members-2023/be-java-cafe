@@ -41,7 +41,6 @@ public class UserController {
 
     @GetMapping("/users/{emailurl}/updateForm")
     public String showUpdateForm(@PathVariable String emailurl, Model model) {
-//        String email = memberService.findOneMemberByEmail(emailurl).getEmail();
         model.addAttribute("email", emailurl);
         return "user/updateForm";
     }
