@@ -31,10 +31,11 @@ public class HomeController {
         log.debug("내가 싼 글(똥) 목록");
 
         // 로그인 여부 확인
-        if(loginUser != null) {
-            System.out.println("유저 로그인 성공");
-            model.addAttribute("user", loginUser);
+        if (loginUser != null) {
+            log.debug("로그인 중");
         }
+
+        // 질문글 출력
         List<Article> articles = repository.findAllArticle();
         model.addAttribute("articles", articles);
 
