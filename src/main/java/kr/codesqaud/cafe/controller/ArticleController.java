@@ -33,6 +33,11 @@ public class ArticleController {
         return "index";
     }
 
+    @GetMapping("/questions/form")
+    public String showQuestionForm() {
+        return "qna/form";
+    }
+
     @PostMapping("/questions")
     public String question(@ModelAttribute Article article) {
         repository.save(article);
