@@ -36,17 +36,6 @@ public class ArticleController {
         return "redirect:/";
     }
 
-    // 질문하기 목록 Mapping
-    @GetMapping("/")
-    public String showBoard(Model model) {
-        log.debug("내가 싼 글(똥) 목록");
-
-        List<Article> articles = repository.findAllArticle();
-        model.addAttribute("articles", articles);
-
-        return "index";
-    }
-
     // 질문 상세보기 Mapping
     @GetMapping("/articles/{id}")
     public String showBoardDetails(Model model, @PathVariable long id) {
