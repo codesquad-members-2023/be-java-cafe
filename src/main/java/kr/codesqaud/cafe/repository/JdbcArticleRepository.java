@@ -24,25 +24,25 @@ public class JdbcArticleRepository implements ArticleRepository {
 
     @Override
     public void save(Article article) {
-        String sql = "insert into article(writer, title, content) values(?, ?, ?)";
+        String sql = "insert into articles(writer, title, content) values(?, ?, ?)";
         jdbcTemplate.update(sql, article.getWriter(), article.getTitle(), article.getContent());
     }
 
     @Override
     public List<Article> findAll() {
-        return jdbcTemplate.query("select * from article", articleRowMapper());
+        return jdbcTemplate.query("select * from articles", articleRowMapper());
     }
 
     @Override
-    public Article findByIndex(int index) {
-        return jdbcTemplate.queryForObject("select * from article where index = ?", articleRowMapper(), index);
+    public Article findById(int id) {
+        return jdbcTemplate.queryForObject("select * from articles where article_id = ?", articleRowMapper(), id);
     }
 
     private RowMapper<Article> articleRowMapper() { //sql 결과를 받기위해 row mapping 필요
         return new RowMapper<Article>() {
             @Override
             public Article mapRow(ResultSet rs, int rowNum) throws SQLException {
-                return new Article(rs.getString("writer"), rs.getString("title"), rs.getString("content"), rs.getLong("index"));
+                return new Article(rs.getString("writer"), rs.getString("title"), rs.getString("content"), rs.getLong("article_id"), rs.getTimestamp("creation_time").toLocalDateTime());
             }
         };
     }
