@@ -2,6 +2,7 @@ package kr.codesqaud.cafe.domain;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
 
 public class Member {
@@ -11,6 +12,7 @@ public class Member {
     private String nickName;
     private String password;
     private LocalDateTime signUpDate;
+    private String formattedSignUpDate;
 
     public Member() {
         this.signUpDate = LocalDateTime.now();
@@ -38,7 +40,9 @@ public class Member {
     public String getPassword() {
         return password;
     }
-    public LocalDateTime getSignUpDate() { return signUpDate; }
+    public LocalDateTime getSignUpDate() {
+        return signUpDate;
+    }
 
     public void setEmail(String email) {
         this.email = email;
@@ -54,5 +58,11 @@ public class Member {
 
     public void setSignUpDate(LocalDateTime signUpDate) {
         this.signUpDate = signUpDate;
+        this.formattedSignUpDate = signUpDate.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+    }
+
+    public String getFormattedSignUpDate() {
+        return formattedSignUpDate;
     }
 }
+

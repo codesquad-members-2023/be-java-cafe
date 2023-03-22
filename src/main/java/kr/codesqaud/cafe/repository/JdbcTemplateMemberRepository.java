@@ -8,6 +8,7 @@ import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 
 import javax.sql.DataSource;
 import java.sql.Timestamp;
+import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -28,7 +29,7 @@ public class JdbcTemplateMemberRepository implements MemberRepository {
         parameters.put("email", member.getEmail());
         parameters.put("nickName", member.getNickName());
         parameters.put("password", member.getPassword());
-        parameters.put("signUpDate", Timestamp.valueOf(member.getSignUpDate()));
+        parameters.put("signUpDate", Timestamp.valueOf(member.getSignUpDate().format(DateTimeFormatter.ofPattern("yyy-MM-dd")) + " 00:00:00"));
 
         Number key = jdbcInsert.executeAndReturnKey(new MapSqlParameterSource(parameters));
         member.setEmail(key.toString());
