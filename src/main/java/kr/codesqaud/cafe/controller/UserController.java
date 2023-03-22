@@ -80,12 +80,7 @@ public class UserController {
         return "users/list";
     }
 
-    @GetMapping("/login")
-    public String goLoginPage() {
-        return "users/login";
-    }
-
-    @PostMapping("/login") //TODO: 아이디를 잘못 입력했을 경우 예외처리
+    @PostMapping("/process_login") //TODO: 아이디를 잘못 입력했을 경우 예외처리
     public String loginUser(@RequestParam String userId, @RequestParam String password, HttpSession session) {
         User user = memberRepository.findById(userId);
 
