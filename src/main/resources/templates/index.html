@@ -100,7 +100,8 @@
                             </strong>
                             <div class="auth-info">
                                 <i class="icon-add-comment"></i>
-                                <span class="time">2016-01-15 18:47</span>
+                                <span th:text="${article.writtenTime}"
+                                        class="time">글 쓴 시간</span>
                                 <a th:href="@{|/users/profile/${article.writer}|}"
                                    href="./user/profile.html" class="author" th:text="${article.writer}">글쓴이</a>
                             </div>
