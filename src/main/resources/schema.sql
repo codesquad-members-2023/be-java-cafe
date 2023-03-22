@@ -1,4 +1,5 @@
-drop table if exists member cascade;
+drop table if exists member;
+drop table if exists article;
 
 create table member
 (
@@ -16,7 +17,7 @@ create table article
     article_writer      varchar(64)   not null,
     article_title       varchar(200)  not null,
     article_contents    varchar(1000) not null,
-    article_writtentime varchar(64)   not null,
-    primary key (article_number);
+    article_writtentime timestamp     not null default current_timestamp(),
+    primary key (article_number)
 
 );
