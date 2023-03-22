@@ -19,12 +19,12 @@
                 </div>
             </form>
             <ul class="nav navbar-nav navbar-right">
-                {{#user}}
+                {{#loginUser}}
                 <li><a>로그인: {{name}}</a></li>
-                {{/user}}
-                {{^user}}
+                {{/loginUser}}
+                {{^loginUser}}
                 <li><a>로그인 필요!</a></li>
-                {{/user}}
+                {{/loginUser}}
                 <li>
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="glyphicon glyphicon-bell"></i></a>
                     <ul class="dropdown-menu">
@@ -61,14 +61,14 @@
         <div class="collapse navbar-collapse" id="navbar-collapse2">
             <ul class="nav navbar-nav navbar-right">
                 <li class="active"><a href="../">Posts</a></li>
-                {{#user}}
-                <li><a href="#" role="button">로그아웃</a></li>
+                {{#loginUser}}
+                <li><a href="/logout" role="button">로그아웃</a></li>
                 <li><a href="#" role="button">개인정보수정</a></li>
-                {{/user}}
-                {{^user}}
+                {{/loginUser}}
+                {{^loginUser}}
                 <li><a href="/user/login" role="button">로그인</a></li>
                 <li><a href="/user/form" role="button">회원가입</a></li>
-                {{/user}}
+                {{/loginUser}}
             </ul>
         </div>
     </div>
