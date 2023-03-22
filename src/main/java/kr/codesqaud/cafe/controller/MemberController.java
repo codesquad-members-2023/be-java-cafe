@@ -48,20 +48,20 @@ public class MemberController {
     }
 
     @GetMapping("/profile/{userId}")
-    public String userProfile(@PathVariable String userId, Model model) {
-        Member findUser = memberRepository.findByUserId(userId);
+    public String userProfile(@PathVariable String userId, Model model) throws SQLException {
+        Member findUser = memberRepository.findById(userId);
         model.addAttribute("user", findUser);
         return "user/profile";
     }
 
     @GetMapping("/update/{userId}")
-    public String editUserForm(@PathVariable String userId, Model model) {
-        model.addAttribute("user", memberRepository.findByUserId(userId));
+    public String editUserForm(@PathVariable String userId, Model model) throws SQLException {
+        model.addAttribute("user", memberRepository.findById(userId));
         return "user/updateForm";
     }
 
     @PutMapping("/update/{userId}")
-    public String edit(@PathVariable String userId, @ModelAttribute Member user) {
+    public String edit(@PathVariable String userId, @ModelAttribute Member user) throws SQLException {
         memberRepository.updateUser(userId, user);
         return "redirect:/users/list";
     }
