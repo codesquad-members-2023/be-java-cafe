@@ -30,7 +30,7 @@
                     <td ><a href="#" th:href="@{/users/{id}(id=${user.id})}" th:text="${user.userId}">javajigi </a></td>
                     <td th:text="${user.name}">자바지기</td>
                     <td th:text="${user.email}">javajigi@sample.net</td>
-                    <td><a href="#" th:href="@{/users/{id}/form(id=${user.id})}" class="btn btn-success" role="button">수정</a></td>
+                    <td><a href="#" th:href="@{/users/{id}/form(id=${user.id})}" class="btn btn-success" role="button" style="opacity:0; pointer-events:none">수정</a></td>
                 </tr>
                 </tbody>
             </table>
