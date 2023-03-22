@@ -44,7 +44,7 @@ class UserRepositoryTest {
     @Test
     @DisplayName("ID가 일치하는 유저를 찾아서 반환한다.")
     void findById() {
-        User user = userRepository.findById("conux").get();
+        User user = userRepository.findById("conux");
         //then
         assertThat(user.getName()).isEqualTo("J");
     }
@@ -54,19 +54,16 @@ class UserRepositoryTest {
     void addUser() {
         userRepository.addUser(new User("poro", "123", "gwonwoo", "ngw7617@naver.com"));
         //then
-        assertThat(userRepository.findById("poro").get().getName()).isEqualTo("gwonwoo");
+        assertThat(userRepository.findById("poro").getName()).isEqualTo("gwonwoo");
     }
 
     @Test
     @DisplayName("유저의 정보를 업데이트한다.")
     void updateUser() {
-        //given
-        User user = new User("conux", "asd", "J", "ho@naver.com");
-        userRepository.addUser(user);
         //when
         userRepository.updateUser("conux", "asd", "skarnjsdn1", "Jayho", "ngw7617@naver.com");
         //then
-        User foundUser = userRepository.findById("conux").get();
+        User foundUser = userRepository.findById("conux");
         assertAll(
                 () -> assertThat(foundUser.getName()).isEqualTo("Jayho"),
                 () -> assertThat(foundUser.getPassword()).isEqualTo("skarnjsdn1"),
