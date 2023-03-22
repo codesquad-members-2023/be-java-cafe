@@ -72,7 +72,7 @@ public class UserController {
         return "user/updateForm";
     }
 
-    //
+    // 사용자 정보 수정
     @PutMapping("users/{userId}/update")
     public String updateUser(@ModelAttribute User user, @PathVariable String userId) {
         log.debug("사용자 정보 수정: put 전달 완료");
