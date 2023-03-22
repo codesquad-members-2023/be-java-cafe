@@ -34,10 +34,10 @@
                         <div class="article-util">
                             <ul class="article-util-list">
                                 <li>
-                                    <a th:action="put" class="link-modify-article" href="/qna/update_article">수정</a>
+                                    <a th:action="get" class="link-modify-article" th:href="@{/qna/update_article/{articleId}(articleId=${article.id})}">수정</a>
                                 </li>
                                 <li>
-                                    <form class="form-delete" action="/questions/423" method="POST">
+                                    <form class="form-delete" th:action="@{/qna/show/{articleId}/delete(articleId=${article.id})}" method="POST">
                                         <input type="hidden" name="_method" value="DELETE">
                                         <button class="link-delete-article" type="submit">삭제</button>
                                     </form>
