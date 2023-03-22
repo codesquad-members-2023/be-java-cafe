@@ -14,7 +14,7 @@ public class MemoryUserRepository implements UserRepository {
     private static Map<String, User> store = new HashMap<>();
 
     public void save(User user) {
-        store.put(user.getId(), user);
+        store.put(user.getUserId(), user);
     }
 
     public List<User> findAllUsers() {

@@ -32,7 +32,7 @@ public class ArticleController {
     @GetMapping(value = {"/qna/list", "/"})
     public String findArticleList(Model model) {
         List<Article> articleList = articleRepository.findAllArticles();
-        model.addAttribute("qnaList", articleList);
+        model.addAttribute("articleList", articleList);
         log.info("debug log={}", articleList.size());
         return "/qna/list";
     }

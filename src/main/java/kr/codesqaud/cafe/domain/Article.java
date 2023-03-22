@@ -8,6 +8,10 @@ public class Article {
     private String writer;
     private String title;
     private String contents;
+
+    public Article() {
+    }
+
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
     private LocalDateTime deletedAt;

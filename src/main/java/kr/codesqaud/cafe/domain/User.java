@@ -13,6 +13,9 @@ public class User {
     private LocalDateTime updatedAt;
     private LocalDateTime deletedAt;
 
+    public User() {
+    }
+
     public User(String userId, String password, String name, String email) {
         this.userId = userId;
         this.password = password;
@@ -20,7 +23,11 @@ public class User {
         this.email = email;
     }
 
-    public String getId() {
+    public long getId() {
+        return id;
+    }
+
+    public String getUserId() {
         return userId;
     }
 
