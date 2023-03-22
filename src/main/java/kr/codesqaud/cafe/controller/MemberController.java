@@ -1,6 +1,7 @@
 package kr.codesqaud.cafe.controller;
 
 import kr.codesqaud.cafe.domain.Member;
+import kr.codesqaud.cafe.exception.LoginFailException;
 import kr.codesqaud.cafe.repository.MemberRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -9,6 +10,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
+import java.net.http.HttpResponse;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Objects;
@@ -55,10 +57,10 @@ public class MemberController {
 
     @PostMapping("/login")
     public String loginUser(String userId, String password, HttpSession httpSession) {
-        Member member = memberRepository.findByMemberId(userId).orElseThrow(() -> new NoSuchElementException("해당하는 유저가 없습니다."));
+        Member member = memberRepository.findByMemberId(userId).orElseThrow(() -> new LoginFailException("해당하는 유저가 없습니다."));
 
         if (!member.getPassword().equals(password)) {
-            return "user/login_failed";
+            throw new LoginFailException("비밀번호가 다릅니다.");
         }
 
         httpSession.setAttribute("sessionedUser", member);
