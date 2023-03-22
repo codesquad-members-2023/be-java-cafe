@@ -8,7 +8,10 @@ public class Member {
     private String name;
     private String email;
 
-    public Member(String userId, String password, String name, String email) {
+	public Member() {
+	}
+
+	public Member(String userId, String password, String name, String email) {
         this.userId = userId;
         this.password = password;
         this.name = name;
