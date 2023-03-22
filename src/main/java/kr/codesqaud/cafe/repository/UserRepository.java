@@ -7,7 +7,7 @@ import kr.codesqaud.cafe.model.User;
 
 
 public interface UserRepository {
-    Optional<User> findById(String id);
+    User findById(String id);
     void addUser(User user);
     void updateUser(String userId, String password, String newPassword, String name, String email);
 

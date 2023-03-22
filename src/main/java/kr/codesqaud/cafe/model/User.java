@@ -1,6 +1,7 @@
 package kr.codesqaud.cafe.model;
 
 import java.util.List;
+import kr.codesqaud.cafe.utils.UserInfoException;
 
 public class User {
     private String id;
@@ -24,9 +25,9 @@ public class User {
         this.index = index;
     }
 
-    public void validate(String password) {
+    public void validate(String password) throws UserInfoException {
         if (!this.password.equals(password)) {
-            throw new IllegalArgumentException("[ERROR] wrong password");
+            throw new UserInfoException("잘못된 패스워드입니다.");
         }
     }
 
