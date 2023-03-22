@@ -2,7 +2,6 @@ package kr.codesqaud.cafe.controller;
 
 import kr.codesqaud.cafe.domain.Member;
 import kr.codesqaud.cafe.repository.MemberRepository;
-import kr.codesqaud.cafe.service.MemberService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
@@ -12,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpSession;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.Objects;
 import java.util.Optional;
 
 @Controller
@@ -72,7 +72,7 @@ public class MemberController {
     }
 
     @GetMapping("/users")
-    public String list(Model model) {
+    public String list(HttpSession httpSession, Model model) {
         List<Member> all = memberRepository.findAll();
 
         model.addAttribute("list", all);
@@ -87,21 +87,13 @@ public class MemberController {
         return "user/profile";
     }
 
-    @GetMapping("/user/{userId}/updateForm")
-    public String updateProfileForm(@PathVariable Long userId, Model model) {
-        Member byId = memberRepository.findById(userId).orElseThrow(() -> new NoSuchElementException("정보를 수정할 회원이 없습니다."));
-        model.addAttribute("profile", byId);
-        return "user/updateForm";
-    }
-
     @PutMapping ("/users/{id}/update")
     public String updateProfile(@ModelAttribute Member member,
                                 @PathVariable Long id,
-                                @RequestParam String exPassword,
-                                Model model) throws IllegalAccessException {
+                                @RequestParam String exPassword) {
         Member exMember = memberRepository.findById(id).orElseThrow();
         if (!exMember.isValidPassword(exPassword)) {
-            throw new IllegalAccessException("비밀번호가 다릅니다.");
+            throw new IllegalArgumentException("비밀번호가 다릅니다.");
         }
         memberRepository.update(exMember, member);
         return "redirect:/users";

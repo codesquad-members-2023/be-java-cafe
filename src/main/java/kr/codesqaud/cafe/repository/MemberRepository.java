@@ -1,12 +1,10 @@
 package kr.codesqaud.cafe.repository;
 
 import kr.codesqaud.cafe.domain.Member;
-import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Optional;
 
-@Repository
 public interface MemberRepository {
     void save(Member user);
     Optional<Member> findById(Long userId);
