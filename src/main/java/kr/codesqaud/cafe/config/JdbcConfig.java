@@ -9,10 +9,10 @@ import org.springframework.jdbc.datasource.DriverManagerDataSource;
 public class JdbcConfig {
     public DataSource dataSource() {
         DriverManagerDataSource dataSource = new DriverManagerDataSource();
-        dataSource.setDriverClassName("com.mysql.cj.jdbc.Driver");
-        dataSource.setUrl("jdbc:mysql://r4wkv4apxn9btls2.cbetxkdyhwsb.us-east-1.rds.amazonaws.com/a4kqb57yejyiu1lw");
-        dataSource.setUsername("b3em6ctea2ecqnie");
-        dataSource.setPassword("j9w7u24ezt5lbwqz");
+        dataSource.setDriverClassName("org.h2.Driver");
+        dataSource.setUrl("jdbc:h2:tcp://localhost/~/test");
+        dataSource.setUsername("sa");
+        dataSource.setPassword("");
 
         return dataSource;
     }
