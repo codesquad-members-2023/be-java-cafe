@@ -18,12 +18,28 @@ import java.util.Optional;
 public class MemberController {
 
     private final MemberRepository memberRepository;
-    private final MemberService memberService;
     private Logger LOG = LoggerFactory.getLogger(MemberController.class.getName());
 
-    public MemberController(MemberRepository userRepository, MemberService memberService) {
+    public MemberController(MemberRepository userRepository) {
         this.memberRepository = userRepository;
-        this.memberService = memberService;
+    }
+
+    @GetMapping("/user/{id}/update")
+    public String updateForm(@PathVariable Long id, HttpSession httpSession, Model model) {
+        Object sessionedUser = httpSession.getAttribute("sessionedUser");
+
+        if (sessionedUser == null) {
+            throw new IllegalArgumentException("먼저 로그인을 해주세요.");
+        }
+
+        Member member = (Member) sessionedUser;
+
+        if (!Objects.equals(member.getId(), id)) {
+            throw new NoSuchElementException("로그인한 유저가 아닙니다.");
+        }
+
+        model.addAttribute("profile", memberRepository.findById(id).orElseThrow(() -> new NoSuchElementException("정보를 수정할 회원이 없습니다.")));
+        return "user/updateForm";
     }
 
     @GetMapping("/logout")
