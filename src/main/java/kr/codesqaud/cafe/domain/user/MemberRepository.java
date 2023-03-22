@@ -84,16 +84,43 @@ public class MemberRepository {
 //		return userRepository.stream().filter(user -> user.getUserId().equals(userId)).findFirst().orElseThrow();
 //	}
 
-	public void updateUser(String userId, Member updateParam) throws SQLException {
-		Member user = findById(userId);
-		String originalPassword = user.getPassword();
+	public void update(String memberId, Member updateParam) throws SQLException {
+		Member member = findById(memberId);
+		String originalPassword = member.getPassword();
 		if (!originalPassword.equals(updateParam.getPassword())) {
 			return;
 		}
-		user.setPassword(updateParam.getPassword());
-		user.setName(updateParam.getName());
-		user.setEmail(updateParam.getEmail());
+
+		String sql = "update member set (member_name, member_email) = (?, ?) where member_id = ?";
+
+		Connection con = null;
+		PreparedStatement pstmt = null;
+
+		try {
+			con = getConnection();
+			pstmt = con.prepareStatement(sql);
+			pstmt.setString(1, updateParam.getName());
+			pstmt.setString(2, updateParam.getEmail());
+			pstmt.setString(3, memberId);
+			pstmt.executeUpdate();
+		} catch (SQLException e) {
+			throw e;
+		} finally {
+			close(con, pstmt, null);
+		}
+
 	}
+
+//	public void updateUser(String userId, Member updateParam) throws SQLException {
+//		Member user = findById(userId);
+//		String originalPassword = user.getPassword();
+//		if (!originalPassword.equals(updateParam.getPassword())) {
+//			return;
+//		}
+//		user.setPassword(updateParam.getPassword());
+//		user.setName(updateParam.getName());
+//		user.setEmail(updateParam.getEmail());
+//	}
 
 	private void close(Connection con, Statement stmt, ResultSet resultSet) {
 
