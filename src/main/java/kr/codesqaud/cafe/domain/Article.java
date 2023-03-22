@@ -1,6 +1,6 @@
 package kr.codesqaud.cafe.domain;
 
-import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 public class Article {
@@ -8,8 +8,8 @@ public class Article {
     private String writer;
     private String title;
     private String contents;
-    private Timestamp createdDate;
-    private Timestamp updatedDate;
+    private LocalDateTime createdDate;
+    private LocalDateTime updatedDate;
 
     public Long getId() {
         return id;
@@ -43,19 +43,27 @@ public class Article {
         this.contents = contents;
     }
 
-    public String getCreatedDate() {
-        return createdDate.toLocalDateTime().format(DateTimeFormatter.ofPattern("yyyy-MM-dd hh:mm:ss"));
+    public LocalDateTime getCreatedDate() {
+        return createdDate;
     }
 
-    public void setCreatedDate(Timestamp createdDate) {
+    public String getFormattedCreatedDate() {
+        return createdDate.format(DateTimeFormatter.ofPattern("yyyy-MM-dd hh:mm:ss"));
+    }
+
+    public void setCreatedDate(LocalDateTime createdDate) {
         this.createdDate = createdDate;
     }
 
-    public String getUpdatedDate() {
-        return createdDate.toLocalDateTime().format(DateTimeFormatter.ofPattern("yyyy-MM-dd hh:mm:ss"));
+    public LocalDateTime getUpdatedDate() {
+        return updatedDate;
     }
 
-    public void setUpdatedDate(Timestamp updatedDate) {
+    public String getFormattedUpdatedDate() {
+        return createdDate.format(DateTimeFormatter.ofPattern("yyyy-MM-dd hh:mm:ss"));
+    }
+
+    public void setUpdatedDate(LocalDateTime updatedDate) {
         this.updatedDate = updatedDate;
     }
 
