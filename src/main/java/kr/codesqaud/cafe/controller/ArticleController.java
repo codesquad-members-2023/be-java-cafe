@@ -35,9 +35,9 @@ public class ArticleController {
         return "index";
     }
 
-    @GetMapping("/articles/{index}")
-    public String articleShow(Model model, @PathVariable int index) {
-        model.addAttribute("article", articleRepository.findByIndex(index));
+    @GetMapping("/articles/{id}")
+    public String articleShow(Model model, @PathVariable int id) {
+        model.addAttribute("article", articleRepository.findById(id));
         return "qna/show";
     }
 }

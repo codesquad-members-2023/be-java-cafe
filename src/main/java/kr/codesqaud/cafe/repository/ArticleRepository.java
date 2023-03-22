@@ -9,5 +9,5 @@ public interface ArticleRepository {
 
     List<Article> findAll();
 
-    Article findByIndex(int index);
+    Article findById(int index);
 }

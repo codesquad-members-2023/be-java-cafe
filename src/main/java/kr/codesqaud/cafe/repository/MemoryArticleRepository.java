@@ -12,7 +12,7 @@ public class MemoryArticleRepository implements ArticleRepository{
 
     @Override
     public void save(Article article) {
-        article.setIndex((long)articles.size() + 1);
+        article.setId((long)articles.size() + 1);
         articles.add(article);
     }
 
@@ -22,7 +22,7 @@ public class MemoryArticleRepository implements ArticleRepository{
     }
 
     @Override
-    public Article findByIndex(int index) {
+    public Article findById(int index) {
         return articles.get(index - 1);
     }
 }
