@@ -62,7 +62,7 @@ public class MemberController {
 
     @PutMapping("/update/{userId}")
     public String edit(@PathVariable String userId, @ModelAttribute Member user) throws SQLException {
-        memberRepository.updateUser(userId, user);
+        memberRepository.update(userId, user);
         return "redirect:/users/list";
     }
 
