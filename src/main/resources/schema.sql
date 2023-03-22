@@ -15,6 +15,6 @@ CREATE TABLE Article
     writer varchar(50) NOT NULL,
     title varchar(30) NOT NULL,
     contents varchar(3000) NOT NULL,
-    write_date timestamp NOT NULL,
+    write_date timestamp NOT NULL default current_timestamp,
     PRIMARY KEY (id)
 );
