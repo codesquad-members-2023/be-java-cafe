@@ -1,16 +1,15 @@
 package kr.codesqaud.cafe.repository;
 
 import kr.codesqaud.cafe.basic.User;
-import org.springframework.beans.factory.annotation.Autowired;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 public interface UserRepository {
 
     public void join(User user);
 
-    public User findUser(String userId);
+    public Optional<User> findUserById(String userId);
 
     public List<User> findAll();
 

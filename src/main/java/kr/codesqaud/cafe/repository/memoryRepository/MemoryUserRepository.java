@@ -21,11 +21,10 @@ public class MemoryUserRepository implements UserRepository {
         userRepository.add(user);
     }
 
-    public User findUser(String userId) {
+    public Optional<User> findUserById(String userId) {
         return userRepository.stream()
                 .filter(user -> user.getUserId().equals(userId))
-                .findFirst()
-                .orElseThrow();
+                .findFirst();
     }
 
     public List<User> findAll() {
