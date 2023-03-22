@@ -41,9 +41,9 @@ public class UserController {
         return "/users/list";
     }
 
-    @GetMapping("/{userId}")
-    public String findUser(@PathVariable String userId, Model model) {
-        User user = userRepository.findByUserId(userId);
+    @GetMapping("/{id}")
+    public String findUser(@PathVariable long id, Model model) {
+        User user = userRepository.findUserById(id);
         model.addAttribute(user);
         log.debug("debug log={}", user.getName());
         return "/users/profile";
