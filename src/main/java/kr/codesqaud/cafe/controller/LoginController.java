@@ -1,5 +1,6 @@
 package kr.codesqaud.cafe.controller;
 
+import kr.codesqaud.cafe.SessionConstant;
 import kr.codesqaud.cafe.domain.User;
 import kr.codesqaud.cafe.service.LoginService;
 import org.slf4j.Logger;
@@ -16,8 +17,6 @@ import javax.servlet.http.HttpSession;
 public class LoginController {
 
     private final Logger log = LoggerFactory.getLogger(getClass());
-
-    private static final String SESSION_ID = "sessionedUser";
 
     private final LoginService loginService;
 
@@ -42,7 +41,7 @@ public class LoginController {
             return "redirect:/user/login.html";
         }
 
-        session.setAttribute(SESSION_ID, loginUser);
+        session.setAttribute(SessionConstant.LOGIN_USER_ID, loginUser.getId());
         return "redirect:/";
     }
 
