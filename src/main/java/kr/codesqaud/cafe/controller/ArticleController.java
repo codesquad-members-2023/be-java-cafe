@@ -3,14 +3,12 @@ package kr.codesqaud.cafe.controller;
 
 import kr.codesqaud.cafe.basic.Article;
 import kr.codesqaud.cafe.repository.ArticleRepository;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
