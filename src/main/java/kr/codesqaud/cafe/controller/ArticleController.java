@@ -37,10 +37,10 @@ public class ArticleController {
         return "/qna/list";
     }
 
-    @GetMapping("/qna/{title}")
+    @GetMapping("/qna/{id}")
     public String findArticle(@PathVariable int id, Model model) {
         Article article = articleRepository.findByArticleId(id);
-        model.addAttribute("qna", article);
+        model.addAttribute("article", article);
         log.info("debug log={}", "findArticle");
         return "/qna/show";
     }

@@ -25,7 +25,7 @@ public class DBUserRepository implements UserRepository {
     public void save(User user) {
         String sql = "insert into member (userId, password, name, email) values(?, ?, ?, ?)";
 
-        jdbcTemplate.update(sql, user.getId(), user.getPassword(), user.getName(), user.getEmail());
+        jdbcTemplate.update(sql, user.getUserId(), user.getPassword(), user.getName(), user.getEmail());
 
     }
 
