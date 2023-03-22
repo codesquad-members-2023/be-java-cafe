@@ -40,7 +40,7 @@ public class MemberController {
     }
 
     @GetMapping("/list")
-    public String users(Model model) {
+    public String users(Model model) throws SQLException {
         List<Member> members = memberRepository.showAllUsers();
         model.addAttribute("users", members);
         log.trace("사용자 수: {}", members.size());
