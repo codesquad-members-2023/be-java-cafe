@@ -13,6 +13,14 @@ public class Article {
         this.contents = contents;
     }
 
+    public Article(long id, String writer, String title, String contents, LocalDateTime creationTime) {
+        this.id = id;
+        this.writer = writer;
+        this.title = title;
+        this.contents = contents;
+        this.creationTime = creationTime;
+    }
+
     public Article(String writer, String title, String contents) {
         this.writer = writer;
         this.title = title;
@@ -20,8 +28,14 @@ public class Article {
         creationTime = LocalDateTime.now();
     }
 
-    public LocalDateTime getCreationTime() {
-        return creationTime;
+    public String getFormattedCreationTime() {
+        return creationTime.format(
+                DateTimeFormatter.ofPattern("yyyy-MM-dd hh:mm:ss"));
+    }
+
+    public String getCreationTime() {
+        return creationTime.format(
+                DateTimeFormatter.ofPattern("yyyy-MM-dd hh:mm:ss"));
     }
 
     public String getFormattedCreationTime() {

@@ -1,7 +1,6 @@
 package kr.codesqaud.cafe.service.impl;
 
 import java.util.List;
-import java.util.Optional;
 
 import kr.codesqaud.cafe.repository.ArticleRepository;
 import kr.codesqaud.cafe.service.QnaService;
