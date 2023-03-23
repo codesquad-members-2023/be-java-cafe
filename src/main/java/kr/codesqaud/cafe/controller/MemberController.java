@@ -32,10 +32,10 @@ public class MemberController {
     public String addUser(@ModelAttribute("user") Member member) {
         logger.debug("addUser");
         jdbcMemberRepository.save(member);
-        return "redirect:/users";
+        return "redirect:/login";
     }
 
-    @GetMapping("/users")
+    @GetMapping("/list")
     public String getUserList(Model model) {
         logger.debug("getUserList");
         List<Member> userList = jdbcMemberRepository.findAll();
@@ -54,10 +54,18 @@ public class MemberController {
     public String updateUser(@PathVariable("userId") String userId, Model model,HttpSession session) {
         logger.debug("updateUser : GET");
         Object value = session.getAttribute("sessionedUser");
-        if(value != null){
+//        if(value != null){
+//            Optional<Member> updateUser = jdbcMemberRepository.findById(userId);
+//            // Model 과 View 연결
+//            model.addAttribute("user", updateUser.orElseThrow());
+//        }
+        if (value != null) {
             Optional<Member> updateUser = jdbcMemberRepository.findById(userId);
-            // Model 과 View 연결
-            model.addAttribute("user", updateUser.orElseThrow());
+            if (updateUser.isPresent()) {
+                model.addAttribute("user", updateUser.get());
+            } else {
+                throw new IllegalArgumentException("해당 사용자를 찾을 수 없습니다: " + userId);
+            }
         }
         return "user/updateForm";
     }
@@ -69,16 +77,18 @@ public class MemberController {
         return "redirect:/users";
     }
 
+    @GetMapping("/login")
+    public String login() throws Exception{
+        return "user/login";
+    }
+
     @PostMapping("/login")
     public String login(@ModelAttribute("user")Member member, HttpSession session,Model model){
-        Member existUser = jdbcMemberRepository.findById(member.getUserId()).orElseThrow();
+        logger.debug("login {} ", member);
+        Member existUser = jdbcMemberRepository.findById(member.getUserId()).orElse(null);
 
-        if(member.getUserId() != null){
+        if(existUser!=null && member.getPassword().equals(existUser.getPassword())){
             session.setAttribute("sessionedUser",existUser);
-            if(!member.getPassword().equals(existUser.getPassword())){
-                model.addAttribute("notExist", "fail");
-                return "user/login";
-            }
             return "redirect:/";
         } else {
             model.addAttribute("notExist", "fail");
