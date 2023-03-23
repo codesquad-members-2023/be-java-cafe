@@ -19,7 +19,6 @@ public class MemberController {
 
 	private final NamedJdbcTemplateMemberRepository namedJdbcTemplateMemberRepository;
 
-//    private final MemberRepository memberRepository;
     private final Logger log = LoggerFactory.getLogger(MemberController.class);
 
     @Autowired
