@@ -12,8 +12,6 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
-import java.util.Collections;
-import java.util.List;
 import java.util.Optional;
 
 @Controller
@@ -34,17 +32,6 @@ public class ArticleController {
 
         repository.saveArticle(article);
         return "redirect:/";
-    }
-
-    // 질문하기 목록 Mapping
-    @GetMapping("/")
-    public String showBoard(Model model) {
-        log.debug("내가 싼 글(똥) 목록");
-
-        List<Article> articles = repository.findAllArticle();
-        model.addAttribute("articles", articles);
-
-        return "index";
     }
 
     // 질문 상세보기 Mapping

@@ -72,17 +72,24 @@ public class UserController {
         return "user/updateForm";
     }
 
-    //
+    // 사용자 정보 수정
     @PutMapping("users/{userId}/update")
-    public String updateUser(@ModelAttribute User user, @PathVariable String userId) {
+    public String updateUser(@ModelAttribute User user, @PathVariable String userId, String password) {
         log.debug("사용자 정보 수정: put 전달 완료");
 
         Optional<User> temp = repository.findByUserId(userId);
-        if (temp.isPresent()) {
-            log.debug("사용자 정보 수정: 정보 수정 & 저장 성공");
-            user.setId(temp.get().getId());
-            repository.update(user);
+        User passwordCheckUser = repository.findByUserId(userId)
+                .filter(u -> u.getPassword().equals(password))
+                .orElse(null);
+        // 비밀번호 체크 실패
+        if (passwordCheckUser == null) {
+            log.debug("사용자 정보 수정: 비밀번호 틀림 ㅋ");
+            return "user/updateForm_failed";
         }
+        // 체크 성공
+        log.debug("사용자 정보 수정: 정보 수정 & 저장 성공");
+        user.setId(temp.get().getId());
+        repository.update(user);
         return "redirect:/users";
     }
 }
