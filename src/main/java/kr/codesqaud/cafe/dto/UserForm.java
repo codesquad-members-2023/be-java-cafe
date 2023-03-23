@@ -1,10 +1,11 @@
-package kr.codesqaud.cafe.controller;
+package kr.codesqaud.cafe.dto;
 
 public class UserForm {
     private String id;
     private String name;
     private String email;
     private String password;
+    private String prePassword;
 
     public String getId() {
         return id;
@@ -38,5 +39,11 @@ public class UserForm {
         return password;
     }
 
+    public String getPrePassword() {
+        return prePassword;
+    }
 
+    public void setPrePassword(String prePassword) {
+        this.prePassword = prePassword;
+    }
 }

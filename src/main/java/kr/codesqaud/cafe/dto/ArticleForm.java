@@ -1,9 +1,13 @@
-package kr.codesqaud.cafe.controller;
+package kr.codesqaud.cafe.dto;
+
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
 
 public class ArticleForm {
     private String writer;
     private String title;
     private String content;
+    private Timestamp creationTime;
 
     public void setWriter(String writer) {
         this.writer = writer;

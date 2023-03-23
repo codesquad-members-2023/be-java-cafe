@@ -1,6 +1,7 @@
 package kr.codesqaud.cafe.controller;
 
 import kr.codesqaud.cafe.domain.Article;
+import kr.codesqaud.cafe.dto.ArticleForm;
 import kr.codesqaud.cafe.repository.ArticleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -8,8 +9,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-
-import java.util.Optional;
 
 @Controller
 public class ArticleController {
@@ -36,9 +35,9 @@ public class ArticleController {
         return "index";
     }
 
-    @GetMapping("/articles/{index}")
-    public String articleShow(Model model, @PathVariable int index) {
-        model.addAttribute("article", articleRepository.findByIndex(index));
+    @GetMapping("/articles/{id}")
+    public String articleShow(Model model, @PathVariable int id) {
+        model.addAttribute("article", articleRepository.findById(id));
         return "qna/show";
     }
 }

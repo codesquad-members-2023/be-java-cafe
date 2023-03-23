@@ -1,10 +1,16 @@
 package kr.codesqaud.cafe.domain;
 
+import org.springframework.cglib.core.Local;
+
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+
 public class Article {
     private final String writer;
     private final String title;
     private final String content;
-    private int index;
+    private Long id;
+    private LocalDateTime creationTime;
 
     public Article(String writer, String title, String content) {
         this.writer = writer;
@@ -12,8 +18,12 @@ public class Article {
         this.content = content;
     }
 
-    public void setIndex(int index) {
-        this.index = index;
+    public Article(String writer, String title, String content, Long id, LocalDateTime creationTime) {
+        this.writer = writer;
+        this.title = title;
+        this.content = content;
+        this.id = id;
+        this.creationTime = creationTime;
     }
 
     public String getWriter() {
@@ -28,7 +38,19 @@ public class Article {
         return content;
     }
 
-    public int getIndex() {
-        return index;
+    public Long getIndex() {
+        return id;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public String getCreationTime() {
+        return creationTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+    }
+
+    public void setId(long id) {
+        this.id = id;
     }
 }
