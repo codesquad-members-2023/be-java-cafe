@@ -69,7 +69,7 @@ public class UserController {
         return "users/profile";
     }
 
-    @GetMapping("/{userId}/updateUser")
+    @GetMapping("/updateUser/{userId}")
     public String updateUser(@PathVariable String userId, Model model) {
         User user = memberRepository.findById(userId);
 
@@ -77,7 +77,7 @@ public class UserController {
         return "users/update_user";
     }
 
-    @PutMapping("/{userId}/updateUser")
+    @PutMapping("/updateUser/{userId}")
     public String updateUserPost(@ModelAttribute User user, BindingResult bindingResult) {
         userUpdateValidator.validate(user, bindingResult);
         if (bindingResult.hasErrors()) {
