@@ -39,8 +39,8 @@
                               <a class="link-modify-article" href="/questions/423/form">수정</a>
                           </li>
                           <li>
-                              <form class="form-delete" action="/questions/423" method="POST">
-                                  <input type="hidden" name="_method" value="DELETE">
+                              <form class="form-delete" action="#" th:action="@{/articles/{id}(id=*{id})}" method="POST">
+                                  <input type="hidden" name="_method" value="DELETE"/>
                                   <button class="link-delete-article" type="submit">삭제</button>
                               </form>
                           </li>
@@ -106,7 +106,7 @@
                                           <a class="link-modify-article" href="/questions/413/answers/1405/form">수정</a>
                                       </li>
                                       <li>
-                                          <form class="form-delete" action="/questions/413/answers/1405" method="POST">
+                                          <form class="form-delete" action="#" th:action="@{/users/{id}(id=*{id})}" method="POST">
                                               <input type="hidden" name="_method" value="DELETE">
                                               <button type="submit" class="delete-answer-button">삭제</button>
                                           </form>

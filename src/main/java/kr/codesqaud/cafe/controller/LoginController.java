@@ -25,12 +25,6 @@ public class LoginController {
         this.loginService = loginService;
     }
 
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    @ExceptionHandler(IllegalArgumentException.class)
-    public String illegalExHandler(IllegalArgumentException e, Model model) {
-        model.addAttribute("errorMessage", e.getMessage());
-        return "error";
-    }
 
     @GetMapping("/login")
     public String showLoginForm() {
