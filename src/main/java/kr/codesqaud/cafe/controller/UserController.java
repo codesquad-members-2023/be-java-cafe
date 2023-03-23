@@ -84,4 +84,11 @@ public class UserController {
         }
         return "user/login_failed";
     }
+
+    @GetMapping("/user/logout")
+    public String logout(HttpSession session) {
+        session.invalidate();
+
+        return "index";
+    }
 }
