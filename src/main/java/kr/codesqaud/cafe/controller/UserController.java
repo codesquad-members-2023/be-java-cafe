@@ -73,7 +73,6 @@ public class UserController {
         Optional<User> user = repository.findByUserId(userId);
 
         User value = (User) session.getAttribute(SessionConst.LOGIN_USER);
-        System.out.println(value);
         if (value == null || !value.getUserId().equals(userId)) {
             return "user/error";
         }
