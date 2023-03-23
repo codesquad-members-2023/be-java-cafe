@@ -10,7 +10,7 @@ public class Article {
 
     private Logger log = LoggerFactory.getLogger(getClass());
 
-    private long id;
+    private int id;
     private String writer;
     private String title;
     private String contents;
