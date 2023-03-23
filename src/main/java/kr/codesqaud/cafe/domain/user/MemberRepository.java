@@ -11,9 +11,6 @@ import java.util.NoSuchElementException;
 @Repository
 public class MemberRepository {
 
-//	private static final List<Member> userRepository = new ArrayList<>();
-//	private static long sequence = 0L;
-
 	public Member save(Member member) throws SQLException {
 		String sql = "insert into member(member_id, member_password, member_name, member_email) values (?, ?, ?, ?)";
 
@@ -35,12 +32,6 @@ public class MemberRepository {
 			close(con, pstmt, null);
 		}
 	}
-
-//		public Member save(Member user) {
-//			user.setUserSequence(++sequence);
-//			userRepository.add(user);
-//			return user;
-//		}
 
 	public List<Member> showAllUsers() throws SQLException {
 		String sql = "select * from member";
@@ -72,14 +63,6 @@ public class MemberRepository {
 		}
 	}
 
-//	public List<Member> showAllUsers() {
-//		List<Member> allMembers = new ArrayList<>();
-//		for (int i = 0; i < userRepository.size(); i++) {
-//			allMembers.add(userRepository.get(i));
-//		}
-//		return allMembers;
-//	}
-
 	public Member findById(String memberId) throws SQLException {
 		String sql = "select * from member where member_id = ?";
 
@@ -110,10 +93,6 @@ public class MemberRepository {
 		}
 	}
 
-//	public Member findByUserId(String userId) {
-//		return userRepository.stream().filter(user -> user.getUserId().equals(userId)).findFirst().orElseThrow();
-//	}
-
 	public void update(String memberId, Member updateParam) throws SQLException {
 		Member member = findById(memberId);
 		String originalPassword = member.getPassword();
@@ -140,17 +119,6 @@ public class MemberRepository {
 		}
 
 	}
-
-//	public void updateUser(String userId, Member updateParam) throws SQLException {
-//		Member user = findById(userId);
-//		String originalPassword = user.getPassword();
-//		if (!originalPassword.equals(updateParam.getPassword())) {
-//			return;
-//		}
-//		user.setPassword(updateParam.getPassword());
-//		user.setName(updateParam.getName());
-//		user.setEmail(updateParam.getEmail());
-//	}
 
 	private void close(Connection con, Statement stmt, ResultSet resultSet) {
 
