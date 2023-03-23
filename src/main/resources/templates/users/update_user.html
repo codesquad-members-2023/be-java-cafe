@@ -19,18 +19,25 @@
                     <label for="userId">사용자 아이디</label>
                     <input class="form-control" id="userId" name="userId" th:placeholder="${user.userId}" th:readonly="edit eq 1 ? 'readonly': true" th:value="${user.userId}">
                 </div>
+
                 <div class="form-group">
                     <label for="password">비밀번호</label>
                     <input type="password" class="form-control" id="password" name="password" placeholder="Password">
+                    <div th:errors="${user.password}" class="field-error"></div>
                 </div>
+
                 <div class="form-group">
                     <label for="name">이름</label>
                     <input class="form-control" id="name" name="name" th:placeholder="${user.name}" th:value="${user.name}">
+                    <div th:errors="${user.name}" class="field-error"></div>
                 </div>
+
                 <div class="form-group">
                     <label for="email">이메일</label>
                     <input type="email" class="form-control" id="email" name="email" th:placeholder="${user.email}" th:value="${user.email}">
+                    <div th:errors="${user.email}" class="field-error"></div>
                 </div>
+
                 <button type="submit" class="btn btn-success clearfix pull-right"><a th:href="@{/users/{userId}/updateUser/(userId=${user.userId})}"></a>정보 수정</button>
                 <div class="clearfix"/>
             </form>

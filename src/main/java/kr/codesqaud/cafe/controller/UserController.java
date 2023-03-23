@@ -5,6 +5,7 @@ import kr.codesqaud.cafe.repository.member.MemberRepository;
 import kr.codesqaud.cafe.domain.User;
 import kr.codesqaud.cafe.validation.UserJoinValidator;
 import kr.codesqaud.cafe.validation.UserLoginValidator;
+import kr.codesqaud.cafe.validation.UserUpdateValidator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,12 +26,14 @@ public class UserController {
     private final MemberRepository memberRepository;
     private final UserLoginValidator userLoginValidator;
     private final UserJoinValidator userJoinValidator;
+    private final UserUpdateValidator userUpdateValidator;
 
     @Autowired
-    public UserController(MemberRepository memberRepository, UserLoginValidator userLoginValidator, UserJoinValidator userJoinValidator) {
+    public UserController(MemberRepository memberRepository, UserLoginValidator userLoginValidator, UserJoinValidator userJoinValidator, UserUpdateValidator userUpdateValidator) {
         this.memberRepository = memberRepository;
         this.userLoginValidator = userLoginValidator;
         this.userJoinValidator = userJoinValidator;
+        this.userUpdateValidator = userUpdateValidator;
     }
 
     @GetMapping("/form")
@@ -74,14 +77,16 @@ public class UserController {
         return "users/update_user";
     }
 
-    @PutMapping("/{userId}/updateUser") // TODO : DTO 고려해보기, 로직을 service로 넘기기
-    public String updateUserPost(@ModelAttribute User user) {
-        if (memberRepository.findById(user.getUserId()).getPassword().equals(user.getPassword())) {
-            return "users/error_page";
+    @PutMapping("/{userId}/updateUser")
+    public String updateUserPost(@ModelAttribute User user, BindingResult bindingResult) {
+        userUpdateValidator.validate(user, bindingResult);
+        if (bindingResult.hasErrors()) {
+            return "users/update_user";
         }
 
+
         memberRepository.updateUser(user);
-        return "users/list";
+        return "redirect:/users/list";
     }
 
     @GetMapping("/login")
