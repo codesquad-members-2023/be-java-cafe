@@ -9,6 +9,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.util.List;
 import java.util.Optional;
 
@@ -29,10 +32,10 @@ public class MemberController {
     public String addUser(@ModelAttribute("user") Member member) {
         logger.debug("addUser");
         jdbcMemberRepository.save(member);
-        return "redirect:/users";
+        return "redirect:/login";
     }
 
-    @GetMapping("/users")
+    @GetMapping("/list")
     public String getUserList(Model model) {
         logger.debug("getUserList");
         List<Member> userList = jdbcMemberRepository.findAll();
@@ -48,12 +51,17 @@ public class MemberController {
     }
 
     @GetMapping("/users/{userId}/form")
-    public String updateUser(@PathVariable("userId") String userId, Model model) {
+    public String updateUser(@PathVariable("userId") String userId, Model model,HttpSession session) {
         logger.debug("updateUser : GET");
-
-        Optional<Member> updateUser = jdbcMemberRepository.findById(userId);
-        // Model 과 View 연결
-        model.addAttribute("user", updateUser.orElseThrow());
+        Object value = session.getAttribute("sessionedUser");
+        if (value != null) {
+            Optional<Member> updateUser = jdbcMemberRepository.findById(userId);
+            if (updateUser.isPresent()) {
+                model.addAttribute("user", updateUser.get());
+            } else {
+                throw new IllegalArgumentException("해당 사용자를 찾을 수 없습니다: " + userId);
+            }
+        }
         return "user/updateForm";
     }
 
@@ -62,6 +70,31 @@ public class MemberController {
         logger.debug("updateUser : PUT");
         jdbcMemberRepository.update(member);
         return "redirect:/users";
+    }
+
+    @GetMapping("/login")
+    public String login() throws Exception{
+        return "user/login";
+    }
+
+    @PostMapping("/login")
+    public String login(@ModelAttribute("user")Member member, HttpSession session,Model model){
+        logger.debug("login {} ", member);
+        Member existUser = jdbcMemberRepository.findById(member.getUserId()).orElse(null);
+
+        if(existUser!=null && member.getPassword().equals(existUser.getPassword())){
+            session.setAttribute("sessionedUser",existUser);
+            return "redirect:/";
+        } else {
+            model.addAttribute("notExist", "fail");
+            return "user/login";
+        }
+    }
+
+    @GetMapping("/logout")
+    public String logout(HttpSession session){
+        session.invalidate();
+        return "user/login";
     }
 
 

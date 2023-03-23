@@ -26,21 +26,17 @@ public class JdbcArticleRepository implements ArticleRepository {
 
     // insert를 제외한 모든 쿼리문 실행
     private final NamedParameterJdbcTemplate template;
-    // 간단한 insert문 만들기
-    private final SimpleJdbcInsert jdbcInsert;
 
     public JdbcArticleRepository(NamedParameterJdbcTemplate template) {
         this.template = template;
-        this.jdbcInsert = new SimpleJdbcInsert(template.getJdbcTemplate())
-                .withTableName("Article")
-                .usingGeneratedKeyColumns("id");
     }
 
     // executeAndReturnKey : usingGeneratedKeyColumns가 insert할 때 아이디 값을 자동으로 만들어 주니까 지정해주는거
     @Override
     public Long save(Article article) {
         SqlParameterSource param = new BeanPropertySqlParameterSource(article);
-        return jdbcInsert.executeAndReturnKey(param).longValue();
+        template.update("insert into Article (writer, title, contents) values (:writer, :title, :contents)", param);
+        return article.getId();
     }
 
     // :id -> id라는 이름으로 매핑해준다. NamedParameterJdbcTemplate를 사용하면 쓸 수 있음
@@ -64,7 +60,7 @@ public class JdbcArticleRepository implements ArticleRepository {
 
     @Override
     public void update(Article article) {
-        String sql = "update article set title = :title, contents = :contents where = :id ";
+        String sql = "update article set title = :title, contents = :contents where id = :id ";
         SqlParameterSource param = new BeanPropertySqlParameterSource(article); // 객체를 찾아야하니까 bean
         template.update(sql,param); // template.update -> int 반환
     }
