@@ -5,11 +5,11 @@ import java.time.LocalDateTime;
 public class Article {
 
     private int id;
-    private String writer;
     private String title;
     private String contents;
 
     private LocalDateTime createDate;
+    private int userId;
 
     private int replyCount;
 
@@ -18,8 +18,8 @@ public class Article {
         this.replyCount = 0;
     }
 
-    public Article(String writer, String title, String contents) {
-        this.writer = writer;
+    public Article(int userId, String title, String contents) {
+        this.userId = userId;
         this.title = title;
         this.contents = contents;
         this.createDate = LocalDateTime.now();
@@ -32,14 +32,6 @@ public class Article {
 
     public void setId(int id) {
         this.id = id;
-    }
-
-    public String getWriter() {
-        return writer;
-    }
-
-    public void setWriter(String writer) {
-        this.writer = writer;
     }
 
     public String getTitle() {
@@ -64,6 +56,14 @@ public class Article {
 
     public void setCreateDate(LocalDateTime createDate) {
         this.createDate = createDate;
+    }
+
+    public int getUserId() {
+        return userId;
+    }
+
+    public void setUserId(int userId) {
+        this.userId = userId;
     }
 
     public int getReplyCount() {

@@ -27,8 +27,8 @@ public class H2DBArticleRepository implements ArticleRepository{
 
     @Override
     public void save(Article article) {
-        String sql = "insert into article (writer, title, contents, createDate) " +
-                "values (:writer, :title, :contents, :createDate)";
+        String sql = "insert into article (title, contents, createDate, user_id) " +
+                "values (:title, :contents, :createDate, :userId)";
 
         SqlParameterSource param = new BeanPropertySqlParameterSource(article);
 
@@ -37,7 +37,7 @@ public class H2DBArticleRepository implements ArticleRepository{
 
     @Override
     public Article findById(int id) {
-        String sql = "select id, writer, title, contents, createDate from article where id=:id";
+        String sql = "select id, title, contents, createDate, user_id from article where id=:id";
 
         try {
             Map<String, Integer> param = Map.of("id", id);
@@ -50,7 +50,7 @@ public class H2DBArticleRepository implements ArticleRepository{
 
     @Override
     public List<Article> findAll() {
-        String sql = "select id, writer, title, contents, createDate from article order by id desc";
+        String sql = "select id, title, contents, createDate, user_id from article order by id desc";
 
         return template.query(sql, BeanPropertyRowMapper.newInstance(Article.class));
     }
