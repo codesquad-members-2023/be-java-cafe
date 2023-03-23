@@ -48,7 +48,7 @@ public class UserController {
         if (bindingResult.hasErrors()) {
             return "users/form";
         }
-
+        log.info("error={}", bindingResult.getErrorCount());
         memberRepository.save(user);
 
         return "redirect:/users/list";
