@@ -58,7 +58,8 @@ public class UserController {
 
     @GetMapping("/update")
     public String updateForm(HttpSession session,
-                             Model model) {
+                             Model model
+                             ) {
         User user = (User) session.getAttribute(ConstConfig.SESSION_ID);
         if (user == null) return "fail-something";
 
@@ -71,29 +72,24 @@ public class UserController {
                          @RequestParam String password,
                          @RequestParam String name,
                          @RequestParam String email,
-                         HttpServletRequest request,
                          HttpSession session) {
-//        HttpSession session = request.getSession(false);
-        System.out.println("hi");
         User user = (User) session.getAttribute(ConstConfig.SESSION_ID);
         if (user == null) return "fail-something";
         if (!user.isSamePassword(curPassword)) return "fail-something";
 
         if (!userService.update(user, password, name, email)) return "fail-something";
-
         return "redirect:/user/list";
     }
 
     @PostMapping("/login")
     public String login(@RequestParam String userId,
                         @RequestParam String password,
-                        HttpServletRequest request) {
+                        HttpSession session) {
         Optional<User> optionalUser = userService.login(userId, password);
         if (optionalUser.isEmpty()) return "/user/login-failed";
 
-        HttpSession session = request.getSession();
-
         session.setAttribute(ConstConfig.SESSION_ID, optionalUser.get());
+        session.setAttribute(ConstConfig.SESSION_LOGIN, true);
         return "redirect:/";
     }
 
@@ -105,6 +101,5 @@ public class UserController {
         }
         return "redirect:/";
     }
-
 
 }
