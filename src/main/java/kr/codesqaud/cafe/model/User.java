@@ -1,11 +1,16 @@
 package kr.codesqaud.cafe.model;
 
+import java.util.List;
+import kr.codesqaud.cafe.utils.UserInfoException;
+
 public class User {
     private String id;
     private String password;
     private String name;
     private String email;
     private long index;
+    private List<Article> articleList;
+
     public User(String id, String password, String name, String email) {
         this.id = id;
         this.password = password;
@@ -20,10 +25,8 @@ public class User {
         this.index = index;
     }
 
-    public void validate(String password) {
-        if (!this.password.equals(password)) {
-            throw new IllegalArgumentException("[ERROR] wrong password");
-        }
+    public boolean validate(String password) {
+        return this.password.equals(password);
     }
 
     public void setIndex(long index) {
