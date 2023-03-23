@@ -33,8 +33,12 @@ public class UserDao {
 
     public Optional<UserDto> findUserByUserId(String userId) {
         String sql = "SELECT * FROM CAFEUSER WHERE USER_ID = ?";
-        return Optional.ofNullable(
-                jdbcTemplate.queryForObject(sql, new BeanPropertyRowMapper<>(UserDto.class), userId));
+        try {
+            return Optional.ofNullable(
+                    jdbcTemplate.queryForObject(sql, new BeanPropertyRowMapper<>(UserDto.class), userId));
+        } catch (EmptyResultDataAccessException e) {
+            return Optional.empty();
+        }
     }
 
     public void updateUser(UserDto userDto) {

@@ -39,7 +39,6 @@ public class UserController {
 
     @GetMapping("/users/{userId}")
     public String findUserProfile(@PathVariable("userId") String userId, Model model) {
-        logger.warn(userId);
         model.addAttribute("user", userService.findUserByUserId(userId));
         return "profile2";
     }

@@ -1,9 +1,6 @@
 package kr.codesqaud.cafe.service;
 
 import java.util.List;
-import java.util.stream.Collectors;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 import kr.codesqaud.cafe.model.User;
 import kr.codesqaud.cafe.repository.UserDao;
 import kr.codesqaud.cafe.repository.UserDto;
