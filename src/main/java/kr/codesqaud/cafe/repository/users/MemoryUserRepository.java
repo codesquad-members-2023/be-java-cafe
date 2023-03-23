@@ -1,4 +1,4 @@
-package kr.codesqaud.cafe.repository;
+package kr.codesqaud.cafe.repository.users;
 
 import kr.codesqaud.cafe.domain.User;
 import org.springframework.stereotype.Repository;
@@ -9,19 +9,24 @@ import java.util.List;
 import java.util.Map;
 
 @Repository
-public class UserRepository {
+public class MemoryUserRepository implements UserRepository {
 
     private static Map<String, User> store = new HashMap<>();
 
     public void save(User user) {
-        store.put(user.getId(), user);
+        store.put(user.getUserId(), user);
     }
 
     public List<User> findAllUsers() {
         return new ArrayList<>(store.values());
     }
 
-    public User findByUserId(String userId) {
+    @Override
+    public User findUserById(long id) {
+        return null;
+    }
+
+    public User findUserById(String userId) {
         User user = store.get(userId);
         return user;
     }
