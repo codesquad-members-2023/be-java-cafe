@@ -1,7 +1,6 @@
 package kr.codesqaud.cafe.repository;
 
 import kr.codesqaud.cafe.domain.Article;
-import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
@@ -37,14 +36,28 @@ public class MemoryArticleRepository implements ArticleRepository {
 
     @Override
     public void delete(int id) {
-        if (articles.isEmpty()) {
-            throw new IllegalArgumentException("[ERROR] 게시글이 아무것도 없어 삭제할 수 없습니다.");
-        }
-
-        if (id < 0 || articles.size() < id) {
-            throw new IllegalArgumentException("[ERROR] 해당하는 게시글이 없어 삭제할 수 없습니다.");
-        }
+        checkArticleExist(id, "삭제");
 
         articles.remove(id - 1);
+    }
+
+    @Override
+    public void update(int id, Article updateArticle) {
+        checkArticleExist(id, "수정");
+
+        Article originalArticle = articles.get(id - 1);
+
+        originalArticle.setTitle(updateArticle.getTitle());
+        originalArticle.setContents(updateArticle.getContents());
+    }
+
+    private void checkArticleExist(int id, String action) {
+        if (articles.isEmpty()) {
+            throw new IllegalArgumentException("[ERROR] 게시글이 아무것도 없어 " + action + "할 수 없습니다.");
+        }
+
+        if (!articles.stream().anyMatch(article -> article.getId() == id)) {
+            throw new IllegalArgumentException("[ERROR] 해당하는 게시글이 없어 " + action + "할 수 없습니다.");
+        }
     }
 }

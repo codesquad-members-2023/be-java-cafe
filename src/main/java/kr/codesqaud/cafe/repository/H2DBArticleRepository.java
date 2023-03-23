@@ -14,6 +14,7 @@ import javax.sql.DataSource;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 @Repository
 @Primary
@@ -60,6 +61,15 @@ public class H2DBArticleRepository implements ArticleRepository {
         String sql = "delete from article where id=:id";
 
         Map<String, Integer> param = Map.of("id", id);
+        template.update(sql, param);
+    }
+
+    @Override
+    public void update(int id, Article updateArticle) {
+        String sql = "update article set title=:title, contents=:contents where id=:id";
+
+        Map<String, Object> param = Map.of("id", id, "title", updateArticle.getTitle(), "contents", updateArticle.getContents());
+
         template.update(sql, param);
     }
 }

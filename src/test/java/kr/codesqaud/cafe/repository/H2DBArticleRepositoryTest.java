@@ -112,4 +112,22 @@ class H2DBArticleRepositoryTest {
         assertThat(restArticle.getContents()).isEqualTo("미안하다. 이거보여줄려고 또 어그로끌었다.");
         assertThat(restArticle.getTitle()).isEqualTo("진짜 실화냐?");
     }
+
+    @Test
+    @DisplayName("저장소에서 특정 id의 Article 수정 가능")
+    void update() {
+        Article article1 = new Article(1, "실화냐?", "미안하다. 이거보여줄려고 어그로끌었다.");
+        Article article2 = new Article(2, "진짜 실화냐?", "미안하다. 이거보여줄려고 또 어그로끌었다.");
+
+        articleRepository.save(article1);
+        articleRepository.save(article2);
+
+        Article updateArticle = new Article(2, "진짜 실화 아니었음", "미안");
+        articleRepository.update(2, updateArticle);
+
+        Article article = articleRepository.findById(2);
+
+        assertThat(article.getTitle()).isEqualTo(updateArticle.getTitle());
+        assertThat(article.getContents()).isEqualTo(updateArticle.getContents());
+    }
 }
