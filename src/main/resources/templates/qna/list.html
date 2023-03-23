@@ -21,7 +21,7 @@
               </strong>
               <div class="auth-info">
                 <i class="icon-add-comment"></i>
-                <span class="time" th:text="${article.getTime()}">작성 날짜</span>
+                <span class="time" th:text="${article.getFormattedTime()}">작성 날짜</span>
                 <a th:href="@{/user/profile/{userId}(userId=${article.writer})}" th:text="${article.writer}" class="author">작성자 이름</a>
               </div>
               <div class="reply" title="댓글">
