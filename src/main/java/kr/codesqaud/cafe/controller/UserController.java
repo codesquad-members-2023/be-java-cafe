@@ -8,6 +8,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.util.Optional;
 
 @Controller
@@ -66,6 +68,20 @@ public class UserController {
             return "redirect:/users";
         }
         //TODO: 비밀번호 일치 시에만 수정하도록
-       return "";
+        return "";
+    }
+
+    @PostMapping("/login")
+    public String login(UserForm userForm, HttpSession session) {
+        Optional<User> user = userRepository.findById(userForm.getId());
+
+        if (user.isPresent()) {
+            if (user.get().getPassword().equals(userForm.getPassword())) {
+                session.setAttribute("loginUser", user.get());
+
+                return "redirect:/users";
+            }
+        }
+        return "user/login_failed";
     }
 }
