@@ -38,7 +38,7 @@ public class ArticleController {
         return "welcome/index";
     }
 
-    @PostMapping("/qna/questions")
+    @PostMapping("/qna/questions") // TODO : Username 가져오기
     public String addArticle(@ModelAttribute Article article, BindingResult bindingResult, Model model) {
 
         articleValidator.validate(article, bindingResult);
@@ -78,8 +78,8 @@ public class ArticleController {
             model.addAttribute("article", article);
             return "qna/update_article";
         }
-        log.info("글 작성자만 수정할 수 있습니다.");
-        return "redirect:/";
+
+        throw new IllegalArgumentException("글 작성자만 수정할 수 있습니다.");
     }
 
     @PutMapping("/qna/update_article/{articleId}")
@@ -106,6 +106,6 @@ public class ArticleController {
         }
 
         log.info("글 작성자만 삭제할 수 있습니다.");
-        return "redirect:/";
+        throw new IllegalArgumentException("글 작성자만 삭제할 수 있습니다");
     }
 }
