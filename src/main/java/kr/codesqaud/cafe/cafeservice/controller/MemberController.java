@@ -29,18 +29,28 @@ public class MemberController {
     public String addMember(@ModelAttribute Member member) {
         log.info(" member", member);
         repository.save(member);
-        log.debug("member={}",member);
+        log.debug("member={}", member);
         return "redirect:/users";
     }
 
-    @GetMapping("/users")
+    @GetMapping("/users/list")
     public String memberList(Model model) {
         List<Member> members = repository.findAll();
-        log.debug("members{}=",members);
+        log.debug("members{}=", members);
         model.addAttribute("users", members);
         model.addAttribute("size", members.size());
-        log.debug("members{}=",members);
+        log.debug("members{}=", members);
         log.debug("model={}", model);
+        return "user/list";
+    }
+
+    @GetMapping("/users")
+    public String showMember(Model model) {
+        List<Member> members = repository.findAll();
+        model.addAttribute("users", members);
+        model.addAttribute("size", members.size());
+        log.info(" member={}", members.get(0).getId());
+        log.info("model={}", model);
         return "user/list";
     }
 
@@ -80,6 +90,9 @@ public class MemberController {
             return "redirect:/users";
         } catch (NoSuchElementException e) {
             log.debug("예외발생");
+            return "fail";
+        } catch (Exception e) {
+            log.error("Exception 예외발생", e);
             return "fail";
         }
     }
