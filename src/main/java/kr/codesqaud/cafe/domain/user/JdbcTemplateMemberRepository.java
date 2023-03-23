@@ -1,26 +1,55 @@
 package kr.codesqaud.cafe.domain.user;
 
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
+import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
+import org.springframework.jdbc.core.namedparam.SqlParameterSource;
+import org.springframework.stereotype.Repository;
 
-import javax.sql.DataSource;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.Optional;
 
+@Repository
+
 public class JdbcTemplateMemberRepository {
 
-	private final JdbcTemplate jdbcTemplate;
+	private final NamedParameterJdbcTemplate template;
 
 	// 생성자가 단 한개만 있으면 @Autowired 생략 가능
-	public JdbcTemplateMemberRepository(DataSource dataSource) {
-		jdbcTemplate = new JdbcTemplate(dataSource);
+	public JdbcTemplateMemberRepository(NamedParameterJdbcTemplate template) {
+		this.template = template;
 	}
 
-	public Optional<Member> findById(String memberId) {
-		List<Member> result = jdbcTemplate.query("select * from member where member_id = ?", memberRowMapper());
-		return result.stream().findAny();
+	public Member save(Member member) {
+		SqlParameterSource sqlParameterSource = new BeanPropertySqlParameterSource(member);
+		template.update("insert into member(member_id, member_password, member_name, member_email) values (:userId, :password, :name, :email)", sqlParameterSource);
+		return member;
+	}
+
+	public Optional<Member> findById(String userId) {
+		try {
+			String sql = "select member_id, member_password, member_name, member_email from member where member_id=:userId";
+			SqlParameterSource sqlParameterSource = new MapSqlParameterSource("userId", userId);
+			return Optional.of(template.queryForObject(sql, sqlParameterSource, memberRowMapper()));
+		} catch (EmptyResultDataAccessException e) {
+			return Optional.empty();
+		}
+	}
+
+	public List<Member> showAllUsers() {
+		String sql = "select member_number, member_id, member_password, member_name, member_email from member";
+		return template.query(sql, memberRowMapper());
+	}
+
+	public void update(Member updateParam) {
+		String sql = "update member set member_name = :member_name, member_email= :member_email where member_id=:member_id";
+		SqlParameterSource sqlParameterSource = new BeanPropertySqlParameterSource(updateParam);
+		template.update(sql, sqlParameterSource);
 	}
 
 	private RowMapper<Member> memberRowMapper() {
@@ -28,6 +57,7 @@ public class JdbcTemplateMemberRepository {
 			@Override
 			public Member mapRow(ResultSet rs, int rowNum) throws SQLException {
 				Member member = new Member();
+				member.setUserSequence(rs.getLong("member_number"));
 				member.setUserId(rs.getString("member_id"));
 				member.setPassword(rs.getString("member_password"));
 				member.setName(rs.getString("member_name"));
