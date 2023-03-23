@@ -11,10 +11,6 @@ import java.util.NoSuchElementException;
 @Repository
 public class ArticleRepository {
 
-//	private static final List<Article> articleRepository = new ArrayList<Article>();
-
-//	private static long sequence = 0L;
-
 	public Article write(Article article) throws SQLException {
 		String sql = "insert into article(article_writer, article_title, article_contents) values (?, ?, ?)";
 
@@ -35,12 +31,6 @@ public class ArticleRepository {
 			close(con, pstmt, null);
 		}
 	}
-
-//	public Article write(Article article) {
-//		article.setArticleSequence(++sequence);
-//		articleRepository.add(article);
-//		return article;
-//	}
 
 	public List<Article> showAllArticles() throws SQLException {
 		String sql = "select * from article";
@@ -72,14 +62,6 @@ public class ArticleRepository {
 		}
 	}
 
-//	public List<Article> showAllArticles() {
-//		List<Article> allArticles = new ArrayList<>();
-//		for (int i = 0; i < articleRepository.size(); i++) {
-//			allArticles.add(articleRepository.get(i));
-//		}
-//		return allArticles;
-//	}
-
 	public Article findByArticleSequence(Long articleSequence) throws SQLException {
 		String sql = "select * from article where article_number = ?";
 
@@ -109,10 +91,6 @@ public class ArticleRepository {
 			close(con, pstmt, resultSet);
 		}
 	}
-
-//	public Article findByArticleSequence(Long articleSequence) {
-//		return articleRepository.stream().filter(user -> user.getArticleSequence().equals(articleSequence)).findFirst().orElseThrow();
-//	}
 
 	private void close(Connection con, Statement stmt, ResultSet resultSet) {
 
