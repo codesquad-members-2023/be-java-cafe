@@ -1,5 +1,6 @@
 package kr.codesqaud.cafe.controller;
 
+import kr.codesqaud.cafe.domain.UserLoginDTO;
 import kr.codesqaud.cafe.repository.member.MemberRepository;
 import kr.codesqaud.cafe.domain.User;
 import kr.codesqaud.cafe.validation.UserJoinValidator;
@@ -10,7 +11,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
@@ -99,12 +99,12 @@ public class UserController {
 
     @GetMapping("/login")
     public String showLoginForm(Model model) {
-        model.addAttribute("user", new User());
+        model.addAttribute("userLoginDTO", new UserLoginDTO());
         return "users/login";
     }
 
     @PostMapping("/process_login") //TODO: 아이디를 잘못 입력했을 경우 예외처리, 틀릴 경우에만 에러 페이지 나오도록 수정, 에러 페이지, 에러 정보 담도록 스프링, 서블릿
-    public String loginUser(@ModelAttribute User loginUser, BindingResult bindingResult, HttpSession session) {
+    public String loginUser(@ModelAttribute UserLoginDTO loginUser, BindingResult bindingResult, HttpSession session) {
         userLoginValidator.validate(loginUser, bindingResult);
         if (bindingResult.hasErrors()) {
             return "users/login";

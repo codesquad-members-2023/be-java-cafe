@@ -1,6 +1,7 @@
 package kr.codesqaud.cafe.validation;
 
 import kr.codesqaud.cafe.domain.User;
+import kr.codesqaud.cafe.domain.UserLoginDTO;
 import kr.codesqaud.cafe.repository.member.MemberRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -24,15 +25,21 @@ public class UserLoginValidator implements Validator {
 
     @Override
     public boolean supports(Class<?> clazz) {
-        return User.class.isAssignableFrom(clazz);
+        return UserLoginDTO.class.isAssignableFrom(clazz);
     }
 
     @Override
     public void validate(Object target, Errors errors) {
-        User loginUser = (User) target;
+        UserLoginDTO loginUser = (UserLoginDTO) target;
 
         if (!StringUtils.hasText(loginUser.getUserId())) {
             errors.rejectValue("userId", "required.user.userId");
+            if (!StringUtils.hasText(loginUser.getPassword())) {
+                errors.rejectValue("password", "required.user.password");
+            }else {
+                errors.rejectValue("password", "error.user.password");
+            }
+            return;
         }
         if (!StringUtils.hasText(loginUser.getPassword())) {
             errors.rejectValue("password", "required.user.password");

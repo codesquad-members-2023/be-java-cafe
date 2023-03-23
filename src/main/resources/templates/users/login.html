@@ -13,13 +13,13 @@
 <div class="container" id="main">
    <div class="col-md-6 col-md-offset-3">
       <div class="panel panel-default content-main">
-          <form name="question" method="post" action="/users/process_login" th:object="${user}">
+          <form name="question" method="post" action="/users/process_login" th:object="${userLoginDTO}">
               <div class="form-group">
                   <label for="userId">사용자 아이디</label>
 
-                  <input type="text" id="userId" th:field="*{userId}" th:errorclass="field-error" class="form-control" name="userId" placeholder="User ID">
+                  <input type="text" id="userId" th:field="${userLoginDTO.userId}" th:errorclass="field-error" class="form-control" name="userId" placeholder="User ID">
 
-                  <div class="field-error" th:errors="${user.userId}">
+                  <div class="field-error" th:errors="${userLoginDTO.userId}">
                       <p>아이디 오류</p>
                   </div>
 
@@ -27,8 +27,8 @@
 
               <div class="form-group">
                   <label for="password">비밀번호</label>
-                  <input type="password" class="form-control" id="password" name="password" placeholder="Password" th:field="*{password}" th:errorclass="field-error" >
-                  <div class="field-error" th:errors="${user.password}">
+                  <input type="password" class="form-control" id="password" name="password" placeholder="Password" th:field="${userLoginDTO.password}" th:errorclass="field-error" >
+                  <div class="field-error" th:errors="${userLoginDTO.password}">
                       <p>비밀번호 오류</p>
                   </div>
               </div>
