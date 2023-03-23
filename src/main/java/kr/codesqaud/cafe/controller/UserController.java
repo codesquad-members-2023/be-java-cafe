@@ -102,7 +102,9 @@ public class UserController {
             return "users/login";
         }
 
-        session.setAttribute("userId", loginUser.getUserId());
+        User user = memberRepository.findById(loginUser.getUserId());
+
+        session.setAttribute("user", user);
         log.info("로그인 성공");
         return "redirect:/users/list";
     }

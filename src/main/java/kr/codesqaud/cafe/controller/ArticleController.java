@@ -62,8 +62,8 @@ public class ArticleController {
     @GetMapping("/qna/qna_form")
     public String writeArticle(HttpSession session, Model model) {
 
-        String userId = (String) session.getAttribute("userId");
-        model.addAttribute("userId", userId);
+        User user = (User) session.getAttribute("user");
+        model.addAttribute("username", user.getName());
         model.addAttribute("article", new Article());
 
         return "qna/qna_form";
@@ -72,9 +72,9 @@ public class ArticleController {
     @GetMapping("/qna/update_article/{articleId}") // TODO: 에러페이지 생성
     public String updateArticleForm(@PathVariable int articleId, Model model, HttpSession session) {
         Article article = articleRepository.findArticleById(articleId);
-        String userId = (String) session.getAttribute("userId");
+        User user = (User) session.getAttribute("user");
 
-        if (userId.equals(article.getWriter())) {
+        if (user.getName().equals(article.getWriter())) {
             model.addAttribute("article", article);
             return "qna/update_article";
         }
@@ -98,9 +98,9 @@ public class ArticleController {
     public String deleteArticle(@PathVariable int articleId, HttpSession session) {
         Article findArticle = articleRepository.findArticleById(articleId);
 
-        String userId = (String) session.getAttribute("userId");
+        User user = (User) session.getAttribute("user");
 
-        if (userId.equals(findArticle.getWriter())) {
+        if (user.getName().equals(findArticle.getWriter())) {
             articleRepository.deleteArticle(articleId);
             return "redirect:/";
         }
