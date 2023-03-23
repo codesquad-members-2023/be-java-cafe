@@ -6,6 +6,8 @@ import org.springframework.jdbc.core.RowMapper;
 import javax.sql.DataSource;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.List;
+import java.util.Optional;
 
 public class JdbcTemplateMemberRepository {
 
@@ -16,8 +18,9 @@ public class JdbcTemplateMemberRepository {
 		jdbcTemplate = new JdbcTemplate(dataSource);
 	}
 
-	public Member findById(String memberId) {
-
+	public Optional<Member> findById(String memberId) {
+		List<Member> result = jdbcTemplate.query("select * from member where member_id = ?", memberRowMapper());
+		return result.stream().findAny();
 	}
 
 	private RowMapper<Member> memberRowMapper() {
