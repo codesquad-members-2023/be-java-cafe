@@ -1,5 +1,6 @@
 package kr.codesqaud.cafe.controller;
 
+import kr.codesqaud.cafe.domain.user.JdbcTemplateMemberRepository;
 import kr.codesqaud.cafe.domain.user.Member;
 import kr.codesqaud.cafe.domain.user.MemberRepository;
 import org.slf4j.Logger;
@@ -12,17 +13,20 @@ import org.springframework.web.bind.annotation.*;
 import javax.annotation.PostConstruct;
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Optional;
 
 @Controller
 @RequestMapping("/users")
 public class MemberController {
 
-    private final MemberRepository memberRepository;
+	private final JdbcTemplateMemberRepository jdbcTemplateMemberRepository;
+
+//    private final MemberRepository memberRepository;
     private final Logger log = LoggerFactory.getLogger(MemberController.class);
 
     @Autowired
-    public MemberController(MemberRepository memberRepository) {
-        this.memberRepository = memberRepository;
+    public MemberController(JdbcTemplateMemberRepository jdbcTemplateMemberRepository) {
+		this.jdbcTemplateMemberRepository = jdbcTemplateMemberRepository;
     }
 
     @GetMapping("/add")
@@ -32,7 +36,7 @@ public class MemberController {
 
     @PostMapping("/add")
     public String saveUser(@ModelAttribute("user") Member user) throws SQLException {
-        memberRepository.save(user);
+        jdbcTemplateMemberRepository.save(user);
         log.trace("사용자 ID: {}", user.getUserId());
         log.trace("사용자 이름: {}", user.getName());
         log.trace("사용자 email: {}", user.getEmail());
@@ -41,7 +45,7 @@ public class MemberController {
 
     @GetMapping("/list")
     public String users(Model model) throws SQLException {
-        List<Member> members = memberRepository.showAllUsers();
+        List<Member> members = jdbcTemplateMemberRepository.showAllUsers();
         model.addAttribute("users", members);
         log.trace("사용자 수: {}", members.size());
         return "user/list";
@@ -49,20 +53,20 @@ public class MemberController {
 
     @GetMapping("/profile/{userId}")
     public String userProfile(@PathVariable String userId, Model model) throws SQLException {
-        Member findUser = memberRepository.findById(userId);
-        model.addAttribute("user", findUser);
+        Optional<Member> findUser = jdbcTemplateMemberRepository.findById(userId);
+        model.addAttribute("user", findUser.orElseThrow());
         return "user/profile";
     }
 
     @GetMapping("/update/{userId}")
     public String editUserForm(@PathVariable String userId, Model model) throws SQLException {
-        model.addAttribute("user", memberRepository.findById(userId));
+        model.addAttribute("user", jdbcTemplateMemberRepository.findById(userId));
         return "user/updateForm";
     }
 
     @PutMapping("/update/{userId}")
-    public String edit(@PathVariable String userId, @ModelAttribute Member user) throws SQLException {
-        memberRepository.update(userId, user);
+    public String edit(@ModelAttribute Member user) throws SQLException {
+        jdbcTemplateMemberRepository.update(user);
         return "redirect:/users/list";
     }
 
