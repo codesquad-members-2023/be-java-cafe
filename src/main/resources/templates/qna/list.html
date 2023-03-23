@@ -17,11 +17,11 @@
           <div class="wrap">
             <div class="main">
               <strong class="subject">
-                <a th:href="@{/qna/show/{articleId}(articleId=${article.articleId})}" th:text="${article.getTitle()}">게시글 제목</a>
+                <a th:href="@{/qna/show/{articleId}(articleId=${article.title})}" th:text="${article.getTitle()}">게시글 제목</a>
               </strong>
               <div class="auth-info">
                 <i class="icon-add-comment"></i>
-                <span class="time">????-??-?? !?:?!</span>
+                <span class="time" th:text="${article.getTime()}">작성 날짜</span>
                 <a th:href="@{/user/profile/{userId}(userId=${article.writer})}" th:text="${article.writer}" class="author">작성자 이름</a>
               </div>
               <div class="reply" title="댓글">

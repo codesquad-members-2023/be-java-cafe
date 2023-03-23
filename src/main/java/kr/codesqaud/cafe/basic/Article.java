@@ -1,5 +1,7 @@
 package kr.codesqaud.cafe.basic;
 
+import java.sql.Timestamp;
+import java.time.format.DateTimeFormatter;
 
 public class Article {
     private int articleId;
@@ -7,20 +9,24 @@ public class Article {
     private String title;
     private String contents;
 
+    private Timestamp timeStamp;
+
     public Article() {
     }
 
-    public Article(String writer, String title, String contents) {
+    public Article(String writer, String title, String contents, Timestamp timeStamp) {
         this.writer = writer;
         this.title = title;
         this.contents = contents;
+        this.timeStamp = timeStamp;
     }
 
-    public Article(int articleId, String writer, String title, String contents) {
+    public Article(int articleId, String writer, String title, String contents, Timestamp timeStamp) {
         this.articleId = articleId;
         this.writer = writer;
         this.title = title;
         this.contents = contents;
+        this.timeStamp = timeStamp;
     }
 
     public Article(Article article) {
@@ -28,6 +34,7 @@ public class Article {
         this.writer = article.writer;
         this.title = article.title;
         this.contents = article.contents;
+        this.timeStamp = article.timeStamp;
     }
 
     public int getArticleId() { return articleId; }
@@ -58,5 +65,17 @@ public class Article {
 
     public void setContents(String contents) {
         this.contents = contents;
+    }
+
+    public Timestamp getTimeStamp() {
+        return timeStamp;
+    }
+
+    public String getTime() {
+        return timeStamp.toLocalDateTime().format(DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss"));
+    }
+
+    public void setTimeStamp(Timestamp timeStamp) {
+        this.timeStamp = timeStamp;
     }
 }

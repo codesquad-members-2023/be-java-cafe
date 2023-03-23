@@ -28,8 +28,8 @@ public class UserMemoryRepositoryTest {
         repository.join(userB);
 
         //when
-        User resultUserA = repository.findUser("cire");
-        User resultUserB = repository.findUser("hello");
+        User resultUserA = repository.findUserById("cire");
+        User resultUserB = repository.findUserById("hello");
 
         //then
         Assertions.assertEquals(userA, resultUserA);

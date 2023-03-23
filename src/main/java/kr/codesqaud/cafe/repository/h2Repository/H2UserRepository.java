@@ -5,15 +5,17 @@ import kr.codesqaud.cafe.repository.UserRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.context.annotation.Primary;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 import javax.sql.DataSource;
 import java.util.List;
+import java.util.Optional;
 
 @Repository
-@Qualifier
+@Primary
 public class H2UserRepository implements UserRepository {
 
     private static final Logger logger = LoggerFactory.getLogger("user database");
@@ -33,10 +35,14 @@ public class H2UserRepository implements UserRepository {
     }
 
     @Override
-    public User findUser(String userId) {
+    public Optional<User> findUserById(String userId) {
         String sql = "select userId, password, name, email from users where userId = ?";
 
-        return jdbcTemplate.queryForObject(sql, new BeanPropertyRowMapper<>(User.class), userId);
+        try  {
+            return Optional.of(jdbcTemplate.queryForObject(sql, new BeanPropertyRowMapper<>(User.class), userId));
+        } catch (EmptyResultDataAccessException e) {
+            return Optional.empty();
+        }
     }
 
     @Override
