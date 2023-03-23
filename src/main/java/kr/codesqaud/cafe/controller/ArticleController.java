@@ -17,7 +17,6 @@ import java.util.List;
 public class ArticleController {
 	private final NamedJdbcTemplateArticleRepository articleRepository;
 
-//    private final ArticleRepository articleRepository;
     private final Logger log = LoggerFactory.getLogger(ArticleController.class);
 
     @Autowired
