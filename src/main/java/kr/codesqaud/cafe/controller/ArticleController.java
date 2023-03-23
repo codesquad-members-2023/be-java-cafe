@@ -10,7 +10,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -25,7 +24,7 @@ public class ArticleController {
     }
 
     @GetMapping("/")
-    public String articles(Model model) throws SQLException {
+    public String listArticles(Model model) throws SQLException {
         List<Article> articles = articleRepository.showAllArticles();
         model.addAttribute("articles", articles);
         log.trace("게시글 갯수: {}", articles.size());
