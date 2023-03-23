@@ -4,6 +4,7 @@ import javax.servlet.http.HttpSession;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import kr.codesqaud.cafe.service.JoinService;
 import kr.codesqaud.cafe.model.User;
+import kr.codesqaud.cafe.utils.UserInfoException;
 
 @Controller
 public class UserController {
@@ -46,9 +48,21 @@ public class UserController {
     }
 
     @GetMapping("/users/{id}/form")
-    public String userUpdateForm(@PathVariable String id, Model model) {
-        //id를 전달
+    public String userUpdateForm(@PathVariable String id, Model model, HttpSession session, @ModelAttribute String error) {
+        //세션에 로그인 되지 않은 경우 로그인 에러를 발생시킨다.
+        if (session.getAttribute("sessionedUser") == null) {
+            throw new UserInfoException(UserInfoException.NON_AUTHORIZED_USER_MESSAGE, UserInfoException.NON_AUTHORIZED_USER_CODE);
+        }
+        String loginId = (String)session.getAttribute("sessionedUser");
+        //로그인 아이디가 일치하지 않는 다른 회원의 정보 수정 URL에 접근할 수 없다.
+        if (!loginId.equals(id)) {
+            throw new UserInfoException(UserInfoException.ILLEGAL_ACCESS_MESSAGE, UserInfoException.ILLEGAL_MODIFICATION_ACCESS_CODE);
+        }
         model.addAttribute("userId", id);
+        //ERROR 메시지를 전달 받은 경우 회원 정보 수정 뷰에 에러 메시지를 전달한다.
+        if (error.length() >= 1) {
+            model.addAttribute("error", error);
+        }
 
         return "user/updateForm";
     }
@@ -68,9 +82,11 @@ public class UserController {
     public String login(@RequestParam String userId, @RequestParam String password,
         HttpSession session) {
         User sessionedUser = joinService.lookupUser(userId);
-        sessionedUser.validate(password);
+        if (!sessionedUser.validate(password)) {
+            throw new UserInfoException(UserInfoException.WRONG_PASSWORD_MESSAGE, UserInfoException.WRONG_LOGIN_PASSWORD_CODE);
+        }
 
-        session.setAttribute("sessionedUser", sessionedUser);
+        session.setAttribute("sessionedUser", sessionedUser.getId());
         return "redirect:/";
     }
 

@@ -25,10 +25,8 @@ public class User {
         this.index = index;
     }
 
-    public void validate(String password) throws UserInfoException {
-        if (!this.password.equals(password)) {
-            throw new UserInfoException("잘못된 패스워드입니다.");
-        }
+    public boolean validate(String password) {
+        return this.password.equals(password);
     }
 
     public void setIndex(long index) {

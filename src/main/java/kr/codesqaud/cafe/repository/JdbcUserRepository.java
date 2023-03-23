@@ -26,7 +26,7 @@ public class JdbcUserRepository implements UserRepository {
             return jdbcTemplate.queryForObject("select * from users where id = ?",
                 userRowMapper(), id);
         } catch (EmptyResultDataAccessException e) {
-            throw new UserInfoException("존재하지 않는 ID입니다. 아이디를 확인해주세요.");
+            throw new UserInfoException(UserInfoException.INVALID_ID_MESSAGE, UserInfoException.INVALID_ID_CODE);
         }
     }
 
@@ -47,7 +47,11 @@ public class JdbcUserRepository implements UserRepository {
     public void updateUser(String userId, String password, String newPassword, String name,
         String email) throws UserInfoException {
         User user = findById(userId);
-        user.validate(password);
+
+        if (!user.validate(password)) {
+            throw new UserInfoException(UserInfoException.WRONG_PASSWORD_MESSAGE,
+                    UserInfoException.WRONG_MODIFICATION_PASSWORD_CODE);
+        }
 
         jdbcTemplate.update("update users set password = ?, name = ?, email = ? where id = ?",
             newPassword, name, email, userId);
