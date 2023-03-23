@@ -27,7 +27,7 @@ public class CafeConfig implements WebMvcConfigurer {
 
     @Bean
     public ArticleRepository articleRepository() {
-        return new MemoryArticleRepository();
+        return new JdbcTemplateArticleRepository(dataSource);
     }
 
     @Override

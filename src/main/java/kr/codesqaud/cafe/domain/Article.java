@@ -4,11 +4,12 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 public class Article {
+    private long articleId;
     private String writer;
     private String title;
     private String contents;
     private LocalDateTime registrationDate;
-    private int articleId;
+    private String formattedRegistrationDate;
 
     public Article(String writer, String title, String contents) {
         this.writer = writer;
@@ -37,7 +38,7 @@ public class Article {
         return registrationDate;
     }
 
-    public int getId() {
+    public long getId() {
         return articleId;
     }
 
