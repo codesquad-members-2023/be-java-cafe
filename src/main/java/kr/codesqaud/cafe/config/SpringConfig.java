@@ -1,4 +1,4 @@
-package kr.codesqaud.cafe;
+package kr.codesqaud.cafe.config;
 
 import kr.codesqaud.cafe.repository.ArticleRepository;
 import kr.codesqaud.cafe.repository.JdbcTemplateArticleRepository;

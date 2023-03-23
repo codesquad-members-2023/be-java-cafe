@@ -2,6 +2,7 @@ package kr.codesqaud.cafe.controller;
 
 import kr.codesqaud.cafe.domain.User;
 import kr.codesqaud.cafe.repository.JdbcTemplateUserRepository;
+import kr.codesqaud.cafe.repository.SessionConst;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,7 +36,7 @@ public class LoginController {
         // 로그인 성공 처리
         log.debug("로그인 성공!!!");
         // 세션에 로그인 회원 정보 보관
-        session.setAttribute("loginUser", loginUser);
+        session.setAttribute(SessionConst.LOGIN_USER, loginUser);
 
         return "redirect:/";
     }
