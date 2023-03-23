@@ -6,11 +6,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 @Controller
@@ -25,7 +23,7 @@ public class LoginController {
 
     // 로그인 기능
     @PostMapping("/login")
-    public String login(String userId, String password, HttpServletRequest request) {
+    public String login(String userId, String password, HttpSession session) {
         User loginUser = repository.findByUserId(userId)
                 .filter(u -> u.getPassword().equals(password))
                 .orElse(null);
@@ -33,7 +31,6 @@ public class LoginController {
             log.debug("로그인 실패! ㅠㅠ");
             return "user/login_failed";
         }
-        HttpSession session = request.getSession();
 
         // 로그인 성공 처리
         log.debug("로그인 성공!!!");
@@ -45,11 +42,9 @@ public class LoginController {
 
     // 로그아웃
     @GetMapping("/logout")
-    public String logout(HttpServletRequest request) {
-        HttpSession session = request.getSession(false);
-        if (session != null) {
-            session.invalidate();
-        }
+    public String logout(HttpSession session) {
+        session.invalidate();
+
         return "redirect:/";
     }
 }
