@@ -1,7 +1,6 @@
 package kr.codesqaud.cafe.domain.user;
 
 import org.springframework.dao.EmptyResultDataAccessException;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
@@ -16,12 +15,12 @@ import java.util.Optional;
 
 @Repository
 
-public class JdbcTemplateMemberRepository {
+public class NamedJdbcTemplateMemberRepository {
 
 	private final NamedParameterJdbcTemplate template;
 
 	// 생성자가 단 한개만 있으면 @Autowired 생략 가능
-	public JdbcTemplateMemberRepository(NamedParameterJdbcTemplate template) {
+	public NamedJdbcTemplateMemberRepository(NamedParameterJdbcTemplate template) {
 		this.template = template;
 	}
 
@@ -33,7 +32,7 @@ public class JdbcTemplateMemberRepository {
 
 	public Optional<Member> findById(String userId) {
 		try {
-			String sql = "select member_id, member_password, member_name, member_email from member where member_id=:userId";
+			String sql = "select member_number, member_id, member_password, member_name, member_email from member where member_id=:userId";
 			SqlParameterSource sqlParameterSource = new MapSqlParameterSource("userId", userId);
 			return Optional.of(template.queryForObject(sql, sqlParameterSource, memberRowMapper()));
 		} catch (EmptyResultDataAccessException e) {
@@ -47,7 +46,10 @@ public class JdbcTemplateMemberRepository {
 	}
 
 	public void update(Member updateParam) {
-		String sql = "update member set member_name = :member_name, member_email= :member_email where member_id=:member_id";
+		if (!findById(updateParam.getUserId()).orElseThrow().getPassword().equals(updateParam.getPassword())) {
+			return;
+		}
+		String sql = "update member set member_name = :name, member_email= :email where member_id=:userId";
 		SqlParameterSource sqlParameterSource = new BeanPropertySqlParameterSource(updateParam);
 		template.update(sql, sqlParameterSource);
 	}
