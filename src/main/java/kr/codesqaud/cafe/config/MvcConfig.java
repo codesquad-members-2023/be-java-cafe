@@ -1,7 +1,9 @@
 package kr.codesqaud.cafe.config;
 
+import kr.codesqaud.cafe.interceptor.LoginCheckInterceptor;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.Ordered;
+import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
@@ -15,5 +17,14 @@ public class MvcConfig implements WebMvcConfigurer {
         registry.addViewController("/user/form").setViewName("user/form");
         registry.addViewController("/qna/form").setViewName("qna/form");
         registry.addViewController("/user/login").setViewName("user/login");
+    }
+
+    @Override
+    public void addInterceptors(InterceptorRegistry registry) {
+        registry.addInterceptor(new LoginCheckInterceptor())
+                .order(1)
+                .addPathPatterns("/**")
+                .excludePathPatterns("/", "/user/login", "/login", "/user/login_failed"
+                        , "/fonts/**", "/js/**", "/images/**", "/css/**", "/*.ico", "/error");
     }
 }
