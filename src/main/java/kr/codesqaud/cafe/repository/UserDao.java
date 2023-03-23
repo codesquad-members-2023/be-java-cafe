@@ -16,7 +16,7 @@ public class UserDao {
     }
 
     public void addUser(User user) {
-        String sql = "INSERT INTO USER(USER_ID, PASSWORD, NAME, EMAIL) VALUES(?, ?, ?, ?)";
+        String sql = "INSERT INTO CAFEUSER(USER_ID, PASSWORD, NAME, EMAIL) VALUES(?, ?, ?, ?)";
         jdbcTemplate.update(
                 sql,
                 user.getUserId(),
@@ -26,23 +26,28 @@ public class UserDao {
     }
 
     public List<UserDto> findUserAll() {
-        String sql = "SELECT * FROM USER";
+        String sql = "SELECT * FROM CAFEUSER";
         return jdbcTemplate.query(sql, new BeanPropertyRowMapper<>(UserDto.class));
     }
 
     public List<UserDto> findUserByUserId(String userId) {
-        String sql = "SELECT * FROM USER WHERE USER_ID = ?";
+        String sql = "SELECT * FROM CAFEUSER WHERE USER_ID = ?";
         return jdbcTemplate.query(sql, new BeanPropertyRowMapper<>(UserDto.class), userId);
     }
 
-    public void updateUser(User user) {
-        String sql = "UPDATE USER SET PASSWORD = ?, NAME = ?, EMAIL = ? WHERE USER_ID = ? AND PASSWORD = ?";
+    public void updateUser(UserDto userDto) {
+        String sql = "UPDATE CAFEUSER SET PASSWORD = ?, NAME = ?, EMAIL = ? WHERE USER_ID = ? AND PASSWORD = ?";
         jdbcTemplate.update(sql,
-                user.getPassword(),
-                user.getName(),
-                user.getEmail(),
-                user.getUserId(),
-                user.getPassword()
+                userDto.getPassword(),
+                userDto.getName(),
+                userDto.getEmail(),
+                userDto.getUserId(),
+                userDto.getPassword()
         );
+    }
+
+    public List<UserDto> findUserByUserPassword(String password) {
+        String sql = "SELECT * FROM CAFEUSER WHERE PASSWORD = ?";
+        return jdbcTemplate.query(sql, new BeanPropertyRowMapper<>(UserDto.class), password);
     }
 }

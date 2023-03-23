@@ -1,6 +1,9 @@
 package kr.codesqaud.cafe.controller;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import kr.codesqaud.cafe.model.User;
+import kr.codesqaud.cafe.repository.UserDto;
 import kr.codesqaud.cafe.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,12 +25,10 @@ public class UserController {
         this.userService = userService;
     }
 
-    @PostMapping("user/creation")
-    public RedirectView creatUser(@ModelAttribute("user") User user) {
+    @PostMapping("/user/creation")
+    public String creatUser(@ModelAttribute("user") User user) {
         userService.createUser(user);
-        RedirectView redirectView = new RedirectView();
-        redirectView.setUrl("/users");
-        return redirectView;
+        return "redirect:/users";
     }
 
     @GetMapping("/users")
@@ -36,23 +37,37 @@ public class UserController {
         return "list2";
     }
 
-    @GetMapping("users/{userId}")
+    @GetMapping("/users/{userId}")
     public String findUserProfile(@PathVariable("userId") String userId, Model model) {
+        logger.warn(userId);
         model.addAttribute("user", userService.findUserByUserId(userId));
         return "profile2";
     }
 
-    @GetMapping("users/{userId}/form")
+    @GetMapping("/users/{userId}/form")
     public String findUserProfileEdit(@PathVariable("userId") String userId, Model model) {
         model.addAttribute(userService.findUserByUserId(userId));
         return "updateForm";
     }
 
-    @PutMapping("users/update")
-    public RedirectView updateUser(@ModelAttribute("user") User user) {
-        userService.updateUser(user);
-        RedirectView redirectView = new RedirectView();
-        redirectView.setUrl("/users");
-        return redirectView;
+    @PutMapping("/users/update")
+    public String updateUser(@ModelAttribute("user") UserDto userDto) {
+        userService.updateUser(userDto);
+        return "redirect:/";
+    }
+
+    @PostMapping("/user/login")
+    public String login(@ModelAttribute("userDto") UserDto userDto, HttpSession session) {
+        if(userService.findUserByPassword(userDto)) {
+            session.setAttribute("userId", userDto.getUserId());
+            return "redirect:/";
+        }
+        return "redirect:/user/login_failed.html";
+    }
+
+    @GetMapping("/logout")
+    public String logOut(HttpSession session) {
+        session.removeAttribute("userId");
+        return "redirect:/";
     }
 }

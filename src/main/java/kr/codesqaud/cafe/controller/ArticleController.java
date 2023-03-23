@@ -1,5 +1,6 @@
 package kr.codesqaud.cafe.controller;
 
+import javax.servlet.http.HttpSession;
 import kr.codesqaud.cafe.model.Article;
 import kr.codesqaud.cafe.service.ArticleService;
 import org.slf4j.Logger;
@@ -10,6 +11,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.springframework.web.servlet.mvc.support.RedirectAttributesModelMap;
 import org.springframework.web.servlet.view.RedirectView;
 
 @Controller
@@ -21,12 +24,15 @@ public class ArticleController {
         this.articleService = articleService;
     }
 
+    @GetMapping("/openForm")
+    public String openForm(HttpSession session) {
+        return "redirect:/qna/form.html";
+    }
+
     @PostMapping("/questions")
-    public RedirectView creatArticle(@ModelAttribute("ArticleDto") Article article) {
+    public String creatArticle(@ModelAttribute("ArticleDto") Article article) {
         articleService.creatArticle(article);
-        RedirectView redirectView = new RedirectView();
-        redirectView.setUrl("/");
-        return redirectView;
+        return "redirect:/";
     }
 
     @GetMapping("/")
@@ -35,7 +41,7 @@ public class ArticleController {
         return "index";
     }
 
-    @GetMapping("article/{articleId}")
+    @GetMapping("/article/{articleId}")
     public String findArticleById(@PathVariable("articleId") int articleId, Model model) {
         model.addAttribute(articleService.findArticleContentById(articleId));
         return "show";

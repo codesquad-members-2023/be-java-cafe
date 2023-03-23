@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html lang="kr">
+<html lang="kr"
+      xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta http-equiv="content-type" content="text/html; charset=UTF-8">
     <meta charset="utf-8">
@@ -67,11 +68,11 @@
         </div>
         <div class="collapse navbar-collapse" id="navbar-collapse2">
             <ul class="nav navbar-nav navbar-right">
-                <li class="active"><a href="../index.html">Posts</a></li>
-                <li><a href="../user/login.html" role="button">로그인</a></li>
-                <li><a href="../user/form.html" role="button">회원가입</a></li>
-                <li><a href="#" role="button">로그아웃</a></li>
-                <li><a href="#" role="button">개인정보수정</a></li>
+                <li class="active"><a href="/">Posts</a></li>
+                <li><a th:if="${session.userId == null}" href="../user/login.html" role="button">로그인</a></li>
+                <li><a th:if="${session.userId == null}" href="../user/form.html" role="button">회원가입</a></li>
+                <li><a th:if="${session.userId != null}" href="#" role="button">로그아웃</a></li>
+                <li><a th:if="${session.userId != null}" href="#" role="button">개인정보수정</a></li>
             </ul>
         </div>
     </div>
@@ -84,7 +85,7 @@
                 <input type="hidden" id="articleId" name="articleId" value="0">
                 <div class="form-group">
                     <label for="userId">글쓴이</label>
-                    <input class="form-control" id="userId" name="userId" placeholder="글쓴이"/>
+                    <input th:value="${session.userId}" class="form-control" id="userId" name="userId" placeholder="글쓴이"/>
                 </div>
                 <div class="form-group">
                     <label for="title">제목</label>
