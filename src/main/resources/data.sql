@@ -1,0 +1,5 @@
+INSERT INTO CAFEUSER(USER_ID, PASSWORD, NAME, EMAIL)
+VALUES('tset1', '1234', 'tsetName', 'tseteamil@tset.com');
+
+INSERT INTO ARTICLE(ARTICLE_ID, USER_ID, TITLE, CONTENTS, TIME)
+VALUES(0, 'test1', '테스트 게시물', '테스트', '2023-03-23 20:18');
