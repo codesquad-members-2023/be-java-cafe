@@ -1,46 +1,85 @@
 package kr.codesqaud.cafe.cafeservice.domain;
 
+
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+
 public class Article {
+    private Long id;
     private String writer;
     private String title;
     private String content;
-    private Long id;
-    private static long sequence = 0L; //static 사용
-    private Integer views;
+    private LocalDateTime createdDate;
+    private int replyCount;
 
-    public Article(String writer, String title, String content, String views) {
+    public Article(String writer, String title, String contents) {
         this.writer = writer;
         this.title = title;
-        this.content = content;
-        this.id = idIncrease();
-        this.views = 0;
+        this.content = contents;
+        this.replyCount = 0;
     }
 
-    public String getWriter() {
-        return writer;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public String getContent() {
-        return content;
+    public Article() {
     }
 
     public Long getId() {
         return id;
     }
 
-    public static long getSequence() {
-        return sequence;
+    public void setId(Long id) {
+        this.id = id;
     }
 
-    public Integer getViews() {
-        return views;
+    public String getWriter() {
+        return writer;
     }
 
-    private Long idIncrease() {
-        return ++sequence;
+    public void setWriter(String writer) {
+        this.writer = writer;
     }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public String getContent() {
+        return content;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
+    }
+
+    public LocalDateTime getCreatedDate() {
+        return LocalDateTime.parse(createdDate.format(DateTimeFormatter.ofPattern("yyyy-MM-dd hh:mm:ss")));
+    }
+
+    public void setCreatedDate(LocalDateTime createdDate) {
+        this.createdDate = createdDate;
+    }
+
+    public int getReplyCount() {
+        return replyCount;
+    }
+
+    public void setReplyCount(int replyCount) {
+        this.replyCount = replyCount;
+    }
+
+    @Override
+    public String toString() {
+        return "Article{" +
+                "id=" + id +
+                ", writer='" + writer + '\'' +
+                ", title='" + title + '\'' +
+                ", content='" + content + '\'' +
+                ", createDate=" + createdDate +
+                ", replyCount=" + replyCount +
+                '}';
+    }
+
 }

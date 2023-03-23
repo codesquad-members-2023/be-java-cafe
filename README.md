@@ -87,6 +87,51 @@ backend란 정확히 무엇이며, 앞으로 backend개발자가 되면 무엇�
 이제 Spring으로 제작한 App과 DB를 연결하고, 동작 방식을 학습한다.
 마스터즈 2023 스프링 카페
 
-### http중복 제거 
+### http중복 제거
 
 > https://www.baeldung.com/web-mvc-configurer-adapter-deprecated
+
+### OOP의 특징
+
+### Solid 원칙
+
+### Spring Triangle
+## 1. 제어 역전
+- 애플리케이션 실행 시점(런타임)에 외부에서 실제 구현 객체를 생성하고 클라이언트에 전달해서 클라이언트와 서버 실제 의존관계를 연결하는 것을 의존관꼐 
+주입이라고 한다.
+## 2. 관점 지향 프로그래밍 (AOP, Aspect Oriented Programming)
+## 3. 추상화 서비스(PSA, Portable Service Abstraction)
+
+### Dependency Injection(DI)
+### log
+로그를 상황에 맞게 잘 사용한다.
+
+로그에 대해서도 공부해 본다. 생각보다 공부할게 많다.
+
+> 참고자료 : https://pig-programming.tistory.com/51
+
+
+
+### 피드백
+
+## 1,2단계 피드백
+- ++sequence 연산이 원자적으로 처리되지 않을 수 있다.
+  예를 들어, 스레드1과 스레드2가 동시에 idIncrease() 메서드를 호출하면 두 스레드가 sequence 변수의 값을 동시에 읽어 1 증가시킨 후,
+  각각의 결과를 반환할 수 있습니다. 그 결과, id 필드가 서로 다른 값을 가지게 되어 버그가 발생할 수 있습니다. 결론적으로
+  static한 변수가 멀티스레드에서 안전한가? 서로 다른 스레드에서 같은 필드에 접근해 오류가 생길수있다.
+  해결책은? -> AtomicLong 혹은 idIncrease()를 동기화 시켜주자.
+
+
+- `store.stream().filter(article -> article.getId() == id).findAny();` ,`return store.stream().filter(member -> member.getId() == userId).findFirst();`
+findAny와 findfirst의 차이는 병렬성차이.
+
+
+
+### 해결
+@modelAttribute에 관하여
+> 참고자료 : https://hyeon9mak.github.io/model-attribute-without-setter/
+
+
+처음 jdbc sql문 사용 너무 지저 분하고 가독성이 떨어짐
+두번째 jdbc 템플릿 사용 가독성이 증가했지만 여전히 지저분하고 중복이 많음
+세번째 BeanPropertyRowMapper 를 사용 중복을 많이제거함

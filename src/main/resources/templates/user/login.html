@@ -17,14 +17,14 @@
         <div class="col-md-12">
             <div class="navbar-header">
                 <a href="../../static/index.html" class="navbar-brand">
-                    <img src="../../static/images/KakaoCI.png" />
+                    <img src="../../static/images/KakaoCI.png"/>
                 </a>
 
             </div>
             <ul class="nav navbar-nav navbar-right">
-                <li class="active"><a href="../../static/user/list.html">멤버 리스트</a></li>
-                <li><a class="black-component" href="login.html" role="button">로그인</a></li>
-                <li><a class="black-component" href="../../static/user/form.html" role="button">회원가입</a></li>
+                <li class="active"><a href="/user/list">멤버 리스트</a></li>
+                <li><a class="black-component" href="/user/login" role="button">로그인</a></li>
+                <li><a class="black-component" href="/user/form" role="button">회원가입</a></li>
             </ul>
         </div>
     </nav>
@@ -33,7 +33,7 @@
         <header class="post-header">
             <p class="title">로그인</p>
         </header>
-        <form name="question" class="info-container" method="post" action="/users">
+        <form name="question" class="info-container" method="post" action="/login">
             <div class="form-group">
                 <label for="email">이메일</label>
                 <input type="email" class="form-control" id="email" name="email" placeholder="이메일을 입력하세요">

@@ -1,21 +1,35 @@
 package kr.codesqaud.cafe.cafeservice.domain;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.concurrent.atomic.AtomicLong;
+
 public class Member {
     private Long id;
     private String userName;
     private String password;
     private String email;
-    private static long sequence = 0L; //static 사용
+    private LocalDateTime createdDate;
 
-    public Member(Long id, String userName, String password, String email) {
-        this.id = idIncrease();
+    public Member(String userName, String password, String email) {
         this.userName = userName;
         this.password = password;
         this.email = email;
     }
 
-    private Long idIncrease() {
-        return ++sequence;
+    public Member() {
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public void setCreatedDate(LocalDateTime createdDate) {
+        this.createdDate = createdDate;
+    }
+
+    public LocalDateTime getCreatedDate() {
+        return LocalDateTime.parse(createdDate.format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
     }
 
     public Long getId() {
@@ -32,5 +46,29 @@ public class Member {
 
     public String getEmail() {
         return email;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+
+    @Override
+    public String toString() {
+        return "Member{" +
+                "id=" + id +
+                ", userName='" + userName + '\'' +
+                ", password='" + password + '\'' +
+                ", email='" + email + '\'' +
+                ", createdDate=" + createdDate +
+                '}';
     }
 }
