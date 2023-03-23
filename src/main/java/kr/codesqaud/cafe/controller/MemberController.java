@@ -66,14 +66,4 @@ public class MemberController {
         return "redirect:/users/list";
     }
 
-//    /**
-//     * 테스트 용 데이터 추가
-//     */
-//    @PostConstruct
-//    public void init() throws SQLException {
-//        memberRepository.save(new Member("GOMUNGNAM", "247597", "고건호", "rhrjsgh97@gmail.com"));
-//        memberRepository.save(new Member("Roy", "123456", "이승로", "roy@gmail.com"));
-//        memberRepository.save(new Member("Birdie", "123456", "임동현", "birdie@gmail.com"));
-//        memberRepository.save(new Member("Hana", "1234", "왕하나", "hana@gmail.com"));
-//    }
 }
