@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import java.util.List;
-import java.util.Locale;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 
@@ -46,8 +45,12 @@ public class ArticleController {
     public String showArticle(@PathVariable Long index, Model model) {
         try {
             Optional<Article> findArticle = repository.findById(index);
-            model.addAttribute("article", findArticle);
-            return "qna/show";
+            if (findArticle.isPresent()) {
+                model.addAttribute("article", findArticle.get());
+                return "qna/show";
+            } else {
+                return "fail";
+            }
         } catch (NoSuchElementException e) {
             return "fail";
         }
