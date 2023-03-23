@@ -21,4 +21,11 @@ public class UserService {
                 .filter((user) -> user.getPassword().equals(password));
     }
 
+    public Boolean update(User user, String password, String email, String name) {
+        user.setPassword(password);
+        user.setEmail(email);
+        user.setName(name);
+        return userRepository.update(user) >= 1;
+    }
+
 }

@@ -1,6 +1,7 @@
 package kr.codesqaud.cafe.controller;
 
 import kr.codesqaud.cafe.basic.User;
+import kr.codesqaud.cafe.config.ConstConfig;
 import kr.codesqaud.cafe.repository.UserRepository;
 import kr.codesqaud.cafe.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -55,24 +56,30 @@ public class UserController {
         return "user/profile";
     }
 
-    @GetMapping("/{userId}/update")
-    public String updateForm(@PathVariable String userId,
+    @GetMapping("/update")
+    public String updateForm(HttpSession session,
                              Model model) {
-        Optional<User> optionalUser = userRepository.findUserById(userId);
-        if (optionalUser.isEmpty()) return "fail-something";
+        User user = (User) session.getAttribute(ConstConfig.SESSION_ID);
+        if (user == null) return "fail-something";
 
-        model.addAttribute("user", optionalUser.get());
+        model.addAttribute("user", user);
         return "user/updateForm";
     }
 
-    @PutMapping("/{userId}/update")
-    public String update(@PathVariable String userId,
+    @PutMapping("/update")
+    public String update(@RequestParam String curPassword,
                          @RequestParam String password,
                          @RequestParam String name,
-                         @RequestParam String email) {
-        User user = new User(userId, password, name, email);
-        if (userRepository.update(user) < 1) return "/fail-something";
+                         @RequestParam String email,
+                         HttpServletRequest request,
+                         HttpSession session) {
+//        HttpSession session = request.getSession(false);
+        System.out.println("hi");
+        User user = (User) session.getAttribute(ConstConfig.SESSION_ID);
+        if (user == null) return "fail-something";
+        if (!user.isSamePassword(curPassword)) return "fail-something";
 
+        if (!userService.update(user, password, name, email)) return "fail-something";
 
         return "redirect:/user/list";
     }
@@ -86,7 +93,7 @@ public class UserController {
 
         HttpSession session = request.getSession();
 
-        session.setAttribute("userId", optionalUser.get());
+        session.setAttribute(ConstConfig.SESSION_ID, optionalUser.get());
         return "redirect:/";
     }
 
