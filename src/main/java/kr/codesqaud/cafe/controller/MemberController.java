@@ -54,11 +54,6 @@ public class MemberController {
     public String updateUser(@PathVariable("userId") String userId, Model model,HttpSession session) {
         logger.debug("updateUser : GET");
         Object value = session.getAttribute("sessionedUser");
-//        if(value != null){
-//            Optional<Member> updateUser = jdbcMemberRepository.findById(userId);
-//            // Model 과 View 연결
-//            model.addAttribute("user", updateUser.orElseThrow());
-//        }
         if (value != null) {
             Optional<Member> updateUser = jdbcMemberRepository.findById(userId);
             if (updateUser.isPresent()) {
