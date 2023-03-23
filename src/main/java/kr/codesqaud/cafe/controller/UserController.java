@@ -2,6 +2,7 @@ package kr.codesqaud.cafe.controller;
 
 import kr.codesqaud.cafe.domain.User;
 import kr.codesqaud.cafe.repository.JdbcTemplateUserRepository;
+import kr.codesqaud.cafe.repository.SessionConst;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +10,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpSession;
 import java.util.List;
 import java.util.Optional;
 
@@ -36,10 +38,15 @@ public class UserController {
 
     // 사용자 목록 Mapping
     @GetMapping("/users")
-    public String showUsers(Model model) {
+    public String showUsers(Model model, HttpSession session) {
         log.debug("사용자 목록 Mapping: 받았는가?");
 
         List<User> users = repository.findAll();
+
+        Object userInfo = session.getAttribute(SessionConst.LOGIN_USER);
+        if (userInfo != null) {
+            model.addAttribute("userInfo", userInfo);
+        }
         model.addAttribute("users", users);
 
         return "user/list";
@@ -62,8 +69,14 @@ public class UserController {
 
     // 사용자 정보 수정 GET
     @GetMapping("/users/{userId}/form")
-    public String updateForm(Model model, @PathVariable String userId) {
+    public String updateForm(Model model, @PathVariable String userId, HttpSession session) {
         Optional<User> user = repository.findByUserId(userId);
+
+        User value = (User) session.getAttribute(SessionConst.LOGIN_USER);
+        System.out.println(value);
+        if (value == null || !value.getUserId().equals(userId)) {
+            return "user/error";
+        }
 
         if (user.isPresent()) {
             log.debug("사용자 정보 수정: 정보수정 브라우저 맵핑 성공~~~~~!!!!?");
