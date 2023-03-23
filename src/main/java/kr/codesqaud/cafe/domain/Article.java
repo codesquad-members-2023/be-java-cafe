@@ -1,7 +1,5 @@
 package kr.codesqaud.cafe.domain;
 
-import org.springframework.cglib.core.Local;
-
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 

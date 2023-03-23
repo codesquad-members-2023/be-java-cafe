@@ -42,7 +42,7 @@ public class JdbcArticleRepository implements ArticleRepository {
         return new RowMapper<Article>() {
             @Override
             public Article mapRow(ResultSet rs, int rowNum) throws SQLException {
-                return new Article(rs.getString("writer"), rs.getString("title"), rs.getString("content"), rs.getLong("article_id"), rs.getTimestamp("creation_time").toLocalDateTime());
+                return new Article(rs.getString("writer"), rs.getString("title"), rs.getString("content"), rs.getLong("article_id"), rs.getTimestamp("createdAt").toLocalDateTime());
             }
         };
     }
