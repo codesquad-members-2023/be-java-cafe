@@ -13,7 +13,6 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.util.List;
 
@@ -68,23 +67,11 @@ public class UserController {
     }
 
     @GetMapping("/{userId}/updateUser")
-    public String updateUser(@PathVariable String userId, Model model, HttpSession session, HttpServletResponse response) {
-
+    public String updateUser(@PathVariable String userId, Model model) {
         User user = memberRepository.findById(userId);
-        Object value = session.getAttribute("user");
 
-        if (value != null) {
-            User loginedUser = (User) value;
-            if (loginedUser.getUserId().equals(user.getUserId())) {
-                memberRepository.updateUser(user);
-                model.addAttribute("user", user);
-
-                return "users/update_user";
-            }
-        }
-
-        response.setStatus(HttpServletResponse.SC_NOT_FOUND);
-        return "redirect:/users/list";
+        model.addAttribute("user", user);
+        return "users/update_user";
     }
 
     @PutMapping("/{userId}/updateUser") // TODO : DTO 고려해보기, 로직을 service로 넘기기
@@ -103,15 +90,14 @@ public class UserController {
         return "users/login";
     }
 
-    @PostMapping("/process_login") //TODO: 아이디를 잘못 입력했을 경우 예외처리, 틀릴 경우에만 에러 페이지 나오도록 수정, 에러 페이지, 에러 정보 담도록 스프링, 서블릿
+    @PostMapping("/process_login")
     public String loginUser(@ModelAttribute UserLoginDTO loginUser, BindingResult bindingResult, HttpSession session) {
         userLoginValidator.validate(loginUser, bindingResult);
         if (bindingResult.hasErrors()) {
             return "users/login";
         }
 
-        User user = memberRepository.findById(loginUser.getUserId());
-        session.setAttribute("user", user);
+        session.setAttribute("userId", loginUser.getUserId());
         log.info("로그인 성공");
         return "redirect:/users/list";
     }

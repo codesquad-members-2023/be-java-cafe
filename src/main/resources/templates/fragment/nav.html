@@ -60,7 +60,7 @@
                 <li><a href="/users/login" th:if="${#session == null}" role="button">로그인</a></li>
                 <li><a href="/users/form" role="button">회원가입</a></li>
                 <li><a href="/users/logout" th:if="${#session != null}" role="button">로그아웃</a></li>
-                <li><a href="#" role="button">개인정보수정</a></li>
+                <li><a th:href="@{/users/{userId}/updateUser(userId=${#session.getAttribute('userId')})}" th:if="${#session != null}" role="button">개인정보수정</a></li>
             </ul>
         </div>
     </div>
