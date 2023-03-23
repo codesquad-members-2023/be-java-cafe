@@ -2,15 +2,21 @@ package kr.codesqaud.cafe.controller;
 
 import kr.codesqaud.cafe.repository.member.MemberRepository;
 import kr.codesqaud.cafe.domain.User;
+import kr.codesqaud.cafe.validation.UserValidator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 @Controller
 @RequestMapping("/users")
@@ -19,11 +25,19 @@ public class UserController {
     private final Logger log = LoggerFactory.getLogger(getClass());
 
     private final MemberRepository memberRepository;
+    private final UserValidator userValidator;
+
+    @InitBinder
+    public void init(WebDataBinder dataBinder) {
+        dataBinder.addValidators(userValidator);
+    }
 
     @Autowired
-    public UserController(MemberRepository memberRepository) {
+    public UserController(MemberRepository memberRepository, UserValidator userValidator) {
         this.memberRepository = memberRepository;
+        this.userValidator = userValidator;
     }
+
 
     @PostMapping("/create")
     public String addUser(@ModelAttribute User user) {
@@ -48,7 +62,7 @@ public class UserController {
     }
 
     @GetMapping("/{userId}/updateUser")
-    public String updateUser(@PathVariable String userId, Model model, HttpSession session) {
+    public String updateUser(@PathVariable String userId, Model model, HttpSession session, HttpServletResponse response) {
 
         User user = memberRepository.findById(userId);
         Object value = session.getAttribute("user");
@@ -63,7 +77,7 @@ public class UserController {
             }
         }
 
-
+        response.setStatus(HttpServletResponse.SC_NOT_FOUND);
         return "redirect:/users/list";
     }
 
@@ -77,17 +91,22 @@ public class UserController {
         return "users/list";
     }
 
-    @PostMapping("/process_login") //TODO: 아이디를 잘못 입력했을 경우 예외처리, 틀릴 경우에만 에러 페이지 나오도록 수정
-    public String loginUser(@RequestParam String userId, @RequestParam String password, HttpSession session) {
-        User user = memberRepository.findById(userId);
+    @GetMapping("/login")
+    public String showLoginForm(Model model) {
+        model.addAttribute("user", new User());
+        return "users/login";
+    }
 
-        if (user.getPassword().equals(password)) {
-            session.setAttribute("user", user);
-            return "redirect:/users/list";
+    @PostMapping("/process_login") //TODO: 아이디를 잘못 입력했을 경우 예외처리, 틀릴 경우에만 에러 페이지 나오도록 수정, 에러 페이지, 에러 정보 담도록 스프링, 서블릿
+    public String loginUser(@Validated @ModelAttribute User userDTO, BindingResult bindingResult, HttpSession session) {
+
+        if (bindingResult.hasErrors()) {
+            return "users/login";
         }
-        log.info("비밀번호 에러 로그인 페이지");
 
-        return "redirect:/users/login_failed";
+        User user = memberRepository.findById(userDTO.getUserId());
+        session.setAttribute("user", user);
+        return "redirect:/users/list";
     }
 
     @GetMapping("/logout")
