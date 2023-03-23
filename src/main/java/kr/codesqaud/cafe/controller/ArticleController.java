@@ -59,14 +59,38 @@ public class ArticleController {
 
     @DeleteMapping("/articles/{index}")
     public String deleteArticle(@PathVariable int index, HttpSession session) {
-        User loginUser = userRepository.findById((int) session.getAttribute(SessionConstant.LOGIN_USER_ID));
-        Article article = articleRepository.findById(index);
-
-        if (!loginUser.getUserId().equals(article.getWriter())) {
-            throw new IllegalArgumentException("[ERROR] 자신이 작성하지 않은 게시물은 삭제할 수 없습니다.");
-        }
+        checkUserEqualsWriter(index, session, "삭제");
 
         articleRepository.delete(index);
         return "redirect:/";
+    }
+
+    @GetMapping("/articles/{index}/form")
+    public String showArticleUpdateForm(@PathVariable int index, HttpSession session, Model model) {
+        checkUserEqualsWriter(index, session, "수정");
+
+        Article article = articleRepository.findById(index);
+        model.addAttribute("article", article);
+
+        return "qna/updateForm";
+    }
+
+    @PutMapping("/articles/{index}")
+    public String updateArticle(@PathVariable int index, @RequestParam String title, @RequestParam String contents, HttpSession session) {
+        checkUserEqualsWriter(index, session, "수정");
+        Article updateArticle = new Article(0, title, contents);
+
+        articleRepository.update(index, updateArticle);
+
+        return "redirect:/articles/{index}";
+    }
+
+    private void checkUserEqualsWriter(int articleIndex, HttpSession session, String action) {
+        User loginUser = userRepository.findById((int) session.getAttribute(SessionConstant.LOGIN_USER_ID));
+        Article article = articleRepository.findById(articleIndex);
+
+        if (!loginUser.getUserId().equals(article.getWriter())) {
+            throw new IllegalArgumentException("[ERROR] 자신이 작성하지 않은 게시물은 " + action + "할 수 없습니다.");
+        }
     }
 }
