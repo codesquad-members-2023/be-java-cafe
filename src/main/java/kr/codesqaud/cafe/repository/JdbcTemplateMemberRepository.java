@@ -57,8 +57,6 @@ public class JdbcTemplateMemberRepository implements MemberRepository {
 
     @Override
     public void editeMember(Member member) {
-        System.out.println("nickName = " + member.getNickName());
-        System.out.println("email = " + member.getEmail());
         jdbcTemplate.update("UPDATE member SET nickName = ? WHERE email = ?", member.getNickName(), member.getEmail());
 
     }

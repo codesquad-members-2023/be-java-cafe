@@ -37,7 +37,8 @@ public class JdbcTemplateArticleRepository implements ArticleRepository {
 
     @Override
     public Optional<Article> findOneArticleById(int id) {
-        return Optional.empty();
+        System.out.println(id);
+        return Optional.ofNullable(jdbcTemplate.queryForObject("select * from article where articleId = ?", articleRowMapper(), id));
     }
 
     @Override
@@ -58,11 +59,11 @@ public class JdbcTemplateArticleRepository implements ArticleRepository {
     private RowMapper<Article> articleRowMapper() {
         return (rs, rowNum) -> {
             Article article = new Article();
+            article.setArticleId(rs.getInt("articleId"));
             article.setWriter(rs.getString("writer"));
             article.setTitle(rs.getString("title"));
             article.setContents(rs.getString("contents"));
             article.setRegistrationDate(rs.getTimestamp("registrationDate").toLocalDateTime());
-            System.out.println(article);
             return article;
         };
     }
