@@ -35,7 +35,7 @@ public class ArticleController {
         List<Article> articleList = articleRepository.findAllArticles();
         model.addAttribute("articleList", articleList);
         log.info("createdAt={}", articleList.get(0).getFormattedCreatedAt());
-        return "/qna/list";
+        return "qna/list";
     }
 
     @GetMapping("/qna/{id}")
@@ -43,6 +43,6 @@ public class ArticleController {
         Article article = articleRepository.findByArticleId(id);
         model.addAttribute("article", article);
         log.info("debug log={}", "findArticle");
-        return "/qna/show";
+        return "qna/show";
     }
 }

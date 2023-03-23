@@ -38,7 +38,7 @@ public class UserController {
     public String findUsers(Model model) {
         List<User> users = userRepository.findAllUsers();
         model.addAttribute("users", users);
-        return "/users/list";
+        return "users/list";
     }
 
     @GetMapping("/{id}")
@@ -46,7 +46,7 @@ public class UserController {
         User user = userRepository.findUserById(id);
         model.addAttribute(user);
         log.debug("debug log={}", user.getName());
-        return "/users/profile";
+        return "users/profile";
     }
 
 }
