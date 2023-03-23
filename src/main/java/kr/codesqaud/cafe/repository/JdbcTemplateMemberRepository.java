@@ -39,12 +39,10 @@ public class JdbcTemplateMemberRepository implements MemberRepository {
     @Override
     public Member findOneMemberbyEmail(String email) {
         return jdbcTemplate.queryForObject("select * from member where email = ?", memberRowMapper(), email);
-//        return result.stream().findAny().get();
     }
     @Override
     public Member findOneMemberbyNickName(String nickName) {
-        List<Member> result = jdbcTemplate.query("select * from member where nickName = ?", memberRowMapper());
-        return result.stream().findAny().get();
+        return jdbcTemplate.queryForObject("select * from member where nickName = ?", memberRowMapper(), nickName);
     }
 
     @Override
