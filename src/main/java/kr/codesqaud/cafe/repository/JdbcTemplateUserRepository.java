@@ -26,17 +26,10 @@ public class JdbcTemplateUserRepository implements UserRepository {
     public boolean save(User user) {
         // 아이디 중복 여부 확인
         if (findByUserId(user.getUserId()).isEmpty()) {
-            SimpleJdbcInsert jdbcInsert = new SimpleJdbcInsert(jdbcTemplate);
-            jdbcInsert.withTableName("CAFE_USER").usingGeneratedKeyColumns("ID");
-
-            Map<String, Object> parameters = new HashMap<>();
-            parameters.put("USERID", user.getUserId());
-            parameters.put("PASSWORD", user.getPassword());
-            parameters.put("NAME", user.getName());
-            parameters.put("EMAIL", user.getEmail());
-
-            Number key = jdbcInsert.executeAndReturnKey(new MapSqlParameterSource(parameters));
-            user.setId(key.longValue());
+            jdbcTemplate.update("INSERT INTO CAFE_USER(USERID, PASSWORD, NAME, EMAIL) VALUES (?, ?, ?, ?)"
+                    ,user.getUserId(), user.getPassword(), user.getName(), user.getEmail());
+            User tempUser = findByUserId(user.getUserId()).orElse(null);
+            user.setId(tempUser.getId());
             return true;
         }
         return false;
