@@ -37,7 +37,7 @@ public class H2DBArticleRepository implements ArticleRepository{
 
     @Override
     public Article findById(int id) {
-        String sql = "select id, title, contents, createDate, user_id from article where id=:id";
+        String sql = "select a.*, u.user_id as writer from article a join users u on a.user_id=u.id where a.id=:id";
 
         try {
             Map<String, Integer> param = Map.of("id", id);
@@ -50,7 +50,7 @@ public class H2DBArticleRepository implements ArticleRepository{
 
     @Override
     public List<Article> findAll() {
-        String sql = "select id, title, contents, createDate, user_id from article order by id desc";
+        String sql = "select a.*, u.user_id as writer from article a join users u on a.user_id=u.id order by a.id desc";
 
         return template.query(sql, BeanPropertyRowMapper.newInstance(Article.class));
     }
