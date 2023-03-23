@@ -53,7 +53,7 @@ public class JdbcTemplateArticleRepository implements ArticleRepository {
 
     @Override
     public int getSize() {
-        return 0;
+        return jdbcTemplate.queryForObject("select count(*) from article", Integer.class);
     }
 
     private RowMapper<Article> articleRowMapper() {

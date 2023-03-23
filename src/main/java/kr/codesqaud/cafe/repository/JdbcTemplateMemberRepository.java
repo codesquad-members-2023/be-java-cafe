@@ -52,7 +52,7 @@ public class JdbcTemplateMemberRepository implements MemberRepository {
 
     @Override
     public int getSize() {
-        return 0;
+        return jdbcTemplate.queryForObject("select count(*) from member", Integer.class);
     }
 
     @Override
