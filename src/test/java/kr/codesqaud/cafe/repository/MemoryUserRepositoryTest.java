@@ -71,7 +71,7 @@ class MemoryUserRepositoryTest {
 
     @Test
     @DisplayName("메모리 저장소에 존재하지 않는 회원 ID 검색시 예외가 터지는지 확인")
-    void validateFindByUserId() {
+    void validateFindById() {
         User user1 = new User("Hyun", "1234", "황현", "ghkdgus29@naver.com");
         User user2 = new User("Yoon", "12345", "황윤", "ghkddbs28@naver.com");
 
@@ -117,5 +117,39 @@ class MemoryUserRepositoryTest {
         })
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("[ERROR] 비밀번호가 틀립니다.");
+    }
+
+    @Test
+    @DisplayName("userId 로 회원 단건 조회가 가능")
+    void testFindByUserId() {
+        User user1 = new User("Hyun", "1234", "황현", "ghkdgus29@naver.com");
+        User user2 = new User("Yoon", "12345", "황윤", "ghkddbs28@naver.com");
+
+        repository.save(user1);
+        repository.save(user2);
+
+        User findUser = repository.findByUserId(user2.getUserId());
+
+        assertThat(findUser.getName()).isEqualTo(user2.getName());
+        assertThat(findUser.getEmail()).isEqualTo(user2.getEmail());
+        assertThat(findUser.getPassword()).isEqualTo(user2.getPassword());
+        assertThat(findUser.getId()).isEqualTo(user2.getId());
+    }
+
+    @Test
+    @DisplayName("저장소에 존재하지 않는 userId 로 회원 조회시 예외 발생")
+    void validateFindByUserId() {
+        User user1 = new User("Hyun", "1234", "황현", "ghkdgus29@naver.com");
+        User user2 = new User("Yoon", "12345", "황윤", "ghkddbs28@naver.com");
+
+        repository.save(user1);
+        repository.save(user2);
+
+
+        assertThatThrownBy(() -> {
+            repository.findByUserId("HHHH");
+        })
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("[ERROR] 존재하지 않는 회원입니다.");
     }
 }

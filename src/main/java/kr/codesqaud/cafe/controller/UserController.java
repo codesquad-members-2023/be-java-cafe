@@ -9,7 +9,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import javax.annotation.PostConstruct;
 import java.util.List;
 
 @Controller
@@ -35,6 +34,11 @@ public class UserController {
         model.addAttribute("users", users);
 
         return "user/list";
+    }
+
+    @GetMapping("/users/form")
+    public String showSignUpForm() {
+        return "user/form";
     }
 
     @GetMapping("/users/{id}")

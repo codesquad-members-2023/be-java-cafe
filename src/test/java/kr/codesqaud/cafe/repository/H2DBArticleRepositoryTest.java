@@ -8,6 +8,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.sql.DataSource;
 import java.util.List;
@@ -38,6 +39,7 @@ class H2DBArticleRepositoryTest {
     }
 
     @Test
+    @Transactional
     @DisplayName("게시글 번호로 DB에서 단 건 조회가 가능")
     void findById() {
         Article article1 = new Article("Hyun", "실화냐?", "미안하다. 이거보여줄려고 어그로끌었다.");
@@ -53,6 +55,7 @@ class H2DBArticleRepositoryTest {
     }
 
     @Test
+    @Transactional
     @DisplayName("게시글을 DB 에서 모두 조회 가능")
     void findAll() {
         Article article1 = new Article("Hyun", "실화냐?", "미안하다. 이거보여줄려고 어그로끌었다.");
@@ -66,6 +69,7 @@ class H2DBArticleRepositoryTest {
     }
 
     @Test
+    @Transactional
     @DisplayName("저장소에 존재하지 않는 Article 검색 시 예외 발생")
     void validateArticleExist() {
         Article article1 = new Article("Hyun", "실화냐?", "미안하다. 이거보여줄려고 어그로끌었다.");

@@ -3,6 +3,7 @@ package kr.codesqaud.cafe.repository;
 import kr.codesqaud.cafe.domain.Article;
 import org.springframework.context.annotation.Primary;
 import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
@@ -40,7 +41,7 @@ public class H2DBArticleRepository implements ArticleRepository{
 
         try {
             Map<String, Integer> param = Map.of("id", id);
-            Article article = template.queryForObject(sql, param, articleRowMapper());
+            Article article = template.queryForObject(sql, param, BeanPropertyRowMapper.newInstance(Article.class));
             return article;
         } catch (EmptyResultDataAccessException e) {
             throw new IllegalArgumentException("[ERROR] 존재하지 않는 게시글입니다!");
@@ -49,21 +50,8 @@ public class H2DBArticleRepository implements ArticleRepository{
 
     @Override
     public List<Article> findAll() {
-        String sql = "select id, writer, title, contents, createDate from article";
+        String sql = "select id, writer, title, contents, createDate from article order by id desc";
 
-        return template.query(sql, articleRowMapper());
-    }
-
-    private RowMapper<Article> articleRowMapper() {
-        return ((rs, rowNum) -> {
-            Article article = new Article();
-            article.setId(rs.getInt("id"));
-            article.setWriter(rs.getString("writer"));
-            article.setTitle(rs.getString("title"));
-            article.setContents(rs.getString("contents"));
-            article.setCreateDate(rs.getObject("createDate", LocalDateTime.class));
-
-            return article;
-        });
+        return template.query(sql, BeanPropertyRowMapper.newInstance(Article.class));
     }
 }

@@ -10,6 +10,8 @@ public interface UserRepository {
 
     User findById(int id);
 
+    User findByUserId(String userId);
+
     List<User> findAll();
 
     void update(int id, User updateUser, String newPassword);

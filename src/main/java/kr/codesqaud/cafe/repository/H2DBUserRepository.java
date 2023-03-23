@@ -4,6 +4,7 @@ import kr.codesqaud.cafe.domain.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Primary;
 import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
@@ -41,7 +42,20 @@ public class H2DBUserRepository implements UserRepository{
 
         try {
             Map<String, Integer> param = Map.of("id", id);
-            User user = template.queryForObject(sql, param, userRowMapper());
+            User user = template.queryForObject(sql, param, BeanPropertyRowMapper.newInstance(User.class));
+            return user;
+        } catch (EmptyResultDataAccessException e) {
+            throw new IllegalArgumentException("[ERROR] 존재하지 않는 회원입니다.");
+        }
+    }
+
+    @Override
+    public User findByUserId(String userId) {
+        String sql = "select id, user_id, password, name, email from users where user_id=:user_id";
+
+        try {
+            Map<String, String> param = Map.of("user_id", userId);
+            User user = template.queryForObject(sql, param, BeanPropertyRowMapper.newInstance(User.class));
             return user;
         } catch (EmptyResultDataAccessException e) {
             throw new IllegalArgumentException("[ERROR] 존재하지 않는 회원입니다.");
@@ -52,7 +66,7 @@ public class H2DBUserRepository implements UserRepository{
     public List<User> findAll() {
         String sql = "select id, user_id, password, name, email from users";
 
-        return template.query(sql, userRowMapper());
+        return template.query(sql, BeanPropertyRowMapper.newInstance(User.class));
     }
 
     @Override
@@ -74,17 +88,5 @@ public class H2DBUserRepository implements UserRepository{
         SqlParameterSource param = new BeanPropertySqlParameterSource(existUser);
 
         template.update(sql, param);
-    }
-
-    private RowMapper<User> userRowMapper() {
-        return ((rs, rowNum) -> {
-            int id = rs.getInt("id");
-            String userId = rs.getString("user_id");
-            String password = rs.getString("password");
-            String name = rs.getString("name");
-            String email = rs.getString("email");
-
-            return new User(id, userId, password, name, email);
-        });
     }
 }
