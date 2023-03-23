@@ -11,12 +11,12 @@ import java.sql.SQLException;
 import java.util.*;
 
 @Repository
-public class JdbcUserRepository implements UserRepository {
+public class JdbcMemberRepository implements MemberRepository {
 
     private final JdbcTemplate jdbcTemplate;
 
-    public JdbcUserRepository(DataSource dataSource) {
-        this.jdbcTemplate = new JdbcTemplate(dataSource);
+    public JdbcMemberRepository(DataSource dataSource) {
+        jdbcTemplate = new JdbcTemplate(dataSource);
     }
 
     @Override
@@ -34,6 +34,12 @@ public class JdbcUserRepository implements UserRepository {
     @Override
     public Optional<Member> findById(Long userId) {
         String sql = "SELECT ID, USERID, NICKNAME, EMAIL, PASSWORD, CREATED_AT, UPDATED_AT FROM MEMBER WHERE ID = ?";
+        return jdbcTemplate.query(sql, new MemberRowMapper(), userId).stream().findAny();
+    }
+
+    @Override
+    public Optional<Member> findByMemberId(String userId) {
+        String sql = "SELECT ID, USERID, NICKNAME, EMAIL, PASSWORD, CREATED_AT, UPDATED_AT FROM MEMBER WHERE USERID = ?";
         return jdbcTemplate.query(sql, new MemberRowMapper(), userId).stream().findAny();
     }
 

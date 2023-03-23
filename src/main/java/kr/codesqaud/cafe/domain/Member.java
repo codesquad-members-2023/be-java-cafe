@@ -2,6 +2,7 @@ package kr.codesqaud.cafe.domain;
 
 
 import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Objects;
 
@@ -11,8 +12,8 @@ public class Member {
     private String nickname;
     private String email;
     private String password;
-    private Timestamp createdDate;
-    private Timestamp updatedDate;
+    private LocalDateTime createdDate;
+    private LocalDateTime updatedDate;
 
     public Long getId() {
         return id;
@@ -34,12 +35,19 @@ public class Member {
         return password;
     }
 
-    public String getCreatedDate() {
-        return createdDate.toLocalDateTime().format(DateTimeFormatter.ofPattern("yyyy-MM-dd hh:mm:ss"));
+    public LocalDateTime getCreatedDate() {
+        return createdDate;
     }
 
-    public String getUpdatedDate() {
-        return updatedDate.toLocalDateTime().format(DateTimeFormatter.ofPattern("yyyy-MM-dd hh:mm:ss"));
+    public LocalDateTime getUpdatedDate() {
+        return updatedDate;
+    }
+    public String getFormattedCreatedDate() {
+        return createdDate.format(DateTimeFormatter.ofPattern("yyyy-MM-dd hh:mm:ss"));
+    }
+
+    public String getFormattedUpdatedDate() {
+        return updatedDate.format(DateTimeFormatter.ofPattern("yyyy-MM-dd hh:mm:ss"));
     }
 
     public void setId(Long id) {
@@ -63,11 +71,11 @@ public class Member {
     }
 
     public void setCreatedDate(Timestamp createdDate) {
-        this.createdDate = createdDate;
+        this.createdDate = createdDate.toLocalDateTime();
     }
 
     public void setUpdatedDate(Timestamp updatedDate) {
-        this.updatedDate = updatedDate;
+        this.updatedDate = updatedDate.toLocalDateTime();
     }
 
     public Member() {}
@@ -85,8 +93,8 @@ public class Member {
         this.nickname = nickname;
         this.email = email;
         this.password = password;
-        this.createdDate = createdDate;
-        this.updatedDate = updatedDate;
+        this.createdDate = createdDate.toLocalDateTime();
+        this.updatedDate = updatedDate.toLocalDateTime();
     }
 
     public boolean equals(long userId) {

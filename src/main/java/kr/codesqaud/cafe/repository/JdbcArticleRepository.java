@@ -9,7 +9,6 @@ import javax.sql.DataSource;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.*;
-import java.util.concurrent.ConcurrentLinkedQueue;
 
 @Repository
 public class JdbcArticleRepository implements ArticleRepository {
@@ -34,7 +33,7 @@ public class JdbcArticleRepository implements ArticleRepository {
 
     @Override
     public List<Article> findAll() {
-        String sql = "SELECT ID, TITLE, BODY, WRITER, CREATED_AT, UPDATED_AT FROM ARTICLE";
+        String sql = "SELECT ID, TITLE, BODY, WRITER, CREATED_AT, UPDATED_AT FROM ARTICLE ORDER BY ID DESC";
         return jdbcTemplate.query(sql, new ArticleRowMapper());
     }
 
@@ -46,8 +45,8 @@ public class JdbcArticleRepository implements ArticleRepository {
            article.setTitle(rs.getString("TITLE"));
            article.setContents(rs.getString("BODY"));
            article.setWriter(rs.getString("WRITER"));
-           article.setCreatedDate(rs.getTimestamp("CREATED_AT"));
-           article.setUpdatedDate(rs.getTimestamp("UPDATED_AT"));
+           article.setCreatedDate(rs.getTimestamp("CREATED_AT").toLocalDateTime());
+           article.setUpdatedDate(rs.getTimestamp("UPDATED_AT").toLocalDateTime());
            return article;
         }
     }
