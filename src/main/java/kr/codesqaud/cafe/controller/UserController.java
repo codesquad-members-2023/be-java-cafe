@@ -106,6 +106,7 @@ public class UserController {
 
         User user = memberRepository.findById(userDTO.getUserId());
         session.setAttribute("user", user);
+        log.info("로그인 성공");
         return "redirect:/users/list";
     }
 
