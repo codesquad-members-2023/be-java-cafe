@@ -2,10 +2,10 @@ DROP TABLE IF EXISTS cafe_user;
 CREATE TABLE cafe_user
 (
     id       BIGINT AUTO_INCREMENT PRIMARY KEY,
-    userId   VARCHAR(20) NOT NULL,
-    password VARCHAR(20) NOT NULL,
-    name     VARCHAR(20) NOT NULL,
-    email    VARCHAR(50) NOT NULL
+    userId   VARCHAR(20) UNIQUE NOT NULL,
+    password VARCHAR(20)        NOT NULL,
+    name     VARCHAR(20)        NOT NULL,
+    email    VARCHAR(50)        NOT NULL
 );
 
 DROP TABLE IF EXISTS cafe_article;

@@ -32,7 +32,6 @@ public class LoginController {
             log.debug("로그인 실패! ㅠㅠ");
             return "user/login_failed";
         }
-
         // 로그인 성공 처리
         log.debug("로그인 성공!!!");
         // 세션에 로그인 회원 정보 보관

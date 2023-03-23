@@ -1,7 +1,9 @@
 package kr.codesqaud.cafe.controller;
 
 import kr.codesqaud.cafe.domain.Article;
+import kr.codesqaud.cafe.domain.User;
 import kr.codesqaud.cafe.repository.JdbcTemplateArticleRepository;
+import kr.codesqaud.cafe.repository.SessionConst;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +14,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import javax.servlet.http.HttpSession;
 import java.util.Optional;
 
 @Controller
@@ -27,8 +30,12 @@ public class ArticleController {
 
     // 질문하기 POST
     @PostMapping("/questions")
-    public String writing(@ModelAttribute Article article) {
+    public String writing(@ModelAttribute Article article, HttpSession session) {
         log.debug("글쓰기전 5분동안 생각하기!");
+
+        // 현재 로그인 유저Id 게시글에 set
+        User value = (User) session.getAttribute(SessionConst.LOGIN_USER);
+        article.setWriter(value.getUserId());
 
         repository.saveArticle(article);
         return "redirect:/";

@@ -1,6 +1,7 @@
 package kr.codesqaud.cafe.repository;
 
 import kr.codesqaud.cafe.domain.Article;
+import kr.codesqaud.cafe.domain.User;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
@@ -25,17 +26,11 @@ public class JdbcTemplateArticleRepository implements ArticleRepository{
     public boolean saveArticle(Article article) {
         // 인덱스 중복 여부 확인
         if (findById(article.getId()).isEmpty()) {
-            SimpleJdbcInsert jdbcInsert = new SimpleJdbcInsert(jdbcTemplate);
-            jdbcInsert.withTableName("cafe_article").usingGeneratedKeyColumns("id");
-
-            Map<String, Object> parameters = new HashMap<>();
-            parameters.put("writer", article.getWriter());
-            parameters.put("title", article.getTitle());
-            parameters.put("contents", article.getContents());
-            parameters.put("time", LocalDateTime.now());
-
-            Number key = jdbcInsert.executeAndReturnKey(new MapSqlParameterSource(parameters));
-            article.setId(key.longValue());
+            // jdbcTemplate으로 변경 / PK값을 가져오는 방법이 이것뿐인가?;;;;
+            jdbcTemplate.update("INSERT INTO CAFE_ARTICLE(WRITER, TITLE, CONTENTS, TIME) VALUES (?, ?, ?, ?)"
+                    ,article.getWriter(), article.getTitle(), article.getContents(), LocalDateTime.now());
+            List<Article> lastValue = jdbcTemplate.query("SELECT MAX(ID) FROM CAFE_ARTICLE", articlePKMapper());
+            article.setId(lastValue.get(0).getId());
             return true;
         }
         return false;
@@ -61,6 +56,14 @@ public class JdbcTemplateArticleRepository implements ArticleRepository{
             article.setTitle(rs.getString("title"));
             article.setContents(rs.getString("contents"));
             article.setTime(rs.getTimestamp("time"));
+            return article;
+        };
+    }
+
+    private RowMapper<Article> articlePKMapper() {
+        return (rs, rowNum) -> {
+            Article article = new Article();
+            rs.getLong("MAX(ID)");
             return article;
         };
     }
