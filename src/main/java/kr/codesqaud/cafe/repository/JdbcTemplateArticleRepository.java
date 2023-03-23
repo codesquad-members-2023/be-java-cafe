@@ -3,6 +3,7 @@ package kr.codesqaud.cafe.repository;
 import kr.codesqaud.cafe.domain.Article;
 import kr.codesqaud.cafe.domain.Member;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 
@@ -26,9 +27,9 @@ public class JdbcTemplateArticleRepository implements ArticleRepository {
         jdbcInsert.withTableName("article").usingGeneratedKeyColumns("articleId");
 
         Map<String, Object> parameters = new HashMap<>();
-        parameters.put("writer", article.getAuthor());
+        parameters.put("writer", article.getWriter());
         parameters.put("title", article.getTitle());
-        parameters.put("contents", article.getContent());
+        parameters.put("contents", article.getContents());
         parameters.put("registrationDate", article.getRegistrationDate());
 
         jdbcInsert.execute(new MapSqlParameterSource(parameters));
@@ -41,7 +42,7 @@ public class JdbcTemplateArticleRepository implements ArticleRepository {
 
     @Override
     public List<Article> getArticles() {
-        return null;
+        return jdbcTemplate.query("select * from article", articleRowMapper());
     }
 
     @Override
@@ -52,5 +53,17 @@ public class JdbcTemplateArticleRepository implements ArticleRepository {
     @Override
     public int getSize() {
         return 0;
+    }
+
+    private RowMapper<Article> articleRowMapper() {
+        return (rs, rowNum) -> {
+            Article article = new Article();
+            article.setWriter(rs.getString("writer"));
+            article.setTitle(rs.getString("title"));
+            article.setContents(rs.getString("contents"));
+            article.setRegistrationDate(rs.getTimestamp("registrationDate").toLocalDateTime());
+            System.out.println(article);
+            return article;
+        };
     }
 }

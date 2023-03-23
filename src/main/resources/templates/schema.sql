@@ -13,6 +13,6 @@ create table article (
     articleId bigint auto_increment primary key,
     writer varchar(255),
     title varchar(255),
-    contents text,
-    registrationDate Date
+    contents varchar(255),
+    registrationDate DateTime
 );
