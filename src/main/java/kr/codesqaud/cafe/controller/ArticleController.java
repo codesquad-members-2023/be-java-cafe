@@ -83,7 +83,12 @@ public class ArticleController {
     }
 
     @PutMapping("/qna/update_article/{articleId}")
-    public String updateArticle(@ModelAttribute Article article, @PathVariable int articleId) {
+    public String updateArticle(@ModelAttribute Article article, BindingResult bindingResult, @PathVariable int articleId) {
+        articleValidator.validate(article, bindingResult);
+        if (bindingResult.hasErrors()) {
+            return "qna/update_article";
+        }
+
         articleRepository.updateArticle(article.getTitle(), article.getContents(), articleId);
 
         return "redirect:/qna/show/{articleId}";
