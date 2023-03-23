@@ -9,7 +9,7 @@ import java.util.Collections;
 import java.util.List;
 
 @Repository
-public class MemoryArticleRepository implements ArticleRepository{
+public class MemoryArticleRepository implements ArticleRepository {
 
     private final List<Article> articles = new ArrayList<>();
 
@@ -33,5 +33,18 @@ public class MemoryArticleRepository implements ArticleRepository{
         ArrayList<Article> articles = new ArrayList<>(this.articles);
         Collections.reverse(articles);
         return articles;
+    }
+
+    @Override
+    public void delete(int id) {
+        if (articles.isEmpty()) {
+            throw new IllegalArgumentException("[ERROR] 게시글이 아무것도 없어 삭제할 수 없습니다.");
+        }
+
+        if (id < 0 || articles.size() < id) {
+            throw new IllegalArgumentException("[ERROR] 해당하는 게시글이 없어 삭제할 수 없습니다.");
+        }
+
+        articles.remove(id - 1);
     }
 }

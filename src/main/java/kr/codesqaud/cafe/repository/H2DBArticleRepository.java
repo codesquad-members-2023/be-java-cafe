@@ -17,7 +17,7 @@ import java.util.Map;
 
 @Repository
 @Primary
-public class H2DBArticleRepository implements ArticleRepository{
+public class H2DBArticleRepository implements ArticleRepository {
 
     private final NamedParameterJdbcTemplate template;
 
@@ -53,5 +53,13 @@ public class H2DBArticleRepository implements ArticleRepository{
         String sql = "select a.*, u.user_id as writer from article a join users u on a.user_id=u.id order by a.id desc";
 
         return template.query(sql, BeanPropertyRowMapper.newInstance(Article.class));
+    }
+
+    @Override
+    public void delete(int id) {
+        String sql = "delete from article where id=:id";
+
+        Map<String, Integer> param = Map.of("id", id);
+        template.update(sql, param);
     }
 }

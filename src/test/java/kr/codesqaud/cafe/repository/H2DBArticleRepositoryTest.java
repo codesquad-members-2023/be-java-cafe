@@ -92,4 +92,24 @@ class H2DBArticleRepositoryTest {
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("[ERROR] 존재하지 않는 게시글입니다!");
     }
+
+    @Test
+    @DisplayName("저장소에서 특정 id의 Article을 제거 가능")
+    void delete() {
+        Article article1 = new Article(1, "실화냐?", "미안하다. 이거보여줄려고 어그로끌었다.");
+        Article article2 = new Article(2, "진짜 실화냐?", "미안하다. 이거보여줄려고 또 어그로끌었다.");
+
+        articleRepository.save(article1);
+        articleRepository.save(article2);
+
+        articleRepository.delete(1);
+
+        List<Article> articles = articleRepository.findAll();
+
+        assertThat(articles.size()).isEqualTo(1);
+
+        Article restArticle = articles.get(0);
+        assertThat(restArticle.getContents()).isEqualTo("미안하다. 이거보여줄려고 또 어그로끌었다.");
+        assertThat(restArticle.getTitle()).isEqualTo("진짜 실화냐?");
+    }
 }
