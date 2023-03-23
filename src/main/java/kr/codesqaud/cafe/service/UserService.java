@@ -26,8 +26,7 @@ public class UserService {
     }
 
     public UserDto findUserByUserId(String userId) {
-        final int FIRST_USER = 0;
-        return userDao.findUserByUserId(userId).get(FIRST_USER);
+        return userDao.findUserByUserId(userId).orElse(new UserDto());
     }
 
     public void updateUser(UserDto userDto) {
@@ -36,7 +35,6 @@ public class UserService {
 
     public boolean findUserByPassword(UserDto userDto) {
         String inputPassword = userDto.getPassword();
-        final int FIRST_USER = 0;
-        return !userDao.findUserByUserPassword(inputPassword).isEmpty();
+        return userDao.findUserByUserPassword(inputPassword).filter(v -> v.getPassword().equals(inputPassword)).isPresent();
     }
 }
