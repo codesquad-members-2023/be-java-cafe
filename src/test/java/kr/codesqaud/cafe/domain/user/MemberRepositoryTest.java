@@ -6,6 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 import static org.assertj.core.api.Assertions.*;
 
 @SpringBootTest
@@ -39,6 +41,16 @@ class MemberRepositoryTest {
 
 		assertThat(findMember1.getUserId()).isEqualTo(userId1);
 		assertThat(findMember2.getUserId()).isEqualTo(userId2);
+	}
+
+	@Test
+	@DisplayName("모든 회원을 조회하는 테스트")
+	void showAllUsers() {
+		List<Member> allMembers = repository.showAllUsers();
+
+		assertThat(allMembers.get(0).getUserId()).isEqualTo("rhrjsgh97");
+		assertThat(allMembers.get(1).getUserId()).isEqualTo("noeseyhoes");
+		assertThat(allMembers.size()).isEqualTo(2);
 	}
 
 }
