@@ -18,14 +18,14 @@ class MemberRepositoryTest {
 	@Test
 	@DisplayName("회원 가입 테스트")
 	void save() {
-		Member member1 = new Member("member1", "1234", "멤버1", "member1@naver.com");
-		repository.save(member1);
+		Member test = new Member("test", "1234", "테스트", "test@test.com");
+		repository.save(test);
 
-		Member findMember = repository.findById(member1.getUserId()).orElseThrow();
+		Member findMember = repository.findById(test.getUserId()).orElseThrow();
 
-		assertThat(member1.getName()).isEqualTo(findMember.getName());
-		assertThat(member1.getPassword()).isEqualTo(findMember.getPassword());
-		assertThat(member1.getEmail()).isEqualTo(findMember.getEmail());
-		assertThat(member1.getUserId()).isEqualTo(findMember.getUserId());
+		assertThat(test.getName()).isEqualTo(findMember.getName());
+		assertThat(test.getPassword()).isEqualTo(findMember.getPassword());
+		assertThat(test.getEmail()).isEqualTo(findMember.getEmail());
+		assertThat(test.getUserId()).isEqualTo(findMember.getUserId());
 	}
 }
