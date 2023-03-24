@@ -57,11 +57,11 @@
         <div class="collapse navbar-collapse" id="navbar-collapse2">
             <ul class="nav navbar-nav navbar-right">
                 <li class="active"><a href="/">Posts</a></li>
-                <li><a href="/users/login" th:if="${#session == null}" role="button">로그인</a></li>
+                <li><a href="/users/login" th:if="${session.user == null}" role="button">로그인</a></li>
                 <li><a href="/users/form" role="button">회원가입</a></li>
-                <li><a href="/users/logout" th:if="${#session != null}" role="button">로그아웃</a></li>
-                <li><a th:if="${#session != null}" th:href="@{/users/updateUser/{userId}(userId=${#session.getAttribute('user').getUserId()})}"  role="button">개인정보수정</a></li>
-            </ul>
+                <li><a href="/users/logout" th:if="${session.user != null}" role="button">로그아웃</a></li>
+                <li><a th:if="${session.user != null}" th:href="@{/users/updateUser/{userId}(userId=${session.user.userId})}"  role="button">개인정보수정</a></li>
+
         </div>
     </div>
 </div>

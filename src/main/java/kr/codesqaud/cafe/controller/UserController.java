@@ -98,18 +98,15 @@ public class UserController {
     }
 
     @PostMapping("/process_login")
-    public String loginUser(@ModelAttribute UserLoginDTO loginUser, BindingResult bindingResult, HttpServletRequest request) {
+    public String loginUser(@ModelAttribute UserLoginDTO loginUser, BindingResult bindingResult,HttpSession session) {
         userLoginValidator.validate(loginUser, bindingResult);
         if (bindingResult.hasErrors()) {
-            log.info("에러 검증");
+            log.info("로그인 에러 검증");
             return "users/login";
         }
-        HttpSession session = request.getSession();
         User user = memberRepository.findById(loginUser.getUserId());
 
-        log.info("세션 에러");
         session.setAttribute("user", user);
-        log.info("로그인 성공");
         return "redirect:/users/list";
     }
 
