@@ -11,9 +11,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-import org.springframework.web.servlet.mvc.support.RedirectAttributesModelMap;
-import org.springframework.web.servlet.view.RedirectView;
 
 @Controller
 public class ArticleController {
@@ -25,12 +22,12 @@ public class ArticleController {
     }
 
     @GetMapping("/openForm")
-    public String openForm(HttpSession session) {
-        return "redirect:/qna/form.html";
+    public String openForm() {
+        return "qna/form";
     }
 
     @PostMapping("/questions")
-    public String creatArticle(@ModelAttribute("ArticleDto") Article article) {
+    public String creatArticle(@ModelAttribute("Article") Article article) {
         articleService.creatArticle(article);
         return "redirect:/";
     }

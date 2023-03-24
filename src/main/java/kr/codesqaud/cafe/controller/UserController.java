@@ -1,6 +1,5 @@
 package kr.codesqaud.cafe.controller;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import kr.codesqaud.cafe.model.User;
 import kr.codesqaud.cafe.repository.UserDto;
@@ -14,7 +13,6 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.servlet.view.RedirectView;
 
 @Controller
 public class UserController {
@@ -34,13 +32,13 @@ public class UserController {
     @GetMapping("/users")
     public String findUserList(Model model) {
         model.addAttribute("userDto", userService.findUserAll());
-        return "list2";
+        return "list";
     }
 
     @GetMapping("/users/{userId}")
     public String findUserProfile(@PathVariable("userId") String userId, Model model) {
         model.addAttribute("user", userService.findUserByUserId(userId));
-        return "profile2";
+        return "profile";
     }
 
     @GetMapping("/users/{userId}/form")
@@ -66,7 +64,7 @@ public class UserController {
 
     @GetMapping("/logout")
     public String logOut(HttpSession session) {
-        session.removeAttribute("userId");
+        session.invalidate();
         return "redirect:/";
     }
 }
