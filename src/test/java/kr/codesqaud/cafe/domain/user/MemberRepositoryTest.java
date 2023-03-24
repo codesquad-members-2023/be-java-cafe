@@ -2,6 +2,8 @@ package kr.codesqaud.cafe.domain.user;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.platform.commons.logging.Logger;
+import org.junit.platform.commons.logging.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
@@ -16,6 +18,7 @@ class MemberRepositoryTest {
 
 	@Autowired
 	NamedJdbcTemplateMemberRepository repository;
+	private final Logger logger = LoggerFactory.getLogger(getClass());
 
 	@Test
 	@DisplayName("회원 가입 테스트")
