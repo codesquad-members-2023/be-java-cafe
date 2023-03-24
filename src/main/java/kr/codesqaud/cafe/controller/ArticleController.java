@@ -3,7 +3,6 @@ package kr.codesqaud.cafe.controller;
 import kr.codesqaud.cafe.domain.Article;
 import kr.codesqaud.cafe.domain.User;
 import kr.codesqaud.cafe.repository.JdbcTemplateArticleRepository;
-import kr.codesqaud.cafe.repository.SessionConst;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,8 +33,8 @@ public class ArticleController {
         log.debug("글쓰기전 5분동안 생각하기!");
 
         // 현재 로그인 유저Id 게시글에 set
-        User value = (User) session.getAttribute(SessionConst.LOGIN_USER);
-        article.setWriter(value.getUserId());
+        User sessionUser = (User) session.getAttribute("loginUser");
+        article.setWriter(sessionUser.getUserId());
 
         repository.saveArticle(article);
         return "redirect:/";

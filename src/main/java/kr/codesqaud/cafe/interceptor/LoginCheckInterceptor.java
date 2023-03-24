@@ -1,7 +1,6 @@
 package kr.codesqaud.cafe.interceptor;
 
 import kr.codesqaud.cafe.controller.UserController;
-import kr.codesqaud.cafe.repository.SessionConst;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.servlet.HandlerInterceptor;
@@ -22,7 +21,7 @@ public class LoginCheckInterceptor implements HandlerInterceptor {
 
         HttpSession session = request.getSession();
 
-        if (session == null || session.getAttribute(SessionConst.LOGIN_USER) == null) {
+        if (session == null || session.getAttribute("loginUser") == null) {
             log.info("미인증 사용자 요청");
 
             // 로그인으로 redirect

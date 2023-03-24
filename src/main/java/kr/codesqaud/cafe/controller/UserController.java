@@ -2,7 +2,6 @@ package kr.codesqaud.cafe.controller;
 
 import kr.codesqaud.cafe.domain.User;
 import kr.codesqaud.cafe.repository.JdbcTemplateUserRepository;
-import kr.codesqaud.cafe.repository.SessionConst;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,7 +42,7 @@ public class UserController {
 
         List<User> users = repository.findAll();
 
-        Object userInfo = session.getAttribute(SessionConst.LOGIN_USER);
+        Object userInfo = session.getAttribute("loginUser");
         if (userInfo != null) {
             model.addAttribute("userInfo", userInfo);
         }
@@ -72,8 +71,8 @@ public class UserController {
     public String updateForm(Model model, @PathVariable String userId, HttpSession session) {
         Optional<User> user = repository.findByUserId(userId);
 
-        User value = (User) session.getAttribute(SessionConst.LOGIN_USER);
-        if (value == null || !value.getUserId().equals(userId)) {
+        User sessionUser = (User) session.getAttribute("loginUser");
+        if (sessionUser == null || !sessionUser.getUserId().equals(userId)) {
             return "user/error";
         }
 
@@ -84,7 +83,7 @@ public class UserController {
         return "user/updateForm";
     }
 
-    // 사용자 정보 수정
+    // 사용자 정보 수정 PUT
     @PutMapping("users/{userId}/update")
     public String updateUser(@ModelAttribute User user, @PathVariable String userId, String password) {
         log.debug("사용자 정보 수정: put 전달 완료");
