@@ -28,4 +28,17 @@ class MemberRepositoryTest {
 		assertThat(test.getEmail()).isEqualTo(findMember.getEmail());
 		assertThat(test.getUserId()).isEqualTo(findMember.getUserId());
 	}
+
+	@Test
+	@DisplayName("ID로 회원을 찾는 테스트")
+	void findByID() {
+		String userId1 = "rhrjsgh97";
+		String userId2 = "noeseyhoes";
+		Member findMember1 = repository.findById(userId1).orElseThrow();
+		Member findMember2 = repository.findById(userId2).orElseThrow();
+
+		assertThat(findMember1.getUserId()).isEqualTo(userId1);
+		assertThat(findMember2.getUserId()).isEqualTo(userId2);
+	}
+
 }
