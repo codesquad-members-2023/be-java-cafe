@@ -53,4 +53,14 @@ class MemberRepositoryTest {
 		assertThat(allMembers.size()).isEqualTo(2);
 	}
 
+	@Test
+	@DisplayName("비밀번호가 일치 시에 회원 정보를 수정하는 테스트")
+	void updateSuccessed() {
+		Member updateParam = new Member("rhrjsgh97", "1234", "고봉렬", "gobongyeol@gmail.com");
+		repository.update(updateParam);
+
+		Member updatedMember = repository.findById("rhrjsgh97").orElseThrow();
+		assertThat(updatedMember.getName()).isEqualTo(updateParam.getName());
+		assertThat(updatedMember.getEmail()).isEqualTo(updateParam.getEmail());
+	}
 }
