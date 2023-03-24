@@ -1,8 +1,6 @@
 package kr.codesqaud.cafe.domain;
 
 import java.sql.Timestamp;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
 
 public class Article {
     private int id;
