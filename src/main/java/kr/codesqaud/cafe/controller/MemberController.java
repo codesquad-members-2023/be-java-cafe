@@ -1,7 +1,7 @@
 package kr.codesqaud.cafe.controller;
 
 import kr.codesqaud.cafe.domain.Member;
-import kr.codesqaud.cafe.exception.LoginFailException;
+import kr.codesqaud.cafe.exception.*;
 import kr.codesqaud.cafe.repository.MemberRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -10,11 +10,9 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
-import java.net.http.HttpResponse;
 import java.util.List;
-import java.util.NoSuchElementException;
-import java.util.Objects;
-import java.util.Optional;
+
+import static kr.codesqaud.cafe.exception.ExceptionStatus.*;
 
 @Controller
 public class MemberController {
@@ -27,20 +25,21 @@ public class MemberController {
     }
 
     @GetMapping("/user/{id}/update")
-    public String updateForm(@PathVariable Long id, HttpSession httpSession, Model model) {
+    public String updateForm(@PathVariable long id, HttpSession httpSession, Model model) {
         Object sessionedUser = httpSession.getAttribute("sessionedUser");
 
         if (sessionedUser == null) {
-            throw new IllegalArgumentException("먼저 로그인을 해주세요.");
+            throw new ManageMemberException(NO_SESSION_USER);
         }
 
         Member member = (Member) sessionedUser;
 
-        if (!Objects.equals(member.getId(), id)) {
-            throw new NoSuchElementException("로그인한 유저가 아닙니다.");
+        if (member.getId() != id) {
+            throw new ManageMemberException(DIFFERENT_MEMBER);
         }
 
-        model.addAttribute("profile", memberRepository.findById(id).orElseThrow(() -> new NoSuchElementException("정보를 수정할 회원이 없습니다.")));
+        model.addAttribute("profile", memberRepository.findById(id)
+                .orElseThrow(() -> new ManageMemberException(INVALID_MEMBER)));
         return "user/updateForm";
     }
 
@@ -57,10 +56,10 @@ public class MemberController {
 
     @PostMapping("/login")
     public String loginUser(String userId, String password, HttpSession httpSession) {
-        Member member = memberRepository.findByMemberId(userId).orElseThrow(() -> new LoginFailException("해당하는 유저가 없습니다."));
+        Member member = memberRepository.findByMemberId(userId).orElseThrow(() -> new ManageMemberException(LOGIN_FAIL));
 
-        if (!member.getPassword().equals(password)) {
-            throw new LoginFailException("비밀번호가 다릅니다.");
+        if (!member.isValidPassword(password)) {
+            throw new ManageMemberException(LOGIN_FAIL);
         }
 
         httpSession.setAttribute("sessionedUser", member);
@@ -69,7 +68,13 @@ public class MemberController {
 
     @PostMapping("/users")
     public String addUser(String userId, String email, String nickname, String password) {
-        memberRepository.save(new Member(userId, nickname, email, password));
+        Member member = new Member(userId, nickname, email, password);
+
+        if (!memberRepository.validMemberId(userId)) {
+            throw new ManageMemberException(DUPLICATE_MEMBER_INFO);
+        }
+
+        memberRepository.save(member);
         return "redirect:/users";
     }
 
@@ -84,8 +89,7 @@ public class MemberController {
 
     @GetMapping("/users/{userId}")
     public String profile(@PathVariable Long userId, Model model) {
-        Optional<Member> user = memberRepository.findById(userId);
-        model.addAttribute("profile", user.orElseThrow(() -> new NoSuchElementException("해당하는 회원이 없습니다.")));
+        model.addAttribute("profile", memberRepository.findById(userId).orElseThrow(() -> new ManageMemberException(INVALID_MEMBER)));
         return "user/profile";
     }
 
@@ -95,7 +99,7 @@ public class MemberController {
                                 @RequestParam String exPassword) {
         Member exMember = memberRepository.findById(id).orElseThrow();
         if (!exMember.isValidPassword(exPassword)) {
-            throw new IllegalArgumentException("비밀번호가 다릅니다.");
+            throw new ManageMemberException(WRONG_PASSWORD);
         }
         memberRepository.update(exMember, member);
         return "redirect:/users";
