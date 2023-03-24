@@ -2,6 +2,7 @@ package kr.codesqaud.cafe.controller;
 
 import kr.codesqaud.cafe.basic.User;
 import kr.codesqaud.cafe.config.ConstConfig;
+import kr.codesqaud.cafe.exception.userException.*;
 import kr.codesqaud.cafe.repository.UserRepository;
 import kr.codesqaud.cafe.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,7 +50,7 @@ public class UserController {
     public String profile(@PathVariable String userId,
                           Model model) {
         Optional<User> optionalUser = userRepository.findUserById(userId);
-        if (optionalUser.isEmpty()) return "fail-something";
+        if (optionalUser.isEmpty()) throw new UserException("유저의 정보를 불러오는데 실패했습니다.");
 
 
         model.addAttribute("user", optionalUser.get());
@@ -61,7 +62,7 @@ public class UserController {
                              Model model
                              ) {
         User user = (User) session.getAttribute(ConstConfig.SESSION_ID);
-        if (user == null) return "fail-something";
+        if (user == null) throw new UserSessionExpireException();
 
         model.addAttribute("user", user);
         return "user/updateForm";
@@ -74,10 +75,10 @@ public class UserController {
                          @RequestParam String email,
                          HttpSession session) {
         User user = (User) session.getAttribute(ConstConfig.SESSION_ID);
-        if (user == null) return "fail-something";
-        if (!user.isSamePassword(curPassword)) return "fail-something";
+        if (user == null) throw new UserSessionExpireException();
+        if (!user.isSamePassword(curPassword)) throw new UserUpdateException("잘못된 비밀번호 입니다.");
 
-        if (!userService.update(user, password, name, email)) return "fail-something";
+        if (!userService.update(user, password, name, email)) throw new UserUpdateException("업데이트에 실패했습니다.");
         return "redirect:/user/list";
     }
 
@@ -86,7 +87,7 @@ public class UserController {
                         @RequestParam String password,
                         HttpSession session) {
         Optional<User> optionalUser = userService.login(userId, password);
-        if (optionalUser.isEmpty()) return "/user/login-failed";
+        if (optionalUser.isEmpty()) throw new UserLoginException();
 
         session.setAttribute(ConstConfig.SESSION_ID, optionalUser.get());
         session.setAttribute(ConstConfig.SESSION_LOGIN, true);
