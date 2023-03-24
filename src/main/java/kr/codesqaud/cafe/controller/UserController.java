@@ -96,7 +96,7 @@ public class UserController {
     }
 
     @PostMapping("/process_login")
-    public String loginUser(@ModelAttribute UserLoginDTO loginUser, BindingResult bindingResult,HttpSession session) {
+    public String loginUser(@ModelAttribute UserLoginDTO loginUser, BindingResult bindingResult, HttpSession session) {
         userLoginValidator.validate(loginUser, bindingResult);
         if (bindingResult.hasErrors()) {
             log.info("로그인 에러 검증");
