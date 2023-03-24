@@ -6,6 +6,7 @@ import kr.codesqaud.cafe.domain.User;
 import kr.codesqaud.cafe.validation.UserJoinValidator;
 import kr.codesqaud.cafe.validation.UserLoginValidator;
 import kr.codesqaud.cafe.validation.UserUpdateValidator;
+import org.apache.catalina.session.StandardSession;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +15,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.util.List;
 
@@ -96,13 +98,13 @@ public class UserController {
     }
 
     @PostMapping("/process_login")
-    public String loginUser(@ModelAttribute UserLoginDTO loginUser, BindingResult bindingResult, HttpSession session) {
+    public String loginUser(@ModelAttribute UserLoginDTO loginUser, BindingResult bindingResult, HttpServletRequest request) {
         userLoginValidator.validate(loginUser, bindingResult);
         if (bindingResult.hasErrors()) {
             log.info("에러 검증");
             return "users/login";
         }
-
+        HttpSession session = request.getSession();
         User user = memberRepository.findById(loginUser.getUserId());
 
         log.info("세션 에러");
