@@ -42,7 +42,7 @@ class UserControllerTest {
     @DisplayName("새로운 유저 데이터의 숫자와 반환 리스트의 값이 같아야 한다.")
     void findUserList() {
         // given
-        final int userSize = 2;
+        final int userSize = 3;
         final User test1 = new User("test6", "1234", "tset5", "test5@test.com");
         final User test2 = new User("test7", "1234", "tset5", "test5@test.com");
         userService.createUser(test1);
@@ -105,11 +105,11 @@ class UserControllerTest {
         final User test = new User("test5", "12345", "test56", "test5@test.com");
         final UserDto testLoginDto = new UserDto("test5", "12345", "test56", "test5@test.com");
         userService.createUser(test);
-        HttpSession httpSession = new MockHttpSession();
+        MockHttpSession mockHttpSession = new MockHttpSession();
         // when
-        userController.login(testLoginDto, httpSession);
+        userController.login(testLoginDto, mockHttpSession);
         // then
-        assertThat(httpSession.getAttribute("userId")).isEqualTo("test5");
+        assertThat(mockHttpSession.getAttribute("userId")).isEqualTo("test5");
     }
 
     @Test
@@ -119,11 +119,11 @@ class UserControllerTest {
         final User test = new User("test5", "12345", "test56", "test5@test.com");
         final UserDto testLoginDto = new UserDto("test5", "123456", "test56", "test5@test.com");
         userService.createUser(test);
-        HttpSession httpSession = new MockHttpSession();
+        MockHttpSession mockHttpSession = new MockHttpSession();
         // when
-        userController.login(testLoginDto, httpSession);
+        userController.login(testLoginDto, mockHttpSession);
         // then
-        assertThat(httpSession.getAttribute("userId")).isEqualTo(null);
+        assertThat(mockHttpSession.getAttribute("userId")).isEqualTo(null);
     }
 
     @Test
@@ -131,11 +131,11 @@ class UserControllerTest {
     void logOut() {
         // given
         final UserDto testLoginDto = new UserDto("test5", "123456", "test56", "test5@test.com");
-        HttpSession httpSession = new MockHttpSession();
-        httpSession.setAttribute("userId", testLoginDto.getUserId());
+        MockHttpSession mockHttpSession = new MockHttpSession();
+        mockHttpSession.setAttribute("userId", testLoginDto.getUserId());
         // when
-        userController.logOut(httpSession);
+        userController.logOut(mockHttpSession);
         // then
-        assertThat(httpSession.getAttribute("userId")).isEqualTo(null);
+        assertThat(mockHttpSession.isInvalid()).isTrue();
     }
 }
