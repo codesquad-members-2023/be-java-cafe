@@ -3,6 +3,8 @@ package kr.codesqaud.cafe.validation;
 import kr.codesqaud.cafe.domain.User;
 import kr.codesqaud.cafe.domain.UserLoginDTO;
 import kr.codesqaud.cafe.repository.member.MemberRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
@@ -17,6 +19,7 @@ public class UserLoginValidator implements Validator {
 
     private final MemberRepository memberRepository;
 
+    private Logger log = LoggerFactory.getLogger(getClass());
     @Autowired
     public UserLoginValidator(MemberRepository memberRepository) {
         this.memberRepository = memberRepository;
@@ -39,6 +42,7 @@ public class UserLoginValidator implements Validator {
             }else {
                 errors.rejectValue("password", "error.user.password");
             }
+            log.info("사용자 이름 빈칸 예외처리");
             return;
         }
         if (!StringUtils.hasText(loginUser.getPassword())) {

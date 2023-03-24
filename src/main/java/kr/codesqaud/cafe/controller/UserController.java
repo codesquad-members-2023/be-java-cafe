@@ -99,11 +99,13 @@ public class UserController {
     public String loginUser(@ModelAttribute UserLoginDTO loginUser, BindingResult bindingResult, HttpSession session) {
         userLoginValidator.validate(loginUser, bindingResult);
         if (bindingResult.hasErrors()) {
+            log.info("에러 검증");
             return "users/login";
         }
 
         User user = memberRepository.findById(loginUser.getUserId());
 
+        log.info("세션 에러");
         session.setAttribute("user", user);
         log.info("로그인 성공");
         return "redirect:/users/list";
