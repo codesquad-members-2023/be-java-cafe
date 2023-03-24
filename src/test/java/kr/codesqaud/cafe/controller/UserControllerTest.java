@@ -56,9 +56,12 @@ class UserControllerTest {
     @Test
     @DisplayName("유저 id로 유저의 정보를 찾고 Dto에 담아 반환해야 한다.")
     void findUserProfile() {
+        // given
         final User test = new User("test5", "1234", "tset5", "test5@test.com");
         userService.createUser(test);
+        // when
         UserDto userDto = userService.findUserByUserId("test5");
+        // then
         assertThat(userDto.getUserId()).isEqualTo(test.getUserId());
         assertThat(userDto.getPassword()).isEqualTo(test.getPassword());
         assertThat(userDto.getName()).isEqualTo(test.getName());
@@ -76,7 +79,6 @@ class UserControllerTest {
         userService.updateUser(testEdit);
         // then
         UserDto userDto = userService.findUserByUserId("test5");
-
         assertThat(userDto.getName()).isEqualTo("test56");
         assertThat(userDto.getEmail()).isEqualTo("test5@test.com");
     }
@@ -92,7 +94,6 @@ class UserControllerTest {
         userService.updateUser(testEdit);
         // then
         UserDto userDto = userService.findUserByUserId("test5");
-
         assertThat(userDto.getName()).isEqualTo("test567");
         assertThat(userDto.getEmail()).isEqualTo("test567@test.com");
     }
