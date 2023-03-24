@@ -25,7 +25,7 @@ public class LoginController {
     @PostMapping("/login")
     public String login(String userId, String password, HttpSession session) {
         User loginUser = repository.findByUserId(userId)
-                .filter(u -> u.getPassword().equals(password))
+                .filter(user -> user.getPassword().equals(password))
                 .orElse(null);
         if (loginUser == null) {
             log.debug("로그인 실패! ㅠㅠ");
