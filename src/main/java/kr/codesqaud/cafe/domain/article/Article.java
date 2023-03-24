@@ -1,10 +1,7 @@
 package kr.codesqaud.cafe.domain.article;
 
-import java.sql.Timestamp;
-import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.Date;
 
 public class Article {
 
@@ -17,11 +14,10 @@ public class Article {
 	public Article() {
 	}
 
-	public Article(String writer, String title, String contents, LocalDateTime writtenTime) {
+	public Article(String writer, String title, String contents) {
 		this.writer = writer;
 		this.title = title;
 		this.contents = contents;
-		this.writtenTime = writtenTime;
 	}
 
 	public Long getArticleSequence() {
@@ -61,7 +57,6 @@ public class Article {
 	}
 
 	public String getWrittenTime() {
-		String date = writtenTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
-		return date;
+		return writtenTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
 	}
 }
