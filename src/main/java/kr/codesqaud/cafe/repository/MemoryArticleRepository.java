@@ -1,11 +1,13 @@
 package kr.codesqaud.cafe.repository;
 
 import kr.codesqaud.cafe.domain.Article;
+import kr.codesqaud.cafe.domain.dto.ArticleWithWriter;
 import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Repository
 public class MemoryArticleRepository implements ArticleRepository {
@@ -19,19 +21,23 @@ public class MemoryArticleRepository implements ArticleRepository {
     }
 
     @Override
-    public Article findById(int id) {
+    public ArticleWithWriter findById(int id) {
         if (!articles.stream().anyMatch(article -> article.getId() == id)) {
             throw new IllegalArgumentException("[ERROR] 존재하지 않는 게시글입니다!");
         }
-
-        return articles.get(id - 1);
+        Article findArticle = articles.get(id - 1);
+        return new ArticleWithWriter(findArticle.getId(), findArticle.getTitle(), findArticle.getContents(), findArticle.getUserId(), "user_id");
     }
 
     @Override
-    public List<Article> findAll() {
+    public List<ArticleWithWriter> findAll() {
         ArrayList<Article> articles = new ArrayList<>(this.articles);
         Collections.reverse(articles);
-        return articles;
+
+        return articles
+                .stream()
+                .map(a -> new ArticleWithWriter(a.getId(), a.getTitle(), a.getContents(), a.getUserId(), "userId"))
+                .collect(Collectors.toList());
     }
 
     @Override

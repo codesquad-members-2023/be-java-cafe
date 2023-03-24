@@ -18,12 +18,10 @@ public class LoginInterceptor implements HandlerInterceptor {
         HttpSession session = request.getSession(false);
 
         if (session == null || session.getAttribute(SessionConstant.LOGIN_USER_ID) == null) {
-            log.info("로그인 안함");
             response.sendRedirect("/login");
             return false;
         }
 
-        log.info("로그인 함");
         return true;
     }
 }

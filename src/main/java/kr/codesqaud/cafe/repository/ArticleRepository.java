@@ -1,6 +1,7 @@
 package kr.codesqaud.cafe.repository;
 
 import kr.codesqaud.cafe.domain.Article;
+import kr.codesqaud.cafe.domain.dto.ArticleWithWriter;
 
 import java.util.List;
 
@@ -8,9 +9,9 @@ public interface ArticleRepository {
 
     void save(Article article);
 
-    Article findById(int id);
+    ArticleWithWriter findById(int id);
 
-    List<Article> findAll();
+    List<ArticleWithWriter> findAll();
 
     void delete(int id);
 

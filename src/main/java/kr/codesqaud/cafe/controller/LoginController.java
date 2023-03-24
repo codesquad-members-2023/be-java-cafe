@@ -36,6 +36,7 @@ public class LoginController {
         loginUser = loginService.login(userId, password);
 
         session.setAttribute(SessionConstant.LOGIN_USER_ID, loginUser.getId());
+        session.setAttribute(SessionConstant.LOGIN_USER_NICKNAME, loginUser.getUserId());
         return "redirect:/";
     }
 

@@ -2,6 +2,7 @@ package kr.codesqaud.cafe.repository;
 
 import kr.codesqaud.cafe.domain.Article;
 import kr.codesqaud.cafe.domain.User;
+import kr.codesqaud.cafe.domain.dto.ArticleWithWriter;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -32,7 +33,7 @@ class MemoryArticleRepositoryTest {
         articleRepository.save(article1);
         articleRepository.save(article2);
 
-        List<Article> articles = articleRepository.findAll();
+        List<ArticleWithWriter> articles = articleRepository.findAll();
 
         assertThat(articles.size()).isEqualTo(2);
     }
@@ -46,9 +47,10 @@ class MemoryArticleRepositoryTest {
         articleRepository.save(article1);
         articleRepository.save(article2);
 
-        Article find = articleRepository.findById(1);
+        ArticleWithWriter find = articleRepository.findById(1);
 
-        assertThat(find).isEqualTo(article1);
+        assertThat(find.getContents()).isEqualTo(article1.getContents());
+        assertThat(find.getTitle()).isEqualTo(article1.getTitle());
     }
 
     @Test
@@ -78,11 +80,11 @@ class MemoryArticleRepositoryTest {
 
         articleRepository.delete(1);
 
-        List<Article> articles = articleRepository.findAll();
+        List<ArticleWithWriter> articles = articleRepository.findAll();
 
         assertThat(articles.size()).isEqualTo(1);
 
-        Article restArticle = articles.get(0);
+        ArticleWithWriter restArticle = articles.get(0);
         assertThat(restArticle.getContents()).isEqualTo("미안하다. 이거보여줄려고 또 어그로끌었다.");
         assertThat(restArticle.getTitle()).isEqualTo("진짜 실화냐?");
     }
@@ -131,7 +133,7 @@ class MemoryArticleRepositoryTest {
         Article updateArticle = new Article(2, "진짜 실화 아니었음", "미안");
         articleRepository.update(2, updateArticle);
 
-        Article article = articleRepository.findById(2);
+        ArticleWithWriter article = articleRepository.findById(2);
 
         assertThat(article.getTitle()).isEqualTo(updateArticle.getTitle());
         assertThat(article.getContents()).isEqualTo(updateArticle.getContents());
