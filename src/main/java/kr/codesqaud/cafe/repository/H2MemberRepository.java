@@ -11,11 +11,11 @@ import java.sql.SQLException;
 import java.util.*;
 
 @Repository
-public class JdbcMemberRepository implements MemberRepository {
+public class H2MemberRepository implements MemberRepository {
 
     private final JdbcTemplate jdbcTemplate;
 
-    public JdbcMemberRepository(DataSource dataSource) {
+    public H2MemberRepository(DataSource dataSource) {
         jdbcTemplate = new JdbcTemplate(dataSource);
     }
 
