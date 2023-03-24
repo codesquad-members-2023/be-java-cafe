@@ -25,7 +25,7 @@ public class UserController {
 
     @GetMapping("/form")
     public String findUserFormPage() {
-        return "/users/form";
+        return "users/form";
     }
 
     @PostMapping

@@ -8,6 +8,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Primary
@@ -31,14 +32,14 @@ public class DBUserRepository implements UserRepository {
 
     @Override
     public List<User> findAllUsers() {
-        String sql = "select * from member";
+        String sql = "select id, userId, password, name, email, createdAt from member";
 
         return jdbcTemplate.query(sql, new BeanPropertyRowMapper<>(User.class));
     }
 
     @Override
     public User findUserById(long id) {
-        String sql = "select * from member where id = ?";
+        String sql = "select id, userId, password, name, email, createdAt from member where id = ?";
 
         return jdbcTemplate.queryForObject(sql, new BeanPropertyRowMapper<>(User.class), id);
     }
