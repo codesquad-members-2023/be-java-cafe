@@ -1,6 +1,7 @@
 package kr.codesqaud.cafe.repository;
 
 import kr.codesqaud.cafe.domain.Article;
+import kr.codesqaud.cafe.domain.User;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
@@ -11,8 +12,9 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public class JdbcTemplateArticleRepository implements ArticleRepository{
+public class JdbcTemplateArticleRepository implements ArticleRepository {
     private final JdbcTemplate jdbcTemplate;
+
     public JdbcTemplateArticleRepository(DataSource dataSource) {
         jdbcTemplate = new JdbcTemplate(dataSource);
     }
@@ -23,10 +25,20 @@ public class JdbcTemplateArticleRepository implements ArticleRepository{
         if (findById(article.getId()).isEmpty()) {
             // jdbcTemplate으로 변경 / PK값을 가져오는 방법이 이것뿐인가?;;;;
             jdbcTemplate.update("INSERT INTO CAFE_ARTICLE(WRITER, TITLE, CONTENTS, TIME) VALUES (?, ?, ?, ?)"
-                    ,article.getWriter(), article.getTitle(), article.getContents(), LocalDateTime.now());
+                    , article.getWriter(), article.getTitle(), article.getContents(), LocalDateTime.now());
             // 방법을 몰라서 마지막 pk값을 가져옴 ㅠ
             List<Article> lastValue = jdbcTemplate.query("SELECT MAX(ID) FROM CAFE_ARTICLE", articlePKMapper());
             article.setId(lastValue.get(0).getId());
+            return true;
+        }
+        return false;
+    }
+
+    public boolean updateArticle(Article article) {
+        // 해당 번호 존재여부 체크
+        if (findById(article.getId()).isPresent()) {
+            jdbcTemplate.update("update CAFE_ARTICLE set title=?, contents=?, time=? where ID=?",
+                    article.getTitle(), article.getContents(), LocalDateTime.now(), article.getId());
             return true;
         }
         return false;

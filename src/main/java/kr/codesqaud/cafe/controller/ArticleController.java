@@ -8,12 +8,11 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.Optional;
 
 @Controller
@@ -53,5 +52,32 @@ public class ArticleController {
         }
         log.debug("질문글 Mapping: 맵핑 실패 ㅠㅠㅠ");
         return "qna/show_failed";
+    }
+
+    // 질문 수정하기 Mapping
+    @GetMapping("/articles/{id}/update")
+    public String editing(HttpSession session, @PathVariable long id) {
+
+        User sessionUser = (User) session.getAttribute("loginUser");
+        Article checkId = repository.findById(id)
+                .filter(article -> article.getWriter().equals(sessionUser.getUserId()))
+                .orElse(null);
+        if (checkId == null || !checkId.getWriter().equals(sessionUser.getUserId())) {
+            log.info("본인글이 아닙니다!!! 떽!!!!");
+            return "error";
+        }
+
+        log.info("본인글이니 어서 수정하시죠 도죠도죠");
+        return "qna/updateForm";
+    }
+
+    // 게시글 수정 PUT
+    @PutMapping("/articles/{id}/update")
+    public String updateArticle(@ModelAttribute Article article , @PathVariable long id) {
+        article.setId(id);
+        repository.updateArticle(article);
+
+        log.info("게시글 수정 완료");
+        return "redirect:/";
     }
 }

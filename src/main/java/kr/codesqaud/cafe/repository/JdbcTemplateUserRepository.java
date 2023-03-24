@@ -33,7 +33,7 @@ public class JdbcTemplateUserRepository implements UserRepository {
 
     public boolean update(User user) {
         // 해당 번호 존재여부 체크
-        if (!findById(user.getId()).isEmpty()) {
+        if (findById(user.getId()).isPresent()) {
             jdbcTemplate.update("update cafe_user set USERID=?, PASSWORD=?, NAME=?, EMAIL=? where ID=?",
                     user.getUserId(), user.getPassword(), user.getName(), user.getEmail(), user.getId());
             return true;

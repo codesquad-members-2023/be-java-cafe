@@ -73,7 +73,7 @@ public class UserController {
 
         User sessionUser = (User) session.getAttribute("loginUser");
         if (sessionUser == null || !sessionUser.getUserId().equals(userId)) {
-            return "user/error";
+            return "error";
         }
 
         if (user.isPresent()) {
@@ -88,7 +88,6 @@ public class UserController {
     public String updateUser(@ModelAttribute User user, @PathVariable String userId, String password) {
         log.debug("사용자 정보 수정: put 전달 완료");
 
-        Optional<User> temp = repository.findByUserId(userId);
         User passwordCheckUser = repository.findByUserId(userId)
                 .filter(u -> u.getPassword().equals(password))
                 .orElse(null);
@@ -99,7 +98,7 @@ public class UserController {
         }
         // 체크 성공
         log.debug("사용자 정보 수정: 정보 수정 & 저장 성공");
-        user.setId(temp.get().getId());
+        user.setId(passwordCheckUser.getId());
         repository.update(user);
         return "redirect:/users";
     }
