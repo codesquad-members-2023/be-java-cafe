@@ -3,9 +3,9 @@ DROP TABLE IF EXISTS article;
 
 create table member (
     id  long auto_increment primary key,
-    userId   varchar(255) not null,
+    userId   varchar(255) not null unique,
     nickName varchar(255) not null,
-    email   varchar(500) not null,
+    email   varchar(500) not null unique,
     password    varchar(255) not null,
     created_at  timestamp default current_timestamp(),
     updated_at  timestamp default current_timestamp()
