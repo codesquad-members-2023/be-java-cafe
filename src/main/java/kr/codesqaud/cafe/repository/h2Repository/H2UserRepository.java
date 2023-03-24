@@ -54,8 +54,8 @@ public class H2UserRepository implements UserRepository {
 
     @Override
     public int update(User user) {
-        String sql = "update users set name=?, email=? where userId=? AND password=?";
+        String sql = "update users set password=? , name=?, email=? where userId=?";
 
-        return jdbcTemplate.update(sql, user.getName(), user.getEmail(), user.getUserId(), user.getPassword());
+        return jdbcTemplate.update(sql, user.getPassword(), user.getName(), user.getEmail(), user.getUserId());
     }
 }

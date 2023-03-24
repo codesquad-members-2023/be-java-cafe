@@ -71,7 +71,7 @@ public class Article {
         return timeStamp;
     }
 
-    public String getTime() {
+    public String getFormattedTime() {
         return timeStamp.toLocalDateTime().format(DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss"));
     }
 
