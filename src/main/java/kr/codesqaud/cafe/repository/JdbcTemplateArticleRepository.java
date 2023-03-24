@@ -35,10 +35,19 @@ public class JdbcTemplateArticleRepository implements ArticleRepository {
     }
 
     public boolean updateArticle(Article article) {
-        // 해당 번호 존재여부 체크
+        // 해당 번호 게시글 존재여부 체크
         if (findById(article.getId()).isPresent()) {
             jdbcTemplate.update("update CAFE_ARTICLE set title=?, contents=?, time=? where ID=?",
                     article.getTitle(), article.getContents(), LocalDateTime.now(), article.getId());
+            return true;
+        }
+        return false;
+    }
+
+    public boolean deleteArticle(long id) {
+        // 해당 번호 게시글 존재여부 체크
+        if(findById(id).isPresent()) {
+            jdbcTemplate.update("DELETE CAFE_ARTICLE where ID=?", id);
             return true;
         }
         return false;

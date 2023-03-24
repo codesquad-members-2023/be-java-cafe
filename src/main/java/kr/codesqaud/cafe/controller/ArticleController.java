@@ -73,11 +73,27 @@ public class ArticleController {
 
     // 게시글 수정 PUT
     @PutMapping("/articles/{id}/update")
-    public String updateArticle(@ModelAttribute Article article , @PathVariable long id) {
+    public String updateArticle(@ModelAttribute Article article, @PathVariable long id) {
+        System.out.println(article.getId());
         article.setId(id);
-        repository.updateArticle(article);
+        if(!repository.updateArticle(article)){
+            log.info("게시글 수정 실패ㅠ(해당하는 인덱스 없음)");
+            return "redirect:/"; // TODO 전용 에러 페이지 만들기(게시글 수정)
+        }
 
-        log.info("게시글 수정 완료");
+        log.info("게시글 수정 성공");
+        return "redirect:/";
+    }
+
+    // 게시글 삭제 DELETE
+    @DeleteMapping("/articles/{id}/delete")
+    public String deleteArticle(@PathVariable long id) {
+        if (!repository.deleteArticle(id)) {
+            log.info("삭제 실패(이미 지워짐)");
+            return "redirect:/"; // TODO 전용 에러 페이지 만들기(게시글 삭제)
+        }
+
+        log.info("삭제 성공");
         return "redirect:/";
     }
 }
