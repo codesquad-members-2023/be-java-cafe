@@ -18,5 +18,6 @@ public class TestUserConstant {
     public final String EMAIL_LENGTH_ERROR = "error.user.emailLength";
     public final String WRONG_USERID = "error.user.userId";
     public final String WRONG_PASSWORD = "error.user.password";
+    public final String PASSWORD_FORMAT_ERROR ="error.user.passwordFormat";
 
 }

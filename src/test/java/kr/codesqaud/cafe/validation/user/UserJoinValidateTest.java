@@ -130,4 +130,16 @@ class UserJoinValidateTest {
 
         assertThat(fieldError.getCode()).isEqualTo(testUserConstant.EMAIL_LENGTH_ERROR);
     }
+
+    @Test
+    @DisplayName("회원가입 비밀번호 특수문자 포함 확인")
+    void specialChar() {
+        User user = new User("userId", "password", "name", "email@email");
+        Errors errors = new BeanPropertyBindingResult(user, "user");
+        validator.validate(user, errors);
+
+        FieldError fieldError = errors.getFieldError();
+
+        assertThat(fieldError.getCode()).isEqualTo(testUserConstant.PASSWORD_FORMAT_ERROR);
+    }
 }

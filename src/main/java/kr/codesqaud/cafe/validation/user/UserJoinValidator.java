@@ -53,6 +53,9 @@ public class UserJoinValidator implements Validator {
         if (user.getEmail().length() >= 60) {
             errors.rejectValue("email", "error.user.emailLength");
         }
+        if (!user.getPassword().matches(".*[!@#$%^&*].*")) {
+            errors.rejectValue("password", "error.user.passwordFormat");
+        }
 
 
         List<User> userList = memberRepository.findAll();
