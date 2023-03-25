@@ -52,11 +52,11 @@ public class UserDao {
         );
     }
 
-    public Optional<UserDto> findUserByUserPassword(String password) {
-        String sql = "SELECT * FROM CAFEUSER WHERE PASSWORD = ?";
+    public Optional<UserDto> findUserByUserPassword(String userId, String password) {
+        String sql = "SELECT * FROM CAFEUSER WHERE USER_ID = ? AND PASSWORD = ?";
         try {
             return Optional.ofNullable(
-                    jdbcTemplate.queryForObject(sql, new BeanPropertyRowMapper<>(UserDto.class), password));
+                    jdbcTemplate.queryForObject(sql, new BeanPropertyRowMapper<>(UserDto.class), userId, password));
         } catch (EmptyResultDataAccessException e) {
             return Optional.empty();
         }
