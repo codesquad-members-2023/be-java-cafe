@@ -12,5 +12,6 @@ CREATE TABLE ARTICLE (
                          USER_ID VARCHAR NOT NULL,
                          TITLE VARCHAR NOT NULL,
                          CONTENTS VARCHAR NOT NULL,
-                         TIME VARCHAR NOT NULL
+                         TIME VARCHAR NOT NULL,
+                         FOREIGN KEY (USER_ID) REFERENCES CAFEUSER (USER_ID)
 );
