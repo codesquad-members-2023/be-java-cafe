@@ -1,4 +1,4 @@
-package kr.codesqaud.cafe.validation;
+package kr.codesqaud.cafe.validation.user;
 
 import kr.codesqaud.cafe.domain.User;
 import kr.codesqaud.cafe.repository.member.MemberRepository;

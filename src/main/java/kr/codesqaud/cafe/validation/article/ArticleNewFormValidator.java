@@ -1,4 +1,4 @@
-package kr.codesqaud.cafe.validation;
+package kr.codesqaud.cafe.validation.article;
 
 import kr.codesqaud.cafe.domain.Article;
 import kr.codesqaud.cafe.dto.article.ArticleFormDTO;
@@ -8,7 +8,7 @@ import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
 
 @Component
-public class ArticleValidator implements Validator {
+public class ArticleNewFormValidator implements Validator {
     @Override
     public boolean supports(Class<?> clazz) {
         return Article.class.isAssignableFrom(clazz);

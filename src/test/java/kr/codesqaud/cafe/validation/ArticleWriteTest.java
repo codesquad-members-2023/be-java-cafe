@@ -1,6 +1,7 @@
 package kr.codesqaud.cafe.validation;
 
 import kr.codesqaud.cafe.dto.article.ArticleFormDTO;
+import kr.codesqaud.cafe.validation.article.ArticleNewFormValidator;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,12 +15,12 @@ import static org.assertj.core.api.Assertions.*;
 @SpringBootTest
 class ArticleWriteTest {
 
-    private final ArticleValidator articleValidator;
+    private final ArticleNewFormValidator articleValidator;
     private final String TITLE_ERROR_CODE = "required.article.title";
     private final String CONTENT_ERROR_CODE = "required.article.contents";
 
     @Autowired
-    public ArticleWriteTest(ArticleValidator articleValidator) {
+    public ArticleWriteTest(ArticleNewFormValidator articleValidator) {
         this.articleValidator = articleValidator;
     }
 

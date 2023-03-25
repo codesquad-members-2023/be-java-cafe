@@ -5,7 +5,7 @@ import kr.codesqaud.cafe.domain.User;
 import kr.codesqaud.cafe.dto.article.ArticleFormDTO;
 import kr.codesqaud.cafe.dto.article.ArticleUpdateDTO;
 import kr.codesqaud.cafe.repository.article.ArticleRepository;
-import kr.codesqaud.cafe.validation.ArticleValidator;
+import kr.codesqaud.cafe.validation.article.ArticleNewFormValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -19,10 +19,10 @@ import java.util.List;
 public class ArticleController {
 
     private final ArticleRepository articleRepository;
-    private final ArticleValidator articleValidator;
+    private final ArticleNewFormValidator articleValidator;
 
     @Autowired
-    public ArticleController(ArticleRepository articleRepository, ArticleValidator articleValidator) {
+    public ArticleController(ArticleRepository articleRepository, ArticleNewFormValidator articleValidator) {
         this.articleRepository = articleRepository;
         this.articleValidator = articleValidator;
     }
