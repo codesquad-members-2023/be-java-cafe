@@ -1,7 +1,6 @@
 package kr.codesqaud.cafe.validation.article;
 
 import kr.codesqaud.cafe.dto.article.ArticleFormDTO;
-import kr.codesqaud.cafe.validation.article.ArticleNewFormValidator;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,8 +15,7 @@ import static org.assertj.core.api.Assertions.*;
 class ArticleWriteTest {
 
     private final ArticleNewFormValidator articleValidator;
-    private final String TITLE_ERROR_CODE = "required.article.title";
-    private final String CONTENT_ERROR_CODE = "required.article.contents";
+    private TestArticleConstant testArticleConstant = new TestArticleConstant();
 
     @Autowired
     public ArticleWriteTest(ArticleNewFormValidator articleValidator) {
@@ -33,7 +31,7 @@ class ArticleWriteTest {
 
         FieldError fieldError = errors.getFieldError();
 
-        assertThat(fieldError.getCode()).isEqualTo(TITLE_ERROR_CODE);
+        assertThat(fieldError.getCode()).isEqualTo(testArticleConstant.TITLE_ERROR_CODE);
     }
 
     @Test
@@ -45,7 +43,7 @@ class ArticleWriteTest {
 
         FieldError fieldError = errors.getFieldError();
 
-        assertThat(fieldError.getCode()).isEqualTo(CONTENT_ERROR_CODE);
+        assertThat(fieldError.getCode()).isEqualTo(testArticleConstant.CONTENT_ERROR_CODE);
     }
 
     @Test
@@ -55,6 +53,28 @@ class ArticleWriteTest {
         Errors errors = new BeanPropertyBindingResult(article, "article");
         articleValidator.validate(article, errors);
         assertThat(errors.hasErrors()).isFalse();
+    }
+
+    @Test
+    @DisplayName("업데이트 제목 길이 제한")
+    void limitUpdateTitleLength() {
+        ArticleFormDTO article = new ArticleFormDTO("first", testArticleConstant.TITLE_LENGTH_OVER, "contents");
+        Errors errors = new BeanPropertyBindingResult(article, "article");
+        articleValidator.validate(article, errors);
+        FieldError fieldError = errors.getFieldError();
+
+        assertThat(fieldError.getCode()).isEqualTo(testArticleConstant.TITLE_LENGTH_ERROR);
+    }
+
+    @Test
+    @DisplayName("업데이트 본문 길이 제한")
+    void limitUpdateContentsLength() {
+        ArticleFormDTO article = new ArticleFormDTO("first", "title", testArticleConstant.CONTENTS_LENGTH_OVER);
+        Errors errors = new BeanPropertyBindingResult(article, "article");
+        articleValidator.validate(article, errors);
+        FieldError fieldError = errors.getFieldError();
+
+        assertThat(fieldError.getCode()).isEqualTo(testArticleConstant.CONTENTS_LENGTH_ERROR);
     }
 
 }
