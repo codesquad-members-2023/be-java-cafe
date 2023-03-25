@@ -27,6 +27,14 @@ public class Article {
         this.writer = writer;
     }
 
+    public Long getWriterId() {
+        return writer.getId();
+    }
+
+    public String getWriterNickName() {
+        return writer.getNickname();
+    }
+
     public String getTitle() {
         return title;
     }
