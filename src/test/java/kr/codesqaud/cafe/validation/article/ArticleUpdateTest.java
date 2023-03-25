@@ -1,7 +1,8 @@
-package kr.codesqaud.cafe.validation;
+package kr.codesqaud.cafe.validation.article;
 
-import kr.codesqaud.cafe.dto.article.ArticleFormDTO;
+import kr.codesqaud.cafe.dto.article.ArticleUpdateDTO;
 import kr.codesqaud.cafe.validation.article.ArticleNewFormValidator;
+import kr.codesqaud.cafe.validation.article.ArticleUpdateValidator;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,24 +11,25 @@ import org.springframework.validation.BeanPropertyBindingResult;
 import org.springframework.validation.Errors;
 import org.springframework.validation.FieldError;
 
-import static org.assertj.core.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest
-class ArticleWriteTest {
+class ArticleUpdateTest {
 
-    private final ArticleNewFormValidator articleValidator;
+
+    private final ArticleUpdateValidator articleValidator;
     private final String TITLE_ERROR_CODE = "required.article.title";
     private final String CONTENT_ERROR_CODE = "required.article.contents";
 
     @Autowired
-    public ArticleWriteTest(ArticleNewFormValidator articleValidator) {
+    public ArticleUpdateTest(ArticleUpdateValidator articleValidator) {
         this.articleValidator = articleValidator;
     }
 
     @Test
-    @DisplayName("새로운 글 작성 시, 제목이 비어있으면 에러 발생")
+    @DisplayName("업데이트 시, 제목이 비어있으면 에러 발생")
     void checkNoTitle() {
-        ArticleFormDTO article = new ArticleFormDTO("", "", "content");
+        ArticleUpdateDTO article = new ArticleUpdateDTO("", "content");
         Errors errors = new BeanPropertyBindingResult(article, "article");
         articleValidator.validate(article, errors);
 
@@ -37,9 +39,9 @@ class ArticleWriteTest {
     }
 
     @Test
-    @DisplayName("새로운 글 작성 시, 내용이 비어있으면 에러 발생")
+    @DisplayName("업데이트 시, 내용이 비어있으면 에러 발생")
     void checkNoContents() {
-        ArticleFormDTO article = new ArticleFormDTO("", "title", "");
+        ArticleUpdateDTO article = new ArticleUpdateDTO("title", "");
         Errors errors = new BeanPropertyBindingResult(article, "article");
         articleValidator.validate(article, errors);
 
@@ -49,12 +51,11 @@ class ArticleWriteTest {
     }
 
     @Test
-    @DisplayName("형식에 맞는 글 작성 시 에러 없이 정상 등록")
+    @DisplayName("형식에 맞는 업데이트 작성 시 에러 없이 정상 등록")
     void writeArticle() {
-        ArticleFormDTO article = new ArticleFormDTO("first", "title", "contents");
+        ArticleUpdateDTO article = new ArticleUpdateDTO("title", "contents");
         Errors errors = new BeanPropertyBindingResult(article, "article");
         articleValidator.validate(article, errors);
         assertThat(errors.hasErrors()).isFalse();
     }
-
 }
