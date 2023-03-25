@@ -16,7 +16,7 @@
     <nav class="navbar navbar-fixed-top header">
         <div class="col-md-12">
             <div class="navbar-header">
-                <a href="/index" class="navbar-brand">
+                <a href="/" class="navbar-brand">
                     <img src="/images/KakaoCI.png" />
                 </a>
 
@@ -36,7 +36,7 @@
         </div>
     </div>
 
-    <p class="total_num">전체 글 {{total}}명</p>
+    <p class="total_num">전체 글 {{total}} </p>
 
     <div class="container" id="main">
         <div class="col-md-10 col-md-offset-1">
@@ -50,7 +50,7 @@
                     <tbody>
                     {{#article}}
                     <tr>
-                        <td><a href="qna/{{articleId}}">{{title}}</a></td> <td>{{writer}}</td> <td>{{registrationDate}}</td> <td>0</td>
+                        <td><a href="qna/{{articleId}}">{{title}}</a></td> <td>{{writer}}</td> <td>{{formattedRegistrationDate}}</td> <td>0</td>
                     </tr>
                     {{/article}}
                     </tbody>
