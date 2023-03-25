@@ -37,11 +37,8 @@ public class UserUpdateValidator implements Validator {
         if (!StringUtils.hasText(user.getEmail())) {
             errors.rejectValue("email", "required.user.email");
         }
-
-
         if (!berforeUser.getPassword().equals(user.getPassword())) {
             errors.rejectValue("password", "error.user.password");
         }
-
     }
 }

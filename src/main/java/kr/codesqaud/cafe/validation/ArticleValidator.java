@@ -22,6 +22,5 @@ public class ArticleValidator implements Validator {
         if (!StringUtils.hasText(article.getContents())) {
             errors.rejectValue("contents", "required.article.contents");
         }
-
     }
 }

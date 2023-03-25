@@ -48,6 +48,5 @@ public class UserJoinValidator implements Validator {
                 .ifPresent(u -> {
                     errors.rejectValue("userId", "error.user.duplicatedId");
                 });
-
     }
 }

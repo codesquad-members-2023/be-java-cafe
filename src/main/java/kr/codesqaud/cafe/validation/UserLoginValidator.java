@@ -25,7 +25,6 @@ public class UserLoginValidator implements Validator {
         this.memberRepository = memberRepository;
     }
 
-
     @Override
     public boolean supports(Class<?> clazz) {
         return UserLoginDTO.class.isAssignableFrom(clazz);
@@ -62,6 +61,5 @@ public class UserLoginValidator implements Validator {
         } else {
             errors.rejectValue("userId", "error.user.userId");
         }
-
     }
 }
