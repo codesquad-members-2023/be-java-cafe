@@ -1,7 +1,5 @@
 package kr.codesqaud.cafe.dto;
 
-import kr.codesqaud.cafe.exception.ManageMemberException;
-
 public class SessionUser {
     public static final String SESSION_USER = "SessionedUser";
     private long id;
@@ -28,12 +26,8 @@ public class SessionUser {
         this.nickName = nickName;
     }
 
-    public boolean isValidId(long id) {
+    public boolean equals(long id) {
         return this.id == id;
-    }
-
-    public boolean equals(long compare) throws NullPointerException {
-        return this.id == compare;
     }
 
     @Override
