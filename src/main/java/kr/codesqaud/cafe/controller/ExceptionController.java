@@ -14,6 +14,6 @@ public class ExceptionController {
     public String controlException(Exception ex, Model model) {
         model.addAttribute("ex", ex.getMessage());
 
-        return "error/error-page";
+        return "error/error";
     }
 }
