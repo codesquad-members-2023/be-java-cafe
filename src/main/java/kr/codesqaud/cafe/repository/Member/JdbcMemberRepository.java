@@ -24,20 +24,15 @@ public class JdbcMemberRepository implements MemberRepository {
 
     // insert를 제외한 모든 쿼리문 실행
     private final NamedParameterJdbcTemplate template;
-    // 간단한 insert문 만들기
-    private final SimpleJdbcInsert jdbcInsert;
-
     public JdbcMemberRepository(NamedParameterJdbcTemplate template) {
         this.template = template;
-        this.jdbcInsert = new SimpleJdbcInsert(template.getJdbcTemplate())
-                .withTableName("Member");
     }
 
 
     @Override
     public String save(Member member) {
         SqlParameterSource param = new BeanPropertySqlParameterSource(member);
-        template.update("insert into Member (userId,password,userName,email) values (:userId, :password, :userName, :email)",param);
+        template.update("insert into Member (userId,password,userName,email) values (:userId, :password, :userName, :email)", param);
         return member.getUserId();
     }
 
@@ -60,26 +55,27 @@ public class JdbcMemberRepository implements MemberRepository {
             return Optional.of(template.queryForObject(sql, param, rowMapperMember()));
         } catch (EmptyResultDataAccessException e) {
             return Optional.empty();
-        }    }
+        }
+    }
 
     @Override
     public List<Member> findAll() {
         String sql = "select userId, password, userName, email from Member";
-        return template.query(sql,rowMapperMember());
+        return template.query(sql, rowMapperMember());
     }
 
     @Override
     public void update(Member member) {
         String sql = "update member set password = :password, userName = :userName, email = :email where userId =:userId";
         SqlParameterSource param = new BeanPropertySqlParameterSource(member); // 객체를 찾아야하니까 bean
-        template.update(sql,param); // template.update -> int 반환
+        template.update(sql, param); // template.update -> int 반환
     }
 
     @Override
     public void delete(String userId) {
         String sql = "delete from member where userId = :userId";
-        SqlParameterSource param = new MapSqlParameterSource("userId",userId);
-        template.update(sql,param);
+        SqlParameterSource param = new MapSqlParameterSource("userId", userId);
+        template.update(sql, param);
     }
 
     private RowMapper<Member> rowMapperMember() {

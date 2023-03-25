@@ -51,5 +51,19 @@ public class ArticleController {
         }
     }
 
+    @GetMapping("/articles/{id}/form")
+    public String updatePost(@PathVariable("id") Long id, Model model, HttpSession session) {
+        Object value = session.getAttribute("sessionedUser");
+        Article writer = jdbcArticleRepository.findById(id).orElseThrow(null);
+        vaildateAuthorization(session, writer);
+        model.addAttribute("modified", writer);
+        return "qna/modifiedForm";
+    }
+
+    @PutMapping("/articles/{id}")
+    public String updatePost(@ModelAttribute("article") Article article) {
+        jdbcArticleRepository.update(article);
+        return "redirect:/";
+    }
 }
 
