@@ -8,7 +8,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-public class CafeInterceptor implements HandlerInterceptor {
+public class LoginIntercepter implements HandlerInterceptor {
 
     private Logger log = LoggerFactory.getLogger(getClass());
 
