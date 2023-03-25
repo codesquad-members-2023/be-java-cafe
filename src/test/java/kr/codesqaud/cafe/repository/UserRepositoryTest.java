@@ -9,13 +9,13 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.autoconfigure.jdbc.JdbcTest;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 
 import kr.codesqaud.cafe.model.User;
 
-@SpringBootTest
+@JdbcTest
 class UserRepositoryTest {
     private DataSource dataSource;
     private UserRepository userRepository;
@@ -26,6 +26,16 @@ class UserRepositoryTest {
         dataSource = new DriverManagerDataSource("jdbc:h2:mem:test", "sa", "");
         userRepository = new JdbcUserRepository(dataSource);
         jdbcTemplate = new JdbcTemplate(dataSource);
+
+        jdbcTemplate.execute("CREATE TABLE USERS\n"
+                + "(\n"
+                + "id VARCHAR(255),\n"
+                + "password VARCHAR(255),\n"
+                + "name VARCHAR(255),\n"
+                + "email VARCHAR(255),\n"
+                + "idx INT AUTO_INCREMENT,\n"
+                + "PRIMARY KEY (idx)\n"
+                + ")");
 
         User user1 = new User("conux", "asd", "J", "ho@naver.com");
         User user2 = new User("tonux", "asd", "Js", "ho2@naver.com");
