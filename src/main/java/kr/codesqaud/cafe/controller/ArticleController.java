@@ -1,6 +1,7 @@
 package kr.codesqaud.cafe.controller;
 
 import kr.codesqaud.cafe.model.Article;
+import kr.codesqaud.cafe.repository.ArticleDto;
 import kr.codesqaud.cafe.service.ArticleService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,7 +22,8 @@ public class ArticleController {
     }
 
     @GetMapping("/openForm")
-    public String openForm() {
+    public String openForm(Model model) {
+        model.addAttribute(new ArticleDto());
         return "qna/form";
     }
 
@@ -41,5 +43,11 @@ public class ArticleController {
     public String findArticleById(@PathVariable("articleId") int articleId, Model model) {
         model.addAttribute(articleService.findArticleContentById(articleId));
         return "user/show";
+    }
+
+    @GetMapping("/article/{articleId}/edit")
+    public String updateArticle(@PathVariable("articleId") int articleId, Model model) {
+        model.addAttribute(articleService.findArticleContentById(articleId));
+        return "qna/form";
     }
 }

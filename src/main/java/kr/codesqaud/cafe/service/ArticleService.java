@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class ArticleService {
     private final ArticleDao articleDao;
-    private static int articleId = 0;
+    private static int articleId = 2;
 
     public ArticleService(ArticleDao articleDao) {
         this.articleDao = articleDao;
