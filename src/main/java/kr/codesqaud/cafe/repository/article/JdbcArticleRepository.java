@@ -1,6 +1,7 @@
 package kr.codesqaud.cafe.repository.article;
 
 import kr.codesqaud.cafe.domain.Article;
+import kr.codesqaud.cafe.domain.Member;
 import kr.codesqaud.cafe.repository.article.ArticleRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -35,7 +36,7 @@ public class JdbcArticleRepository implements ArticleRepository {
     @Override
     public Long save(Article article) {
         SqlParameterSource param = new BeanPropertySqlParameterSource(article);
-        template.update("insert into Article (writer, title, contents) values (:writer, :title, :contents)", param);
+        template.update("insert into Article (author_id, title, contents) values (:authorId, :title, :contents)", param);
         return article.getId();
     }
 
@@ -43,7 +44,7 @@ public class JdbcArticleRepository implements ArticleRepository {
     @Override
     public Optional<Article> findById(Long id) {
         try{
-            String sql = "select id, title, contents, writer, write_date from article where id = :id";
+            String sql = "select id, title, contents, author_id, write_date from article where id = :id";
             SqlParameterSource param = new MapSqlParameterSource("id", id);
             return Optional.of(template.queryForObject(sql, param, rowMapperArticle()));
         } catch (EmptyResultDataAccessException e) {
@@ -54,7 +55,7 @@ public class JdbcArticleRepository implements ArticleRepository {
 
     @Override
     public List<Article> findAll() {
-        String sql = "select id, writer, title, contents, write_date from article";
+        String sql = "select id, author_id, title, contents, write_date from article order by id desc";
         return template.query(sql, rowMapperArticle());
     }
 
@@ -70,14 +71,13 @@ public class JdbcArticleRepository implements ArticleRepository {
         String sql = "delete from article where id = :id";
         SqlParameterSource param = new MapSqlParameterSource("id", id); // 하나만 찾으면되니까 map(객체 단위로 쓸 수 없으니까)
         template.update(sql,param);
-
     }
 
     // db값은 ResultSet에서 가져와야하는게 그걸 객체로 만들어줌
     private RowMapper<Article> rowMapperArticle() {
         return (rs, rowNum) ->
-                new Article(rs.getLong("id"), rs.getString("title"), rs.getString("contents"),
-                        rs.getString("writer"), rs.getTimestamp("write_date").toLocalDateTime());
+                new Article(rs.getLong("id"),rs.getString("author_id"), rs.getString("title"),
+                        rs.getString("contents"), rs.getTimestamp("write_date").toLocalDateTime());
     }
 
 }

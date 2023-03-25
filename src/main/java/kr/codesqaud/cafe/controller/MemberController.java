@@ -51,7 +51,7 @@ public class MemberController {
     }
 
     @GetMapping("/users/{userId}/form")
-    public String updateUser(@PathVariable("userId") String userId, Model model,HttpSession session) {
+    public String updateUser(@PathVariable("userId") String userId, Model model, HttpSession session) {
         logger.debug("updateUser : GET");
         Object value = session.getAttribute("sessionedUser");
         if (value != null) {
@@ -72,27 +72,8 @@ public class MemberController {
         return "redirect:/users";
     }
 
-    @GetMapping("/login")
-    public String login() throws Exception{
-        return "user/login";
-    }
-
-    @PostMapping("/login")
-    public String login(@ModelAttribute("user")Member member, HttpSession session,Model model){
-        logger.debug("login {} ", member);
-        Member existUser = jdbcMemberRepository.findById(member.getUserId()).orElse(null);
-
-        if(existUser!=null && member.getPassword().equals(existUser.getPassword())){
-            session.setAttribute("sessionedUser",existUser);
-            return "redirect:/";
-        } else {
-            model.addAttribute("notExist", "fail");
-            return "user/login";
-        }
-    }
-
     @GetMapping("/logout")
-    public String logout(HttpSession session){
+    public String logout(HttpSession session) {
         session.invalidate();
         return "user/login";
     }
