@@ -65,5 +65,13 @@ public class ArticleController {
         jdbcArticleRepository.update(article);
         return "redirect:/";
     }
+
+    @DeleteMapping("/articles/{id}/delete")
+    public String deletePost(@PathVariable Long id,HttpSession session) {
+        Article writer = jdbcArticleRepository.findById(id).orElseThrow(null);
+        vaildateAuthorization(session, writer);
+        jdbcArticleRepository.delete(id);
+        return "redirect:/";
+    }
 }
 
