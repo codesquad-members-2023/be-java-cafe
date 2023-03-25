@@ -32,19 +32,19 @@ public class UserController {
     @GetMapping("/users")
     public String findUserList(Model model) {
         model.addAttribute("userDto", userService.findUserAll());
-        return "list";
+        return "user/list";
     }
 
     @GetMapping("/users/{userId}")
     public String findUserProfile(@PathVariable("userId") String userId, Model model) {
         model.addAttribute("user", userService.findUserByUserId(userId));
-        return "profile";
+        return "user/profile";
     }
 
     @GetMapping("/users/{userId}/form")
     public String findUserProfileEdit(@PathVariable("userId") String userId, Model model) {
         model.addAttribute(userService.findUserByUserId(userId));
-        return "updateForm";
+        return "user/updateForm";
     }
 
     @PutMapping("/users/update")
@@ -53,13 +53,18 @@ public class UserController {
         return "redirect:/";
     }
 
+    @GetMapping("/user/loginRequest")
+    public String loginRequest() {
+        return "user/login";
+    }
+
     @PostMapping("/user/login")
-    public String login(@ModelAttribute("userDto") UserDto userDto, HttpSession session) {
+    public String loginSubmit(@ModelAttribute("userDto") UserDto userDto, HttpSession session) {
         if(userService.findUserByPassword(userDto)) {
             session.setAttribute("userId", userDto.getUserId());
             return "redirect:/";
         }
-        return "redirect:/user/login_failed.html";
+        return "redirect:/user/login_failed/html";
     }
 
     @GetMapping("/logout")

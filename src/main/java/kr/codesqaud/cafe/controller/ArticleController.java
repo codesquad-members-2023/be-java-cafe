@@ -1,6 +1,5 @@
 package kr.codesqaud.cafe.controller;
 
-import javax.servlet.http.HttpSession;
 import kr.codesqaud.cafe.model.Article;
 import kr.codesqaud.cafe.service.ArticleService;
 import org.slf4j.Logger;
