@@ -34,4 +34,13 @@ public class ArticleDao {
         String sql = "SELECT * FROM ARTICLE WHERE ARTICLE_ID = ?";
         return jdbcTemplate.query(sql, new BeanPropertyRowMapper<>(ArticleDto.class), articleId);
     }
+
+    public void updateArticle(Article article) {
+        String sql = "UPDATE ARTICLE SET TITLE = ?, CONTENTS = ?, TIME = ?";
+        jdbcTemplate.update(sql,
+                article.getTitle(),
+                article.getContents(),
+                article.getTime()
+        );
+    }
 }

@@ -31,4 +31,12 @@ public class ArticleService {
     public static int getArticleSize() {
         return ++articleId;
     }
+
+    public void updateArticle(Article article) {
+        articleDao.updateArticle(article);
+    }
+
+    public void deleteArticle() {
+
+    }
 }

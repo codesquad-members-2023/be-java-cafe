@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 
 @Controller
 public class ArticleController {
@@ -48,6 +49,18 @@ public class ArticleController {
     @GetMapping("/article/{articleId}/edit")
     public String updateArticle(@PathVariable("articleId") int articleId, Model model) {
         model.addAttribute(articleService.findArticleContentById(articleId));
-        return "qna/form";
+        return "qna/updateForm";
+    }
+
+    @PutMapping("/editSubmit")
+    public String putUpdateArticle(Article article, String articleId) {
+        articleService.updateArticle(article);
+        return "redirect:/article/" + articleId;
+    }
+
+    @GetMapping("/article/{articleId}/delete")
+    public String deleteArticle(@PathVariable("articleId") int articleId, Model model) {
+        model.addAttribute(articleService.findArticleContentById(articleId));
+        return "index";
     }
 }
