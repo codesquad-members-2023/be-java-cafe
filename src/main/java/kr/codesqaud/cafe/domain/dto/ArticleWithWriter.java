@@ -1,25 +1,29 @@
-package kr.codesqaud.cafe.domain;
+package kr.codesqaud.cafe.domain.dto;
 
 import java.time.LocalDateTime;
 
-public class Article {
+public class ArticleWithWriter {
 
     private int id;
     private String title;
     private String contents;
     private LocalDateTime createDate;
     private int userId;
+    private String writer;
     private int replyCount;
 
-    public Article() {
+    public ArticleWithWriter() {
         this.createDate = LocalDateTime.now();
         this.replyCount = 0;
     }
 
-    public Article(int userId, String title, String contents) {
-        this.userId = userId;
+    public ArticleWithWriter(int id, String title, String contents, int userId, String writer) {
+        this.id = id;
         this.title = title;
         this.contents = contents;
+        this.userId = userId;
+        this.writer = writer;
+
         this.createDate = LocalDateTime.now();
         this.replyCount = 0;
     }
@@ -64,8 +68,19 @@ public class Article {
         this.userId = userId;
     }
 
+    public String getWriter() {
+        return writer;
+    }
+
+    public void setWriter(String writer) {
+        this.writer = writer;
+    }
+
     public int getReplyCount() {
         return replyCount;
     }
 
+    public void setReplyCount(int replyCount) {
+        this.replyCount = replyCount;
+    }
 }
