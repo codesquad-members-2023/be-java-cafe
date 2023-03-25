@@ -37,14 +37,27 @@ public class ArticleController {
         return "welcome/index";
     }
 
-    @PostMapping("/qna/questions") // TODO : Username 가져오기
-    public String addArticle(@ModelAttribute Article article, BindingResult bindingResult, Model model) {
+    @GetMapping("/qna/qna_form")
+    public String writeArticle(HttpSession session, Model model) {
 
+        User user = (User) session.getAttribute("user");
+        model.addAttribute("username", user.getName());
+        model.addAttribute("article", new Article());
+
+        return "qna/qna_form";
+    }
+
+    @PostMapping("/qna/questions")
+    public String addArticle(@ModelAttribute Article article, BindingResult bindingResult, Model model, HttpSession session) {
+        log.info("article id ={}", article.getUserId());
         articleValidator.validate(article, bindingResult);
         if (bindingResult.hasErrors()) {
-            model.addAttribute("userId", article.getWriter());
+            model.addAttribute("userId", article.getUserId());
             return "qna/qna_form";
         }
+        User user = (User) session.getAttribute("user");
+        article.setUserId(user.getUserId());
+
         articleRepository.save(article);
 
         return "redirect:/";
@@ -58,22 +71,13 @@ public class ArticleController {
         return "qna/show";
     }
 
-    @GetMapping("/qna/qna_form")
-    public String writeArticle(HttpSession session, Model model) {
-
-        User user = (User) session.getAttribute("user");
-        model.addAttribute("username", user.getName());
-        model.addAttribute("article", new Article());
-
-        return "qna/qna_form";
-    }
 
     @GetMapping("/qna/update_article/{articleId}") // TODO: 에러페이지 생성
     public String updateArticleForm(@PathVariable int articleId, Model model, HttpSession session) {
         Article article = articleRepository.findArticleById(articleId);
         User user = (User) session.getAttribute("user");
 
-        if (user.getName().equals(article.getWriter())) {
+        if (user.getName().equals(article.getUserId())) {
             model.addAttribute("article", article);
             return "qna/update_article";
         }
@@ -99,7 +103,7 @@ public class ArticleController {
 
         User user = (User) session.getAttribute("user");
 
-        if (user.getName().equals(findArticle.getWriter())) {
+        if (user.getName().equals(findArticle.getUserId())) {
             articleRepository.deleteArticle(articleId);
             return "redirect:/";
         }

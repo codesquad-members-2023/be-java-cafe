@@ -28,9 +28,9 @@ public class H2JDBCArticleRepository implements ArticleRepository {
 
     @Override
     public void save(Article article) {
-        String sql = "insert into article (id, writer, title, contents, timestamp) values(?, ?, ?, ?, ?)";
+        String sql = "insert into article (userid, title, contents, timestamp) values(?, ?, ?, ?, ?)";
 
-        template.update(sql, findDbSize() + 1, article.getWriter(), article.getTitle(), article.getContents(), Timestamp.valueOf(LocalDateTime.now()));
+        template.update(sql,article.getUserId(), article.getTitle(), article.getContents(), Timestamp.valueOf(LocalDateTime.now()));
     }
 
     @Override

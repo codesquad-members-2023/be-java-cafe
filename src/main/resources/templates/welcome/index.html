@@ -26,7 +26,7 @@
                             <div class="auth-info">
                                 <i class="icon-add-comment"></i>
                                 <span class="time" th:text="${article.timestamp}"></span>
-                                    <a th:href="@{/users/{userId}(userId=${article.writer})}" th:text="${article.writer}">
+                                    <a th:href="@{/users/{userId}(userId=${article.userId})}" th:text="${article.userId}">
                                     </a>
                             </div>
                             <div class="reply" title="댓글">

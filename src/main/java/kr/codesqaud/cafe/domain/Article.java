@@ -4,7 +4,7 @@ import java.sql.Timestamp;
 
 public class Article {
     private int id;
-    private String writer;
+    private String userId;
     private String title;
     private String contents;
     private Timestamp timestamp;
@@ -12,15 +12,15 @@ public class Article {
     public Article() {
     }
 
-    public Article(String writer, String title, String contents, Timestamp timestamp) {
-        this.writer = writer;
+    public Article(String userId, String title, String contents, Timestamp timestamp) {
+        this.userId = userId;
         this.title = title;
         this.contents = contents;
         this.timestamp = timestamp;
     }
 
-    public String getWriter() {
-        return writer;
+    public String getUserId() {
+        return userId;
     }
 
     public String getTitle() {
@@ -43,8 +43,8 @@ public class Article {
         this.id = id;
     }
 
-    public void setWriter(String writer) {
-        this.writer = writer;
+    public void setUserId(String userId) {
+        this.userId = userId;
     }
 
     public void setTitle(String title) {
