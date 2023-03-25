@@ -1,6 +1,7 @@
 package kr.codesqaud.cafe.repository.article;
 
 import kr.codesqaud.cafe.domain.Article;
+import kr.codesqaud.cafe.dto.article.ArticleFormDTO;
 import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
@@ -12,9 +13,7 @@ public class MemoryArticleRepository implements ArticleRepository {
     private List<Article> articleStore = new ArrayList<>();
 
     @Override
-    public void save(Article article) {
-        article.setId(articleStore.size());
-        articleStore.add(article);
+    public void save(ArticleFormDTO article) {
     }
 
     @Override

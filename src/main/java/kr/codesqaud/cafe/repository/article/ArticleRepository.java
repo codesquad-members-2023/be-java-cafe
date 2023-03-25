@@ -1,13 +1,14 @@
 package kr.codesqaud.cafe.repository.article;
 
 import kr.codesqaud.cafe.domain.Article;
+import kr.codesqaud.cafe.dto.article.ArticleFormDTO;
 
 import java.util.List;
 
 
 public interface ArticleRepository {
 
-    void save(Article article);
+    void save(ArticleFormDTO article);
 
     Article findArticleById(int id);
 

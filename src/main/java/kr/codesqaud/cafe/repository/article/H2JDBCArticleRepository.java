@@ -1,7 +1,7 @@
 package kr.codesqaud.cafe.repository.article;
 
 import kr.codesqaud.cafe.domain.Article;
-import kr.codesqaud.cafe.dto.ArticleFormDTO;
+import kr.codesqaud.cafe.dto.article.ArticleFormDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Primary;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;

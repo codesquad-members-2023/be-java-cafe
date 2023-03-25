@@ -1,7 +1,7 @@
 package kr.codesqaud.cafe.validation;
 
 import kr.codesqaud.cafe.domain.User;
-import kr.codesqaud.cafe.dto.UserLoginDTO;
+import kr.codesqaud.cafe.dto.user.UserLoginDTO;
 import kr.codesqaud.cafe.repository.member.MemberRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

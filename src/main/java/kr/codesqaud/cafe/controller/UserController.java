@@ -1,6 +1,6 @@
 package kr.codesqaud.cafe.controller;
 
-import kr.codesqaud.cafe.dto.UserLoginDTO;
+import kr.codesqaud.cafe.dto.user.UserLoginDTO;
 import kr.codesqaud.cafe.repository.member.MemberRepository;
 import kr.codesqaud.cafe.domain.User;
 import kr.codesqaud.cafe.validation.UserJoinValidator;

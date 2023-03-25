@@ -2,10 +2,10 @@ package kr.codesqaud.cafe.controller;
 
 import kr.codesqaud.cafe.domain.Article;
 import kr.codesqaud.cafe.domain.User;
+import kr.codesqaud.cafe.dto.article.ArticleFormDTO;
+import kr.codesqaud.cafe.dto.article.ArticleUpdateDTO;
 import kr.codesqaud.cafe.repository.article.ArticleRepository;
 import kr.codesqaud.cafe.validation.ArticleValidator;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -46,7 +46,7 @@ public class ArticleController {
     }
 
     @PostMapping("/qna/questions")
-    public String addArticle(@ModelAttribute Article article, BindingResult bindingResult, Model model, HttpSession session) {
+    public String addArticle(@ModelAttribute("article") ArticleFormDTO article, BindingResult bindingResult, Model model, HttpSession session) {
         articleValidator.validate(article, bindingResult);
         if (bindingResult.hasErrors()) {
             model.addAttribute("userId", article.getUserId());
@@ -84,7 +84,7 @@ public class ArticleController {
     }
 
     @PutMapping("/qna/update_article/{articleId}")
-    public String updateArticle(@ModelAttribute Article article, BindingResult bindingResult, @PathVariable int articleId) {
+    public String updateArticle(@ModelAttribute("article") ArticleUpdateDTO article, BindingResult bindingResult, @PathVariable int articleId) {
         articleValidator.validate(article, bindingResult);
         if (bindingResult.hasErrors()) {
             return "qna/update_article";

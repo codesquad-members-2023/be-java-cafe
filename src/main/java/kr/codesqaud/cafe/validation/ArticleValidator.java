@@ -1,6 +1,7 @@
 package kr.codesqaud.cafe.validation;
 
 import kr.codesqaud.cafe.domain.Article;
+import kr.codesqaud.cafe.dto.article.ArticleFormDTO;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 import org.springframework.validation.Errors;
@@ -15,7 +16,7 @@ public class ArticleValidator implements Validator {
 
     @Override
     public void validate(Object target, Errors errors) {
-        Article article = (Article) target;
+        ArticleFormDTO article = (ArticleFormDTO) target;
         if (!StringUtils.hasText(article.getTitle())) {
             errors.rejectValue("title", "required.article.title");
         }
