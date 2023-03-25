@@ -31,16 +31,16 @@ public class ArticleController {
         return "redirect:/";
     }
 
-    @GetMapping("/")
-    public String index(Model model) {
-        model.addAttribute("list", articleRepository.findAll());
-        return "index";
-    }
-
     @GetMapping("/articles/{id}")
     public String showArticle(@PathVariable Long id, Model model) {
         model.addAttribute("article", articleRepository.findById(id)
                 .orElseThrow(() -> new NoSuchElementException("해당하는 글이 없습니다.")));
         return "qna/show";
+    }
+    
+    @GetMapping("/")
+    public String index(Model model) {
+        model.addAttribute("list", articleRepository.findAll());
+        return "index";
     }
 }
