@@ -22,7 +22,7 @@ public class MvcConfig implements WebMvcConfigurer {
         registry.addInterceptor(new AuthInterceptor())
                 .addPathPatterns("/**")
                 .excludePathPatterns("/", "/user/loginRequest", "/user/login_failed.html"
-                        , "/user/login.html", "/user/form.html", "/fonts/**", "/js/**", "/images/**",
+                        , "/user/form.html", "/user/login", "/fonts/**", "/js/**", "/images/**",
                         "/css/**", "/*.ico", "/error");
     }
 }
