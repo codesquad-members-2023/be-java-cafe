@@ -18,8 +18,6 @@ import java.util.List;
 @Controller
 public class ArticleController {
 
-    private final Logger log = LoggerFactory.getLogger(getClass());
-
     private final ArticleRepository articleRepository;
     private final ArticleValidator articleValidator;
 
@@ -49,7 +47,6 @@ public class ArticleController {
 
     @PostMapping("/qna/questions")
     public String addArticle(@ModelAttribute Article article, BindingResult bindingResult, Model model, HttpSession session) {
-        log.info("article id ={}", article.getUserId());
         articleValidator.validate(article, bindingResult);
         if (bindingResult.hasErrors()) {
             model.addAttribute("userId", article.getUserId());
@@ -57,7 +54,6 @@ public class ArticleController {
         }
         User user = (User) session.getAttribute("user");
         article.setUserId(user.getUserId());
-
         articleRepository.save(article);
 
         return "redirect:/";
@@ -66,7 +62,9 @@ public class ArticleController {
     @GetMapping("/qna/show/{id}")
     public String showArticle(@PathVariable int id, Model model) {
         Article article = articleRepository.findArticleById(id);
-        model.addAttribute(article);
+        String userName = articleRepository.findUsernameByArticleUserId(article.getUserId());
+        model.addAttribute("userName", userName);
+        model.addAttribute("article", article);
 
         return "qna/show";
     }
@@ -77,7 +75,7 @@ public class ArticleController {
         Article article = articleRepository.findArticleById(articleId);
         User user = (User) session.getAttribute("user");
 
-        if (user.getName().equals(article.getUserId())) {
+        if (user.getUserId().equals(article.getUserId())) {
             model.addAttribute("article", article);
             return "qna/update_article";
         }
@@ -100,15 +98,13 @@ public class ArticleController {
     @DeleteMapping("/qna/show/{articleId}/delete") // TODO: 에러페이지 생성하기
     public String deleteArticle(@PathVariable int articleId, HttpSession session) {
         Article findArticle = articleRepository.findArticleById(articleId);
-
         User user = (User) session.getAttribute("user");
 
-        if (user.getName().equals(findArticle.getUserId())) {
+        if (user.getUserId().equals(findArticle.getUserId())) {
             articleRepository.deleteArticle(articleId);
             return "redirect:/";
         }
 
-        log.info("글 작성자만 삭제할 수 있습니다.");
         throw new IllegalArgumentException("글 작성자만 삭제할 수 있습니다");
     }
 }

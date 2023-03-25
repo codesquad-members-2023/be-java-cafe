@@ -1,8 +1,6 @@
 package kr.codesqaud.cafe.repository.article;
 
 import kr.codesqaud.cafe.domain.Article;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Primary;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
@@ -19,7 +17,6 @@ import java.util.List;
 public class H2JDBCArticleRepository implements ArticleRepository {
 
     private final JdbcTemplate template;
-    private final Logger log = LoggerFactory.getLogger(getClass());
 
     @Autowired
     public H2JDBCArticleRepository(DataSource dataSource) {
@@ -28,9 +25,9 @@ public class H2JDBCArticleRepository implements ArticleRepository {
 
     @Override
     public void save(Article article) {
-        String sql = "insert into article (userid, title, contents, timestamp) values(?, ?, ?, ?, ?)";
+        String sql = "insert into article (userid, title, contents, timestamp) values(?, ?, ?, ?)";
 
-        template.update(sql,article.getUserId(), article.getTitle(), article.getContents(), Timestamp.valueOf(LocalDateTime.now()));
+        template.update(sql, article.getUserId(), article.getTitle(), article.getContents(), Timestamp.valueOf(LocalDateTime.now()));
     }
 
     @Override
@@ -59,4 +56,10 @@ public class H2JDBCArticleRepository implements ArticleRepository {
         template.update(sql, articleId);
     }
 
+    @Override
+    public String findUsernameByArticleUserId(String userId) {
+        String sql = "select member.name from article inner join member on article.userid = member.userid where article.userid = ?";
+
+        return template.queryForObject(sql, String.class, userId);
+    }
 }

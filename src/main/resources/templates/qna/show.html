@@ -13,7 +13,7 @@
         <div class="col-md-12 col-sm-12 col-lg-12">
             <div class="panel panel-default">
                 <header class="qna-header">
-                    <h2 class="qna-title" th:text="${article.userId}"></h2>
+                    <h2 class="qna-title" th:text="${article.title}"></h2>
                 </header>
                 <div class="content-main">
                     <article class="article">
@@ -23,7 +23,7 @@
                                      class="article-author-thumb" alt="">
                             </div>
                             <div class="article-header-text">
-                                <a th:href="@{/users/{userId}(userId=${article.userId})}" class="article-author-name" th:text="${#session.getAttribute('user').getName()}">kimmunsu</a>
+                                <a th:href="@{/users/{userId}(userId=${article.userId})}" class="article-author-name" th:text="${userName}">작성자 이름 </a>
                                 <a href="/questions/413" class="article-header-time" title="퍼머링크" th:text="${article.timestamp}">
                                     <i class="icon-link"></i>
                                 </a>

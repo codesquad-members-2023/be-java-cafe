@@ -12,10 +12,6 @@
     <div class="col-md-12 col-sm-12 col-lg-10 col-lg-offset-1">
         <div class="panel panel-default content-main">
             <form name="question" th:method="put" th:object="${article}">
-                <div class="form-group">
-                    <label for="writer">글쓴이</label>
-                    <input class="form-control" id="writer" name="writer" th:placeholder="${article.userId}" th:readonly="edit eq 1 ? 'readonly': true" th:value="${article.userId}"/>
-                </div>
 
                 <div class="form-group">
                     <label for="title">제목</label>

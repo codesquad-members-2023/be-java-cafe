@@ -1,12 +1,10 @@
 package kr.codesqaud.cafe.repository.article;
 
 import kr.codesqaud.cafe.domain.Article;
-import kr.codesqaud.cafe.repository.article.ArticleRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Repository
 public class MemoryArticleRepository implements ArticleRepository {
@@ -40,5 +38,10 @@ public class MemoryArticleRepository implements ArticleRepository {
     @Override
     public void deleteArticle(int articleId) {
 
+    }
+
+    @Override
+    public String findUsernameByArticleUserId(String userId) {
+        return null;
     }
 }

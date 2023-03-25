@@ -16,4 +16,6 @@ public interface ArticleRepository {
     void updateArticle(String title, String contents, int articleId);
 
     void deleteArticle(int articleId);
+
+    String findUsernameByArticleUserId(String userId);
 }
