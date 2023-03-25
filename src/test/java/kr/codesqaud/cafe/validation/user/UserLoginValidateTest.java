@@ -16,10 +16,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 class UserLoginValidateTest {
 
     private final UserLoginValidator validator;
-    private final String REQUIRED_USERID = "required.user.userId";
-    private final String REQUIRED_PASSWORD = "required.user.password";
-    private final String WRONG_USERID = "error.user.userId";
-    private final String WRONG_PASSWORD = "error.user.password";
+    private TestUserConstant testUserConstant = new TestUserConstant();
+
 
     @Autowired
     public UserLoginValidateTest(UserLoginValidator validator) {
@@ -35,7 +33,7 @@ class UserLoginValidateTest {
 
         FieldError fieldError = errors.getFieldError();
 
-        assertThat(fieldError.getCode()).isEqualTo(REQUIRED_USERID);
+        assertThat(fieldError.getCode()).isEqualTo(testUserConstant.REQUIRED_USERID);
     }
 
     @Test
@@ -47,7 +45,7 @@ class UserLoginValidateTest {
 
         FieldError fieldError = errors.getFieldError();
 
-        assertThat(fieldError.getCode()).isEqualTo(REQUIRED_PASSWORD);
+        assertThat(fieldError.getCode()).isEqualTo(testUserConstant.REQUIRED_PASSWORD);
     }
 
     @Test
@@ -59,7 +57,7 @@ class UserLoginValidateTest {
 
         FieldError fieldError = errors.getFieldError();
 
-        assertThat(fieldError.getCode()).isEqualTo(WRONG_USERID);
+        assertThat(fieldError.getCode()).isEqualTo(testUserConstant.WRONG_USERID);
     }
 
     @Test
@@ -71,6 +69,6 @@ class UserLoginValidateTest {
 
         FieldError fieldError = errors.getFieldError();
 
-        assertThat(fieldError.getCode()).isEqualTo(WRONG_PASSWORD);
+        assertThat(fieldError.getCode()).isEqualTo(testUserConstant.WRONG_PASSWORD);
     }
 }
