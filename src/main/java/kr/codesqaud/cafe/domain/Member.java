@@ -111,6 +111,7 @@ public class Member {
         this.nickname = user.nickname;
         this.email = user.email;
         this.password = user.password;
+        this.updatedDate = LocalDateTime.now();
         return this;
     }
 
