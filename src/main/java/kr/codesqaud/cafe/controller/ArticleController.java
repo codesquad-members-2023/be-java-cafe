@@ -40,6 +40,6 @@ public class ArticleController {
     @GetMapping("/article/{articleId}")
     public String findArticleById(@PathVariable("articleId") int articleId, Model model) {
         model.addAttribute(articleService.findArticleContentById(articleId));
-        return "show";
+        return "user/show";
     }
 }
