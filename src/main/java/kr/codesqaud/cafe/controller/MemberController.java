@@ -38,8 +38,7 @@ public class MemberController {
             throw new ManageMemberException(DIFFERENT_MEMBER);
         }
 
-        model.addAttribute("profile", memberRepository.findById(id)
-                .orElseThrow(() -> new ManageMemberException(INVALID_MEMBER)));
+        model.addAttribute("profile", memberRepository.findById(id));
         return "user/updateForm";
     }
 
@@ -56,7 +55,7 @@ public class MemberController {
 
     @PostMapping("/login")
     public String loginUser(String userId, String password, HttpSession httpSession) {
-        Member member = memberRepository.findByMemberId(userId).orElseThrow(() -> new ManageMemberException(LOGIN_FAILED));
+        Member member = memberRepository.findByMemberId(userId);
 
         if (!member.isValidPassword(password)) {
             throw new ManageMemberException(LOGIN_FAILED);
@@ -89,7 +88,7 @@ public class MemberController {
 
     @GetMapping("/users/{userId}")
     public String profile(@PathVariable Long userId, Model model) {
-        model.addAttribute("profile", memberRepository.findById(userId).orElseThrow(() -> new ManageMemberException(INVALID_MEMBER)));
+        model.addAttribute("profile", memberRepository.findById(userId));
         return "user/profile";
     }
 
@@ -97,7 +96,7 @@ public class MemberController {
     public String updateProfile(@ModelAttribute Member member,
                                 @PathVariable Long id,
                                 @RequestParam String exPassword) {
-        Member exMember = memberRepository.findById(id).orElseThrow();
+        Member exMember = memberRepository.findById(id);
         if (!exMember.isValidPassword(exPassword)) {
             throw new ManageMemberException(UPDATE_FAILED_WRONG_PASSWORD);
         }

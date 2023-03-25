@@ -27,7 +27,7 @@ public class ArticleController {
 
     @PostMapping("/questions")
     public String postQuestions(long writerId, String title, String contents) {
-        Member member = memberRepository.findById(writerId).orElseThrow();
+        Member member = memberRepository.findById(writerId);
         Article article = new Article(member, title, contents);
         articleRepository.save(article);
         return "redirect:/";
