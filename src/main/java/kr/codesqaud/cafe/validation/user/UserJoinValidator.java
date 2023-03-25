@@ -40,6 +40,21 @@ public class UserJoinValidator implements Validator {
         if (!StringUtils.hasText(user.getEmail())) {
             errors.rejectValue("email", "required.user.email");
         }
+
+        if (user.getUserId().length() >= 20) {
+            errors.rejectValue("userId", "error.user.userIdLength");
+        }
+        if (user.getPassword().length() >= 20) {
+            errors.rejectValue("password", "error.user.passwordLength");
+        }
+        if (user.getName().length() >= 20) {
+            errors.rejectValue("name", "error.user.nameLength");
+        }
+        if (user.getEmail().length() >= 60) {
+            errors.rejectValue("email", "error.user.emailLength");
+        }
+
+
         List<User> userList = memberRepository.findAll();
 
         userList.stream()
