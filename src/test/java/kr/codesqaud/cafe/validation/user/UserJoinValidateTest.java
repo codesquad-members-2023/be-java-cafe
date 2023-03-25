@@ -15,11 +15,7 @@ import static org.assertj.core.api.Assertions.*;
 class UserJoinValidateTest {
 
     private final UserJoinValidator validator;
-    private final String REQUIRED_USERID = "required.user.userId";
-    private final String REQUIRED_PASSWORD = "required.user.password";
-    private final String REQUIRED_NAME = "required.user.name";
-    private final String REQUIRED_EMAIL = "required.user.email";
-    private final String DUPLICATED_USERID = "error.user.duplicatedId";
+    private TestUserConstant testUserConstant = new TestUserConstant();
 
     @Autowired
     public UserJoinValidateTest(UserJoinValidator validator) {
@@ -36,7 +32,7 @@ class UserJoinValidateTest {
 
         FieldError fieldError = errors.getFieldError();
 
-        assertThat(fieldError.getCode()).isEqualTo(DUPLICATED_USERID);
+        assertThat(fieldError.getCode()).isEqualTo(testUserConstant.DUPLICATED_USERID);
     }
 
     @Test
@@ -48,7 +44,7 @@ class UserJoinValidateTest {
 
         FieldError fieldError = errors.getFieldError();
 
-        assertThat(fieldError.getCode()).isEqualTo(REQUIRED_USERID);
+        assertThat(fieldError.getCode()).isEqualTo(testUserConstant.REQUIRED_USERID);
     }
 
     @Test
@@ -60,7 +56,7 @@ class UserJoinValidateTest {
 
         FieldError fieldError = errors.getFieldError();
 
-        assertThat(fieldError.getCode()).isEqualTo(REQUIRED_PASSWORD);
+        assertThat(fieldError.getCode()).isEqualTo(testUserConstant.REQUIRED_PASSWORD);
     }
 
     @Test
@@ -72,7 +68,7 @@ class UserJoinValidateTest {
 
         FieldError fieldError = errors.getFieldError();
 
-        assertThat(fieldError.getCode()).isEqualTo(REQUIRED_NAME);
+        assertThat(fieldError.getCode()).isEqualTo(testUserConstant.REQUIRED_NAME);
     }
 
     @Test
@@ -84,6 +80,54 @@ class UserJoinValidateTest {
 
         FieldError fieldError = errors.getFieldError();
 
-        assertThat(fieldError.getCode()).isEqualTo(REQUIRED_EMAIL);
+        assertThat(fieldError.getCode()).isEqualTo(testUserConstant.REQUIRED_EMAIL);
+    }
+
+    @Test
+    @DisplayName("회원가입 아이디 길이제한")
+    void limitUserIdLength() {
+        User user = new User(testUserConstant.NAME_LENGTH_OVER, "password", "name", "email@com");
+        Errors errors = new BeanPropertyBindingResult(user, "user");
+        validator.validate(user, errors);
+
+        FieldError fieldError = errors.getFieldError();
+
+        assertThat(fieldError.getCode()).isEqualTo(testUserConstant.USERID_LENGTH_ERROR);
+    }
+
+    @Test
+    @DisplayName("회원가입 비밀번호 길이제한")
+    void limitPasswordLength() {
+        User user = new User("userId", testUserConstant.PASSWORD_LENGTH_OVER, "name", "email@com");
+        Errors errors = new BeanPropertyBindingResult(user, "user");
+        validator.validate(user, errors);
+
+        FieldError fieldError = errors.getFieldError();
+
+        assertThat(fieldError.getCode()).isEqualTo(testUserConstant.PASSWORD_LENGTH_ERROR);
+    }
+
+    @Test
+    @DisplayName("회원가입 이름 길이제한")
+    void limitNameLength() {
+        User user = new User("userId", "password", testUserConstant.NAME_LENGTH_OVER, "email@com");
+        Errors errors = new BeanPropertyBindingResult(user, "user");
+        validator.validate(user, errors);
+
+        FieldError fieldError = errors.getFieldError();
+
+        assertThat(fieldError.getCode()).isEqualTo(testUserConstant.NAME_LENGTH_ERROR);
+    }
+
+    @Test
+    @DisplayName("회원가입 아이디 길이제한")
+    void limitEmailError() {
+        User user = new User("userId", "password", "name", testUserConstant.EMAIL_LENGTH_OVER);
+        Errors errors = new BeanPropertyBindingResult(user, "user");
+        validator.validate(user, errors);
+
+        FieldError fieldError = errors.getFieldError();
+
+        assertThat(fieldError.getCode()).isEqualTo(testUserConstant.EMAIL_LENGTH_ERROR);
     }
 }
