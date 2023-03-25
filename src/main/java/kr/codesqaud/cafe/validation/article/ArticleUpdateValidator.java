@@ -24,5 +24,11 @@ public class ArticleUpdateValidator implements Validator {
         if (!StringUtils.hasText(article.getContents())) {
             errors.rejectValue("contents", "required.article.contents");
         }
+        if (article.getTitle().length() >= 60) {
+            errors.rejectValue("title", "error.article.titleLength");
+        }
+        if (article.getContents().length() >= 300) {
+            errors.rejectValue("contents", "error.article.contentsLength");
+        }
     }
 }
