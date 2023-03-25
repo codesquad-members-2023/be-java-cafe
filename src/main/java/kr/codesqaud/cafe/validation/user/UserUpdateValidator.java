@@ -40,5 +40,15 @@ public class UserUpdateValidator implements Validator {
         if (!berforeUser.getPassword().equals(user.getPassword())) {
             errors.rejectValue("password", "error.user.password");
         }
+
+        if (user.getPassword().length() >= 20) {
+            errors.rejectValue("password", "error.user.passwordLength");
+        }
+        if (user.getName().length() >= 20) {
+            errors.rejectValue("name", "error.user.nameLength");
+        }
+        if (user.getEmail().length() >= 60) {
+            errors.rejectValue("email", "error.user.emailLength");
+        }
     }
 }
