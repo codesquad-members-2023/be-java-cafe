@@ -48,6 +48,14 @@ public class UserLoginValidator implements Validator {
             errors.rejectValue("password", "required.user.password");
         }
 
+        if (loginUser.getUserId().length() >= 20) {
+            errors.rejectValue("userId", "error.user.userIdLength");
+        }
+        if (loginUser.getPassword().length() >= 20) {
+            errors.rejectValue("password", "error.user.passwordLength");
+        }
+
+
         // 잘못된 아이디 확인하고, 아이디 있을 시 비밀번호 검사
         List<User> usersList = memberRepository.findAll();
 
