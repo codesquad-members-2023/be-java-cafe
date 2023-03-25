@@ -1,7 +1,9 @@
 package kr.codesqaud.cafe.controller;
 
 import kr.codesqaud.cafe.domain.Article;
+import kr.codesqaud.cafe.domain.Member;
 import kr.codesqaud.cafe.repository.ArticleRepository;
+import kr.codesqaud.cafe.repository.MemberRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
@@ -16,17 +18,19 @@ import java.util.NoSuchElementException;
 public class ArticleController {
 
     private final ArticleRepository articleRepository;
+    private final MemberRepository memberRepository;
 
     Logger logger = LoggerFactory.getLogger(ArticleController.class);
 
-    public ArticleController(ArticleRepository articleRepository) {
+    public ArticleController(ArticleRepository articleRepository, MemberRepository memberRepository) {
         this.articleRepository = articleRepository;
+        this.memberRepository = memberRepository;
     }
 
     @PostMapping("/questions")
-    public String postQuestions(String writer, String title, String contents) {
-        Article article = new Article(writer, title, contents);
-        logger.info(article.getWriter());
+    public String postQuestions(long writerId, String title, String contents) {
+        Member member = memberRepository.findById(writerId).orElseThrow();
+        Article article = new Article(member, title, contents);
         articleRepository.save(article);
         return "redirect:/";
     }
@@ -37,7 +41,7 @@ public class ArticleController {
                 .orElseThrow(() -> new NoSuchElementException("해당하는 글이 없습니다.")));
         return "qna/show";
     }
-    
+
     @GetMapping("/")
     public String index(Model model) {
         model.addAttribute("list", articleRepository.findAll());
