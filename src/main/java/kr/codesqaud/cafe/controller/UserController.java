@@ -25,7 +25,6 @@ public class UserController {
 
     @GetMapping(value = "/users/{id}")
     public String userProfile(Model model, @PathVariable String id) {
-
         model.addAttribute("user", joinService.lookupUser(id));
         return "user/profile";
     }
@@ -78,7 +77,12 @@ public class UserController {
         return "redirect:/users/list";
     }
 
-    @PostMapping("/users/login/validate")
+    @GetMapping("/users/login")
+    public String login() {
+        return "user/login";
+    }
+
+    @PostMapping("/users/login")
     public String login(@RequestParam String userId, @RequestParam String password,
         HttpSession session) {
         User sessionedUser = joinService.lookupUser(userId);
@@ -92,7 +96,7 @@ public class UserController {
 
     @GetMapping("/users/logout")
     public String logout(HttpSession session) {
-        session.setAttribute("sessionedUser", null);
+        session.invalidate();
         return "redirect:/";
     }
 }

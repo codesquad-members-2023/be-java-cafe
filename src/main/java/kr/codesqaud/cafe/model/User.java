@@ -29,15 +29,6 @@ public class User {
         return this.password.equals(password);
     }
 
-    public void setIndex(long index) {
-        this.index = index;
-    }
-
-    public void updateUserInfo(String name, String password, String email) {
-        this.name = name;
-        this.password = password;
-        this.email = email;
-    }
 
     public String getPassword() {
         return password;

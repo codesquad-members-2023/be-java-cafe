@@ -2,9 +2,11 @@ package kr.codesqaud.cafe;
 
 import javax.sql.DataSource;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.Ordered;
+import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
@@ -23,6 +25,7 @@ public class AutoAppConfig implements WebMvcConfigurer {
     public AutoAppConfig(DataSource dataSource) {
         this.dataSource = dataSource;
     }
+
     @Bean
     public JoinService joinService() {
         return new JoinServiceImpl(userRepository());
@@ -49,7 +52,6 @@ public class AutoAppConfig implements WebMvcConfigurer {
         registry.setOrder(Ordered.HIGHEST_PRECEDENCE);
 
         registry.addViewController("/users/form").setViewName("user/form");
-        registry.addViewController("/users/login").setViewName("user/login");
         registry.addViewController("/users/profile").setViewName("user/profile");
 
         registry.addViewController("/qna/form").setViewName("qna/form");
