@@ -18,8 +18,10 @@
                     <div class="wrap">
                         <div class="main">
                             <strong class="subject">
-                                <a th:href="@{/qna/show/{articleId}(articleId=${article.id})}"
-                                   th:text="${article.writer}"></a>
+                                <a th:if="${#session != null}" th:href="@{/qna/show/{articleId}(articleId=${article.id})}"
+                                   th:text="${article.title}"></a>
+                                <a th:if="${#session == null}" href="/users/login"
+                                   th:text="${article.title}"></a>
                             </strong>
                             <div class="auth-info">
                                 <i class="icon-add-comment"></i>
@@ -51,7 +53,8 @@
                     </ul>
                 </div>
                 <div class="col-md-3 qna-write">
-                    <a href="qna/form.html" class="btn btn-primary pull-right" role="button">질문하기</a>
+                    <a th:if="${#session != null}" th:href="@{/qna/qna_form}" class="btn btn-primary pull-right" role="button">질문하기</a>
+                    <a th:if="${#session == null}" href="users/login" class="btn btn-primary pull-right" role="button">질문하기</a>
                 </div>
             </div>
         </div>

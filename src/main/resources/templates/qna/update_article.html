@@ -11,30 +11,25 @@
 <div class="container" id="main">
     <div class="col-md-12 col-sm-12 col-lg-10 col-lg-offset-1">
         <div class="panel panel-default content-main">
-            <form name="question" method="post" action="/qna/questions" th:object="${username}">
-
+            <form name="question" th:method="put" th:object="${article}">
                 <div class="form-group">
                     <label for="writer">글쓴이</label>
-                    <input class="form-control" id="writer" name="writer" th:readonly="edit eq 1 ? 'readonly': true" th:value="${username}"/>
+                    <input class="form-control" id="writer" name="writer" th:placeholder="${article.writer}" th:readonly="edit eq 1 ? 'readonly': true" th:value="${article.writer}"/>
                 </div>
 
                 <div class="form-group">
                     <label for="title">제목</label>
-                    <input type="text" class="form-control" id="title" name="title" placeholder="제목" th:value="${article.title}"/>
-                    <div class ="field-error" th:errors="${article.title}">
-                        <p>제목 오류</p>
-                    </div>
+                    <input type="text" class="form-control" id="title" name="title" th:placeholder="${article.title}" th:value="${article.title}"/>
+                    <div th:errors="${article.title}" class="field-error"></div>
                 </div>
 
                 <div class="form-group">
                     <label for="contents">내용</label>
-                    <textarea name="contents" id="contents" rows="5" class="form-control" th:text="${article.contents}"></textarea>
-                    <div class="field-error" th:errors="${article.contents}">
-                        <p>내용 오류</p>
-                    </div>
+                    <textarea name="contents" id="contents" rows="5" class="form-control" th:placeholder="${article.contents}" th:text="${article.contents}"></textarea>
+                    <div th:errors="${article.contents}" class="field-error"></div>
                 </div>
 
-                <button type="submit" class="btn btn-success clearfix pull-right">질문하기</button>
+                <button type="submit" class="btn btn-success clearfix pull-right" th:href="@{/qna/update_article/{articleId}(articleId=${article.id})}">수정하기</button>
                 <div class="clearfix"/>
             </form>
         </div>
