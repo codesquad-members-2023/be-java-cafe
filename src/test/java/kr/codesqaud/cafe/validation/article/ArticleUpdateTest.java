@@ -18,8 +18,7 @@ class ArticleUpdateTest {
 
 
     private final ArticleUpdateValidator articleValidator;
-    private final String TITLE_ERROR_CODE = "required.article.title";
-    private final String CONTENT_ERROR_CODE = "required.article.contents";
+    private TestArticleConstant testArticleConstant = new TestArticleConstant();
 
     @Autowired
     public ArticleUpdateTest(ArticleUpdateValidator articleValidator) {
@@ -35,7 +34,7 @@ class ArticleUpdateTest {
 
         FieldError fieldError = errors.getFieldError();
 
-        assertThat(fieldError.getCode()).isEqualTo(TITLE_ERROR_CODE);
+        assertThat(fieldError.getCode()).isEqualTo(testArticleConstant.TITLE_ERROR_CODE);
     }
 
     @Test
@@ -47,7 +46,7 @@ class ArticleUpdateTest {
 
         FieldError fieldError = errors.getFieldError();
 
-        assertThat(fieldError.getCode()).isEqualTo(CONTENT_ERROR_CODE);
+        assertThat(fieldError.getCode()).isEqualTo(testArticleConstant.CONTENT_ERROR_CODE);
     }
 
     @Test
@@ -57,5 +56,27 @@ class ArticleUpdateTest {
         Errors errors = new BeanPropertyBindingResult(article, "article");
         articleValidator.validate(article, errors);
         assertThat(errors.hasErrors()).isFalse();
+    }
+
+    @Test
+    @DisplayName("업데이트 제목 길이 제한")
+    void limitUpdateTitleLength() {
+        ArticleUpdateDTO article = new ArticleUpdateDTO(testArticleConstant.TITLE_LENGTH_OVER, "contents");
+        Errors errors = new BeanPropertyBindingResult(article, "article");
+        articleValidator.validate(article, errors);
+        FieldError fieldError = errors.getFieldError();
+
+        assertThat(fieldError.getCode()).isEqualTo(testArticleConstant.TITLE_LENGTH_ERROR);
+    }
+
+    @Test
+    @DisplayName("업데이트 본문 길이 제한")
+    void limitUpdateContentsLength() {
+        ArticleUpdateDTO article = new ArticleUpdateDTO("title", testArticleConstant.CONTENTS_LENGTH_OVER);
+        Errors errors = new BeanPropertyBindingResult(article, "article");
+        articleValidator.validate(article, errors);
+        FieldError fieldError = errors.getFieldError();
+
+        assertThat(fieldError.getCode()).isEqualTo(testArticleConstant.CONTENTS_LENGTH_ERROR);
     }
 }
