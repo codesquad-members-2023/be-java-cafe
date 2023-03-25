@@ -5,7 +5,7 @@ import java.time.format.DateTimeFormatter;
 
 public class Article {
     private Long id;
-    private String writer;
+    private Member writer;
     private String title;
     private String contents;
     private LocalDateTime createdDate;
@@ -19,11 +19,11 @@ public class Article {
         this.id = id;
     }
 
-    public String getWriter() {
+    public Member getWriter() {
         return writer;
     }
 
-    public void setWriter(String writer) {
+    public void setWriter(Member writer) {
         this.writer = writer;
     }
 
@@ -70,7 +70,7 @@ public class Article {
     public Article() {
     }
 
-    public Article(String writer, String title, String contents) {
+    public Article(Member writer, String title, String contents) {
         this.writer = writer;
         this.title = title;
         this.contents = contents;
