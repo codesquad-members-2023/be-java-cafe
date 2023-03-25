@@ -32,8 +32,8 @@ public class ArticleService {
         return ++articleId;
     }
 
-    public void updateArticle(Article article) {
-        articleDao.updateArticle(article);
+    public void updateArticle(Article article, String articleId) {
+        articleDao.updateArticle(article, articleId);
     }
 
     public void deleteArticle() {

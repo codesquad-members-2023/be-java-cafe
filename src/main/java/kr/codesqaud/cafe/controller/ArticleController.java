@@ -54,7 +54,7 @@ public class ArticleController {
 
     @PutMapping("/editSubmit")
     public String putUpdateArticle(Article article, String articleId) {
-        articleService.updateArticle(article);
+        articleService.updateArticle(article, articleId);
         return "redirect:/article/" + articleId;
     }
 

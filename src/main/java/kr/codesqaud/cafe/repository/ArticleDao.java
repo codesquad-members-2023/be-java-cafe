@@ -35,12 +35,13 @@ public class ArticleDao {
         return jdbcTemplate.query(sql, new BeanPropertyRowMapper<>(ArticleDto.class), articleId);
     }
 
-    public void updateArticle(Article article) {
-        String sql = "UPDATE ARTICLE SET TITLE = ?, CONTENTS = ?, TIME = ?";
+    public void updateArticle(Article article, String articleId) {
+        String sql = "UPDATE ARTICLE SET TITLE = ?, CONTENTS = ?, TIME = ? WHERE ARTICLE_ID = ?";
         jdbcTemplate.update(sql,
                 article.getTitle(),
                 article.getContents(),
-                article.getTime()
+                article.getTime(),
+                articleId
         );
     }
 }
