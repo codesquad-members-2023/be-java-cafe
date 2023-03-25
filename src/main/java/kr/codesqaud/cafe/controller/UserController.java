@@ -1,7 +1,7 @@
 package kr.codesqaud.cafe.controller;
 
 import kr.codesqaud.cafe.domain.User;
-import kr.codesqaud.cafe.repository.UserRepository;
+import kr.codesqaud.cafe.repository.users.UserRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,15 +38,15 @@ public class UserController {
     public String findUsers(Model model) {
         List<User> users = userRepository.findAllUsers();
         model.addAttribute("users", users);
-        return "/users/list";
+        return "users/list";
     }
 
-    @GetMapping("/{userId}")
-    public String findUser(@PathVariable String userId, Model model) {
-        User user = userRepository.findByUserId(userId);
+    @GetMapping("/{id}")
+    public String findUser(@PathVariable long id, Model model) {
+        User user = userRepository.findUserById(id);
         model.addAttribute(user);
         log.debug("debug log={}", user.getName());
-        return "/users/profile";
+        return "users/profile";
     }
 
 }

@@ -1,11 +1,20 @@
 package kr.codesqaud.cafe.domain;
 
+import java.time.LocalDateTime;
+
 public class User {
 
+    private long id;
     private String userId;
     private String password;
     private String name;
     private String email;
+    private LocalDateTime createdAt;
+    private LocalDateTime updatedAt;
+    private LocalDateTime deletedAt;
+
+    public User() {
+    }
 
     public User(String userId, String password, String name, String email) {
         this.userId = userId;
@@ -14,7 +23,11 @@ public class User {
         this.email = email;
     }
 
-    public String getId() {
+    public long getId() {
+        return id;
+    }
+
+    public String getUserId() {
         return userId;
     }
 
