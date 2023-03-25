@@ -1,4 +1,4 @@
-package kr.codesqaud.cafe.domain;
+package kr.codesqaud.cafe.service;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -13,10 +13,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 
-import kr.codesqaud.cafe.model.User;
 import kr.codesqaud.cafe.repository.JdbcArticleRepository;
-import kr.codesqaud.cafe.repository.JdbcUserRepository;
-import kr.codesqaud.cafe.service.QnaService;
 import kr.codesqaud.cafe.service.impl.QnaServiceImpl;
 import kr.codesqaud.cafe.model.Article;
 

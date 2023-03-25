@@ -1,4 +1,4 @@
-package kr.codesqaud.cafe.domain;
+package kr.codesqaud.cafe.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.AssertionsForClassTypes.*;
@@ -16,7 +16,6 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 
 import kr.codesqaud.cafe.repository.JdbcUserRepository;
-import kr.codesqaud.cafe.service.JoinService;
 import kr.codesqaud.cafe.service.impl.JoinServiceImpl;
 import kr.codesqaud.cafe.model.User;
 
