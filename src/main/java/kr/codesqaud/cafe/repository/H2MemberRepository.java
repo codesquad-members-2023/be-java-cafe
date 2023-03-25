@@ -11,17 +11,17 @@ import java.sql.SQLException;
 import java.util.*;
 
 @Repository
-public class JdbcMemberRepository implements MemberRepository {
+public class H2MemberRepository implements MemberRepository {
 
     private final JdbcTemplate jdbcTemplate;
 
-    public JdbcMemberRepository(DataSource dataSource) {
+    public H2MemberRepository(DataSource dataSource) {
         jdbcTemplate = new JdbcTemplate(dataSource);
     }
 
     @Override
     public void save(Member member) {
-        if (vaildMemberId(member.getNickname())) {
+        if (validMemberId(member.getNickname())) {
             String sql = "INSERT INTO MEMBER (USERID, NICKNAME, EMAIL, PASSWORD) VALUES (?, ?, ?, ?)";
             jdbcTemplate.update(sql,
                     member.getUserId(),
@@ -50,9 +50,9 @@ public class JdbcMemberRepository implements MemberRepository {
     }
 
     @Override
-    public boolean vaildMemberId(String userName) {
-        String sql = "SELECT ID, USERID FROM MEMBER WHERE USERID = ?";
-        return jdbcTemplate.query(sql, new MemberRowMapper(), userName).isEmpty();
+    public boolean validMemberId(String userId) {
+        String sql = "SELECT ID, USERID, NICKNAME, EMAIL, PASSWORD, CREATED_AT, UPDATED_AT FROM MEMBER WHERE USERID = ?";
+        return jdbcTemplate.query(sql, new MemberRowMapper(), userId).isEmpty();
     }
 
     @Override

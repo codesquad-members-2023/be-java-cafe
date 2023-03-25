@@ -4,7 +4,6 @@ package kr.codesqaud.cafe.domain;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.Objects;
 
 public class Member {
     private Long id;
@@ -102,7 +101,7 @@ public class Member {
     }
 
     public boolean isNameEquals(String userName) {
-        return Objects.equals(this.nickname, userName);
+        return this.nickname.equals(userName);
     }
 
     public boolean isValidPassword(String password) {

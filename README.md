@@ -160,9 +160,13 @@
 2. 미션 4단계 구현 시도
 
 ### TODO
-- [ ] 빌드 자동화
-- [ ] `HttpSession` 학습
-- [ ] 날짜 타입 `TimeStamp` -> `LocalDate` 리팩토링하기
-- [ ] 오브젝트 1챕터 읽기
+- [x] 빌드 자동화
+- [x] `HttpSession` 학습
+- [x] 날짜 타입 `TimeStamp` -> `LocalDate` 리팩토링하기
+- [x] 오브젝트 챕터 1개 읽기
+- [x] 미션 4단계 구현
+- [x] DB외래키 갖도록 수정
 
 ### 새로 알게된 것
+- 스프링부트 테스트에 대해 학습
+- `react:`시 데이터를 함께 전달할 수 있는 `redirectAttribute`와 그 메서드에 대해 학습

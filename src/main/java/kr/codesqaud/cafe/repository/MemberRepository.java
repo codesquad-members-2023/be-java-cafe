@@ -12,6 +12,6 @@ public interface MemberRepository {
     Optional<Member> findByMemberId(String userId);
 
     List<Member> findAll();
-    boolean vaildMemberId(String userName);
+    boolean validMemberId(String userName);
     void update(Member exMember, Member newMember);
 }
