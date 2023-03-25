@@ -29,12 +29,19 @@ class H2ArticleRepositoryTest {
 
     @BeforeEach
     void init() {
-        member = memberRepository.findById(1L).orElseThrow();
+        member = memberRepository.findById(1L);
 
         article = new Article();
         article.setWriter(member);
         article.setTitle("test1");
         article.setContents("test1 content");
+    }
+
+    @Test
+    @Transactional
+    @DisplayName("레포지토리에 접속하여 모든 요소를 찾아올 수 있어야 한다.")
+    void findAllData() {
+        assertThat(repository.findAll()).hasSize(2);
     }
 
     @Test
@@ -48,15 +55,9 @@ class H2ArticleRepositoryTest {
 
     @Test
     @Transactional
-    void update() {
-
-    }
-
-    @Test
+    @DisplayName("article ID에 따라 맞는 데이터를 반환해주어야 한다.")
     void findById() {
-    }
-
-    @Test
-    void findAll() {
+        Article byId = repository.findById(1L);
+        assertThat(byId.getTitle()).isEqualTo("test1");
     }
 }
