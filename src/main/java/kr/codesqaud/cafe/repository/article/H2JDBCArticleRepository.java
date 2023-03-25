@@ -45,12 +45,14 @@ public class H2JDBCArticleRepository implements ArticleRepository {
         return template.query(sql, new BeanPropertyRowMapper<>(Article.class));
     }
 
+    @Override
     public void updateArticle(String title, String contents, int articleId) {
         String sql = "update article set title=?, contents=? where id=?";
 
         template.update(sql, title, contents, articleId);
     }
 
+    @Override
     public void deleteArticle(int articleId) {
         String sql = "delete from article where id=?";
 
