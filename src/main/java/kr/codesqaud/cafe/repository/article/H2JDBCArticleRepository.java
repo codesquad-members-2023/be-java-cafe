@@ -1,6 +1,7 @@
 package kr.codesqaud.cafe.repository.article;
 
 import kr.codesqaud.cafe.domain.Article;
+import kr.codesqaud.cafe.dto.ArticleFormDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Primary;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
@@ -24,7 +25,7 @@ public class H2JDBCArticleRepository implements ArticleRepository {
     }
 
     @Override
-    public void save(Article article) {
+    public void save(ArticleFormDTO article) {
         String sql = "insert into article (userid, title, contents, timestamp) values(?, ?, ?, ?)";
 
         template.update(sql, article.getUserId(), article.getTitle(), article.getContents(), Timestamp.valueOf(LocalDateTime.now()));
@@ -58,7 +59,7 @@ public class H2JDBCArticleRepository implements ArticleRepository {
 
     @Override
     public String findUsernameByArticleUserId(String userId) {
-        String sql = "select member.name from article inner join member on article.userid = member.userid where article.userid = ?";
+        String sql = "select member.name from article inner join member on article.userid = member.userid where article.userid = ? group by member.name";
 
         return template.queryForObject(sql, String.class, userId);
     }
