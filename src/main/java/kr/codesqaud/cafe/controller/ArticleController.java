@@ -12,8 +12,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
-import java.util.NoSuchElementException;
-
 @Controller
 public class ArticleController {
 
@@ -37,8 +35,7 @@ public class ArticleController {
 
     @GetMapping("/articles/{id}")
     public String showArticle(@PathVariable Long id, Model model) {
-        model.addAttribute("article", articleRepository.findById(id)
-                .orElseThrow(() -> new NoSuchElementException("해당하는 글이 없습니다.")));
+        model.addAttribute("article", articleRepository.findById(id));
         return "qna/show";
     }
 
