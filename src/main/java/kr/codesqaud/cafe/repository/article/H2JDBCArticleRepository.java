@@ -59,9 +59,4 @@ public class H2JDBCArticleRepository implements ArticleRepository {
         template.update(sql, articleId);
     }
 
-    private int findDbSize() {
-        String sql = "select count(id) as row_count from article";
-        return template.queryForObject(sql, Integer.class);
-    }
-
 }
