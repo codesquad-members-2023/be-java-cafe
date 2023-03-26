@@ -10,6 +10,8 @@ import org.springframework.stereotype.Repository;
 import javax.sql.DataSource;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.*;
 
 @Repository
@@ -26,12 +28,13 @@ public class H2MemberRepository implements MemberRepository {
     @Override
     public void save(Member member) {
         if (validMemberId(member.getNickname())) {
-            String sql = "INSERT INTO MEMBER (USERID, NICKNAME, EMAIL, PASSWORD) VALUES (:userId, :nickName, :email, :password)";
+            String sql = "INSERT INTO MEMBER (USERID, NICKNAME, EMAIL, PASSWORD, CREATED_AT) VALUES (:userId, :nickName, :email, :password, :createdAt)";
             MapSqlParameterSource params = new MapSqlParameterSource();
             params.addValue("userId", member.getUserId())
                 .addValue("nickName", member.getNickname())
                 .addValue("email", member.getEmail())
-                .addValue("password", member.getPassword());
+                .addValue("password", member.getPassword())
+                .addValue("createdAt", Timestamp.valueOf(LocalDateTime.now()));
             namedParameterJdbcTemplate.update(sql, params);
         }
     }
@@ -65,13 +68,14 @@ public class H2MemberRepository implements MemberRepository {
     @Override
     public void update(Member exMember, Member newUser) throws NoSuchElementException {
         Member updatedMember = exMember.update(newUser);
-        String sql = "UPDATE MEMBER SET NICKNAME = :nickname, EMAIL = :email, PASSWORD = :password, UPDATED_AT = :updated WHERE USERID = :userId";
+        String sql = "UPDATE MEMBER SET NICKNAME = :nickname, EMAIL = :email, PASSWORD = :password, CREATED_AT = :created, UPDATED_AT = :updated WHERE ID = :id";
         MapSqlParameterSource params = new MapSqlParameterSource();
         params.addValue("nickname", updatedMember.getNickname())
             .addValue("email", updatedMember.getNickname())
             .addValue("password", updatedMember.getUpdatedDate())
+            .addValue("created", updatedMember.getCreatedDate())
             .addValue("updated", updatedMember.getUpdatedDate())
-            .addValue("userId", updatedMember.getId());
+            .addValue("id", exMember.getId());
         namedParameterJdbcTemplate.update(sql, params);
     }
 
@@ -83,8 +87,8 @@ public class H2MemberRepository implements MemberRepository {
             member.setNickname(rs.getString("NICKNAME"));
             member.setPassword(rs.getString("PASSWORD"));
             member.setEmail(rs.getString("EMAIL"));
-            member.setCreatedDate(rs.getTimestamp("CREATED_AT"));
-            member.setUpdatedDate(rs.getTimestamp("UPDATED_AT"));
+            member.setCreatedDate(rs.getTimestamp("CREATED_AT").toLocalDateTime());
+            member.setUpdatedDate(rs.getTimestamp("UPDATED_AT").toLocalDateTime());
             return member;
         }
     }
