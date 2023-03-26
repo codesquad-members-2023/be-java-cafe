@@ -45,13 +45,13 @@ public class H2JdbcTemplateMemberRepository implements MemberRepository {
 
     @Override
     public List<Member> findAll() {
-        String sql = "SELECT * FROM MEMBER";
+        String sql = "SELECT id, user_name, password ,email,created_date FROM MEMBER";
         return template.query(sql, new MemberRowMapper());
     }
 
     @Override
     public Optional<Member> findById(Long id) {
-        String sql = "SELECT  id, user_name, password  , email FROM MEMBER WHERE ID = ?";
+        String sql = "SELECT  id, user_name, password,email,created_date FROM MEMBER WHERE ID = ?";
         try {
             Optional<Member> member = template.query(sql, new MemberRowMapper(), id).stream().findAny();
             return Optional.ofNullable(member.orElseThrow());
@@ -71,7 +71,7 @@ public class H2JdbcTemplateMemberRepository implements MemberRepository {
     }
 
     public Optional<Member> findByLoginId(String userId) {
-        String sql = "select * from member where email = ?";
+        String sql = "select id,user_name, password , email,created_date from member where user_name = ?";
         return Optional.ofNullable(template.queryForObject(sql, new BeanPropertyRowMapper<>(Member.class), userId));
     }
 

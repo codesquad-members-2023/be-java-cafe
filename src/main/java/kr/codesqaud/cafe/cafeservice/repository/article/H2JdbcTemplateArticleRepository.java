@@ -31,13 +31,13 @@ public class H2JdbcTemplateArticleRepository implements ArticleRepository {
 
     @Override
     public List<Article> findAll() {
-        String sql = "SELECT * FROM article";
+        String sql = "SELECT id,writer, title, content,created_date,reply_count  FROM article";
         return template.query(sql, new ArticleRowMapper());
     }
 
     @Override
     public Optional<Article> findById(Long id) {
-        String sql = "SELECT * FROM article WHERE id = ?";
+        String sql = "SELECT id,writer, title, content,created_date,reply_count FROM article WHERE id = ?";
         try {
             return template.query(sql, new ArticleRowMapper(), id).stream().findAny();
         } catch (EmptyResultDataAccessException e) {
