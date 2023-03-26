@@ -2,6 +2,7 @@ package kr.codesqaud.cafe.repository;
 
 import kr.codesqaud.cafe.domain.Article;
 import kr.codesqaud.cafe.domain.Member;
+import org.springframework.beans.BeanUtils;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
@@ -37,29 +38,43 @@ public class H2ArticleRepository implements ArticleRepository {
 
     @Override
     public Article findById(Long id) {
-        String sql = "SELECT ID, TITLE, BODY, USER_ID, CREATED_AT, UPDATED_AT FROM ARTICLE WHERE ID = :id";
-        MapSqlParameterSource params = new MapSqlParameterSource();
-        params.addValue("id", id);
+        String sql = "SELECT article.ID as article_id, article.TITLE, article.CONTENTS, article.CREATED_AT as article_createddate, article.UPDATED_AT as article_updateddate, " +
+                "member.ID as member_id, member.USERID, member.NICKNAME, member.EMAIL, member.PASSWORD, member.CREATED_AT as member_createddate, member.UPDATED_AT as member_updateddate " +
+                "FROM ARTICLE article " +
+                "LEFT JOIN MEMBER member on article.USER_ID = member.ID " +
+                " WHERE article.ID = :id";
+        MapSqlParameterSource params = new MapSqlParameterSource("id", id);
         return namedParameterJdbcTemplate.queryForObject(sql, params, new ArticleRowMapper());
     }
 
     @Override
     public List<Article> findAll() {
-        String sql = "SELECT A.ID, A.TITLE, A.BODY, A.CREATED_AT, A.UPDATED_AT, " +
-                "M.ID, M.USERID, M.NICKNAME, M.EMAIL, M.PASSWORD, M.CREATED_AT, M.UPDATED_AT" +
-                " FROM ARTICLE A LEFT JOIN MEMBER M" +
-                " on A.USER_ID = M.ID" +
-                " ORDER BY A.ID DESC;";
+        String sql = "SELECT article.ID as article_id, article.TITLE, article.CONTENTS, article.CREATED_AT as article_createddate, article.UPDATED_AT as article_updateddate, " +
+                "member.ID as member_id, member.USERID, member.NICKNAME, member.EMAIL, member.PASSWORD, member.CREATED_AT as member_createddate, member.UPDATED_AT as member_updateddate " +
+                "FROM ARTICLE article " +
+                "LEFT JOIN MEMBER member on article.USER_ID = member.ID " +
+                "ORDER BY article.ID DESC;";
         return jdbcTemplate.query(sql, new ArticleRowMapper());
     }
 
     private static class ArticleRowMapper implements RowMapper<Article> {
+
         @Override
         public Article mapRow(ResultSet rs, int rowNum) throws SQLException {
            Article article = new BeanPropertyRowMapper<>(Article.class).mapRow(rs, rowNum);
-           Member member = new BeanPropertyRowMapper<>(Member.class).mapRow(rs, rowNum);
-           Objects.requireNonNull(article).setWriter(member);
+           Member writer = new BeanPropertyRowMapper<>(Member.class).mapRow(rs, rowNum);
+
+           article.setId(rs.getLong("article_id"));
+           article.setCreatedDate(rs.getTimestamp("article_createddate").toLocalDateTime());
+           article.setCreatedDate(rs.getTimestamp("article_updateddate").toLocalDateTime());
+
+           writer.setId(rs.getLong("member_id"));
+           writer.setCreatedDate(rs.getTimestamp("member_createddate").toLocalDateTime());
+           writer.setUpdatedDate(rs.getTimestamp("member_updateddate").toLocalDateTime());
+
+           article.setWriter(writer);
            return article;
         }
+
     }
 }
