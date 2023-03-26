@@ -15,7 +15,8 @@ import static org.assertj.core.api.Assertions.*;
 class UserJoinValidateTest {
 
     private final UserJoinValidator validator;
-    private TestUserConstant testUserConstant = new TestUserConstant();
+    private UserTestErrorConstant errorCode = new UserTestErrorConstant();
+    private UserTestInformationConstant userInformation = new UserTestInformationConstant();
 
     @Autowired
     public UserJoinValidateTest(UserJoinValidator validator) {
@@ -25,140 +26,139 @@ class UserJoinValidateTest {
     @Test
     @DisplayName("userId가 존재하는 경우 검증")
     void duplicatedUserId() {
-        String duplicatedUser = "first";
-        User user = new User(duplicatedUser, "password!", "name", "email@email.com");
+        User user = new User(userInformation.EXISTING_MEMBER_ID, userInformation.NEW_MEMBER_PASSWORD, userInformation.NEW_MEMBER_NAME, userInformation.NEW_MEMBER_EMAIL);
         Errors errors = new BeanPropertyBindingResult(user, "user");
         validator.validate(user, errors);
 
         FieldError fieldError = errors.getFieldError();
 
-        assertThat(fieldError.getCode()).isEqualTo(testUserConstant.DUPLICATED_USERID);
+        assertThat(fieldError.getCode()).isEqualTo(errorCode.DUPLICATED_USERID);
     }
 
     @Test
     @DisplayName("회원가입 아이디 빈칸 검증")
     void blankUserId() {
-        User user = new User("", "password!", "name", "email@email.com");
+        User user = new User(userInformation.BLANK, userInformation.NEW_MEMBER_PASSWORD, userInformation.NEW_MEMBER_NAME, userInformation.NEW_MEMBER_EMAIL);
         Errors errors = new BeanPropertyBindingResult(user, "user");
         validator.validate(user, errors);
 
         FieldError fieldError = errors.getFieldError();
 
-        assertThat(fieldError.getCode()).isEqualTo(testUserConstant.REQUIRED_USERID);
+        assertThat(fieldError.getCode()).isEqualTo(errorCode.REQUIRED_USERID);
     }
 
     @Test
     @DisplayName("비밀번호 빈칸 검증")
     void blankPassword() {
-        User user = new User("userID", "", "name", "email@com");
+        User user = new User(userInformation.NEW_MEMBER_ID, userInformation.BLANK, userInformation.NEW_MEMBER_NAME, userInformation.NEW_MEMBER_EMAIL);
         Errors errors = new BeanPropertyBindingResult(user, "user");
         validator.validate(user, errors);
 
         FieldError fieldError = errors.getFieldError();
 
-        assertThat(fieldError.getCode()).isEqualTo(testUserConstant.REQUIRED_PASSWORD);
+        assertThat(fieldError.getCode()).isEqualTo(errorCode.REQUIRED_PASSWORD);
     }
 
     @Test
     @DisplayName("회원가입 이름 빈칸 검증")
     void blankName() {
-        User user = new User("first", "password!", "", "email@com");
+        User user = new User(userInformation.NEW_MEMBER_ID, userInformation.NEW_MEMBER_PASSWORD, userInformation.BLANK, userInformation.NEW_MEMBER_EMAIL);
         Errors errors = new BeanPropertyBindingResult(user, "user");
         validator.validate(user, errors);
 
         FieldError fieldError = errors.getFieldError();
 
-        assertThat(fieldError.getCode()).isEqualTo(testUserConstant.REQUIRED_NAME);
+        assertThat(fieldError.getCode()).isEqualTo(errorCode.REQUIRED_NAME);
     }
 
     @Test
     @DisplayName("회원가입 이메일 빈칸 검증")
     void blankEmail() {
-        User user = new User("first", "password!", "name", "");
+        User user = new User(userInformation.NEW_MEMBER_ID, userInformation.NEW_MEMBER_NAME, userInformation.NEW_MEMBER_NAME, userInformation.BLANK);
         Errors errors = new BeanPropertyBindingResult(user, "user");
         validator.validate(user, errors);
 
         FieldError fieldError = errors.getFieldError();
 
-        assertThat(fieldError.getCode()).isEqualTo(testUserConstant.REQUIRED_EMAIL);
+        assertThat(fieldError.getCode()).isEqualTo(errorCode.REQUIRED_EMAIL);
     }
 
     @Test
     @DisplayName("회원가입 아이디 길이제한")
     void limitUserIdLength() {
-        User user = new User(testUserConstant.NAME_LENGTH_OVER, "password!", "name", "email@com");
+        User user = new User(userInformation.USERID_LENGTH_OVER, userInformation.NEW_MEMBER_PASSWORD, userInformation.NEW_MEMBER_NAME, userInformation.NEW_MEMBER_EMAIL);
         Errors errors = new BeanPropertyBindingResult(user, "user");
         validator.validate(user, errors);
 
         FieldError fieldError = errors.getFieldError();
 
-        assertThat(fieldError.getCode()).isEqualTo(testUserConstant.USERID_LENGTH_ERROR);
+        assertThat(fieldError.getCode()).isEqualTo(errorCode.USERID_LENGTH_ERROR);
     }
 
     @Test
     @DisplayName("회원가입 비밀번호 길이제한")
     void limitPasswordLength() {
-        User user = new User("userId", testUserConstant.PASSWORD_LENGTH_OVER, "name", "email@com");
+        User user = new User(userInformation.NEW_MEMBER_ID, userInformation.PASSWORD_LENGTH_OVER, userInformation.NEW_MEMBER_NAME, userInformation.NEW_MEMBER_EMAIL);
         Errors errors = new BeanPropertyBindingResult(user, "user");
         validator.validate(user, errors);
 
         FieldError fieldError = errors.getFieldError();
 
-        assertThat(fieldError.getCode()).isEqualTo(testUserConstant.PASSWORD_LENGTH_ERROR);
+        assertThat(fieldError.getCode()).isEqualTo(errorCode.PASSWORD_LENGTH_ERROR);
     }
 
     @Test
     @DisplayName("회원가입 이름 길이제한")
     void limitNameLength() {
-        User user = new User("userId", "password!", testUserConstant.NAME_LENGTH_OVER, "email@com");
+        User user = new User(userInformation.NEW_MEMBER_ID, userInformation.NEW_MEMBER_PASSWORD, userInformation.NAME_LENGTH_OVER, userInformation.NEW_MEMBER_EMAIL);
         Errors errors = new BeanPropertyBindingResult(user, "user");
         validator.validate(user, errors);
 
         FieldError fieldError = errors.getFieldError();
 
-        assertThat(fieldError.getCode()).isEqualTo(testUserConstant.NAME_LENGTH_ERROR);
+        assertThat(fieldError.getCode()).isEqualTo(errorCode.NAME_LENGTH_ERROR);
     }
 
     @Test
-    @DisplayName("회원가입 아이디 길이제한")
+    @DisplayName("회원가입 이메일 길이제한")
     void limitEmailError() {
-        User user = new User("userId", "password!", "name", testUserConstant.EMAIL_LENGTH_OVER);
+        User user = new User(userInformation.NEW_MEMBER_ID, userInformation.NEW_MEMBER_PASSWORD, userInformation.NEW_MEMBER_NAME, userInformation.EMAIL_LENGTH_OVER);
         Errors errors = new BeanPropertyBindingResult(user, "user");
         validator.validate(user, errors);
 
         FieldError fieldError = errors.getFieldError();
 
-        assertThat(fieldError.getCode()).isEqualTo(testUserConstant.EMAIL_LENGTH_ERROR);
+        assertThat(fieldError.getCode()).isEqualTo(errorCode.EMAIL_LENGTH_ERROR);
     }
 
     @Test
     @DisplayName("회원가입 비밀번호 특수문자 포함 확인")
     void specialChar() {
-        User user = new User("userId", "password", "name", "email@email");
+        User user = new User(userInformation.NEW_MEMBER_ID, userInformation.WRONG_PASSWORD, userInformation.NEW_MEMBER_NAME, userInformation.NEW_MEMBER_EMAIL);
         Errors errors = new BeanPropertyBindingResult(user, "user");
         validator.validate(user, errors);
 
         FieldError fieldError = errors.getFieldError();
 
-        assertThat(fieldError.getCode()).isEqualTo(testUserConstant.PASSWORD_FORMAT_ERROR);
+        assertThat(fieldError.getCode()).isEqualTo(errorCode.PASSWORD_FORMAT_ERROR);
     }
 
     @Test
     @DisplayName("회원가입 이메일 형식 틀리면 에러")
     void emailFormatTest() {
-        User user = new User("userId", "password!", "name", "email");
+        User user = new User(userInformation.NEW_MEMBER_ID, userInformation.NEW_MEMBER_PASSWORD, userInformation.NEW_MEMBER_NAME, userInformation.WRONG_EMAIL_FORMAT);
         Errors errors = new BeanPropertyBindingResult(user, "user");
         validator.validate(user, errors);
 
         FieldError fieldError = errors.getFieldError();
 
-        assertThat(fieldError.getCode()).isEqualTo(testUserConstant.EMAIL_FORMAT_ERROR);
+        assertThat(fieldError.getCode()).isEqualTo(errorCode.EMAIL_FORMAT_ERROR);
     }
 
     @Test
     @DisplayName("회원가입 이메일 형식 올바르게 입력하면 예외 x")
     void emailFormatTest2() {
-        User user = new User("userId", "password!", "name", "email@email.com");
+        User user = new User(userInformation.NEW_MEMBER_ID, userInformation.NEW_MEMBER_PASSWORD, userInformation.NEW_MEMBER_NAME, userInformation.NEW_MEMBER_EMAIL);
         Errors errors = new BeanPropertyBindingResult(user, "user");
         validator.validate(user, errors);
         FieldError fieldError = errors.getFieldError();

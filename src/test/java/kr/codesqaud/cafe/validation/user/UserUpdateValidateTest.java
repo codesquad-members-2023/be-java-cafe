@@ -16,7 +16,8 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 class UserUpdateValidateTest {
 
     private final UserUpdateValidator validator;
-    private TestUserConstant testUserConstant = new TestUserConstant();
+    private UserTestErrorConstant testUserConstant = new UserTestErrorConstant();
+    private UserTestInformationConstant userInformation = new UserTestInformationConstant();
 
     @Autowired
     public UserUpdateValidateTest(UserUpdateValidator validator) {
@@ -26,7 +27,7 @@ class UserUpdateValidateTest {
     @Test
     @DisplayName("회원정보 수정 비밀번호 빈칸 검증")
     void blankPassword() {
-        User user = new User("first", "", "name", "email@com");
+        User user = new User(userInformation.EXISTING_MEMBER_ID, userInformation.BLANK, userInformation.NEW_MEMBER_NAME, userInformation.NEW_MEMBER_EMAIL);
         Errors errors = new BeanPropertyBindingResult(user, "user");
         validator.validate(user, errors);
 
@@ -38,7 +39,7 @@ class UserUpdateValidateTest {
     @Test
     @DisplayName("회원정보 수정  이름 빈칸 검증")
     void blankName() {
-        User user = new User("first", "password", "", "email@com");
+        User user = new User(userInformation.EXISTING_MEMBER_ID, userInformation.EXISTING_MEMBER_PASSWORD, userInformation.BLANK, userInformation.NEW_MEMBER_EMAIL);
         Errors errors = new BeanPropertyBindingResult(user, "user");
         validator.validate(user, errors);
 
@@ -50,7 +51,7 @@ class UserUpdateValidateTest {
     @Test
     @DisplayName("회원정보 수정  이메일 빈칸 검증")
     void blankEmail() {
-        User user = new User("first", "password", "name", "");
+        User user = new User(userInformation.EXISTING_MEMBER_ID, userInformation.EXISTING_MEMBER_PASSWORD, userInformation.NEW_MEMBER_NAME, userInformation.BLANK);
         Errors errors = new BeanPropertyBindingResult(user, "user");
         validator.validate(user, errors);
 
@@ -62,7 +63,7 @@ class UserUpdateValidateTest {
     @Test
     @DisplayName("회원정보 수정 올바른 비밀번호 검증")
     void wrongPassword() {
-        User user = new User("first", "wrongPassword", "name", "email@com");
+        User user = new User(userInformation.EXISTING_MEMBER_ID, userInformation.WRONG_PASSWORD, userInformation.NEW_MEMBER_NAME, userInformation.NEW_MEMBER_EMAIL);
         Errors errors = new BeanPropertyBindingResult(user, "user");
         validator.validate(user, errors);
 
@@ -74,7 +75,7 @@ class UserUpdateValidateTest {
     @Test
     @DisplayName("회원정보 수정 이름 길이 제한")
     void limitNameLength() {
-        User user = new User("first", "password!", testUserConstant.NAME_LENGTH_OVER, "email@com");
+        User user = new User(userInformation.EXISTING_MEMBER_ID, userInformation.EXISTING_MEMBER_PASSWORD, userInformation.NAME_LENGTH_OVER, userInformation.NEW_MEMBER_EMAIL);
         Errors errors = new BeanPropertyBindingResult(user, "user");
         validator.validate(user, errors);
 
@@ -86,7 +87,7 @@ class UserUpdateValidateTest {
     @Test
     @DisplayName("회원정보 수정 아이디 길이제한")
     void limitEmailError() {
-        User user = new User("first", "password!", "name", testUserConstant.EMAIL_LENGTH_OVER);
+        User user = new User(userInformation.EXISTING_MEMBER_ID, userInformation.EXISTING_MEMBER_PASSWORD, userInformation.NEW_MEMBER_NAME, userInformation.EMAIL_LENGTH_OVER);
         Errors errors = new BeanPropertyBindingResult(user, "user");
         validator.validate(user, errors);
 
@@ -96,9 +97,9 @@ class UserUpdateValidateTest {
     }
 
     @Test
-    @DisplayName("회원정보 수정 이메일 형식 맞는지 확인")
+    @DisplayName("회원정보 수정 이메일 형식 틀리면 에러")
     void emailFormatTest() {
-        User user = new User("first", "password!", "name", "email@");
+        User user = new User(userInformation.EXISTING_MEMBER_ID, userInformation.EXISTING_MEMBER_PASSWORD, userInformation.NEW_MEMBER_NAME, userInformation.WRONG_EMAIL_FORMAT);
         Errors errors = new BeanPropertyBindingResult(user, "user");
         validator.validate(user, errors);
 
@@ -110,7 +111,7 @@ class UserUpdateValidateTest {
     @Test
     @DisplayName("회원정보 수정 이메일 형식 올바르게 입력하면 예외 x")
     void emailFormatTest2() {
-        User user = new User("first", "password!", "name", "email@email.com");
+        User user = new User(userInformation.EXISTING_MEMBER_ID, userInformation.EXISTING_MEMBER_PASSWORD, userInformation.NEW_MEMBER_NAME, userInformation.NEW_MEMBER_EMAIL);
         Errors errors = new BeanPropertyBindingResult(user, "user");
         validator.validate(user, errors);
         FieldError fieldError = errors.getFieldError();

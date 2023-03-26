@@ -1,10 +1,10 @@
 package kr.codesqaud.cafe.validation.article;
 
-public class TestArticleConstant {
+public class ArticleInformationConstant {
     public final String TITLE_LENGTH_OVER = "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA";
     public final String CONTENTS_LENGTH_OVER = "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA";
-    public final String TITLE_ERROR_CODE = "required.article.title";
-    public final String CONTENT_ERROR_CODE = "required.article.contents";
-    public final String TITLE_LENGTH_ERROR = "error.article.titleLength";
-    public final String CONTENTS_LENGTH_ERROR = "error.article.contentsLength";
+    public final String BLANK = "";
+    public final String USERID = "first";
+    public final String TITLE = "title";
+    public final String CONTENTS = "contents";
 }

@@ -1,11 +1,6 @@
 package kr.codesqaud.cafe.validation.user;
 
-public class TestUserConstant {
-
-    public final String USERID_LENGTH_OVER = "AAAAAAAAAAAAAAAAAAAAA";
-    public final String PASSWORD_LENGTH_OVER = "AAAAAAAAAAAAAAAAAAAAA!";
-    public final String NAME_LENGTH_OVER = "AAAAAAAAAAAAAAAAAAAAA";
-    public final String EMAIL_LENGTH_OVER = "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA@eamil.com";
+public class UserTestErrorConstant {
 
     public final String REQUIRED_USERID = "required.user.userId";
     public final String REQUIRED_PASSWORD = "required.user.password";
