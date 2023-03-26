@@ -24,6 +24,10 @@ public class QnaServiceImpl implements QnaService {
     public void modifyQna(long id, String title, String contents) {
         articleRepository.modifyArticle(id, title, contents);
     }
+    @Override
+    public void deleteQna(long id) {
+        articleRepository.deleteArticle(id);
+    }
 
     @Override
     public List<ArticleDto> lookupAllArticles() {

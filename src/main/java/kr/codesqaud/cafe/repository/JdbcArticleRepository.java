@@ -32,6 +32,11 @@ public class JdbcArticleRepository implements ArticleRepository {
     }
 
     @Override
+    public void deleteArticle(long id) {
+        jdbcTemplate.update("delete from articles where id=?", id);
+    }
+
+    @Override
     public List<ArticleDto> getArticleList() {
         return jdbcTemplate.query("select writer,title,contents,id,creationTime from articles order by id desc",
                 articleRowMapper());

@@ -1,10 +1,12 @@
 package kr.codesqaud.cafe.controller;
 
+import static kr.codesqaud.cafe.exceptions.ArticleInfoException.*;
+
 import javax.servlet.http.HttpSession;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -12,7 +14,6 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import kr.codesqaud.cafe.exceptions.ArticleInfoException;
-import kr.codesqaud.cafe.exceptions.UserInfoException;
 import kr.codesqaud.cafe.service.JoinService;
 import kr.codesqaud.cafe.service.QnaService;
 import kr.codesqaud.cafe.model.Article;
@@ -54,8 +55,8 @@ public class ArticleController {
     public String articleModificationForm(@PathVariable long id, Model model, HttpSession httpSession) {
         String writer = qnaService.lookupById(id).getWriter();
         if (!httpSession.getAttribute("sessionedUser").equals(writer)) {
-            throw new ArticleInfoException(ArticleInfoException.WRONG_NOT_MATCHING_MESSAGE,
-                    ArticleInfoException.WRITER_NOT_MATCHING_CODE);
+            throw new ArticleInfoException(UNAUTHORIZED_MODIFICATION_MESSAGE,
+                    WRITER_NOT_MATCHING_CODE);
         }
         model.addAttribute("id", id);
 
@@ -67,11 +68,22 @@ public class ArticleController {
             HttpSession httpSession) {
         String writer = qnaService.lookupById(id).getWriter();
         if (!httpSession.getAttribute("sessionedUser").equals(writer)) {
-            throw new ArticleInfoException(ArticleInfoException.WRONG_NOT_MATCHING_MESSAGE,
-                    ArticleInfoException.WRITER_NOT_MATCHING_CODE);
+            throw new ArticleInfoException(UNAUTHORIZED_MODIFICATION_MESSAGE,
+                    WRITER_NOT_MATCHING_CODE);
         }
         qnaService.modifyQna(id, title, contents);
 
+        return "redirect:/";
+    }
+
+    @DeleteMapping(value = "/qna/{id}/form")
+    public String articleDelete(@PathVariable long id, HttpSession httpSession) {
+        String writer = qnaService.lookupById(id).getWriter();
+        if (!httpSession.getAttribute("sessionedUser").equals(writer)) {
+            throw new ArticleInfoException(UNAUTHORIZED_MODIFICATION_MESSAGE,
+                    WRITER_NOT_MATCHING_CODE);
+        }
+        qnaService.deleteQna(id);
         return "redirect:/";
     }
 
