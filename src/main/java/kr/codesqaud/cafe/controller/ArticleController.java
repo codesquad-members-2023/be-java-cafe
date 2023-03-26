@@ -57,8 +57,14 @@ public class ArticleController {
 
     @GetMapping("/updateForm/{articleId}")
     public String update(@PathVariable int articleId,
+                         @SessionAttribute(name = ConstConfig.SESSION_ID) User user,
                          Model model) {
+        // TODO : 검증 공부 후 다시 리펙토링 할 예정
         Article article = articleRepository.findByArticleId(articleId);
+        if (!article.getWriter().equals(user.getUserId())) {
+            return "redirect:/qna/list";
+        }
+
         model.addAttribute(article);
         return "qna/updateForm";
     }
@@ -72,8 +78,13 @@ public class ArticleController {
     }
 
     @DeleteMapping("/delete/{articleId}")
-    public String delete(@PathVariable int articleId) {
-        articleRepository.delete(articleId);
+    public String delete(@PathVariable int articleId,
+                         @SessionAttribute(name = ConstConfig.SESSION_ID) User user) {
+        Article article = articleRepository.findByArticleId(articleId);
+        // TODO : 검증 공부 후 다시 리펙토링 할 예정
+        if (article.getWriter().equals(user.getUserId())) {
+            articleRepository.delete(articleId);
+        }
         return "redirect:/qna/list";
     }
 
