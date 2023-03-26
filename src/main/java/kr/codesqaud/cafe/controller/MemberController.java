@@ -48,11 +48,6 @@ public class MemberController {
         return "redirect:/";
     }
 
-    @GetMapping("/login")
-    public String loginForm() {
-        return "user/login";
-    }
-
     @PostMapping("/login")
     public String loginUser(String userId, String password, HttpSession httpSession) {
         Member member = memberRepository.findByMemberId(userId);
