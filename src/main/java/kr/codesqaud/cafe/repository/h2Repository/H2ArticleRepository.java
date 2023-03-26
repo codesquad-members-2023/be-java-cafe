@@ -25,16 +25,23 @@ public class H2ArticleRepository implements ArticleRepository {
         jdbcTemplate = new JdbcTemplate(dataSource);
     }
 
-    public void save(Article article) {
+    public int save(Article article) {
         String sql = "insert into articles(writer, title, contents) values (?, ?, ?)";
 
-        jdbcTemplate.update(sql, article.getWriter(), article.getTitle(), article.getContents());
+        return jdbcTemplate.update(sql, article.getWriter(), article.getTitle(), article.getContents());
     }
 
-    public int delete(int index) {
+    @Override
+    public int update(int articleId, String title, String content) {
+        String sql = "update articles set title = ?, contents = ? where articleId = ?";
+
+        return jdbcTemplate.update(sql, title, content ,articleId);
+    }
+
+    public int delete(int articleId) {
         String sql = "delete from articles where articleId=?";
 
-        return jdbcTemplate.update(sql, index);
+        return jdbcTemplate.update(sql, articleId);
     }
 
     public Article findByArticleId(int index) {

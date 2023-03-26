@@ -6,9 +6,13 @@ import java.util.List;
 
 public interface ArticleRepository {
 
-    public void save(Article article) ;
+    public int save(Article article) ;
 
-    public Article findByIndex(int index);
+    public int update(int articleId, String Title, String content);
+
+    public int delete(int articleId);
+
+    public Article findByArticleId(int index);
 
     public List<Article> findAll() ;
 }

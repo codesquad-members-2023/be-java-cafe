@@ -11,6 +11,6 @@ public class WebConfig implements WebMvcConfigurer {
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(new LoginCheckInterceptor())
                 .order(1)
-                .addPathPatterns("/qna/show/**", "/qna/createForm", "/qna/create/**");
+                .addPathPatterns("/qna/show/**", "/qna/createForm", "/qna/create/**", "/qna/update/**");
     }
 }
