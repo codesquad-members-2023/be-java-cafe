@@ -30,15 +30,15 @@ class H2ArticleRepositoryTest {
 
         article = new Article();
         article.setWriter(member);
-        article.setTitle("test1");
-        article.setContents("test1 content");
+        article.setTitle("테스트를 해보자");
+        article.setContents("통과를 해보자🔥");
     }
 
     @Test
     @Transactional
     @DisplayName("레포지토리에 접속하여 모든 요소를 찾아올 수 있어야 한다.")
     void findAllData() {
-        assertThat(repository.findAll()).hasSize(2);
+        assertThat(repository.findAll()).hasSize(3);
     }
 
     @Test
@@ -56,5 +56,22 @@ class H2ArticleRepositoryTest {
     void findById() {
         Article byId = repository.findById(1L);
         assertThat(byId.getTitle()).isEqualTo("test1");
+    }
+
+    @Test
+    @Transactional
+    @DisplayName("article ID로 글쓴이 ID를 알 수 있어야 한다.")
+    public void findWriterIdById() throws Exception{
+        Article byId = repository.findById(1L);
+        assertThat(byId.getWriterId()).isEqualTo(2L);
+    }
+
+    @Test
+    @Transactional
+    @DisplayName("article ID로 글쓴이 닉네임을 알 수 있어야 한다.")
+    public void findWriterNickNameById() throws Exception{
+        Article byId = repository.findById(1L);
+        assertThat(byId.getWriterNickName()).isEqualTo("산지기");
+        System.out.printf(byId.toString());
     }
 }
