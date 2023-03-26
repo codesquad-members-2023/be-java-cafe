@@ -29,3 +29,6 @@ rm -rf build
 echo "서버 시작"
 nohup java -jar ~/be-java-cafe/build/libs/cafe-0.0.1-SNAPSHOT.jar > ../log.txt 2>&1 &
 echo "배포 완료!"
+
+# crontab -e
+# */3 * * * * /home/ubuntu/be-java-cafe/autobuild.sh
