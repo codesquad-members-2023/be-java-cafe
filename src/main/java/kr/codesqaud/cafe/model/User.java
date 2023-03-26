@@ -1,7 +1,6 @@
 package kr.codesqaud.cafe.model;
 
 import java.util.List;
-import kr.codesqaud.cafe.utils.UserInfoException;
 
 public class User {
     private String id;

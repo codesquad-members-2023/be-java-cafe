@@ -6,13 +6,12 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import javax.sql.DataSource;
 
-import kr.codesqaud.cafe.utils.UserInfoException;
+import kr.codesqaud.cafe.exceptions.UserInfoException;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.autoconfigure.jdbc.JdbcTest;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 

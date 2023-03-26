@@ -2,6 +2,7 @@ package kr.codesqaud.cafe.service.impl;
 
 import java.util.List;
 
+import kr.codesqaud.cafe.model.ArticleDto;
 import kr.codesqaud.cafe.repository.ArticleRepository;
 import kr.codesqaud.cafe.service.QnaService;
 import kr.codesqaud.cafe.model.Article;
@@ -20,12 +21,12 @@ public class QnaServiceImpl implements QnaService {
     }
 
     @Override
-    public List<Article> lookupAllArticles() {
+    public List<ArticleDto> lookupAllArticles() {
         return articleRepository.getArticleList();
     }
 
     @Override
-    public Article lookupById(long id) {
+    public ArticleDto lookupById(long id) {
         return articleRepository.findById(id).orElseThrow(()-> new IllegalArgumentException("[ERROR]"));
     }
 }

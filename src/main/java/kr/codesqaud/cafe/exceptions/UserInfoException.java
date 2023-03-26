@@ -1,4 +1,4 @@
-package kr.codesqaud.cafe.utils;
+package kr.codesqaud.cafe.exceptions;
 
 public class UserInfoException extends RuntimeException {
 

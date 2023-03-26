@@ -16,14 +16,13 @@ import org.springframework.util.MultiValueMap;
 
 import kr.codesqaud.cafe.model.User;
 import kr.codesqaud.cafe.service.JoinService;
-import kr.codesqaud.cafe.utils.UserInfoException;
+import kr.codesqaud.cafe.exceptions.UserInfoException;
 
 import static org.mockito.BDDMockito.given;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 import java.util.Collections;
-import java.util.List;
 
 @ContextConfiguration(classes = TestConfig.class)
 @WebMvcTest(UserController.class)

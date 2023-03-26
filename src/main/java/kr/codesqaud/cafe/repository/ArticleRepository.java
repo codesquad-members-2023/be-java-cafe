@@ -4,11 +4,12 @@ import java.util.List;
 import java.util.Optional;
 
 import kr.codesqaud.cafe.model.Article;
+import kr.codesqaud.cafe.model.ArticleDto;
 
 public interface ArticleRepository {
     public void addArticle(Article article);
 
-    public List<Article> getArticleList();
+    public List<ArticleDto> getArticleList();
 
-    public Optional<Article> findById(long id);
+    public Optional<ArticleDto> findById(long id);
 }

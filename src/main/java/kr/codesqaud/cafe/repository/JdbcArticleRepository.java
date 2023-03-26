@@ -10,6 +10,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 
 import kr.codesqaud.cafe.model.Article;
+import kr.codesqaud.cafe.model.ArticleDto;
 
 public class JdbcArticleRepository implements ArticleRepository {
     private final JdbcTemplate jdbcTemplate;
@@ -21,27 +22,27 @@ public class JdbcArticleRepository implements ArticleRepository {
     @Override
     public void addArticle(Article article) {
         jdbcTemplate.update("insert into articles(writer,title,contents,creationTime) values(?, ?, ?, ?)",
-                article.getWriter(),
+                article.getUser().getId(),
                 article.getTitle(), article.getContents(), article.getCreationTime());
-
     }
 
     @Override
-    public List<Article> getArticleList() {
+    public List<ArticleDto> getArticleList() {
         return jdbcTemplate.query("select writer,title,contents,id,creationTime from articles order by id desc",
                 articleRowMapper());
     }
 
     @Override
-    public Optional<Article> findById(long id) {
+    public Optional<ArticleDto> findById(long id) {
         return Optional.ofNullable(
                 jdbcTemplate.query("select writer,title,contents,id,creationTime from articles where id = ?",
                         articleRowMapper(), id).get(0));
     }
 
-    private RowMapper<Article> articleRowMapper() {
+
+    private RowMapper<ArticleDto> articleRowMapper() {
         return (rs, rowNum) ->
-                new Article(rs.getLong("id"), rs.getString("writer"), rs.getString("title"),
+                new ArticleDto(rs.getLong("id"), rs.getString("writer"), rs.getString("title"),
                         rs.getString("contents"), rs.getTimestamp("creationTime").toLocalDateTime());
     }
 }

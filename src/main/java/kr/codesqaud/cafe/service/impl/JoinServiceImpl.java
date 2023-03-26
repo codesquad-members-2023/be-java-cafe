@@ -1,12 +1,11 @@
 package kr.codesqaud.cafe.service.impl;
 
 import java.util.List;
-import java.util.Optional;
 
 import kr.codesqaud.cafe.repository.UserRepository;
 import kr.codesqaud.cafe.service.JoinService;
 import kr.codesqaud.cafe.model.User;
-import kr.codesqaud.cafe.utils.UserInfoException;
+import kr.codesqaud.cafe.exceptions.UserInfoException;
 
 
 public class JoinServiceImpl implements JoinService {
