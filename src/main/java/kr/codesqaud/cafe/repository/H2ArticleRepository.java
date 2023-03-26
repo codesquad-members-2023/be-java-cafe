@@ -28,7 +28,7 @@ public class H2ArticleRepository implements ArticleRepository {
 
     @Override
     public void save(Article article) {
-        String sql = "INSERT INTO ARTICLE (TITLE, BODY, user_id) VALUES (:title, :body, :user_id)";
+        String sql = "INSERT INTO ARTICLE (TITLE, CONTENTS, user_id) VALUES (:title, :body, :user_id)";
         MapSqlParameterSource params = new MapSqlParameterSource();
         params.addValue("title", article.getTitle())
                 .addValue("body", article.getContents())
@@ -39,7 +39,7 @@ public class H2ArticleRepository implements ArticleRepository {
     @Override
     public Article findById(Long id) {
         String sql = "SELECT article.ID as article_id, article.TITLE, article.CONTENTS, article.CREATED_AT as article_createddate, article.UPDATED_AT as article_updateddate, " +
-                "member.ID as member_id, member.USERID, member.NICKNAME, member.EMAIL, member.PASSWORD, member.CREATED_AT as member_createddate, member.UPDATED_AT as member_updateddate " +
+                "member.ID as member_id, member.USERID, member.NICKNAME " +
                 "FROM ARTICLE article " +
                 "LEFT JOIN MEMBER member on article.USER_ID = member.ID " +
                 " WHERE article.ID = :id";
@@ -50,7 +50,7 @@ public class H2ArticleRepository implements ArticleRepository {
     @Override
     public List<Article> findAll() {
         String sql = "SELECT article.ID as article_id, article.TITLE, article.CONTENTS, article.CREATED_AT as article_createddate, article.UPDATED_AT as article_updateddate, " +
-                "member.ID as member_id, member.USERID, member.NICKNAME, member.EMAIL, member.PASSWORD, member.CREATED_AT as member_createddate, member.UPDATED_AT as member_updateddate " +
+                "member.ID as member_id, member.USERID, member.NICKNAME " +
                 "FROM ARTICLE article " +
                 "LEFT JOIN MEMBER member on article.USER_ID = member.ID " +
                 "ORDER BY article.ID DESC;";
@@ -69,8 +69,6 @@ public class H2ArticleRepository implements ArticleRepository {
            article.setCreatedDate(rs.getTimestamp("article_updateddate").toLocalDateTime());
 
            writer.setId(rs.getLong("member_id"));
-           writer.setCreatedDate(rs.getTimestamp("member_createddate").toLocalDateTime());
-           writer.setUpdatedDate(rs.getTimestamp("member_updateddate").toLocalDateTime());
 
            article.setWriter(writer);
            return article;
