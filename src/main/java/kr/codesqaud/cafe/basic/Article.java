@@ -14,19 +14,17 @@ public class Article {
     public Article() {
     }
 
-    public Article(String writer, String title, String contents, Timestamp timeStamp) {
+    public Article(String writer, String title, String contents) {
         this.writer = writer;
         this.title = title;
         this.contents = contents;
-        this.timeStamp = timeStamp;
     }
 
-    public Article(int articleId, String writer, String title, String contents, Timestamp timeStamp) {
+    public Article(int articleId, String writer, String title, String contents) {
         this.articleId = articleId;
         this.writer = writer;
         this.title = title;
         this.contents = contents;
-        this.timeStamp = timeStamp;
     }
 
     public Article(Article article) {
@@ -65,10 +63,6 @@ public class Article {
 
     public void setContents(String contents) {
         this.contents = contents;
-    }
-
-    public Timestamp getTimeStamp() {
-        return timeStamp;
     }
 
     public String getFormattedTime() {

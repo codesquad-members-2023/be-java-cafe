@@ -26,9 +26,9 @@ public class H2ArticleRepository implements ArticleRepository {
     }
 
     public void save(Article article) {
-        String sql = "insert into articles(writer, title, contents, timeStamp) values (?, ?, ?, ?)";
+        String sql = "insert into articles(writer, title, contents) values (?, ?, ?)";
 
-        jdbcTemplate.update(sql, article.getWriter(), article.getTitle(), article.getContents(), article.getTimeStamp());
+        jdbcTemplate.update(sql, article.getWriter(), article.getTitle(), article.getContents());
     }
 
     public int delete(int index) {
@@ -37,7 +37,7 @@ public class H2ArticleRepository implements ArticleRepository {
         return jdbcTemplate.update(sql, index);
     }
 
-    public Article findByIndex(int index) {
+    public Article findByArticleId(int index) {
         String sql = "select articleId, writer, title, contents, timeStamp from articles where articleId = ?";
 
         return jdbcTemplate.queryForObject(sql, new BeanPropertyRowMapper<>(Article.class), index);
