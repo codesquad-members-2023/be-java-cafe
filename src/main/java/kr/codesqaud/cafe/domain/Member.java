@@ -69,12 +69,12 @@ public class Member {
         this.password = password;
     }
 
-    public void setCreatedDate(Timestamp createdDate) {
-        this.createdDate = createdDate.toLocalDateTime();
+    public void setCreatedDate(LocalDateTime createdDate) {
+        this.createdDate = createdDate;
     }
 
-    public void setUpdatedDate(Timestamp updatedDate) {
-        this.updatedDate = updatedDate.toLocalDateTime();
+    public void setUpdatedDate(LocalDateTime updatedDate) {
+        this.updatedDate = updatedDate;
     }
 
     public Member() {}
@@ -108,9 +108,9 @@ public class Member {
         return this.password.equals(password);
     }
     public Member update(Member user) {
-        this.nickname = user.nickname;
-        this.email = user.email;
-        this.password = user.password;
+        if (user.nickname != null) this.nickname = user.nickname;
+        if (user.email != null) this.email = user.email;
+        if (user.password != null) this.password = user.password;
         this.updatedDate = LocalDateTime.now();
         return this;
     }
