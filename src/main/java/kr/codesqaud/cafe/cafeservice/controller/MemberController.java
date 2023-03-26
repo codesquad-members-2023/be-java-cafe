@@ -1,7 +1,7 @@
 package kr.codesqaud.cafe.cafeservice.controller;
 
 import kr.codesqaud.cafe.cafeservice.domain.Member;
-import kr.codesqaud.cafe.cafeservice.exception.ArticleNotFoundException;
+import kr.codesqaud.cafe.cafeservice.exhandler.exception.ArticleNotFoundException;
 import kr.codesqaud.cafe.cafeservice.repository.MemberRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
