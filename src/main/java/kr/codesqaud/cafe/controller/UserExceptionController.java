@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
 @ControllerAdvice
-public class ExceptionController {
+public class UserExceptionController {
 
     @ExceptionHandler({UserException.class})
     public String userException(Exception e,
