@@ -21,12 +21,17 @@ public class QnaServiceImpl implements QnaService {
     }
 
     @Override
+    public void modifyQna(long id, String title, String contents) {
+        articleRepository.modifyArticle(id, title, contents);
+    }
+
+    @Override
     public List<ArticleDto> lookupAllArticles() {
         return articleRepository.getArticleList();
     }
 
     @Override
     public ArticleDto lookupById(long id) {
-        return articleRepository.findById(id).orElseThrow(()-> new IllegalArgumentException("[ERROR]"));
+        return articleRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("[ERROR]"));
     }
 }

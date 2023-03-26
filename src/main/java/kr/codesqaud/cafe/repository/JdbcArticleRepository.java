@@ -27,6 +27,11 @@ public class JdbcArticleRepository implements ArticleRepository {
     }
 
     @Override
+    public void modifyArticle(long id, String title, String contents) {
+        jdbcTemplate.update("update articles set title=?, contents=? where id=?", title, contents, id);
+    }
+
+    @Override
     public List<ArticleDto> getArticleList() {
         return jdbcTemplate.query("select writer,title,contents,id,creationTime from articles order by id desc",
                 articleRowMapper());
@@ -38,7 +43,6 @@ public class JdbcArticleRepository implements ArticleRepository {
                 jdbcTemplate.query("select writer,title,contents,id,creationTime from articles where id = ?",
                         articleRowMapper(), id).get(0));
     }
-
 
     private RowMapper<ArticleDto> articleRowMapper() {
         return (rs, rowNum) ->

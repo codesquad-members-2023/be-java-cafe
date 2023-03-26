@@ -43,33 +43,34 @@ public class ArticleController {
         return "index";
     }
 
-    @GetMapping(value = "/articles/{id}")
+    @GetMapping(value = "/qna/{id}")
     public String articleDetails(@PathVariable long id, Model model) {
         model.addAttribute("article", qnaService.lookupById(id));
 
         return "qna/show";
     }
 
-    @GetMapping(value = "/articles/{id}/form")
+    @GetMapping(value = "/qna/{id}/form")
     public String articleModificationForm(@PathVariable long id, Model model, HttpSession httpSession) {
         String writer = qnaService.lookupById(id).getWriter();
         if (!httpSession.getAttribute("sessionedUser").equals(writer)) {
             throw new ArticleInfoException(ArticleInfoException.WRONG_NOT_MATCHING_MESSAGE,
                     ArticleInfoException.WRITER_NOT_MATCHING_CODE);
         }
+        model.addAttribute("id", id);
 
-        return "qna/form";
+        return "qna/modification_form";
     }
 
-    @PutMapping(value = "/articles/{id}/form")
+    @PutMapping(value = "/qna/{id}/form")
     public String articleModify(@PathVariable long id, @RequestParam String title, @RequestParam String contents,
-            Model model, HttpSession httpSession) {
+            HttpSession httpSession) {
         String writer = qnaService.lookupById(id).getWriter();
         if (!httpSession.getAttribute("sessionedUser").equals(writer)) {
             throw new ArticleInfoException(ArticleInfoException.WRONG_NOT_MATCHING_MESSAGE,
                     ArticleInfoException.WRITER_NOT_MATCHING_CODE);
         }
-
+        qnaService.modifyQna(id, title, contents);
 
         return "redirect:/";
     }
