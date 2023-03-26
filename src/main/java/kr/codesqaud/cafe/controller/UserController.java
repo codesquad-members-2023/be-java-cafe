@@ -82,16 +82,22 @@ public class UserController {
         return "redirect:/user/list";
     }
 
+    @GetMapping("/login")
+    public String update() {
+        return "user/login";
+    }
+
     @PostMapping("/login")
     public String login(@RequestParam String userId,
                         @RequestParam String password,
+                        @RequestParam(defaultValue = "/") String requestURL,
                         HttpSession session) {
         Optional<User> optionalUser = userService.login(userId, password);
         if (optionalUser.isEmpty()) throw new UserLoginException();
 
         session.setAttribute(ConstConfig.SESSION_ID, optionalUser.get());
         session.setAttribute(ConstConfig.SESSION_LOGIN, true);
-        return "redirect:/";
+        return "redirect:" + requestURL;
     }
 
     @GetMapping("/logout")
