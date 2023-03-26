@@ -7,14 +7,14 @@ create table member (
                         nickName varchar(255) not null,
                         email   varchar(500) not null unique,
                         password    varchar(255) not null,
-                        created_at  timestamp default current_timestamp(),
+                        created_at timestamp default current_timestamp(),
                         updated_at  timestamp default current_timestamp()
 );
 
 create table article (
                          id  long auto_increment primary key,
                          title   varchar(255) not null,
-                         body    text not null,
+                         contents    text not null,
                          user_id long not null,
                          created_at  timestamp default current_timestamp(),
                          updated_at  timestamp default current_timestamp(),
