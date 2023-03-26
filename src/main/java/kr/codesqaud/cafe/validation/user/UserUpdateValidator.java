@@ -50,5 +50,8 @@ public class UserUpdateValidator implements Validator {
         if (user.getEmail().length() >= 60) {
             errors.rejectValue("email", "error.user.emailLength");
         }
+        if (!user.getEmail().matches("[^@]+@[^@]+\\.[^@]+")) {
+            errors.rejectValue("email", "error.user.emailFormat");
+        }
     }
 }

@@ -56,7 +56,9 @@ public class UserJoinValidator implements Validator {
         if (!user.getPassword().matches(".*[!@#$%^&*].*")) {
             errors.rejectValue("password", "error.user.passwordFormat");
         }
-
+        if (!user.getEmail().matches("[^@]+@[^@]+\\.[^@]+")) {
+            errors.rejectValue("email", "error.user.emailFormat");
+        }
 
         List<User> userList = memberRepository.findAll();
 

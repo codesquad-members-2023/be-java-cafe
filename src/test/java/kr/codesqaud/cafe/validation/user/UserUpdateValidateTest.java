@@ -1,7 +1,6 @@
 package kr.codesqaud.cafe.validation.user;
 
 import kr.codesqaud.cafe.domain.User;
-import kr.codesqaud.cafe.dto.user.UserLoginDTO;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +10,7 @@ import org.springframework.validation.Errors;
 import org.springframework.validation.FieldError;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 @SpringBootTest
 class UserUpdateValidateTest {
@@ -74,7 +74,7 @@ class UserUpdateValidateTest {
     @Test
     @DisplayName("회원정보 수정 이름 길이 제한")
     void limitNameLength() {
-        User user = new User("first", "password", testUserConstant.NAME_LENGTH_OVER, "email@com");
+        User user = new User("first", "password!", testUserConstant.NAME_LENGTH_OVER, "email@com");
         Errors errors = new BeanPropertyBindingResult(user, "user");
         validator.validate(user, errors);
 
@@ -86,12 +86,35 @@ class UserUpdateValidateTest {
     @Test
     @DisplayName("회원정보 수정 아이디 길이제한")
     void limitEmailError() {
-        User user = new User("first", "password", "name", testUserConstant.EMAIL_LENGTH_OVER);
+        User user = new User("first", "password!", "name", testUserConstant.EMAIL_LENGTH_OVER);
         Errors errors = new BeanPropertyBindingResult(user, "user");
         validator.validate(user, errors);
 
         FieldError fieldError = errors.getFieldError();
 
         assertThat(fieldError.getCode()).isEqualTo(testUserConstant.EMAIL_LENGTH_ERROR);
+    }
+
+    @Test
+    @DisplayName("회원정보 수정 이메일 형식 맞는지 확인")
+    void emailFormatTest() {
+        User user = new User("first", "password!", "name", "email@");
+        Errors errors = new BeanPropertyBindingResult(user, "user");
+        validator.validate(user, errors);
+
+        FieldError fieldError = errors.getFieldError();
+
+        assertThat(fieldError.getCode()).isEqualTo(testUserConstant.EMAIL_FORMAT_ERROR);
+    }
+
+    @Test
+    @DisplayName("회원정보 수정 이메일 형식 올바르게 입력하면 예외 x")
+    void emailFormatTest2() {
+        User user = new User("first", "password!", "name", "email@email.com");
+        Errors errors = new BeanPropertyBindingResult(user, "user");
+        validator.validate(user, errors);
+        FieldError fieldError = errors.getFieldError();
+
+        assertThatThrownBy(() -> fieldError.getCode()).isInstanceOf(NullPointerException.class);
     }
 }

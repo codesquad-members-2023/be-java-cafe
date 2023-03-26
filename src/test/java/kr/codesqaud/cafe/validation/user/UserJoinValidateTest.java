@@ -26,7 +26,7 @@ class UserJoinValidateTest {
     @DisplayName("userId가 존재하는 경우 검증")
     void duplicatedUserId() {
         String duplicatedUser = "first";
-        User user = new User(duplicatedUser, "password", "name", "email@email");
+        User user = new User(duplicatedUser, "password!", "name", "email@email.com");
         Errors errors = new BeanPropertyBindingResult(user, "user");
         validator.validate(user, errors);
 
@@ -38,7 +38,7 @@ class UserJoinValidateTest {
     @Test
     @DisplayName("회원가입 아이디 빈칸 검증")
     void blankUserId() {
-        User user = new User("", "password", "name", "email@com");
+        User user = new User("", "password!", "name", "email@email.com");
         Errors errors = new BeanPropertyBindingResult(user, "user");
         validator.validate(user, errors);
 
@@ -62,7 +62,7 @@ class UserJoinValidateTest {
     @Test
     @DisplayName("회원가입 이름 빈칸 검증")
     void blankName() {
-        User user = new User("first", "password", "", "email@com");
+        User user = new User("first", "password!", "", "email@com");
         Errors errors = new BeanPropertyBindingResult(user, "user");
         validator.validate(user, errors);
 
@@ -74,7 +74,7 @@ class UserJoinValidateTest {
     @Test
     @DisplayName("회원가입 이메일 빈칸 검증")
     void blankEmail() {
-        User user = new User("first", "password", "name", "");
+        User user = new User("first", "password!", "name", "");
         Errors errors = new BeanPropertyBindingResult(user, "user");
         validator.validate(user, errors);
 
@@ -86,7 +86,7 @@ class UserJoinValidateTest {
     @Test
     @DisplayName("회원가입 아이디 길이제한")
     void limitUserIdLength() {
-        User user = new User(testUserConstant.NAME_LENGTH_OVER, "password", "name", "email@com");
+        User user = new User(testUserConstant.NAME_LENGTH_OVER, "password!", "name", "email@com");
         Errors errors = new BeanPropertyBindingResult(user, "user");
         validator.validate(user, errors);
 
@@ -110,7 +110,7 @@ class UserJoinValidateTest {
     @Test
     @DisplayName("회원가입 이름 길이제한")
     void limitNameLength() {
-        User user = new User("userId", "password", testUserConstant.NAME_LENGTH_OVER, "email@com");
+        User user = new User("userId", "password!", testUserConstant.NAME_LENGTH_OVER, "email@com");
         Errors errors = new BeanPropertyBindingResult(user, "user");
         validator.validate(user, errors);
 
@@ -122,7 +122,7 @@ class UserJoinValidateTest {
     @Test
     @DisplayName("회원가입 아이디 길이제한")
     void limitEmailError() {
-        User user = new User("userId", "password", "name", testUserConstant.EMAIL_LENGTH_OVER);
+        User user = new User("userId", "password!", "name", testUserConstant.EMAIL_LENGTH_OVER);
         Errors errors = new BeanPropertyBindingResult(user, "user");
         validator.validate(user, errors);
 
@@ -141,5 +141,28 @@ class UserJoinValidateTest {
         FieldError fieldError = errors.getFieldError();
 
         assertThat(fieldError.getCode()).isEqualTo(testUserConstant.PASSWORD_FORMAT_ERROR);
+    }
+
+    @Test
+    @DisplayName("회원가입 이메일 형식 틀리면 에러")
+    void emailFormatTest() {
+        User user = new User("userId", "password!", "name", "email");
+        Errors errors = new BeanPropertyBindingResult(user, "user");
+        validator.validate(user, errors);
+
+        FieldError fieldError = errors.getFieldError();
+
+        assertThat(fieldError.getCode()).isEqualTo(testUserConstant.EMAIL_FORMAT_ERROR);
+    }
+
+    @Test
+    @DisplayName("회원가입 이메일 형식 올바르게 입력하면 예외 x")
+    void emailFormatTest2() {
+        User user = new User("userId", "password!", "name", "email@email.com");
+        Errors errors = new BeanPropertyBindingResult(user, "user");
+        validator.validate(user, errors);
+        FieldError fieldError = errors.getFieldError();
+
+        assertThatThrownBy(() -> fieldError.getCode()).isInstanceOf(NullPointerException.class);
     }
 }
