@@ -36,7 +36,7 @@
                               <a class="link-modify-article" th:href="@{/qna/updateForm/{articleId}(articleId=${article.articleId})}">수정</a>
                           </li>
                           <li>
-                              <form class="form-delete" action="/questions/423" method="POST">
+                              <form class="form-delete" th:action="@{/qna/delete/{articleId}(articleId=${article.getArticleId()})}" method="POST">
                                   <input type="hidden" name="_method" value="DELETE">
                                   <button class="link-delete-article" type="submit">삭제</button>
                               </form>

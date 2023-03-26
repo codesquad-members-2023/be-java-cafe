@@ -71,4 +71,11 @@ public class ArticleController {
         return "redirect:/qna/show/" + articleId;
     }
 
+    @DeleteMapping("/delete/{articleId}")
+    public String delete(@PathVariable int articleId) {
+        articleRepository.delete(articleId);
+        return "redirect:/qna/list";
+    }
+
+
 }
