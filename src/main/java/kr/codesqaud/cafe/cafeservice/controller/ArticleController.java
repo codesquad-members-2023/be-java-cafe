@@ -27,18 +27,18 @@ public class ArticleController {
         this.repository = repository;
     }
 
-    @PostMapping("/questions")
-    public String questions(@ModelAttribute Article article) {
-        log.debug("article{}=", article);
-        repository.save(article);
-        return "redirect:/";
-    }
-
     @GetMapping("/")
     public String memberList(Model model) {
         List<Article> articles = repository.findAll();
         model.addAttribute("articles", articles);
         return "index";
+    }
+
+    @PostMapping("/questions")
+    public String questions(@ModelAttribute Article article) {
+        log.debug("article{}=", article);
+        repository.save(article);
+        return "redirect:/";
     }
 
     @GetMapping("/articles/{index}")
