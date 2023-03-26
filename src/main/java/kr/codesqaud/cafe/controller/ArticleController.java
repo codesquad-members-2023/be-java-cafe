@@ -6,6 +6,7 @@ import kr.codesqaud.cafe.dto.article.ArticleFormDTO;
 import kr.codesqaud.cafe.dto.article.ArticleUpdateDTO;
 import kr.codesqaud.cafe.repository.article.ArticleRepository;
 import kr.codesqaud.cafe.validation.article.ArticleNewFormValidator;
+import kr.codesqaud.cafe.validation.article.ArticleUpdateValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -19,12 +20,14 @@ import java.util.List;
 public class ArticleController {
 
     private final ArticleRepository articleRepository;
-    private final ArticleNewFormValidator articleValidator;
+    private final ArticleNewFormValidator articleNewFormValidator;
+    private final ArticleUpdateValidator articleUpdateValidator;
 
     @Autowired
-    public ArticleController(ArticleRepository articleRepository, ArticleNewFormValidator articleValidator) {
+    public ArticleController(ArticleRepository articleRepository, ArticleNewFormValidator articleNewFormValidator, ArticleUpdateValidator articleUpdateValidator) {
         this.articleRepository = articleRepository;
-        this.articleValidator = articleValidator;
+        this.articleNewFormValidator = articleNewFormValidator;
+        this.articleUpdateValidator = articleUpdateValidator;
     }
 
     @GetMapping("/")
@@ -47,7 +50,7 @@ public class ArticleController {
 
     @PostMapping("/qna/questions")
     public String addArticle(@ModelAttribute("article") ArticleFormDTO article, BindingResult bindingResult, Model model, HttpSession session) {
-        articleValidator.validate(article, bindingResult);
+        articleNewFormValidator.validate(article, bindingResult);
         if (bindingResult.hasErrors()) {
             model.addAttribute("userId", article.getUserId());
             return "qna/qna_form";
@@ -70,13 +73,13 @@ public class ArticleController {
     }
 
 
-    @GetMapping("/qna/update_article/{articleId}") // TODO: 에러페이지 생성
+    @GetMapping("/qna/update_article/{articleId}")
     public String updateArticleForm(@PathVariable int articleId, Model model, HttpSession session) {
         Article article = articleRepository.findArticleById(articleId);
         User user = (User) session.getAttribute("user");
-
         if (user.getUserId().equals(article.getUserId())) {
             model.addAttribute("article", article);
+            model.addAttribute("user", user);
             return "qna/update_article";
         }
 
@@ -84,9 +87,10 @@ public class ArticleController {
     }
 
     @PutMapping("/qna/update_article/{articleId}")
-    public String updateArticle(@ModelAttribute("article") ArticleUpdateDTO article, BindingResult bindingResult, @PathVariable int articleId) {
-        articleValidator.validate(article, bindingResult);
+    public String updateArticle(@ModelAttribute("article") ArticleUpdateDTO article, BindingResult bindingResult, @PathVariable int articleId, Model model) {
+        articleUpdateValidator.validate(article, bindingResult);
         if (bindingResult.hasErrors()) {
+            model.addAttribute("articleId", articleId);
             return "qna/update_article";
         }
 
@@ -95,7 +99,7 @@ public class ArticleController {
         return "redirect:/qna/show/{articleId}";
     }
 
-    @DeleteMapping("/qna/show/{articleId}/delete") // TODO: 에러페이지 생성하기
+    @DeleteMapping("/qna/show/{articleId}/delete")
     public String deleteArticle(@PathVariable int articleId, HttpSession session) {
         Article findArticle = articleRepository.findArticleById(articleId);
         User user = (User) session.getAttribute("user");

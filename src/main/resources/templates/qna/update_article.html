@@ -25,7 +25,7 @@
                     <div th:errors="${article.contents}" class="field-error"></div>
                 </div>
 
-                <button type="submit" class="btn btn-success clearfix pull-right" th:href="@{/qna/update_article/{articleId}(articleId=${article.id})}">수정하기</button>
+                <button type="submit" class="btn btn-success clearfix pull-right" th:href="@{/qna/update_article/{articleId}(articleId=${articleId})}">수정하기</button>
                 <div class="clearfix"/>
             </form>
         </div>
