@@ -2,7 +2,8 @@ package kr.codesqaud.cafe.controller;
 
 import javax.servlet.http.HttpSession;
 
-import kr.codesqaud.cafe.utils.UserInfoException;
+import kr.codesqaud.cafe.exceptions.ArticleInfoException;
+import kr.codesqaud.cafe.exceptions.UserInfoException;
 
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -25,6 +26,13 @@ public class GlobalExceptionHandler {
         }
         model.addAttribute("error", e.getMessage());
         return "user/login_failed";
+    }
+
+    @ExceptionHandler(value = ArticleInfoException.class)
+    public String idNotMatchingException(ArticleInfoException e, Model model) {
+        model.addAttribute("error", e.getMessage());
+
+        return "exception/error";
     }
 
     @ExceptionHandler(value = IllegalArgumentException.class)

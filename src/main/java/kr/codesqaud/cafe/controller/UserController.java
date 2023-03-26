@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import kr.codesqaud.cafe.service.JoinService;
 import kr.codesqaud.cafe.model.User;
-import kr.codesqaud.cafe.utils.UserInfoException;
+import kr.codesqaud.cafe.exceptions.UserInfoException;
 
 @Controller
 public class UserController {
@@ -92,6 +92,12 @@ public class UserController {
 
         session.setAttribute("sessionedUser", sessionedUser.getId());
         return "redirect:/";
+    }
+
+    @GetMapping("/users/login_failed")
+    public String unauthorizedAccess(Model model) {
+        model.addAttribute("error", UserInfoException.NON_AUTHORIZED_USER_MESSAGE);
+        return "user/login_failed";
     }
 
     @GetMapping("/users/logout")
