@@ -40,7 +40,7 @@ public class H2JDBCArticleRepository implements ArticleRepository {
 
     @Override
     public List<Article> findAllArticle() {
-        String sql = "SELECT * FROM ARTICLE";
+        String sql = "select * from article order by timestamp desc";
 
         return template.query(sql, new BeanPropertyRowMapper<>(Article.class));
     }
