@@ -2,7 +2,10 @@ package kr.codesqaud.cafe.controller;
 
 
 import kr.codesqaud.cafe.basic.Article;
+import kr.codesqaud.cafe.basic.User;
+import kr.codesqaud.cafe.config.ConstConfig;
 import kr.codesqaud.cafe.repository.ArticleRepository;
+import org.apache.logging.log4j.message.Message;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -20,14 +23,19 @@ public class ArticleController {
 
     public ArticleController(ArticleRepository articleRepository) {
         this.articleRepository = articleRepository;
-
     }
 
-    @PostMapping("/create")
-    public String create(@RequestParam String writer,
+    @GetMapping("/createForm")
+    public String create(@SessionAttribute(name = ConstConfig.SESSION_ID) User user, Model model) {
+        model.addAttribute("user", user);
+        return "qna/createForm";
+    }
+
+    @PostMapping("/create/{userId}")
+    public String create(@PathVariable String userId,
                          @RequestParam String title,
                          @RequestParam String contents) {
-        articleRepository.save(new Article(writer, title, contents, Timestamp.valueOf(LocalDateTime.now())));
+        articleRepository.save(new Article(userId, title, contents, Timestamp.valueOf(LocalDateTime.now())));
         return "redirect:/qna/list";
     }
 
