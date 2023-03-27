@@ -1,6 +1,7 @@
 package kr.codesqaud.cafe.controller;
 
 import kr.codesqaud.cafe.domain.Member;
+import kr.codesqaud.cafe.dto.SessionUser;
 import kr.codesqaud.cafe.exception.*;
 import kr.codesqaud.cafe.repository.MemberRepository;
 import org.slf4j.Logger;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpSession;
 import java.util.List;
 
+import static kr.codesqaud.cafe.dto.SessionUser.SESSION_USER;
 import static kr.codesqaud.cafe.exception.ExceptionStatus.*;
 
 @Controller
@@ -26,20 +28,17 @@ public class MemberController {
 
     @GetMapping("/user/{id}/update")
     public String updateForm(@PathVariable long id, HttpSession httpSession, Model model) {
-        Object sessionedUser = httpSession.getAttribute("sessionedUser");
+        SessionUser sessionedUser = (SessionUser) httpSession.getAttribute(SESSION_USER);
 
         if (sessionedUser == null) {
             throw new ManageMemberException(NO_SESSION_USER);
         }
 
-        Member member = (Member) sessionedUser;
-
-        if (member.getId() != id) {
+        if (sessionedUser.equals(id)) {
             throw new ManageMemberException(DIFFERENT_MEMBER);
         }
 
-        model.addAttribute("profile", memberRepository.findById(id)
-                .orElseThrow(() -> new ManageMemberException(INVALID_MEMBER)));
+        model.addAttribute("profile", memberRepository.findById(id));
         return "user/updateForm";
     }
 
@@ -49,20 +48,15 @@ public class MemberController {
         return "redirect:/";
     }
 
-    @GetMapping("/login")
-    public String loginForm() {
-        return "user/login";
-    }
-
     @PostMapping("/login")
     public String loginUser(String userId, String password, HttpSession httpSession) {
-        Member member = memberRepository.findByMemberId(userId).orElseThrow(() -> new ManageMemberException(LOGIN_FAIL));
+        Member member = memberRepository.findByMemberId(userId);
 
         if (!member.isValidPassword(password)) {
-            throw new ManageMemberException(LOGIN_FAIL);
+            throw new ManageMemberException(LOGIN_FAILED);
         }
 
-        httpSession.setAttribute("sessionedUser", member);
+        httpSession.setAttribute(SESSION_USER, new SessionUser(member.getId(), member.getNickname()));
         return "redirect:/";
     }
 
@@ -89,7 +83,7 @@ public class MemberController {
 
     @GetMapping("/users/{userId}")
     public String profile(@PathVariable Long userId, Model model) {
-        model.addAttribute("profile", memberRepository.findById(userId).orElseThrow(() -> new ManageMemberException(INVALID_MEMBER)));
+        model.addAttribute("profile", memberRepository.findById(userId));
         return "user/profile";
     }
 
@@ -97,9 +91,9 @@ public class MemberController {
     public String updateProfile(@ModelAttribute Member member,
                                 @PathVariable Long id,
                                 @RequestParam String exPassword) {
-        Member exMember = memberRepository.findById(id).orElseThrow();
+        Member exMember = memberRepository.findById(id);
         if (!exMember.isValidPassword(exPassword)) {
-            throw new ManageMemberException(WRONG_PASSWORD);
+            throw new ManageMemberException(UPDATE_FAILED_WRONG_PASSWORD);
         }
         memberRepository.update(exMember, member);
         return "redirect:/users";
