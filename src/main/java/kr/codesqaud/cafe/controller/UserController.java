@@ -80,10 +80,10 @@ public class UserController {
     @PutMapping("/updateUser/{userId}")
     public String updateUserPost(@ModelAttribute User user, BindingResult bindingResult) {
         userUpdateValidator.validate(user, bindingResult);
+
         if (bindingResult.hasErrors()) {
             return "users/update_user";
         }
-
 
         memberRepository.updateUser(user);
         return "redirect:/users/list";
