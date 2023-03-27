@@ -31,11 +31,6 @@ public class Article {
         return creationTime;
     }
 
-    public String getFormattedCreationTime() {
-        return creationTime.format(
-                DateTimeFormatter.ofPattern("yyyy-MM-dd hh:mm:ss"));
-    }
-
     public long getId() {
         return id;
     }

@@ -1,6 +1,6 @@
 package kr.codesqaud.cafe.exceptions;
 
-public class UserInfoException extends RuntimeException {
+public class UserInfoException extends Exception {
 
     private final int errorCode;
     public static final int WRONG_LOGIN_PASSWORD_CODE = 1;

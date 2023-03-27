@@ -13,7 +13,6 @@ import kr.codesqaud.cafe.exceptions.UserInfoException;
 
 @Component
 public class LoginInterceptor implements HandlerInterceptor {
-    private ArticleController articleController;
 
     @Override
     public boolean preHandle (HttpServletRequest request, HttpServletResponse response, Object handler) throws

@@ -9,23 +9,18 @@ public class ArticleDto {
     private String writer;
     private String title;
     private String contents;
-    private LocalDateTime creationTime;
+    private String formattedCreationTime;
 
-    public ArticleDto(long id, String writer, String title, String contents, LocalDateTime creationTime) {
+    public ArticleDto(long id, String writer, String title, String contents, String formattedCreationTime) {
         this.id = id;
         this.writer = writer;
         this.title = title;
         this.contents = contents;
-        this.creationTime = creationTime;
-    }
-
-    public LocalDateTime getCreationTime() {
-        return creationTime;
+        this.formattedCreationTime = formattedCreationTime;
     }
 
     public String getFormattedCreationTime() {
-        return creationTime.format(
-                DateTimeFormatter.ofPattern("yyyy-MM-dd hh:mm:ss"));
+        return formattedCreationTime;
     }
 
     public long getId() {

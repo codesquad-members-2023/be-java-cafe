@@ -2,28 +2,23 @@ package kr.codesqaud.cafe;
 
 import javax.sql.DataSource;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.Ordered;
-import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
-import kr.codesqaud.cafe.controller.LoginInterceptor;
 import kr.codesqaud.cafe.repository.ArticleRepository;
 import kr.codesqaud.cafe.repository.JdbcArticleRepository;
 import kr.codesqaud.cafe.repository.JdbcUserRepository;
-import kr.codesqaud.cafe.service.JoinService;
-import kr.codesqaud.cafe.service.impl.JoinServiceImpl;
-import kr.codesqaud.cafe.service.QnaService;
-import kr.codesqaud.cafe.service.impl.QnaServiceImpl;
+
 import kr.codesqaud.cafe.repository.UserRepository;
 
 @Configuration
 public class AutoAppConfig implements WebMvcConfigurer {
+
     private final DataSource dataSource;
     private final HandlerInterceptor loginInterceptor;
 
@@ -32,20 +27,12 @@ public class AutoAppConfig implements WebMvcConfigurer {
         loginInterceptor = handlerInterceptor;
     }
 
-    @Bean
-    public JoinService joinService() {
-        return new JoinServiceImpl(userRepository());
-    }
 
     @Bean
     public UserRepository userRepository() {
         return new JdbcUserRepository(dataSource);
     }
 
-    @Bean
-    public QnaService qnaService() {
-        return new QnaServiceImpl(articleRepository());
-    }
 
     @Bean
     public ArticleRepository articleRepository() {
@@ -65,8 +52,8 @@ public class AutoAppConfig implements WebMvcConfigurer {
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(loginInterceptor)
-                .addPathPatterns("/**")
-                .excludePathPatterns("/", "/css/**", "/*.ico", "/js/**", "/images/**", "/fonts/**", "/users/login_failed", "/users/form",
-                        "/users/login", "/users/create");
+            .addPathPatterns("/users/**", "/qna/**")
+            .excludePathPatterns("/users/login_failed", "/users/form",
+                "/users/login", "/users/create");
     }
 }
