@@ -43,4 +43,3 @@ public class LoginController {
 		return "user/login";
 	}
 }
-
