@@ -21,8 +21,9 @@ public class ArticleController {
     ArticleRepository articleRepository;
     H2ReplyRepository replyRepository;
 
-    public ArticleController(ArticleRepository articleRepository) {
+    public ArticleController(ArticleRepository articleRepository, H2ReplyRepository replyRepository) {
         this.articleRepository = articleRepository;
+        this.replyRepository = replyRepository;
     }
 
     @GetMapping("/createForm")
@@ -53,8 +54,8 @@ public class ArticleController {
                        Model model) {
         Article article = articleRepository.findByArticleId(articleId);
         List<Reply> replies = replyRepository.findByArticleId(articleId);
-        model.addAttribute(article);
-        model.addAttribute(replies);
+        model.addAttribute("article", article);
+        model.addAttribute("replies", replies);
         return "qna/show";
     }
 
