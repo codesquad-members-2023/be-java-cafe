@@ -1,4 +1,4 @@
-drop table if exists REPLY;
+drop table if exists REPLIES;
 drop table if exists ARTICLES;
 drop table if exists USERS;
 
@@ -18,7 +18,7 @@ create table ARTICLES
     contents  TEXT        not null,
     timeStamp TIMESTAMP default current_timestamp,
     primary key (articleId),
-    foreign key (writer) references USERS (userId) ON DELETE CASCADE
+    foreign key (writer) references USERS (userId)
 );
 create table REPLIES
 (
@@ -28,7 +28,7 @@ create table REPLIES
     content TINYTEXT not null,
     createAt TIMESTAMP default current_timestamp,
     primary key (replyId),
-    foreign key (articleId) references ARTICLES (articleId) ON DELETE CASCADE,
-    foreign key (writer) references USERS (userId) ON DELETE CASCADE
+    foreign key (articleId) references ARTICLES (articleId),
+    foreign key (writer) references USERS (userId)
 )
 

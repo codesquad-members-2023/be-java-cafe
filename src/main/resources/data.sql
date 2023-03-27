@@ -7,6 +7,6 @@ insert into articles(writer, title, contents ) values ('UserB','title B','conten
 insert into articles(writer, title, contents ) values ('UserC','title C','contents C')
 
 insert into REPLIES(articleId, writer, content) values ('1', 'UserA', '이것은 댓글 내용 A 입니당.')
--- insert into reply(articleId, writer, content) values ('1', 'UserB', "이것은 댓글 내용 B 입니당.")
--- insert into reply(articleId, writer, content) values ('2', 'UserC', "이것은 내용 입니당.")
+insert into REPLIES(articleId, writer, content) values ('1', 'UserB', '이것은 댓글 내용 B 입니당.')
+insert into REPLIES(articleId, writer, content) values ('2', 'UserC', '이것은 내용 입니당.')
 
