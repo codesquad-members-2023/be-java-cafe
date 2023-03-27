@@ -21,7 +21,7 @@
                                  class="article-author-thumb" alt="">
                         </div>
                         <div class="article-header-text">
-                            <a th:href="@{users/{userId}(userId=${articleDto.getUserId()})}"
+                            <a th:href="@{../users/{userId}(userId=${articleDto.getUserId()})}"
                                th:text="${articleDto.getUserId()}" class="article-author-name"></a>
                             <a th:href="@{{articleId}(articleId=${articleDto.getArticleId()})}"
                                th:text="${articleDto.getTime()}"
@@ -54,10 +54,11 @@
                     </div>
                 </article>
 
-                <div class="qna-comment">
+                <div th:if="${replyDtoList} != null" class="qna-comment">
                     <div class="qna-comment-slipp">
                         <p class="qna-comment-count"><strong th:if="${replyDtoList} != null" th:text="${replyDtoList.size()}"></strong>개의 의견</p>
-                        <div class="qna-comment-slipp-articles">
+                        <div class="qna-comment-slipp-articl
+                        es">
 
                             <article th:if="${replyDtoList} != null" th:each="replyDto : ${replyDtoList}" class="article" id="answer-1405">
                                 <div class="article-header">
@@ -66,8 +67,10 @@
                                              class="article-author-thumb" alt="">
                                     </div>
                                     <div class="article-header-text">
-                                        <a th:text="${replyDto.getUserId()}" href="/users/1/자바지기" class="article-author-name"></a>
-                                        <a th:text="${replyDto.getTime()}" href="#answer-1434" class="article-header-time" title="퍼머링크"></a>
+                                        <a th:text="${replyDto.getUserId()}"
+                                           th:href="@{../users/{userId}(userId=${replyDto.getUserId()})}"
+                                           class="article-author-name"></a>
+                                        <a th:text="${replyDto.getTime()}" href="#" class="article-header-time" title="퍼머링크"></a>
                                     </div>
                                 </div>
                                 <div class="article-doc comment-doc">
@@ -77,7 +80,7 @@
                                     <ul class="article-util-list">
                                         <li>
                                             <a class="link-modify-article"
-                                               href="/questions/413/answers/1405/form">수정</a>
+                                               th:href="@{reply/{replyId}/update(replyId=${replyDto.getReplyId()})}">수정</a>
                                         </li>
                                         <li>
                                             <form class="delete-answer-form" action="/questions/413/answers/1405"
@@ -94,8 +97,8 @@
                                     <label>
                                         <input type="hidden" name="userId" th:value="${session.userId}">
                                         <input type="hidden" name="articleId" th:value="${articleDto.articleId}">
-                                        <textarea class="form-control" name="contents" placeholder="Update your status"></textarea>
                                     </label>
+                                        <textarea class="form-control" name="contents" placeholder="Update your status"></textarea>
                                 </div>
                                 <button class="btn btn-success pull-right" type="submit">답변하기</button>
                                 <div class="clearfix"/>

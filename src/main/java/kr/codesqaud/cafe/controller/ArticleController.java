@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 public class ArticleController {
@@ -80,8 +81,19 @@ public class ArticleController {
 
     @PostMapping("/article/reply/create")
     public String createReply(Reply reply) {
-        logger.warn(reply.toString());
         replyService.createReply(reply);
+        return "redirect:/article/" + reply.getArticleId();
+    }
+
+    @GetMapping("/article/reply/{replyId}/update")
+    public String updateReplyForm(@PathVariable("replyId") String replyId, Model model) {
+        model.addAttribute(replyService.findReplyByReplyId(replyId));
+        return "user/updateShow";
+    }
+
+    @PutMapping("/article/reply/updateSubmit")
+    public String updateReply(@RequestParam String oldReplyId, Reply reply) {
+        replyService.updateReply(reply, oldReplyId);
         return "redirect:/article/" + reply.getArticleId();
     }
 }
