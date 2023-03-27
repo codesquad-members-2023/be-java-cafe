@@ -48,7 +48,7 @@ public class H2ReplyRepository  {
     public List<Reply> findByArticleId(int articleId) {
         String sql = "select replyId, articleId, writer, content, createAt from replies where articleId = ?";
 
-        return jdbcTemplate.query(sql, new BeanPropertyRowMapper<>(Reply.class));
+        return jdbcTemplate.query(sql, new BeanPropertyRowMapper<>(Reply.class), articleId);
     }
 
     public Reply findByReplyId(int replyId) {
