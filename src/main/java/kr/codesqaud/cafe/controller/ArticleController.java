@@ -1,5 +1,6 @@
 package kr.codesqaud.cafe.controller;
 
+import javax.servlet.http.HttpSession;
 import kr.codesqaud.cafe.model.Article;
 import kr.codesqaud.cafe.repository.ArticleDto;
 import kr.codesqaud.cafe.service.ArticleService;
@@ -7,6 +8,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -47,7 +49,10 @@ public class ArticleController {
     }
 
     @GetMapping("/article/{articleId}/edit")
-    public String updateArticle(@PathVariable("articleId") int articleId, Model model) {
+    public String updateArticle(@PathVariable("articleId") int articleId, Model model, HttpSession session) {
+        if (!articleService.findArticleContentById(articleId).getUserId().equals(session.getAttribute("userId"))) {
+            throw new IllegalArgumentException("다른 사람의 게시글은 수정할 수 없습니다.");
+        }
         model.addAttribute(articleService.findArticleContentById(articleId));
         return "qna/updateForm";
     }
@@ -58,9 +63,12 @@ public class ArticleController {
         return "redirect:/article/" + articleId;
     }
 
-    @GetMapping("/article/{articleId}/delete")
-    public String deleteArticle(@PathVariable("articleId") int articleId, Model model) {
-        model.addAttribute(articleService.findArticleContentById(articleId));
-        return "index";
+    @DeleteMapping("/article/delete")
+    public String deleteArticle(String articleId, String userId, HttpSession session) {
+        if (!userId.equals(session.getAttribute("userId"))) {
+            throw new IllegalArgumentException("다른 사람의 게시글은 삭제할 수 없습니다.");
+        }
+        articleService.deleteArticle(Integer.parseInt(articleId));
+        return "redirect:/";
     }
 }

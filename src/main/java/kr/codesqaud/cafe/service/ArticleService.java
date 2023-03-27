@@ -36,7 +36,7 @@ public class ArticleService {
         articleDao.updateArticle(article, articleId);
     }
 
-    public void deleteArticle() {
-
+    public void deleteArticle(int articleId) {
+        articleDao.deleteArticle(articleId);
     }
 }
