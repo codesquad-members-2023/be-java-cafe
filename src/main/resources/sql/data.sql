@@ -6,3 +6,6 @@ VALUES ('jhc1426', '1111', 'ManJu', '11111@gmail.com');
 
 INSERT INTO CAFE_ARTICLE(WRITER, TITLE, CONTENTS)
 VALUES ('jhc1426', '테스트01', '테스트용 글 입니돵');
+
+INSERT INTO CAFE_REPLY(WRITER, CONTENTS, ARTICLEID)
+VALUES ('test', '테스트용 댓글', 1);

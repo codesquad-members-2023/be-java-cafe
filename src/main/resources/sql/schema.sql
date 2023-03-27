@@ -17,3 +17,14 @@ CREATE TABLE cafe_article
     contents VARCHAR(500)  NOT NULL,
     time     smalldatetime not null default now()
 );
+
+DROP TABLE IF EXISTS cafe_reply;
+CREATE TABLE cafe_reply
+(
+    id        BIGINT AUTO_INCREMENT PRIMARY KEY,
+    writer    VARCHAR(20)   NOT NULL,
+    contents  VARCHAR(300)  NOT NULL,
+    time      smalldatetime NOT NULL default now(),
+    articleId BIGINT,
+    FOREIGN KEY (articleId) REFERENCES cafe_article (id)
+)
