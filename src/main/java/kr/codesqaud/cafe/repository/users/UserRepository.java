@@ -11,4 +11,6 @@ public interface UserRepository {
     public List<User> findAllUsers();
 
     public User findUserById(long id);
+
+    boolean validateUnknownUser(String userId, String password);
 }

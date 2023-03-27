@@ -26,9 +26,13 @@ public class MemoryUserRepository implements UserRepository {
         return null;
     }
 
+    @Override
+    public boolean validateUnknownUser(String userId, String password) {
+        return true;
+    }
+
     public User findUserById(String userId) {
         User user = store.get(userId);
         return user;
     }
-
 }

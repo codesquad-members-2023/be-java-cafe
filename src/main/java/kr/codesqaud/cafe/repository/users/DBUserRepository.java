@@ -8,7 +8,6 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
-import java.time.LocalDateTime;
 import java.util.List;
 
 @Primary
@@ -23,11 +22,27 @@ public class DBUserRepository implements UserRepository {
     }
 
     @Override
+    public boolean validateUnknownUser(String userId, String password) {
+        String existUserQuery = "select id, userId, password from member where userId = ?";
+
+        User loginUser = jdbcTemplate.queryForObject(existUserQuery, new BeanPropertyRowMapper<>(), userId);
+
+        if (!loginUser.getUserId().equals(userId)) {
+            return true;
+        }
+
+        if (!loginUser.getPassword().equals(password)) {
+            return true;
+        }
+
+        return false;
+    }
+
+    @Override
     public void save(User user) {
         String sql = "insert into member (userId, password, name, email) values(?, ?, ?, ?)";
 
         jdbcTemplate.update(sql, user.getUserId(), user.getPassword(), user.getName(), user.getEmail());
-
     }
 
     @Override

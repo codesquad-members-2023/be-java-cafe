@@ -23,6 +23,16 @@ public class UserController {
         this.userRepository = userRepository;
     }
 
+    @PostMapping("/login")
+    public String validateUser(@RequestParam String userId, @RequestParam String password) {
+
+        if (userRepository.validateUnknownUser(userId, password)) {
+            return "users/login_failed";
+        }
+
+        return "redirect:/qna/list";
+    }
+
     @GetMapping("/form")
     public String findUserFormPage() {
         return "users/form";
