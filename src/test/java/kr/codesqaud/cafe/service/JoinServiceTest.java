@@ -16,7 +16,6 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 
 import kr.codesqaud.cafe.repository.JdbcUserRepository;
-import kr.codesqaud.cafe.service.impl.JoinServiceImpl;
 import kr.codesqaud.cafe.model.User;
 
 @JdbcTest
@@ -28,7 +27,7 @@ class JoinServiceTest {
     @BeforeEach
     public void setup() {
         dataSource = new DriverManagerDataSource("jdbc:h2:mem:test", "sa", "");
-        joinService = new JoinServiceImpl(new JdbcUserRepository(dataSource));
+        joinService = new JoinService(new JdbcUserRepository(dataSource));
         jdbcTemplate = new JdbcTemplate(dataSource);
 
         jdbcTemplate.execute("CREATE TABLE USERS\n"

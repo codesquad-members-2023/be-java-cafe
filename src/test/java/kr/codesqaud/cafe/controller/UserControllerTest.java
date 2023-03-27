@@ -15,7 +15,6 @@ import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 
 import kr.codesqaud.cafe.model.User;
-import kr.codesqaud.cafe.service.JoinService;
 import kr.codesqaud.cafe.exceptions.UserInfoException;
 
 import static org.mockito.BDDMockito.given;

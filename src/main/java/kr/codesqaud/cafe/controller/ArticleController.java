@@ -32,7 +32,7 @@ public class ArticleController {
 
     @PostMapping("/qna/create")
     public String articlePost(@RequestParam String title, @RequestParam String contents, HttpSession httpSession)
-        throws UserInfoException {
+        throws UserInfoException, ArticleInfoException {
         String userId = (String)httpSession.getAttribute("sessionedUser");
 
         articleRepository.addArticle(new Article(userRepository.findById(userId), title, contents));

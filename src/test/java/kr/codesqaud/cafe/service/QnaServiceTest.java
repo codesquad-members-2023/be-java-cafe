@@ -14,7 +14,6 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 
 import kr.codesqaud.cafe.repository.JdbcArticleRepository;
-import kr.codesqaud.cafe.service.impl.QnaServiceImpl;
 import kr.codesqaud.cafe.model.Article;
 
 @JdbcTest
@@ -29,7 +28,7 @@ class QnaServiceTest {
     @BeforeEach
     public void setup() {
         dataSource = new DriverManagerDataSource("jdbc:h2:mem:test", "sa", "");
-        qnaService = new QnaServiceImpl(new JdbcArticleRepository(dataSource));
+        qnaService = new QnaService(new JdbcArticleRepository(dataSource));
         jdbcTemplate = new JdbcTemplate(dataSource);
         jdbcTemplate.execute("CREATE TABLE ARTICLES\n"
                 + "(\n"
