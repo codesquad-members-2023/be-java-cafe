@@ -1,4 +1,4 @@
-package kr.codesqaud.cafe.domain;
+package kr.codesqaud.cafe.repository;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -6,20 +6,18 @@ import static org.assertj.core.api.Assertions.assertThat;
 import javax.sql.DataSource;
 
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.autoconfigure.jdbc.JdbcTest;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 
 import kr.codesqaud.cafe.model.Article;
-import kr.codesqaud.cafe.repository.ArticleRepository;
-import kr.codesqaud.cafe.repository.JdbcArticleRepository;
 
 
-@SpringBootTest
+@JdbcTest
 class ArticleRepositoryTest {
 
     private DataSource dataSource;
@@ -31,11 +29,21 @@ class ArticleRepositoryTest {
     @BeforeEach
     public void setup() {
         dataSource = new DriverManagerDataSource("jdbc:h2:mem:test", "sa", "");
-        articleRepository = new JdbcArticleRepository(dataSource);
         jdbcTemplate = new JdbcTemplate(dataSource);
+        jdbcTemplate.execute("CREATE TABLE ARTICLES\n"
+                + "(\n"
+                + "writer VARCHAR(255),\n"
+                + "title VARCHAR(255),\n"
+                + "contents VARCHAR(500),\n"
+                + "id int AUTO_INCREMENT,\n"
+                + "creationtime timestamp with time zone,\n"
+                + "PRIMARY KEY (id)\n"
+                + ");\n"
+        );
+
         art1 = new Article( "poro", "글쓰기는 쉽다.", "알고보면 글쓰기는 어려울지도");
         art2 = new Article( "honux", "코딩은 쉽다.", "쉽다");
-
+        articleRepository = new JdbcArticleRepository(dataSource);
         articleRepository.addArticle(art1);
         articleRepository.addArticle(art2);
     }

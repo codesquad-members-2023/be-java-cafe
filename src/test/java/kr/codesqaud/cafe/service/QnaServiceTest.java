@@ -1,4 +1,4 @@
-package kr.codesqaud.cafe.domain;
+package kr.codesqaud.cafe.service;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -9,18 +9,14 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.autoconfigure.jdbc.JdbcTest;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 
-import kr.codesqaud.cafe.model.User;
 import kr.codesqaud.cafe.repository.JdbcArticleRepository;
-import kr.codesqaud.cafe.repository.JdbcUserRepository;
-import kr.codesqaud.cafe.service.QnaService;
-import kr.codesqaud.cafe.service.impl.QnaServiceImpl;
 import kr.codesqaud.cafe.model.Article;
 
-@SpringBootTest
+@JdbcTest
 class QnaServiceTest {
     private DataSource dataSource;
     QnaService qnaService;
@@ -32,8 +28,19 @@ class QnaServiceTest {
     @BeforeEach
     public void setup() {
         dataSource = new DriverManagerDataSource("jdbc:h2:mem:test", "sa", "");
-        qnaService = new QnaServiceImpl(new JdbcArticleRepository(dataSource));
+        qnaService = new QnaService(new JdbcArticleRepository(dataSource));
         jdbcTemplate = new JdbcTemplate(dataSource);
+        jdbcTemplate.execute("CREATE TABLE ARTICLES\n"
+                + "(\n"
+                + "writer VARCHAR(255),\n"
+                + "title VARCHAR(255),\n"
+                + "contents VARCHAR(500),\n"
+                + "id int AUTO_INCREMENT,\n"
+                + "creationtime timestamp with time zone,\n"
+                + "PRIMARY KEY (id)\n"
+                + ");\n"
+        );
+
         art1 = new Article( "poro", "글쓰기는 쉽다.", "알고보면 글쓰기는 어려울지도");
         art2 = new Article( "honux", "코딩은 쉽다.", "쉽다");
         qnaService.postQna(art1);

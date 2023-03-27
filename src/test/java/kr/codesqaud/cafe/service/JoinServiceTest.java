@@ -1,4 +1,4 @@
-package kr.codesqaud.cafe.domain;
+package kr.codesqaud.cafe.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.AssertionsForClassTypes.*;
@@ -6,21 +6,19 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import javax.sql.DataSource;
 
-import kr.codesqaud.cafe.utils.UserInfoException;
+import kr.codesqaud.cafe.exceptions.UserInfoException;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.autoconfigure.jdbc.JdbcTest;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 
 import kr.codesqaud.cafe.repository.JdbcUserRepository;
-import kr.codesqaud.cafe.service.JoinService;
-import kr.codesqaud.cafe.service.impl.JoinServiceImpl;
 import kr.codesqaud.cafe.model.User;
 
-@SpringBootTest
+@JdbcTest
 class JoinServiceTest {
     private DataSource dataSource;
     private JoinService joinService;
@@ -29,9 +27,18 @@ class JoinServiceTest {
     @BeforeEach
     public void setup() {
         dataSource = new DriverManagerDataSource("jdbc:h2:mem:test", "sa", "");
-        joinService = new JoinServiceImpl(new JdbcUserRepository(dataSource));
+        joinService = new JoinService(new JdbcUserRepository(dataSource));
         jdbcTemplate = new JdbcTemplate(dataSource);
 
+        jdbcTemplate.execute("CREATE TABLE USERS\n"
+                + "(\n"
+                + "id VARCHAR(255),\n"
+                + "password VARCHAR(255),\n"
+                + "name VARCHAR(255),\n"
+                + "email VARCHAR(255),\n"
+                + "idx INT AUTO_INCREMENT,\n"
+                + "PRIMARY KEY (idx)\n"
+                + ")");
         User user1 = new User("conux", "asd", "J", "ho@naver.com");
         User user2 = new User("tonux", "asd", "Js", "ho2@naver.com");
         joinService.join(user1);

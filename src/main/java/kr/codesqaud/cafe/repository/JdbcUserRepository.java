@@ -1,11 +1,10 @@
 package kr.codesqaud.cafe.repository;
 
 import java.util.List;
-import java.util.Optional;
 
 import javax.sql.DataSource;
 
-import kr.codesqaud.cafe.utils.UserInfoException;
+import kr.codesqaud.cafe.exceptions.UserInfoException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
