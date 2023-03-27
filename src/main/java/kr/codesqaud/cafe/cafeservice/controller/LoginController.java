@@ -29,11 +29,6 @@ public class LoginController {
         return "user/login";
     }
 
-    @GetMapping("/login_success")
-    public String loginSuccessForm() {
-        return "user/login_success";
-    }
-
     @PostMapping("/login")
     public String login(@RequestParam String userId, @RequestParam String password, HttpServletRequest request, Model model) {
         Member loginMember;
@@ -48,7 +43,7 @@ public class LoginController {
         return "redirect:/";
     }
 
-    @PostMapping("/logout")
+    @GetMapping("/logout")
     public String logout(HttpSession session) {
         if (session != null) {
             session.invalidate();
