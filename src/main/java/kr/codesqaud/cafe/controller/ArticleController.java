@@ -58,8 +58,7 @@ public class ArticleController {
     @GetMapping("/articles/{id}/update")
     public String editing(HttpSession session, @PathVariable long id) {
         User sessionUser = (User) sessionUtil.getUserInfo(session);
-        Article checkId = articleService.articleCheck(id, sessionUser);
-        if (checkId == null || !checkId.getWriter().equals(sessionUser.getUserId())) {
+        if (!articleService.sessionCheck(sessionUser, id)) {
             log.debug("질문 수정 검증: 본인글이 아닙니다!!! 떽!!!!");
             return "error";
         }
@@ -70,25 +69,29 @@ public class ArticleController {
 
     // 게시글 수정 PUT (서비스)
     @PutMapping("/articles/{id}/update")
-    public String updateArticle(@ModelAttribute Article article, @PathVariable long id) {
-        article.setId(id);
-        if (!articleService.update(article)) {
-            log.debug("게시글 수정 실패ㅠ(해당하는 인덱스 없음)");
-            return "error_all";
+    public String updateArticle(@ModelAttribute Article article, @PathVariable long id, HttpSession session) {
+        User sessionUser = (User) sessionUtil.getUserInfo(session);
+        if (!articleService.sessionCheck(sessionUser, id)) {
+            log.debug("질문 수정 전송 검증: 실패(로그아웃 되었습니다!!!)");
+            return "error_logout";
         }
 
+        article.setId(id);
+        articleService.update(article);
         log.debug("게시글 수정 성공");
         return "redirect:/";
     }
 
-    // 게시글 삭제 DELETE
+    // 게시글 삭제 DELETE (서비스)
     @DeleteMapping("/articles/{id}/delete")
-    public String deleteArticle(@PathVariable long id) {
-        if (!articleService.delete(id)) {
-            log.debug("게시글 삭제: 실패(이미 지워짐)");
-            return "error_all";
+    public String deleteArticle(@PathVariable long id, HttpSession session) {
+        User sessionUser = (User) sessionUtil.getUserInfo(session);
+        if (!articleService.sessionCheck(sessionUser, id)) {
+            log.debug("게시글 삭제: 실패(본인이 아님!!!! 떽!!!)");
+            return "error";
         }
 
+        articleService.delete(id);
         log.debug("게시글 삭제: 성공");
         return "redirect:/";
     }

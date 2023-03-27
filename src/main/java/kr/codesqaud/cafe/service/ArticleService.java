@@ -46,6 +46,14 @@ public class ArticleService {
                 .orElseThrow(null);
     }
 
+    public boolean sessionCheck(User sessionUser, long id) {
+        Article checkId = articleCheck(id, sessionUser);
+        if (checkId == null || !checkId.getWriter().equals(sessionUser.getUserId())) {
+            return false;
+        }
+        return true;
+    }
+
     /**
      * 게시글 삭제
      */
