@@ -1,6 +1,7 @@
 package kr.codesqaud.cafe.controller;
 
 import javax.servlet.http.HttpSession;
+import kr.codesqaud.cafe.repository.UserRepository;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -10,28 +11,27 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import kr.codesqaud.cafe.service.JoinService;
 import kr.codesqaud.cafe.model.User;
 import kr.codesqaud.cafe.exceptions.UserInfoException;
 
 @Controller
 public class UserController {
 
-    private final JoinService joinService;
+    private final UserRepository userRepository;
 
-    public UserController(JoinService joinService) {
-        this.joinService = joinService;
+    public UserController(UserRepository userRepository) {
+        this.userRepository = userRepository;
     }
 
     @GetMapping(value = "/users/{id}")
-    public String userProfile(Model model, @PathVariable String id) {
-        model.addAttribute("user", joinService.lookupUser(id));
+    public String userProfile(Model model, @PathVariable String id) throws UserInfoException {
+        model.addAttribute("user", userRepository.findById(id));
         return "user/profile";
     }
 
     @GetMapping("/users/list")
     public String userList(Model model) {
-        model.addAttribute("user", joinService.lookupAllUser());
+        model.addAttribute("user", userRepository.getAllUsers());
 
         return "user/list";
     }
@@ -41,13 +41,14 @@ public class UserController {
         @RequestParam String name,
         @RequestParam String email) {
         //POST method, /create form으로 전송하는 요청을 처리
-        joinService.join(new User(userId, password, name, email));
+        userRepository.addUser(new User(userId, password, name, email));
         //redirection
         return "redirect:/users/list";
     }
 
     @GetMapping("/users/{id}/form")
-    public String userUpdateForm(@PathVariable String id, Model model, HttpSession session, @ModelAttribute String error) {
+    public String userUpdateForm(@PathVariable String id, Model model, HttpSession session, @ModelAttribute String error)
+        throws UserInfoException {
         //세션에 로그인 되지 않은 경우 로그인 에러를 발생시킨다.
         if (session.getAttribute("sessionedUser") == null) {
             throw new UserInfoException(UserInfoException.NON_AUTHORIZED_USER_MESSAGE, UserInfoException.NON_AUTHORIZED_USER_CODE);
@@ -70,9 +71,9 @@ public class UserController {
     public String userUpdateCommit(@PathVariable String id, @RequestParam String userId,
         @RequestParam String password,
         @RequestParam String newPassword,
-        @RequestParam String name, @RequestParam String email) {
+        @RequestParam String name, @RequestParam String email) throws UserInfoException {
         //id를 저장
-        joinService.updateUser(id, password, newPassword, name, email);
+        userRepository.updateUser(id, password, newPassword, name, email);
 
         return "redirect:/users/list";
     }
@@ -84,8 +85,8 @@ public class UserController {
 
     @PostMapping("/users/login")
     public String login(@RequestParam String userId, @RequestParam String password,
-        HttpSession session) {
-        User sessionedUser = joinService.lookupUser(userId);
+        HttpSession session) throws UserInfoException {
+        User sessionedUser = userRepository.findById(userId);
         if (!sessionedUser.validate(password)) {
             throw new UserInfoException(UserInfoException.WRONG_PASSWORD_MESSAGE, UserInfoException.WRONG_LOGIN_PASSWORD_CODE);
         }
