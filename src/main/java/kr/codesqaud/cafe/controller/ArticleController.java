@@ -63,25 +63,24 @@ public class ArticleController {
                 .filter(article -> article.getWriter().equals(sessionUser.getUserId()))
                 .orElse(null);
         if (checkId == null || !checkId.getWriter().equals(sessionUser.getUserId())) {
-            log.info("본인글이 아닙니다!!! 떽!!!!");
+            log.debug("본인글이 아닙니다!!! 떽!!!!");
             return "error";
         }
 
-        log.info("본인글이니 어서 수정하시죠 도죠도죠");
+        log.debug("본인글이니 어서 수정하시죠 도죠도죠");
         return "qna/updateForm";
     }
 
     // 게시글 수정 PUT
     @PutMapping("/articles/{id}/update")
     public String updateArticle(@ModelAttribute Article article, @PathVariable long id) {
-        System.out.println(article.getId());
         article.setId(id);
-        if(!repository.updateArticle(article)){
-            log.info("게시글 수정 실패ㅠ(해당하는 인덱스 없음)");
+        if (!repository.updateArticle(article)) {
+            log.debug("게시글 수정 실패ㅠ(해당하는 인덱스 없음)");
             return "redirect:/"; // TODO 전용 에러 페이지 만들기(게시글 수정)
         }
 
-        log.info("게시글 수정 성공");
+        log.debug("게시글 수정 성공");
         return "redirect:/";
     }
 
@@ -89,11 +88,11 @@ public class ArticleController {
     @DeleteMapping("/articles/{id}/delete")
     public String deleteArticle(@PathVariable long id) {
         if (!repository.deleteArticle(id)) {
-            log.info("삭제 실패(이미 지워짐)");
+            log.debug("삭제 실패(이미 지워짐)");
             return "redirect:/"; // TODO 전용 에러 페이지 만들기(게시글 삭제)
         }
 
-        log.info("삭제 성공");
+        log.debug("삭제 성공");
         return "redirect:/";
     }
 }
