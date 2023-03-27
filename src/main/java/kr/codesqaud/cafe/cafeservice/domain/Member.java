@@ -28,8 +28,8 @@ public class Member {
         this.createdDate = createdDate;
     }
 
-    public LocalDateTime getCreatedDate() {
-        return LocalDateTime.parse(createdDate.format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
+    public String getCreatedDate() {
+        return createdDate.format(DateTimeFormatter.ofPattern("yyyy-MM-dd hh:mm:ss"));
     }
 
     public Long getId() {
