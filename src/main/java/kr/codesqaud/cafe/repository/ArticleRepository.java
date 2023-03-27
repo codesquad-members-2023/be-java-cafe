@@ -1,5 +1,6 @@
-package kr.codesqaud.cafe.domain.article;
+package kr.codesqaud.cafe.repository;
 
+import kr.codesqaud.cafe.domain.article.Article;
 import kr.codesqaud.connection.DBConnectionUtility;
 import org.springframework.stereotype.Repository;
 
