@@ -25,24 +25,14 @@ public class DBUserRepository implements UserRepository {
     }
 
     @Override
-    public boolean validateUnknownUser(String userId, String password) {
+    public User findDBUser(String userId, String password) {
         String existUserQuery = "select id, userId, password from member where userId = ?";
 
         log.info("Repository userId password [{}][{}]", userId, password);
 
         User loginUser = jdbcTemplate.queryForObject(existUserQuery, new BeanPropertyRowMapper<>(User.class), userId);
 
-        if (!loginUser.getUserId().equals(userId)) {
-            log.info("loginUser.getUserId(), userId = [{}][{}]", loginUser.getUserId(), userId);
-            return true;
-        }
-
-        if (!loginUser.getPassword().equals(password)) {
-            log.info("loginUser.getPassword(), password = [{}][{}]", loginUser.getPassword(), password);
-            return true;
-        }
-
-        return false;
+        return loginUser;
     }
 
     @Override

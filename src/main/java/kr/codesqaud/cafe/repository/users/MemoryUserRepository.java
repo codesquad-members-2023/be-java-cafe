@@ -27,8 +27,8 @@ public class MemoryUserRepository implements UserRepository {
     }
 
     @Override
-    public boolean validateUnknownUser(String userId, String password) {
-        return true;
+    public User findDBUser(String userId, String password) {
+        return new User();
     }
 
     public User findUserById(String userId) {
