@@ -1,75 +1,97 @@
 package kr.codesqaud.cafe.domain.user;
 
-import lombok.extern.slf4j.Slf4j;
-import org.assertj.core.api.Assertions;
+import kr.codesqaud.cafe.repository.NamedJdbcTemplateMemberRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.transaction.annotation.Transactional;
 
-import java.sql.SQLException;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.*;
-import static org.junit.jupiter.api.Assertions.*;
 
-@Slf4j
+@SpringBootTest
+@Transactional
 class MemberRepositoryTest {
 
-	MemberRepository repository = new MemberRepository();
+	@Autowired
+	NamedJdbcTemplateMemberRepository repository;
+	private final Logger logger = LoggerFactory.getLogger(getClass());
 
 	@Test
-	void crud() throws SQLException {
-		// save
-		Member member1 = new Member("rhrjsgh97", "9707", "고건호", "rhrjsgh97@gmail.com");
-		Member member2 = new Member("noeseyhoes", "7290", "서혜선", "hseon0927@gmail.com");
-		Member member3 = new Member("flaehdan", "1234", "임동현", "flaehdan@gmail.com");
-		Member member4 = new Member("roy", "1234", "이승로", "roy@gmail.com");
-		Member member5 = new Member("hana", "1234", "왕하나", "hana@naver.com");
-		repository.save(member1);
-		repository.save(member2);
-		repository.save(member3);
-		repository.save(member4);
-		repository.save(member5);
+	@DisplayName("회원 가입 테스트")
+	void save() {
+		Member test = new Member("test", "1234", "테스트", "test@test.com");
+		repository.save(test);
 
-		// findById
-		Member findMember1 = repository.findById(member1.getUserId());
-		log.info("findMember1={}", findMember1);
-		Member findMember2 = repository.findById(member2.getUserId());
-		log.info("findMember2={}", findMember2);
-		Member findMember3 = repository.findById(member3.getUserId());
-		log.info("findMember3={}", findMember3);
-		Member findMember4 = repository.findById(member4.getUserId());
-		log.info("findMember4={}", findMember4);
-		Member findMember5 = repository.findById(member5.getUserId());
-		log.info("findMember5={}", findMember5);
+		Member findMember = repository.findById(test.getUserId()).orElseThrow();
 
-		assertThat(findMember1.getUserId()).isEqualTo(member1.getUserId());
-		assertThat(findMember1.getPassword()).isEqualTo(member1.getPassword());
-		assertThat(findMember1.getName()).isEqualTo(member1.getName());
-		assertThat(findMember1.getEmail()).isEqualTo(member1.getEmail());
+		logger.info("test.getName():{}, findMember.getName():{}", test.getName(), findMember.getName());
+		logger.info("test.getPassword():{}, findMember.getPassword():{}", test.getPassword(), findMember.getPassword());
+		logger.info("test.getEmail():{}, findMember.getEmail():{}", test.getEmail(), findMember.getEmail());
+		logger.info("test.getUserId():{}, findMember.getUserId():{}", test.getUserId(), findMember.getUserId());
 
-		assertThat(findMember2.getUserId()).isEqualTo(member2.getUserId());
-		assertThat(findMember2.getPassword()).isEqualTo(member2.getPassword());
-		assertThat(findMember2.getName()).isEqualTo(member2.getName());
-		assertThat(findMember2.getEmail()).isEqualTo(member2.getEmail());
+		assertThat(test.getName()).isEqualTo(findMember.getName());
+		assertThat(test.getPassword()).isEqualTo(findMember.getPassword());
+		assertThat(test.getEmail()).isEqualTo(findMember.getEmail());
+		assertThat(test.getUserId()).isEqualTo(findMember.getUserId());
+	}
 
-		// update: name: 서혜선 -> 서혜뭉
-		repository.update(member2.getUserId(), new Member("noeseyhoes", "7290", "서혜뭉", "hseon0927@gmail.com"));
-		Member updatedMember1 = repository.findById(member2.getUserId());
-		assertThat(updatedMember1.getName()).isEqualTo("서혜뭉");
+	@Test
+	@DisplayName("ID로 회원을 찾는 테스트")
+	void findByID() {
+		String userId1 = "rhrjsgh97";
+		String userId2 = "noeseyhoes";
+		Member findMember1 = repository.findById(userId1).orElseThrow();
+		Member findMember2 = repository.findById(userId2).orElseThrow();
 
-		// update fail: name: 고건호 -> 고봉렬
-		repository.update(member1.getUserId(), new Member("rhrjsgh97", "1234", "고봉렬", "rhrjsgh97@gmail.com"));
-		Member updatedMember2 = repository.findById(member1.getUserId());
-		assertThat(updatedMember2.getName()).isEqualTo("고건호");
+		logger.info("findMember1.getUserId():{}, userId1:{}", findMember1.getUserId(), userId1);
+		logger.info("findMember2.getUserId():{}, userId2:{}", findMember2.getUserId(), userId2);
 
-		// showAll
+		assertThat(findMember1.getUserId()).isEqualTo(userId1);
+		assertThat(findMember2.getUserId()).isEqualTo(userId2);
+	}
+
+	@Test
+	@DisplayName("모든 회원을 조회하는 테스트")
+	void showAllUsers() {
 		List<Member> allMembers = repository.showAllUsers();
-		log.info("allMembers.size():{}", allMembers.size());
-		for (int i = 0; i < allMembers.size(); i++) {
-			log.info("이름:{}", allMembers.get(i).getUserId());
-			log.info("ID:{}", allMembers.get(i).getName());
-			log.info("PW:{}", allMembers.get(i).getPassword());
-			log.info("email:{}", allMembers.get(i).getEmail());
-		}
+
+		assertThat(allMembers.get(0).getUserId()).isEqualTo("rhrjsgh97");
+		assertThat(allMembers.get(1).getUserId()).isEqualTo("noeseyhoes");
+		assertThat(allMembers.size()).isEqualTo(2);
+	}
+
+	@Test
+	@DisplayName("비밀번호가 일치 시에 회원 정보를 수정하는 테스트")
+	void updateSuccessed() {
+		Member updateParam = new Member("rhrjsgh97", "1234", "고봉렬", "gobongyeol@gmail.com");
+
+		logger.info("original password:{}, updateParam password:{}", repository.findById(updateParam.getUserId()).orElseThrow().getPassword(), updateParam.getPassword());
+		logger.info("original password == updateParam password:{}", repository.findById(updateParam.getUserId()).orElseThrow().getPassword().equals(updateParam.getPassword()));
+
+		repository.update(updateParam);
+
+		Member updatedMember = repository.findById("rhrjsgh97").orElseThrow();
+		assertThat(updatedMember.getName()).isEqualTo(updateParam.getName());
+		assertThat(updatedMember.getEmail()).isEqualTo(updateParam.getEmail());
+	}
+
+	@Test
+	@DisplayName("비밀번호 불일치 시에 회원 정보 수정이 이뤄지지 않는 테스트")
+	void updateFailed() {
+		Member updateParam = new Member("rhrjsgh97", "5678", "고봉렬", "gobongyeol@gmail.com");
+
+		logger.info("original password:{}, updateParam password:{}", repository.findById(updateParam.getUserId()).orElseThrow().getPassword(), updateParam.getPassword());
+		logger.info("original password == updateParam password:{}", repository.findById(updateParam.getUserId()).orElseThrow().getPassword().equals(updateParam.getPassword()));
+
+		repository.update(updateParam);
+
+		Member updatedMember = repository.findById("rhrjsgh97").orElseThrow();
+		assertThat(updatedMember.getName()).isNotEqualTo(updateParam.getName());
+		assertThat(updatedMember.getEmail()).isNotEqualTo(updateParam.getEmail());
 	}
 }

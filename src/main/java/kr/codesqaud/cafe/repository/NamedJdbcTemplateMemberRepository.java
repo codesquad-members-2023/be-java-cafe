@@ -1,5 +1,6 @@
-package kr.codesqaud.cafe.domain.user;
+package kr.codesqaud.cafe.repository;
 
+import kr.codesqaud.cafe.domain.user.Member;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
