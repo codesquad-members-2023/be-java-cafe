@@ -10,6 +10,8 @@ import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
+import kr.codesqaud.cafe.interceptors.CacheInvalidator;
+import kr.codesqaud.cafe.interceptors.LoggerInterceptor;
 import kr.codesqaud.cafe.repository.ArticleRepository;
 import kr.codesqaud.cafe.repository.JdbcArticleRepository;
 import kr.codesqaud.cafe.repository.JdbcUserRepository;
@@ -21,10 +23,17 @@ public class AutoAppConfig implements WebMvcConfigurer {
 
     private final DataSource dataSource;
     private final HandlerInterceptor loginInterceptor;
+    private final HandlerInterceptor loggerInterceptor;
+    private final HandlerInterceptor cacheInvalidator;
+    private final HandlerInterceptor notFoundInterceptor;
 
-    public AutoAppConfig(DataSource dataSource, HandlerInterceptor handlerInterceptor) {
+    public AutoAppConfig(DataSource dataSource, HandlerInterceptor loginInterceptor,
+            HandlerInterceptor loggerInterceptor, HandlerInterceptor cacheInvalidator, HandlerInterceptor notFoundInterceptor) {
         this.dataSource = dataSource;
-        loginInterceptor = handlerInterceptor;
+        this.loginInterceptor = loginInterceptor;
+        this.loggerInterceptor = loggerInterceptor;
+        this.cacheInvalidator = cacheInvalidator;
+        this.notFoundInterceptor = notFoundInterceptor;
     }
 
 
@@ -51,9 +60,24 @@ public class AutoAppConfig implements WebMvcConfigurer {
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
+        registry.addInterceptor(notFoundInterceptor)
+                .order(100)
+                .addPathPatterns("/**")//모든 URL에 대해서, 404를 발생.
+                .excludePathPatterns("/", "/css/**", "/*.ico", "/js/**", "/images/**", "/fonts/**",
+                        "/users/**", "/qna/**", "/api/**");
         registry.addInterceptor(loginInterceptor)
-            .addPathPatterns("/users/**", "/qna/**")
-            .excludePathPatterns("/users/login_failed", "/users/form",
-                "/users/login", "/users/create");
+                .order(1000)
+                .addPathPatterns("/**")
+                .excludePathPatterns("/", "/css/**", "/*.ico", "/js/**", "/images/**", "/fonts/**",
+                        "/users/login_failed", "/users/form",
+                        "/users/login", "/users/create", "/error", "/api/**");
+        registry.addInterceptor(loggerInterceptor)
+                .order(Ordered.LOWEST_PRECEDENCE)
+                .addPathPatterns("/**")
+                .excludePathPatterns("/css/**", "/*.ico", "/js/**", "/images/**", "/fonts/**");
+        registry.addInterceptor(cacheInvalidator)
+                .order(Ordered.LOWEST_PRECEDENCE)
+                .addPathPatterns("/**")
+                .excludePathPatterns("/css/**", "/*.ico", "/js/**", "/images/**", "/fonts/**");
     }
 }
