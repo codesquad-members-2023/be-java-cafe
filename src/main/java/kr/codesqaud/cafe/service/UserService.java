@@ -32,7 +32,7 @@ public class UserService {
         return userRepository.findAll();
     }
 
-    public Optional<User> findUserId(String userId) {
+    public Optional<User> findByUserId(String userId) {
         return userRepository.findByUserId(userId);
     }
 

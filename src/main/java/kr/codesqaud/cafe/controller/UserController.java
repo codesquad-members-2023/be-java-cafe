@@ -44,10 +44,10 @@ public class UserController {
         log.debug("사용자 목록 Mapping: 받았는가?");
 
         List<User> users = userService.findAllUser();
-        User userInfo = (User) sessionUtil.getUserInfo(session);
+        User sessionUser = (User) sessionUtil.getUserInfo(session);
 
-        if (userInfo != null) {
-            model.addAttribute("userInfo", userInfo);
+        if (sessionUser != null) {
+            model.addAttribute("loginUser", sessionUser);
         }
         model.addAttribute("users", users);
         return "user/list";
@@ -57,7 +57,7 @@ public class UserController {
     @GetMapping("/users/{userId}")
     public String showUserProfile(Model model, @PathVariable String userId) {
         // 프로필 유무 확인후 성공/실패 넘겨주기
-        if (userCheck(userService.findUserId(userId), model)) {
+        if (userCheck(userService.findByUserId(userId), model)) {
             log.debug("프로필 Mapping: 성공");
             return "user/profile";
         }
@@ -69,13 +69,13 @@ public class UserController {
     @GetMapping("/users/{userId}/form")
     public String updateForm(Model model, @PathVariable String userId, HttpSession session) {
         // 세션 검증
-        User userInfo = (User) sessionUtil.getUserInfo(session);
-        if (userInfo == null || !userInfo.getUserId().equals(userId)) {
+        User sessionUser = (User) sessionUtil.getUserInfo(session);
+        if (sessionUser == null || !sessionUser.getUserId().equals(userId)) {
             return "error";
         }
 
         // 회원정보 가져오기(검증후 일치하는)
-        if (userCheck(userService.findUserId(userId), model)) {
+        if (userCheck(userService.findByUserId(userId), model)) {
             log.debug("사용자 정보 수정 GET: 성공");
         }
         return "user/updateForm";
