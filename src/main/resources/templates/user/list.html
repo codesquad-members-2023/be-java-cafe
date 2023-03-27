@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html lang="kr"
       xmlns:th="http://www.thymeleaf.org">
-<head th:replace="/summery/header :: header"></head>
+<head th:replace="summery/header :: header"></head>
 <body>
-<nav th:replace="/summery/nav :: nav"></nav>
-<nav th:replace="/summery/subNav :: subNav"></nav>
+<nav th:replace="summery/nav :: nav"></nav>
+<nav th:replace="summery/subNav :: subNav"></nav>
 <div class="container" id="main">
     <div class="col-md-10 col-md-offset-1">
         <div class="panel panel-default">
@@ -33,6 +33,6 @@
         </div>
     </div>
 </div>
-<footer th:replace="/summery/footer :: footer"></footer>
+<footer th:replace="summery/footer :: footer"></footer>
 </body>
 </html>
