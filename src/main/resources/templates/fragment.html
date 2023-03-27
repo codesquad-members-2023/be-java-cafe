@@ -36,7 +36,8 @@
                 </form>
                 <ul class="nav navbar-nav navbar-right">
                     <li>
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="glyphicon glyphicon-bell"></i></a>
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i
+                                class="glyphicon glyphicon-bell"></i></a>
                         <ul class="dropdown-menu">
                             <li><a href="https://slipp.net" target="_blank">SLiPP</a></li>
                             <li><a href="https://facebook.com" target="_blank">Facebook</a></li>
@@ -73,11 +74,16 @@
                 <ul class="nav navbar-nav navbar-right">
                     <li class="active"><a th:href="@{/}"
                                           href="../index.html">Posts</a></li>
-                    <li><a href="../user/login.html" role="button">로그인</a></li>
-                    <li><a th:href="@{/users/add}"
+                    <li><a th:if="${session.sessionedUser==null}"
+                           th:href="@{/login}"
+                           href="../user/login.html" role="button">로그인</a></li>
+                    <li><a th:if="${session.sessionedUser==null}"
+                           th:href="@{/users/add}"
                            href="../user/form.html" role="button">회원가입</a></li>
-                    <li><a href="#" role="button">로그아웃</a></li>
-                    <li><a href="#" role="button">개인정보수정</a></li>
+                    <li><a th:if="${session.sessionedUser!=null}"
+                           href="#" role="button">로그아웃</a></li>
+                    <li><a th:if="${session.sessionedUser!=null}"
+                           href="#" role="button">개인정보수정</a></li>
                 </ul>
             </div>
         </div>
