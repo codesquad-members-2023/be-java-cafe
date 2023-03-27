@@ -1,8 +1,10 @@
 package kr.codesqaud.cafe.controller;
 
 import kr.codesqaud.cafe.domain.Article;
+import kr.codesqaud.cafe.domain.Reply;
 import kr.codesqaud.cafe.domain.User;
 import kr.codesqaud.cafe.service.ArticleService;
+import kr.codesqaud.cafe.service.ReplyService;
 import kr.codesqaud.cafe.service.SessionUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -12,17 +14,20 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
+import java.util.List;
 import java.util.Optional;
 
 @Controller
 public class ArticleController {
     private final Logger log = LoggerFactory.getLogger(UserController.class);
     private final ArticleService articleService;
+    private final ReplyService replyService;
     private final SessionUtil sessionUtil;
 
     @Autowired
-    public ArticleController(ArticleService articleService, SessionUtil sessionUtil) {
+    public ArticleController(ArticleService articleService, ReplyService replyService, SessionUtil sessionUtil) {
         this.articleService = articleService;
+        this.replyService = replyService;
         this.sessionUtil = sessionUtil;
     }
 
@@ -41,13 +46,21 @@ public class ArticleController {
 
     // 질문 상세보기 Mapping (서비스)
     @GetMapping("/articles/{id}")
-    public String showBoardDetails(Model model, @PathVariable long id) {
+    public String showBoardDetails(Model model, @PathVariable long id, HttpSession session) {
         Optional<Article> article = articleService.findByArticleId(id);
+
 
         // 질문글 유무 확인후 성공/실패 넘겨주기
         if (article.isPresent()) {
             log.debug("질문글 Mapping: 맵핑 성공!!!!");
             model.addAttribute("article", article.get());
+
+            // 댓글 부분
+            List<Reply> replies = replyService.findAllReply(article.get().getId());
+            model.addAttribute("articleId", article.get().getId());
+            model.addAttribute("replySize", replies.size());
+            model.addAttribute("reply", replies);
+            
             return "qna/show";
         }
         log.debug("질문글 Mapping: 맵핑 실패 ㅠㅠㅠ");
@@ -94,5 +107,14 @@ public class ArticleController {
         articleService.delete(id);
         log.debug("게시글 삭제: 성공");
         return "redirect:/";
+    }
+
+    // 테스트
+    @PostMapping("/articles/{articleId}/answers/{userId}")
+    public String test(@PathVariable long articleId, @PathVariable String userId, @ModelAttribute Reply reply){
+        reply.setArticleId(articleId);
+        reply.setWriter(userId);
+        replyService.write(reply);
+        return "redirect:/articles/{articleId}";
     }
 }

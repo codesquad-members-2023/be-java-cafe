@@ -34,8 +34,8 @@ public class Reply {
         this.contents = contents;
     }
 
-    public LocalDateTime getTime() {
-        return time;
+    public Timestamp getTime() {
+        return Timestamp.valueOf(time);
     }
 
     public void setTime(Timestamp time) {

@@ -18,13 +18,9 @@ public class JdbcTemplateReplyRepository {
         this.jdbcTemplate = new JdbcTemplate(dataSource);
     }
 
-    public boolean saveReply(Reply reply) {
-        if (findById(reply.getId()).isPresent()) {
-            jdbcTemplate.update("INSERT INTO CAFE_REPLY(WRITER, CONTENTS, ARTICLEID) VALUES (?, ?, ?)"
-                    , reply.getWriter(), reply.getContents(), reply.getArticleId());
-            return true;
-        }
-        return false;
+    public void saveReply(Reply reply) {
+        jdbcTemplate.update("INSERT INTO CAFE_REPLY(WRITER, CONTENTS, ARTICLEID) VALUES (?, ?, ?)"
+                , reply.getWriter(), reply.getContents(), reply.getArticleId());
     }
 
     public boolean updateReply(Reply reply) {
@@ -50,7 +46,7 @@ public class JdbcTemplateReplyRepository {
     }
 
     public List<Reply> findAllReply(long articleId) {
-        return jdbcTemplate.query("select * from cafe_reply where articleId=? order by id desc", replyRowMapper(), articleId);
+        return jdbcTemplate.query("select * from cafe_reply where articleId=?", replyRowMapper(), articleId);
     }
 
     private RowMapper<Reply> replyRowMapper() {

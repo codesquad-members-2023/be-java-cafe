@@ -8,7 +8,7 @@ CREATE TABLE cafe_user
     email    VARCHAR(50)        NOT NULL
 );
 
-DROP TABLE IF EXISTS cafe_article;
+DROP TABLE IF EXISTS cafe_article CASCADE;
 CREATE TABLE cafe_article
 (
     id       BIGINT AUTO_INCREMENT PRIMARY KEY,
@@ -18,13 +18,13 @@ CREATE TABLE cafe_article
     time     smalldatetime not null default now()
 );
 
-DROP TABLE IF EXISTS cafe_reply;
+DROP TABLE IF EXISTS cafe_reply CASCADE;
 CREATE TABLE cafe_reply
 (
     id        BIGINT AUTO_INCREMENT PRIMARY KEY,
     writer    VARCHAR(20)   NOT NULL,
     contents  VARCHAR(300)  NOT NULL,
-    time      smalldatetime NOT NULL default now(),
+    time      smalldatetime not null default now(),
     articleId BIGINT,
     FOREIGN KEY (articleId) REFERENCES cafe_article (id)
-)
+);

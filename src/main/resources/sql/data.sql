@@ -8,4 +8,4 @@ INSERT INTO CAFE_ARTICLE(WRITER, TITLE, CONTENTS)
 VALUES ('jhc1426', '테스트01', '테스트용 글 입니돵');
 
 INSERT INTO CAFE_REPLY(WRITER, CONTENTS, ARTICLEID)
-VALUES ('test', '테스트용 댓글', 1);
+VALUES ('test', '테스트용 댓글 일지도?!?!?!?', 1);
