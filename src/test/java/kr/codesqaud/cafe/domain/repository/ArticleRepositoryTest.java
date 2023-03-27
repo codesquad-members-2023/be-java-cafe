@@ -2,7 +2,7 @@ package kr.codesqaud.cafe.domain.repository;
 
 
 import kr.codesqaud.cafe.domain.article.Article;
-import kr.codesqaud.cafe.domain.article.NamedJdbcTemplateArticleRepository;
+import kr.codesqaud.cafe.repository.NamedJdbcTemplateArticleRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
