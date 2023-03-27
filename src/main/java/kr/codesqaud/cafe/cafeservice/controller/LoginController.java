@@ -1,20 +1,17 @@
 package kr.codesqaud.cafe.cafeservice.controller;
 
 import kr.codesqaud.cafe.cafeservice.domain.Member;
-import kr.codesqaud.cafe.cafeservice.domain.login.LoginForm;
 import kr.codesqaud.cafe.cafeservice.domain.login.LoginService;
+import kr.codesqaud.cafe.cafeservice.session.SessionConst;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.validation.BindingResult;
-import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 @Controller
 public class LoginController {
@@ -28,40 +25,29 @@ public class LoginController {
     }
 
     @GetMapping("/login")
-    public String loginForm(@ModelAttribute("loginForm") LoginForm form) {
-        return "login";
+    public String loginForm() {
+        return "user/login";
     }
 
     @PostMapping("/login")
-    public String login(@Validated LoginForm form, BindingResult bindingResult, HttpServletResponse response) {
-        log.debug("from={}", form);
-        log.debug("bindingResult={}", bindingResult);
-
-        if (bindingResult.hasErrors()) {
-            return "user/login";
+    public String login(@RequestParam String userId, @RequestParam String password, HttpServletRequest request, Model model) {
+        Member loginMember;
+        try {
+            loginMember = loginService.login(userId, password);
+        } catch (IllegalArgumentException e) {
+            model.addAttribute("errorMessage", e.getMessage());
+            return "user/fail";
         }
-
-        Member loginMember = loginService.login(form.getEmail(), form.getPassword());
-        System.out.println(loginMember);
-        if (loginMember == null) {
-            bindingResult.reject("loginFail", "아이디 또는 비밀번호가 맞지않습니다");
-            return "user/login";
-        }
-
-        Cookie cookie = new Cookie("memberId", String.valueOf(loginMember.getId()));
-        response.addCookie(cookie);
-        return "redirect:/user/login_success";
-    }
-
-    @PostMapping("/logout")
-    public String logout(HttpServletResponse response) {
-        expireCookie(response, "memberId");
+        HttpSession session = request.getSession();
+        session.setAttribute(SessionConst.LOGIN_MEMBER, loginMember);
         return "redirect:/";
     }
 
-    private void expireCookie(HttpServletResponse response, String cookieName) {
-        Cookie cookie = new Cookie(cookieName, null);
-        cookie.setMaxAge(0);
-        response.addCookie(cookie);
+    @GetMapping("/logout")
+    public String logout(HttpSession session) {
+        if (session != null) {
+            session.invalidate();
+        }
+        return "redirect:/";
     }
 }
