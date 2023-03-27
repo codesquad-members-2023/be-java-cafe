@@ -61,8 +61,8 @@ public class UserController {
                 }
             }
         }
-
-        return "user/list";
+        //수정하려는 사용자 정보와 로그인한 사용자 정보가 다를 때
+        return "error";
     }
 
     @PutMapping("/users/{id}/form")
@@ -77,7 +77,7 @@ public class UserController {
             model.addAttribute("user", user.get());
             return "user/updateForm_failed";
         }
-
+        //id가 db에 존재하지 않을 경우 홈 화면으로
         return "index";
     }
 
