@@ -2,8 +2,10 @@ package kr.codesqaud.cafe.controller;
 
 import javax.servlet.http.HttpSession;
 import kr.codesqaud.cafe.model.Article;
+import kr.codesqaud.cafe.model.Reply;
 import kr.codesqaud.cafe.repository.ArticleDto;
 import kr.codesqaud.cafe.service.ArticleService;
+import kr.codesqaud.cafe.service.ReplyService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
@@ -18,10 +20,12 @@ import org.springframework.web.bind.annotation.PutMapping;
 @Controller
 public class ArticleController {
     private final ArticleService articleService;
+    private final ReplyService replyService;
     private final Logger logger = LoggerFactory.getLogger(UserController.class);
 
-    public ArticleController(ArticleService articleService) {
+    public ArticleController(ArticleService articleService, ReplyService replyService) {
         this.articleService = articleService;
+        this.replyService = replyService;
     }
 
     @GetMapping("/openForm")
@@ -45,6 +49,8 @@ public class ArticleController {
     @GetMapping("/article/{articleId}")
     public String findArticleById(@PathVariable("articleId") int articleId, Model model) {
         model.addAttribute(articleService.findArticleContentById(articleId));
+        model.addAttribute(replyService.findReplyAllByArticleId(articleId));
+        logger.warn(replyService.findReplyAllByArticleId(articleId).toString());
         return "user/show";
     }
 
@@ -70,5 +76,12 @@ public class ArticleController {
         }
         articleService.deleteArticle(Integer.parseInt(articleId));
         return "redirect:/";
+    }
+
+    @PostMapping("/article/reply/create")
+    public String createReply(Reply reply) {
+        logger.warn(reply.toString());
+        replyService.createReply(reply);
+        return "redirect:/article/" + reply.getArticleId();
     }
 }
