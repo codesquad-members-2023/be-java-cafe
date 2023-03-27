@@ -8,7 +8,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.util.Optional;
 
@@ -49,26 +48,37 @@ public class UserController {
     }
 
     @GetMapping("/users/{id}/form")
-    public String userProfileCorrection(Model model, @PathVariable String id) {
+    public String userProfileCorrection(Model model, @PathVariable String id, HttpSession session) {
         Optional<User> user = userRepository.findById(id);
+
         if (user.isPresent()) {
-            model.addAttribute("user", user.get());
-            return "user/updateForm";
+            Object value = session.getAttribute("loginUser");
+            if (value != null) {
+                User sessionUser = (User) value;
+                if (sessionUser.getId().equals(user.get().getId())) {
+                    model.addAttribute("user", user.get());
+                    return "user/updateForm";
+                }
+            }
         }
 
         return "user/list";
     }
 
     @PutMapping("/users/{id}/form")
-    public String profileUpdate(UserForm userForm) {
-        Optional<User> user = userRepository.findById(userForm.getId());
+    public String profileUpdate(UserForm userForm, Model model, @PathVariable String id) {
+        Optional<User> user = userRepository.findById(id);
 
         if (user.isPresent()) {
-            userRepository.save(new User(userForm.getId(), userForm.getName(), userForm.getEmail(), userForm.getPassword()));
-            return "redirect:/users";
+            if (user.get().getPassword().equals(userForm.getPrePassword())) {
+                userRepository.save(new User(userForm.getId(), userForm.getName(), userForm.getEmail(), userForm.getPassword()));
+                return "redirect:/users";
+            }
+            model.addAttribute("user", user.get());
+            return "user/updateForm_failed";
         }
-        //TODO: 비밀번호 일치 시에만 수정하도록
-        return "";
+
+        return "index";
     }
 
     @PostMapping("/login")
