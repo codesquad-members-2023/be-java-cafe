@@ -12,14 +12,14 @@
                 </tr>
               </thead>
               <tbody>
-              {{#list}}
+              {{#users}}
                 <tr>
                     <th scope="row"><a href="/users/{{id}}">{{id}}</a></th>
-                    <td>{{nickname}}</td>
+                    <td>{{userName}}</td>
                     <td>{{email}}</td>
-                    <td>{{createdDate}}</td><td><a href="/user/{{id}}/updateForm" class="btn btn-success" role="button">수정</a></td>
+                    <td>{{getCreatedDate}}</td><td><a href="/user/{{id}}/updateForm" class="btn btn-success" role="button">수정</a></td>
                 </tr>
-              {{/list}}
+              {{/users}}
               </tbody>
           </table>
         </div>
