@@ -41,7 +41,7 @@ class UserControllerTest {
     @DisplayName("새로운 유저 데이터의 숫자와 반환 리스트의 값이 같아야 한다.")
     void findUserList() {
         // given
-        final int userSize = 3;
+        final int userSize = 4;
         final User test1 = new User("test6", "1234", "tset5", "test5@test.com");
         final User test2 = new User("test7", "1234", "tset5", "test5@test.com");
         userService.createUser(test1);

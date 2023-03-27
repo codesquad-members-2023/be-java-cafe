@@ -43,7 +43,7 @@ class ArticleControllerTest {
         // when
         articleService.findAllArticle();
         // then
-        assertThat(list.size()).isEqualTo(2);
+        assertThat(list.size()).isEqualTo(3);
     }
 
     @Test
