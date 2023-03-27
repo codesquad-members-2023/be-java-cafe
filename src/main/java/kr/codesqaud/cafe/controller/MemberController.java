@@ -1,6 +1,6 @@
 package kr.codesqaud.cafe.controller;
 
-import kr.codesqaud.cafe.domain.user.NamedJdbcTemplateMemberRepository;
+import kr.codesqaud.cafe.repository.NamedJdbcTemplateMemberRepository;
 import kr.codesqaud.cafe.domain.user.Member;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
