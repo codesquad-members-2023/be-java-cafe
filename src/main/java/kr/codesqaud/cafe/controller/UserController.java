@@ -1,11 +1,11 @@
 package kr.codesqaud.cafe.controller;
 
-import kr.codesqaud.cafe.domain.UserLoginDTO;
+import kr.codesqaud.cafe.dto.user.UserLoginDTO;
 import kr.codesqaud.cafe.repository.member.MemberRepository;
 import kr.codesqaud.cafe.domain.User;
-import kr.codesqaud.cafe.validation.UserJoinValidator;
-import kr.codesqaud.cafe.validation.UserLoginValidator;
-import kr.codesqaud.cafe.validation.UserUpdateValidator;
+import kr.codesqaud.cafe.validation.user.UserJoinValidator;
+import kr.codesqaud.cafe.validation.user.UserLoginValidator;
+import kr.codesqaud.cafe.validation.user.UserUpdateValidator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -80,10 +80,10 @@ public class UserController {
     @PutMapping("/updateUser/{userId}")
     public String updateUserPost(@ModelAttribute User user, BindingResult bindingResult) {
         userUpdateValidator.validate(user, bindingResult);
+
         if (bindingResult.hasErrors()) {
             return "users/update_user";
         }
-
 
         memberRepository.updateUser(user);
         return "redirect:/users/list";

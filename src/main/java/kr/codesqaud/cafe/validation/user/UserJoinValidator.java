@@ -1,4 +1,4 @@
-package kr.codesqaud.cafe.validation;
+package kr.codesqaud.cafe.validation.user;
 
 import kr.codesqaud.cafe.domain.User;
 import kr.codesqaud.cafe.repository.member.MemberRepository;
@@ -40,6 +40,26 @@ public class UserJoinValidator implements Validator {
         if (!StringUtils.hasText(user.getEmail())) {
             errors.rejectValue("email", "required.user.email");
         }
+
+        if (user.getUserId().length() >= 20) {
+            errors.rejectValue("userId", "error.user.userIdLength");
+        }
+        if (user.getPassword().length() >= 20) {
+            errors.rejectValue("password", "error.user.passwordLength");
+        }
+        if (user.getName().length() >= 20) {
+            errors.rejectValue("name", "error.user.nameLength");
+        }
+        if (user.getEmail().length() >= 60) {
+            errors.rejectValue("email", "error.user.emailLength");
+        }
+        if (!user.getPassword().matches(".*[!@#$%^&*].*")) {
+            errors.rejectValue("password", "error.user.passwordFormat");
+        }
+        if (!user.getEmail().matches("[^@]+@[^@]+\\.[^@]+")) {
+            errors.rejectValue("email", "error.user.emailFormat");
+        }
+
         List<User> userList = memberRepository.findAll();
 
         userList.stream()
@@ -48,6 +68,5 @@ public class UserJoinValidator implements Validator {
                 .ifPresent(u -> {
                     errors.rejectValue("userId", "error.user.duplicatedId");
                 });
-
     }
 }

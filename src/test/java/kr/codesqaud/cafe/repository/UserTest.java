@@ -15,12 +15,12 @@ import java.util.List;
 
 @SpringBootTest
 @Transactional
-class UserSaveTest {
+class UserTest {
 
     private final MemberRepository memberRepository;
 
     @Autowired
-    public UserSaveTest(DataSource dataSource) {
+    public UserTest(DataSource dataSource) {
         this.memberRepository = new H2JDBCMemberRepository(dataSource);
     }
 

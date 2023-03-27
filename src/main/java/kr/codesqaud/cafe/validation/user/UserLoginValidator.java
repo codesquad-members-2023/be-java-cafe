@@ -1,7 +1,7 @@
-package kr.codesqaud.cafe.validation;
+package kr.codesqaud.cafe.validation.user;
 
 import kr.codesqaud.cafe.domain.User;
-import kr.codesqaud.cafe.domain.UserLoginDTO;
+import kr.codesqaud.cafe.dto.user.UserLoginDTO;
 import kr.codesqaud.cafe.repository.member.MemberRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -25,7 +25,6 @@ public class UserLoginValidator implements Validator {
         this.memberRepository = memberRepository;
     }
 
-
     @Override
     public boolean supports(Class<?> clazz) {
         return UserLoginDTO.class.isAssignableFrom(clazz);
@@ -42,12 +41,16 @@ public class UserLoginValidator implements Validator {
             }else {
                 errors.rejectValue("password", "error.user.password");
             }
-            log.info("사용자 이름 빈칸 예외처리");
             return;
         }
-        if (!StringUtils.hasText(loginUser.getPassword())) {
-            errors.rejectValue("password", "required.user.password");
+
+        if (loginUser.getUserId().length() >= 20) {
+            errors.rejectValue("userId", "error.user.userIdLength");
         }
+        if (loginUser.getPassword().length() >= 20) {
+            errors.rejectValue("password", "error.user.passwordLength");
+        }
+
 
         // 잘못된 아이디 확인하고, 아이디 있을 시 비밀번호 검사
         List<User> usersList = memberRepository.findAll();
@@ -62,6 +65,5 @@ public class UserLoginValidator implements Validator {
         } else {
             errors.rejectValue("userId", "error.user.userId");
         }
-
     }
 }
