@@ -33,6 +33,7 @@ public class UserService {
     public boolean findUserByPassword(UserDto userDto) {
         String inputId = userDto.getUserId();
         String inputPassword = userDto.getPassword();
-        return userDao.findUserByUserPassword(inputId, inputPassword).filter(v -> v.getPassword().equals(inputPassword)).isPresent();
+        return userDao.findUserByUserPassword(inputId, inputPassword).filter(v -> v.getPassword().equals(inputPassword))
+                .isPresent();
     }
 }

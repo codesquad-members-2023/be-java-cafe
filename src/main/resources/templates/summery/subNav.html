@@ -27,7 +27,8 @@
                 <li><a th:if="${session.userId == null}" href="user/loginRequest" role="button">로그인</a></li>
                 <li><a th:if="${session.userId == null}" href="/user/form.html" role="button">회원가입</a></li>
                 <li><a th:if="${session.userId != null}" href="/logout" role="button">로그아웃</a></li>
-                <li><a th:if="${session.userId != null}" th:href="@{users/{userId}/form(userId=${session.userId})}" role="button">개인정보수정</a></li>
+                <li><a th:if="${session.userId != null}" th:href="@{users/{userId}/form(userId=${session.userId})}"
+                       role="button">개인정보수정</a></li>
             </ul>
         </div>
     </div>

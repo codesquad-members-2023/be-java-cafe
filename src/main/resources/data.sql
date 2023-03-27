@@ -1,11 +1,11 @@
 INSERT INTO CAFEUSER(USER_ID, PASSWORD, NAME, EMAIL)
-VALUES('test1', '1234', 'testName', 'testeamil@tset.com');
+VALUES ('test1', '1234', 'testName', 'testeamil@tset.com');
 
 INSERT INTO CAFEUSER(USER_ID, PASSWORD, NAME, EMAIL)
-VALUES('test2', '1234', 'testName2', 'testeamil2@tset.com');
+VALUES ('test2', '1234', 'testName2', 'testeamil2@tset.com');
 
 INSERT INTO ARTICLE(ARTICLE_ID, USER_ID, TITLE, CONTENTS, TIME, DELETED)
-VALUES(0, 'test1', '테스트 게시물', '테스트', '2023-03-23 20:18', false);
+VALUES (0, 'test1', '테스트 게시물', '테스트', '2023-03-23 20:18', false);
 
 INSERT INTO ARTICLE(ARTICLE_ID, USER_ID, TITLE, CONTENTS, TIME, DELETED)
-VALUES(1, 'test2', '테스트 게시물2', '테스트2', '2023-03-23 20:19', false);
+VALUES (1, 'test2', '테스트 게시물2', '테스트2', '2023-03-23 20:19', false);

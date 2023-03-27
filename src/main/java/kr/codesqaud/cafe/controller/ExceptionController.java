@@ -9,6 +9,7 @@ import org.springframework.web.servlet.ModelAndView;
 @ControllerAdvice
 public class ExceptionController {
     private final Logger logger = LoggerFactory.getLogger(ExceptionController.class);
+
     @ExceptionHandler()
     public ModelAndView articleAuthHandler(Exception e) {
         ModelAndView mav = new ModelAndView();

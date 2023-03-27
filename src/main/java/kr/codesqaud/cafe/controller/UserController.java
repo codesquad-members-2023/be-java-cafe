@@ -60,7 +60,7 @@ public class UserController {
 
     @PostMapping("/user/login")
     public String loginSubmit(@ModelAttribute("userDto") UserDto userDto, HttpSession session) {
-        if(userService.findUserByPassword(userDto)) {
+        if (userService.findUserByPassword(userDto)) {
             session.setAttribute("userId", userDto.getUserId());
             return "redirect:/";
         }

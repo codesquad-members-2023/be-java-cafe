@@ -3,7 +3,6 @@ package kr.codesqaud.cafe.controller;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.List;
-import javax.servlet.http.HttpSession;
 import kr.codesqaud.cafe.model.User;
 import kr.codesqaud.cafe.repository.UserDto;
 import kr.codesqaud.cafe.service.UserService;
@@ -107,7 +106,7 @@ class UserControllerTest {
         userService.createUser(test);
         MockHttpSession mockHttpSession = new MockHttpSession();
         // when
-        userController.login(testLoginDto, mockHttpSession);
+        userController.loginSubmit(testLoginDto, mockHttpSession);
         // then
         assertThat(mockHttpSession.getAttribute("userId")).isEqualTo("test5");
     }
@@ -121,7 +120,7 @@ class UserControllerTest {
         userService.createUser(test);
         MockHttpSession mockHttpSession = new MockHttpSession();
         // when
-        userController.login(testLoginDto, mockHttpSession);
+        userController.loginSubmit(testLoginDto, mockHttpSession);
         // then
         assertThat(mockHttpSession.getAttribute("userId")).isEqualTo(null);
     }
