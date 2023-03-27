@@ -11,8 +11,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
-import java.sql.Timestamp;
-import java.time.LocalDateTime;
 import java.util.Optional;
 
 @Controller
@@ -61,7 +59,7 @@ public class ArticleController {
         User sessionUser = (User) session.getAttribute("loginUser");
         Article checkId = repository.findById(id)
                 .filter(article -> article.getWriter().equals(sessionUser.getUserId()))
-                .orElse(null);
+                .orElseThrow(null);
         if (checkId == null || !checkId.getWriter().equals(sessionUser.getUserId())) {
             log.debug("본인글이 아닙니다!!! 떽!!!!");
             return "error";

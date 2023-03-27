@@ -24,7 +24,7 @@ public class JdbcTemplateUserRepository implements UserRepository {
         if (findByUserId(user.getUserId()).isEmpty()) {
             jdbcTemplate.update("INSERT INTO CAFE_USER(USERID, PASSWORD, NAME, EMAIL) VALUES (?, ?, ?, ?)"
                     ,user.getUserId(), user.getPassword(), user.getName(), user.getEmail());
-            User tempUser = findByUserId(user.getUserId()).orElse(null);
+            User tempUser = findByUserId(user.getUserId()).orElseThrow(null);
             user.setId(tempUser.getId());
             return true;
         }

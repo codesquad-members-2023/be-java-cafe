@@ -90,7 +90,7 @@ public class UserController {
 
         User passwordCheckUser = repository.findByUserId(userId)
                 .filter(u -> u.getPassword().equals(password))
-                .orElse(null);
+                .orElseThrow(null);
         // 비밀번호 체크 실패
         if (passwordCheckUser == null) {
             log.debug("사용자 정보 수정: 비밀번호 틀림 ㅋ");

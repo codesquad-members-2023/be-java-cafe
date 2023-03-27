@@ -26,7 +26,7 @@ public class LoginController {
     public String login(String userId, String password, HttpSession session) {
         User loginUser = repository.findByUserId(userId)
                 .filter(user -> user.getPassword().equals(password))
-                .orElse(null);
+                .orElseThrow(null);
         if (loginUser == null) {
             log.debug("로그인 실패! ㅠㅠ");
             return "user/login_failed";
