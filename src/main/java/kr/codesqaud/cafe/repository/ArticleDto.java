@@ -6,16 +6,18 @@ public class ArticleDto {
     private String title;
     private String contents;
     private String time;
+    private boolean deleted;
 
     public ArticleDto() {
     }
 
-    public ArticleDto(int articleId, String userId, String title, String contents, String time) {
+    public ArticleDto(int articleId, String userId, String title, String contents, String time, boolean deleted) {
         this.articleId = articleId;
         this.userId = userId;
         this.title = title;
         this.contents = contents;
         this.time = time;
+        this.deleted = deleted;
     }
 
     public int getArticleId() {
@@ -58,6 +60,14 @@ public class ArticleDto {
         this.time = time;
     }
 
+    public boolean isDeleted() {
+        return deleted;
+    }
+
+    public void setDeleted(boolean deleted) {
+        this.deleted = deleted;
+    }
+
     @Override
     public String toString() {
         return "ArticleDto{" +
@@ -66,6 +76,7 @@ public class ArticleDto {
                 ", title='" + title + '\'' +
                 ", contents='" + contents + '\'' +
                 ", time='" + time + '\'' +
+                ", deleted=" + deleted +
                 '}';
     }
 }
