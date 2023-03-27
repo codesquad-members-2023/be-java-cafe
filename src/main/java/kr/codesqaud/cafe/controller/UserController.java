@@ -23,9 +23,15 @@ public class UserController {
         this.userRepository = userRepository;
     }
 
+    @GetMapping("/login")
+    public String test() {
+        return "users/login";
+    }
+
     @PostMapping("/login")
     public String validateUser(@RequestParam String userId, @RequestParam String password) {
 
+        log.info("userId, password [{}][{}]", userId, password);
         if (userRepository.validateUnknownUser(userId, password)) {
             return "users/login_failed";
         }

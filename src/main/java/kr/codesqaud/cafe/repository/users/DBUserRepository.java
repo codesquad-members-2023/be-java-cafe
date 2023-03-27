@@ -1,6 +1,8 @@
 package kr.codesqaud.cafe.repository.users;
 
 import kr.codesqaud.cafe.domain.User;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Primary;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
@@ -14,6 +16,7 @@ import java.util.List;
 @Repository
 public class DBUserRepository implements UserRepository {
 
+    private Logger log = LoggerFactory.getLogger(getClass());
     private final JdbcTemplate jdbcTemplate;
 
     @Autowired
@@ -25,13 +28,17 @@ public class DBUserRepository implements UserRepository {
     public boolean validateUnknownUser(String userId, String password) {
         String existUserQuery = "select id, userId, password from member where userId = ?";
 
-        User loginUser = jdbcTemplate.queryForObject(existUserQuery, new BeanPropertyRowMapper<>(), userId);
+        log.info("Repository userId password [{}][{}]", userId, password);
+
+        User loginUser = jdbcTemplate.queryForObject(existUserQuery, new BeanPropertyRowMapper<>(User.class), userId);
 
         if (!loginUser.getUserId().equals(userId)) {
+            log.info("loginUser.getUserId(), userId = [{}][{}]", loginUser.getUserId(), userId);
             return true;
         }
 
         if (!loginUser.getPassword().equals(password)) {
+            log.info("loginUser.getPassword(), password = [{}][{}]", loginUser.getPassword(), password);
             return true;
         }
 
