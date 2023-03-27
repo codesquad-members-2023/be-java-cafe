@@ -28,9 +28,6 @@ public class UserUpdateValidator implements Validator {
         User user = (User) target;
         User berforeUser = memberRepository.findById(user.getUserId());
 
-        if (!StringUtils.hasText(user.getPassword())) {
-            errors.rejectValue("password", "required.user.password");
-        }
         if (!StringUtils.hasText(user.getName())) {
             errors.rejectValue("name", "required.user.name");
         }

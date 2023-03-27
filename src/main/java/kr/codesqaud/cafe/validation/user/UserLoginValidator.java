@@ -41,11 +41,7 @@ public class UserLoginValidator implements Validator {
             }else {
                 errors.rejectValue("password", "error.user.password");
             }
-            log.info("사용자 이름 빈칸 예외처리");
             return;
-        }
-        if (!StringUtils.hasText(loginUser.getPassword())) {
-            errors.rejectValue("password", "required.user.password");
         }
 
         if (loginUser.getUserId().length() >= 20) {
