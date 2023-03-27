@@ -71,7 +71,7 @@ public class H2JdbcTemplateMemberRepository implements MemberRepository {
     }
 
     public Optional<Member> findByLoginId(String userId) {
-        String sql = "select id,user_name, password , email,created_date from member where user_name = ?";
+        String sql = "select id,user_name, password , email from member where user_name = ?";
         return Optional.ofNullable(template.queryForObject(sql, new BeanPropertyRowMapper<>(Member.class), userId));
     }
 
