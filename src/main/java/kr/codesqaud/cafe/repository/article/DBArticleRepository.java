@@ -10,6 +10,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Primary
@@ -33,14 +34,14 @@ public class DBArticleRepository implements ArticleRepository {
 
     @Override
     public List<Article> findAllArticles() {
-        String sql = "select * from article";
+        String sql = "select id, writer, title, contents, createdAt from article";
 
         return jdbcTemplate.query(sql, new BeanPropertyRowMapper<>(Article.class));
     }
 
     @Override
     public Article findByArticleId(long id) {
-        String sql = "select * from article where id = ?";
+        String sql = "select id, writer, title, contents, createdAt from article where id = ?";
 
         return jdbcTemplate.queryForObject(sql, new BeanPropertyRowMapper<>(Article.class), id);
     }

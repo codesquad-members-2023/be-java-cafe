@@ -10,8 +10,8 @@ public class Article {
 
     private Logger log = LoggerFactory.getLogger(getClass());
 
-    private int id;
-    private String writer;
+    private long id;
+    private long writer;
     private String title;
     private String contents;
 
@@ -21,7 +21,7 @@ public class Article {
     public Article() {
     }
 
-    public Article(String writer, String title, String contents) {
+    public Article(long writer, String title, String contents) {
         this.title = title;
         this.writer = writer;
         this.contents = contents;
@@ -35,11 +35,11 @@ public class Article {
         this.id = id;
     }
 
-    public String getWriter() {
+    public long getWriter() {
         return writer;
     }
 
-    public void setWriter(String writer) {
+    public void setWriter(long writer) {
         this.writer = writer;
     }
 
