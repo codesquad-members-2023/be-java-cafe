@@ -1,8 +1,9 @@
 package kr.codesqaud.cafe.repository;
 
 import java.util.List;
-import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.Optional;
 import kr.codesqaud.cafe.model.User;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
@@ -30,9 +31,14 @@ public class UserDao {
         return jdbcTemplate.query(sql, new BeanPropertyRowMapper<>(UserDto.class));
     }
 
-    public List<UserDto> findUserByUserId(String userId) {
+    public Optional<UserDto> findUserByUserId(String userId) {
         String sql = "SELECT * FROM CAFEUSER WHERE USER_ID = ?";
-        return jdbcTemplate.query(sql, new BeanPropertyRowMapper<>(UserDto.class), userId);
+        try {
+            return Optional.ofNullable(
+                    jdbcTemplate.queryForObject(sql, new BeanPropertyRowMapper<>(UserDto.class), userId));
+        } catch (EmptyResultDataAccessException e) {
+            return Optional.empty();
+        }
     }
 
     public void updateUser(UserDto userDto) {
@@ -46,8 +52,13 @@ public class UserDao {
         );
     }
 
-    public List<UserDto> findUserByUserPassword(String password) {
-        String sql = "SELECT * FROM CAFEUSER WHERE PASSWORD = ?";
-        return jdbcTemplate.query(sql, new BeanPropertyRowMapper<>(UserDto.class), password);
+    public Optional<UserDto> findUserByUserPassword(String userId, String password) {
+        String sql = "SELECT * FROM CAFEUSER WHERE USER_ID = ? AND PASSWORD = ?";
+        try {
+            return Optional.ofNullable(
+                    jdbcTemplate.queryForObject(sql, new BeanPropertyRowMapper<>(UserDto.class), userId, password));
+        } catch (EmptyResultDataAccessException e) {
+            return Optional.empty();
+        }
     }
 }

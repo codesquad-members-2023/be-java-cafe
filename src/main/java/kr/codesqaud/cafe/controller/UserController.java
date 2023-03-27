@@ -1,6 +1,5 @@
 package kr.codesqaud.cafe.controller;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import kr.codesqaud.cafe.model.User;
 import kr.codesqaud.cafe.repository.UserDto;
@@ -14,7 +13,6 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.servlet.view.RedirectView;
 
 @Controller
 public class UserController {
@@ -34,20 +32,19 @@ public class UserController {
     @GetMapping("/users")
     public String findUserList(Model model) {
         model.addAttribute("userDto", userService.findUserAll());
-        return "list2";
+        return "user/list";
     }
 
     @GetMapping("/users/{userId}")
     public String findUserProfile(@PathVariable("userId") String userId, Model model) {
-        logger.warn(userId);
         model.addAttribute("user", userService.findUserByUserId(userId));
-        return "profile2";
+        return "user/profile";
     }
 
     @GetMapping("/users/{userId}/form")
     public String findUserProfileEdit(@PathVariable("userId") String userId, Model model) {
         model.addAttribute(userService.findUserByUserId(userId));
-        return "updateForm";
+        return "user/updateForm";
     }
 
     @PutMapping("/users/update")
@@ -56,18 +53,23 @@ public class UserController {
         return "redirect:/";
     }
 
+    @GetMapping("/user/loginRequest")
+    public String loginRequest() {
+        return "user/login";
+    }
+
     @PostMapping("/user/login")
-    public String login(@ModelAttribute("userDto") UserDto userDto, HttpSession session) {
-        if(userService.findUserByPassword(userDto)) {
+    public String loginSubmit(@ModelAttribute("userDto") UserDto userDto, HttpSession session) {
+        if (userService.findUserByPassword(userDto)) {
             session.setAttribute("userId", userDto.getUserId());
             return "redirect:/";
         }
-        return "redirect:/user/login_failed.html";
+        return "redirect:/user/login_failed/html";
     }
 
     @GetMapping("/logout")
     public String logOut(HttpSession session) {
-        session.removeAttribute("userId");
+        session.invalidate();
         return "redirect:/";
     }
 }

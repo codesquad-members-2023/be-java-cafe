@@ -2,18 +2,18 @@ package kr.codesqaud.cafe.controller;
 
 import javax.servlet.http.HttpSession;
 import kr.codesqaud.cafe.model.Article;
+import kr.codesqaud.cafe.repository.ArticleDto;
 import kr.codesqaud.cafe.service.ArticleService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-import org.springframework.web.servlet.mvc.support.RedirectAttributesModelMap;
-import org.springframework.web.servlet.view.RedirectView;
+import org.springframework.web.bind.annotation.PutMapping;
 
 @Controller
 public class ArticleController {
@@ -25,12 +25,13 @@ public class ArticleController {
     }
 
     @GetMapping("/openForm")
-    public String openForm(HttpSession session) {
-        return "redirect:/qna/form.html";
+    public String openForm(Model model) {
+        model.addAttribute(new ArticleDto());
+        return "qna/form";
     }
 
     @PostMapping("/questions")
-    public String creatArticle(@ModelAttribute("ArticleDto") Article article) {
+    public String creatArticle(@ModelAttribute("Article") Article article) {
         articleService.creatArticle(article);
         return "redirect:/";
     }
@@ -44,6 +45,30 @@ public class ArticleController {
     @GetMapping("/article/{articleId}")
     public String findArticleById(@PathVariable("articleId") int articleId, Model model) {
         model.addAttribute(articleService.findArticleContentById(articleId));
-        return "show";
+        return "user/show";
+    }
+
+    @GetMapping("/article/{articleId}/edit")
+    public String updateArticle(@PathVariable("articleId") int articleId, Model model, HttpSession session) {
+        if (!articleService.findArticleContentById(articleId).getUserId().equals(session.getAttribute("userId"))) {
+            throw new IllegalArgumentException("다른 사람의 게시글은 수정할 수 없습니다.");
+        }
+        model.addAttribute(articleService.findArticleContentById(articleId));
+        return "qna/updateForm";
+    }
+
+    @PutMapping("/editSubmit")
+    public String putUpdateArticle(Article article, String articleId) {
+        articleService.updateArticle(article, articleId);
+        return "redirect:/article/" + articleId;
+    }
+
+    @DeleteMapping("/article/delete")
+    public String deleteArticle(String articleId, String userId, HttpSession session) {
+        if (!userId.equals(session.getAttribute("userId"))) {
+            throw new IllegalArgumentException("다른 사람의 게시글은 삭제할 수 없습니다.");
+        }
+        articleService.deleteArticle(Integer.parseInt(articleId));
+        return "redirect:/";
     }
 }

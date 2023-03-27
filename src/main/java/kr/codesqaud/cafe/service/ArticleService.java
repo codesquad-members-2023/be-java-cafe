@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class ArticleService {
     private final ArticleDao articleDao;
-    private static int articleId = 0;
+    private static int articleId = 2;
 
     public ArticleService(ArticleDao articleDao) {
         this.articleDao = articleDao;
@@ -30,5 +30,13 @@ public class ArticleService {
 
     public static int getArticleSize() {
         return ++articleId;
+    }
+
+    public void updateArticle(Article article, String articleId) {
+        articleDao.updateArticle(article, articleId);
+    }
+
+    public void deleteArticle(int articleId) {
+        articleDao.deleteArticle(articleId);
     }
 }

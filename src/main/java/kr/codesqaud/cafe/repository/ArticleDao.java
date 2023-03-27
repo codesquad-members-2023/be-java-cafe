@@ -15,23 +15,41 @@ public class ArticleDao {
     }
 
     public void addArticle(Article article) {
-        String sql = "INSERT INTO ARTICLE(ARTICLE_ID, USER_ID, TITLE, CONTENTS, TIME) VALUES(?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO ARTICLE(ARTICLE_ID, USER_ID, TITLE, CONTENTS, TIME, DELETED) VALUES(?, ?, ?, ?, ?, ?)";
         jdbcTemplate.update(
                 sql,
                 article.getArticleId(),
                 article.getUserId(),
                 article.getTitle(),
                 article.getContents(),
-                article.getTime());
+                article.getTime(),
+                article.isDeleted());
     }
 
     public List<ArticleDto> findAllArticle() {
-        String sql = "SELECT * FROM ARTICLE";
+        String sql = "SELECT * FROM ARTICLE WHERE DELETED = false";
         return jdbcTemplate.query(sql, new BeanPropertyRowMapper<>(ArticleDto.class));
     }
 
     public List<ArticleDto> findArticleContentById(int articleId) {
-        String sql = "SELECT * FROM ARTICLE WHERE ARTICLE_ID = ?";
+        String sql = "SELECT * FROM ARTICLE WHERE ARTICLE_ID = ? AND DELETED = false";
         return jdbcTemplate.query(sql, new BeanPropertyRowMapper<>(ArticleDto.class), articleId);
+    }
+
+    public void updateArticle(Article article, String articleId) {
+        String sql = "UPDATE ARTICLE SET TITLE = ?, CONTENTS = ?, TIME = ? WHERE ARTICLE_ID = ? AND DELETED = false";
+        jdbcTemplate.update(sql,
+                article.getTitle(),
+                article.getContents(),
+                article.getTime(),
+                articleId
+        );
+    }
+
+    public void deleteArticle(int articleId) {
+        String sql = "UPDATE ARTICLE SET DELETED = true WHERE ARTICLE_ID = ? AND DELETED = false";
+        jdbcTemplate.update(sql,
+                articleId
+        );
     }
 }

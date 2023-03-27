@@ -13,7 +13,6 @@ public class JdbcConfig {
         dataSource.setUrl("jdbc:h2:tcp://localhost/~/test");
         dataSource.setUsername("sa");
         dataSource.setPassword("");
-
         return dataSource;
     }
 

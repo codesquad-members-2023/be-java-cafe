@@ -10,6 +10,7 @@ public class Article {
     private String title;
     private String contents;
     private String time;
+    private boolean deleted;
 
     public Article(String userId, String title, String contents) {
         this.articleId = ArticleService.getArticleSize();
@@ -17,6 +18,7 @@ public class Article {
         this.title = title;
         this.contents = contents;
         this.time = formattingTime();
+        this.deleted = false;
     }
 
     public int getId() {
@@ -43,6 +45,14 @@ public class Article {
         return articleId;
     }
 
+    public boolean isDeleted() {
+        return deleted;
+    }
+
+    public void setDeleted(boolean deleted) {
+        this.deleted = deleted;
+    }
+
     @Override
     public String toString() {
         return "Article{" +
@@ -51,6 +61,7 @@ public class Article {
                 ", title='" + title + '\'' +
                 ", contents='" + contents + '\'' +
                 ", time='" + time + '\'' +
+                ", deleted=" + deleted +
                 '}';
     }
 

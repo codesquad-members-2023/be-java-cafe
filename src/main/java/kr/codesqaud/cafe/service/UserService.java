@@ -1,9 +1,6 @@
 package kr.codesqaud.cafe.service;
 
 import java.util.List;
-import java.util.stream.Collectors;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 import kr.codesqaud.cafe.model.User;
 import kr.codesqaud.cafe.repository.UserDao;
 import kr.codesqaud.cafe.repository.UserDto;
@@ -26,8 +23,7 @@ public class UserService {
     }
 
     public UserDto findUserByUserId(String userId) {
-        final int FIRST_USER = 0;
-        return userDao.findUserByUserId(userId).get(FIRST_USER);
+        return userDao.findUserByUserId(userId).orElse(new UserDto());
     }
 
     public void updateUser(UserDto userDto) {
@@ -35,8 +31,9 @@ public class UserService {
     }
 
     public boolean findUserByPassword(UserDto userDto) {
+        String inputId = userDto.getUserId();
         String inputPassword = userDto.getPassword();
-        final int FIRST_USER = 0;
-        return !userDao.findUserByUserPassword(inputPassword).isEmpty();
+        return userDao.findUserByUserPassword(inputId, inputPassword).filter(v -> v.getPassword().equals(inputPassword))
+                .isPresent();
     }
 }
