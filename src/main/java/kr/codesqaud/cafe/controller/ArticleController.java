@@ -49,7 +49,6 @@ public class ArticleController {
     public String showBoardDetails(Model model, @PathVariable long id, HttpSession session) {
         Optional<Article> article = articleService.findByArticleId(id);
 
-
         // 질문글 유무 확인후 성공/실패 넘겨주기
         if (article.isPresent()) {
             log.debug("질문글 Mapping: 맵핑 성공!!!!");
@@ -71,7 +70,7 @@ public class ArticleController {
     @GetMapping("/articles/{id}/update")
     public String editing(HttpSession session, @PathVariable long id) {
         User sessionUser = (User) sessionUtil.getUserInfo(session);
-        if (!articleService.sessionCheck(sessionUser, id)) {
+        if (!articleService.sessionCheck(id, sessionUser)) {
             log.debug("질문 수정 검증: 본인글이 아닙니다!!! 떽!!!!");
             return "error";
         }
@@ -84,7 +83,7 @@ public class ArticleController {
     @PutMapping("/articles/{id}/update")
     public String updateArticle(@ModelAttribute Article article, @PathVariable long id, HttpSession session) {
         User sessionUser = (User) sessionUtil.getUserInfo(session);
-        if (!articleService.sessionCheck(sessionUser, id)) {
+        if (!articleService.sessionCheck(id, sessionUser)) {
             log.debug("질문 수정 전송 검증: 실패(로그아웃 되었습니다!!!)");
             return "error_logout";
         }
@@ -99,7 +98,7 @@ public class ArticleController {
     @DeleteMapping("/articles/{id}/delete")
     public String deleteArticle(@PathVariable long id, HttpSession session) {
         User sessionUser = (User) sessionUtil.getUserInfo(session);
-        if (!articleService.sessionCheck(sessionUser, id)) {
+        if (!articleService.sessionCheck(id, sessionUser)) {
             log.debug("게시글 삭제: 실패(본인이 아님!!!! 떽!!!)");
             return "error";
         }
@@ -107,14 +106,5 @@ public class ArticleController {
         articleService.delete(id);
         log.debug("게시글 삭제: 성공");
         return "redirect:/";
-    }
-
-    // 테스트
-    @PostMapping("/articles/{articleId}/answers/{userId}")
-    public String test(@PathVariable long articleId, @PathVariable String userId, @ModelAttribute Reply reply){
-        reply.setArticleId(articleId);
-        reply.setWriter(userId);
-        replyService.write(reply);
-        return "redirect:/articles/{articleId}";
     }
 }
