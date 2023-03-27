@@ -84,6 +84,7 @@
                            th:href="@{/logout}"
                            href="#" role="button">로그아웃</a></li>
                     <li><a th:if="${session.sessionedUser!=null}"
+                           th:href="@{|/users/update/${session.sessionedUser.getUserId()}|}"
                            href="#" role="button">개인정보수정</a></li>
                 </ul>
             </div>
