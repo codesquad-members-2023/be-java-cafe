@@ -47,7 +47,7 @@ public class UserController {
         User sessionUser = (User) sessionUtil.getUserInfo(session);
 
         if (sessionUser != null) {
-            model.addAttribute("loginUser", sessionUser);
+            sessionUtil.setUserInfo(session, sessionUser);
         }
         model.addAttribute("users", users);
         return "user/list";
