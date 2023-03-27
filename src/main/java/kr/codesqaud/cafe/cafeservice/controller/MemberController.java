@@ -75,7 +75,7 @@ public class MemberController {
     @GetMapping("/users/{id}/updateForm")
     public String showUpdateForm(@PathVariable Long id, Model model, HttpSession session) {
         try {
-            Object value = session.getAttribute("loginMember");
+            Object value = session.getAttribute("sessionedUser");
             if (value != null) {
                 Member member = (Member) value;
                 Optional<Member> byId = repository.findById(member.getId());
