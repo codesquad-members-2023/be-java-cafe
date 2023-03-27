@@ -1,5 +1,6 @@
 package kr.codesqaud.cafe.domain.user;
 
+import kr.codesqaud.cafe.repository.NamedJdbcTemplateMemberRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;

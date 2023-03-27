@@ -1,5 +1,6 @@
-package kr.codesqaud.cafe.domain.article;
+package kr.codesqaud.cafe.repository;
 
+import kr.codesqaud.cafe.domain.article.Article;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
