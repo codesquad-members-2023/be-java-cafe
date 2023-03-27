@@ -40,7 +40,7 @@ public class H2ReplyRepository  {
     }
 
     public int delete(Reply reply) {
-        String sql = "delete from articles where articleId=?";
+        String sql = "delete from REPLIES where replyId=?";
 
         return jdbcTemplate.update(sql, reply.getReplyId());
     }

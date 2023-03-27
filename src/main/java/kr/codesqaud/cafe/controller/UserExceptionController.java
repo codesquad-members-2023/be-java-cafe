@@ -22,14 +22,14 @@ public class UserExceptionController {
     public String userSessionExpireException(Exception e,
                                 Model model) {
         model.addAttribute("exception", e.getMessage());
-        return "user/loginForm";
+        return "user/login";
     }
 
     @ExceptionHandler(UserLoginException.class)
     public String userLoginException(Exception e,
                                      Model model) {
         model.addAttribute("exception", e.getMessage());
-        return "user/loginForm";
+        return "user/login";
     }
 
 
