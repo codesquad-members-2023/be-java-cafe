@@ -22,7 +22,7 @@ public class WebMvcConfig implements WebMvcConfigurer {
 
         registry.addInterceptor(new AddressInterceptor())
                 .addPathPatterns("/**")
-                .excludePathPatterns("", "/","/users/**", "/qna/**", "/error/error", "/fragment/**", "/welcome/**")
+                .excludePathPatterns("/", "/users/**", "/qna/**", "/error/error", "/fragment/**", "/welcome/**")
                 .excludePathPatterns("/css/**", "/fonts/**", "/images/**", "/js/**");
 
         registry.addInterceptor(new UpdateUserInterceptor())
