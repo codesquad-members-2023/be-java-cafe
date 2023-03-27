@@ -10,6 +10,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpSession;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
@@ -72,11 +73,16 @@ public class MemberController {
     }
 
     @GetMapping("/users/{id}/updateForm")
-    public String showUpdateForm(@PathVariable Long id, Model model) {
+    public String showUpdateForm(@PathVariable Long id, Model model, HttpSession session) {
         try {
-            Optional<Member> byId = repository.findById(id);
-            model.addAttribute("user", byId.orElseThrow());
-            return "user/updateForm";
+            Object value = session.getAttribute("loginMember");
+            if (value != null) {
+                Member member = (Member) value;
+                Optional<Member> byId = repository.findById(member.getId());
+                model.addAttribute("user", byId.orElseThrow());
+                return "user/updateForm";
+            }
+            return "fail";
         } catch (NoSuchElementException e) {
             log.debug("예외발생");
             return "fail";

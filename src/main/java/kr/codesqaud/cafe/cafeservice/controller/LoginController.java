@@ -45,7 +45,7 @@ public class LoginController {
         }
         HttpSession session = request.getSession();
         session.setAttribute(SessionConst.LOGIN_MEMBER, loginMember);
-        return "redirect:/login_success";
+        return "redirect:/";
     }
 
     @PostMapping("/logout")

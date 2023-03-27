@@ -54,8 +54,8 @@ public class Article {
         this.content = content;
     }
 
-    public LocalDateTime getCreatedDate() {
-        return LocalDateTime.parse(createdDate.format(DateTimeFormatter.ofPattern("yyyy-MM-dd hh:mm:ss")));
+    public String getCreatedDate() {
+        return createdDate.format(DateTimeFormatter.ofPattern("yyyy-MM-dd hh:mm:ss"));
     }
 
     public void setCreatedDate(LocalDateTime createdDate) {
