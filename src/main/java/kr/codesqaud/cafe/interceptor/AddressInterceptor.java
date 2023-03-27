@@ -1,8 +1,7 @@
 package kr.codesqaud.cafe.interceptor;
 
 
-import kr.codesqaud.cafe.AddressException;
-import org.springframework.ui.Model;
+import kr.codesqaud.cafe.exception.AddressException;
 import org.springframework.web.servlet.HandlerInterceptor;
 
 import javax.servlet.http.HttpServletRequest;
