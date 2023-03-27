@@ -38,7 +38,7 @@ public class MemberController {
 		log.trace("사용자 ID: {}", user.getUserId());
 		log.trace("사용자 이름: {}", user.getName());
 		log.trace("사용자 email: {}", user.getEmail());
-		return "redirect:/users/list";
+		return "redirect:/login";
 	}
 
 	@GetMapping("/list")
