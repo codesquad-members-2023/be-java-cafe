@@ -81,6 +81,7 @@
                            th:href="@{/users/add}"
                            href="../user/form.html" role="button">회원가입</a></li>
                     <li><a th:if="${session.sessionedUser!=null}"
+                           th:href="@{/logout}"
                            href="#" role="button">로그아웃</a></li>
                     <li><a th:if="${session.sessionedUser!=null}"
                            href="#" role="button">개인정보수정</a></li>
