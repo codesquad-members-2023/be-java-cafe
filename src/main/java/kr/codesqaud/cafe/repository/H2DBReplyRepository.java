@@ -52,4 +52,11 @@ public class H2DBReplyRepository {
         Map<String, Integer> param = Map.of("articleId", articleId);
         return template.query(sql, param, BeanPropertyRowMapper.newInstance(ReplyWithUser.class));
     }
+
+    public void delete(int id) {
+        String sql = "delete from reply where id=:id";
+
+        Map<String, Integer> param = Map.of("id", id);
+        template.update(sql, param);
+    }
 }

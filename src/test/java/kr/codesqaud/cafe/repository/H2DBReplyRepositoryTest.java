@@ -100,4 +100,18 @@ class H2DBReplyRepositoryTest {
         assertThat(findReply.getUserId()).isEqualTo(2);
         assertThat(findReply.getContents()).isEqualTo("진짜임?");
     }
+
+    @Test
+    @DisplayName("댓글 id를 통해 특정 댓글 삭제가 가능하다.")
+    void delete() {
+        Reply reply1 = new Reply("진짜임?", 2, 1);
+        Reply reply2 = new Reply("가짜임ㅋㅋ", 1, 1);
+
+        replyRepository.save(reply1);
+        replyRepository.save(reply2);
+
+        replyRepository.delete(1);
+
+        assertThat(replyRepository.findByArticleId(1).size()).isEqualTo(1);
+    }
 }
