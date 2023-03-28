@@ -1,6 +1,7 @@
 package kr.codesqaud.cafe.dto;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 public class ArticleWithWriterDto {
 
@@ -9,16 +10,26 @@ public class ArticleWithWriterDto {
 	private String contents;
 	private LocalDateTime writtenTime;
 	private Long userSequence;
+	private String writer;
 
 	public ArticleWithWriterDto() {
 	}
 
-	public ArticleWithWriterDto(Long articleSequence, String title, String contents, LocalDateTime writtenTime, Long userSequence) {
+	public ArticleWithWriterDto(Long articleSequence, String title, String contents, LocalDateTime writtenTime,String writer, Long userSequence) {
 		this.articleSequence = articleSequence;
 		this.title = title;
 		this.contents = contents;
 		this.writtenTime = writtenTime;
+		this.writer = writer;
 		this.userSequence = userSequence;
+	}
+
+	public String getWriter() {
+		return writer;
+	}
+
+	public void setWriter(String writer) {
+		this.writer = writer;
 	}
 
 	public Long getArticleSequence() {
@@ -45,8 +56,8 @@ public class ArticleWithWriterDto {
 		this.contents = contents;
 	}
 
-	public LocalDateTime getWrittenTime() {
-		return writtenTime;
+	public String getWrittenTime() {
+		return writtenTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
 	}
 
 	public void setWrittenTime(LocalDateTime writtenTime) {
