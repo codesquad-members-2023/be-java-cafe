@@ -1,7 +1,6 @@
 package kr.codesqaud.cafe.controller;
 
 import kr.codesqaud.cafe.domain.article.Article;
-import kr.codesqaud.cafe.domain.user.Member;
 import kr.codesqaud.cafe.repository.NamedJdbcTemplateArticleRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -50,7 +49,10 @@ public class ArticleController {
 	}
 
 	@GetMapping("/articles/{articleSequence}")
-	public String articleShow(@PathVariable Long articleSequence, Model model) throws SQLException {
+	public String articleShow(HttpSession session, @PathVariable Long articleSequence, Model model) throws SQLException {
+		if (session.getAttribute(SESSIONED_USER) == null) {
+			return "user/login";
+		}
 		Article findArticle = articleRepository.findByArticleSequence(articleSequence);
 		model.addAttribute("article", findArticle);
 		log.trace("제목: {}, 글쓴이: {}, 내용: {}", findArticle.getTitle(), findArticle.getWriter(), findArticle.getContents());
