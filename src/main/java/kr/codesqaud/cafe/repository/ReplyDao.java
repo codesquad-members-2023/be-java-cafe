@@ -26,20 +26,26 @@ public class ReplyDao {
     }
 
     public List<ReplyDto> findReplyAllByArticleId(int articleId) {
-        String sql = "SELECT * FROM REPLY WHERE ARTICLE_ID = ?";
+        String sql = "SELECT * FROM REPLY WHERE ARTICLE_ID = ? AND DELETED = false";
         return jdbcTemplate.query(sql, new BeanPropertyRowMapper<>(ReplyDto.class), articleId);
     }
 
     public ReplyDto findReplyByReplyId(int replyId) {
-        String sql = "SELECT * FROM REPLY WHERE REPLY_ID = ?";
+        String sql = "SELECT * FROM REPLY WHERE REPLY_ID = ? AND DELETED = false";
         return jdbcTemplate.queryForObject(sql, new BeanPropertyRowMapper<>(ReplyDto.class), replyId);
     }
 
-    public void updateReply(Reply reply, String replyId) {
-        String sql = "UPDATE REPLY SET CONTENTS = ?, TIME = ? WHERE REPLY_ID = ?";
+    public void updateReply(Reply reply, String ordReplyId) {
+        String sql = "UPDATE REPLY SET CONTENTS = ?, TIME = ? WHERE REPLY_ID = ? AND DELETED = false";
         jdbcTemplate.update(sql,
                 reply.getContents(),
                 reply.getTime(),
-                replyId);
+                ordReplyId);
+    }
+
+    public void deleteReply(ReplyDto replyDto) {
+        String sql = "UPDATE REPLY SET DELETED = true WHERE REPLY_ID = ?";
+        jdbcTemplate.update(sql,
+                replyDto.getReplyId());
     }
 }

@@ -4,6 +4,7 @@ import javax.servlet.http.HttpSession;
 import kr.codesqaud.cafe.model.Article;
 import kr.codesqaud.cafe.model.Reply;
 import kr.codesqaud.cafe.repository.ArticleDto;
+import kr.codesqaud.cafe.repository.ReplyDto;
 import kr.codesqaud.cafe.service.ArticleService;
 import kr.codesqaud.cafe.service.ReplyService;
 import org.slf4j.Logger;
@@ -85,7 +86,10 @@ public class ArticleController {
     }
 
     @GetMapping("/article/reply/{replyId}/update")
-    public String updateReplyForm(@PathVariable("replyId") String replyId, Model model) {
+    public String updateReplyForm(@PathVariable("replyId") String replyId, Model model, HttpSession session) {
+        if(!replyService.findReplyByReplyId(replyId).getUserId().equals(session.getAttribute("userId"))) {
+            throw new IllegalArgumentException("다른 사람의 댓글은 수정할 수 없습니다.");
+        }
         model.addAttribute(replyService.findReplyByReplyId(replyId));
         return "user/updateShow";
     }
@@ -94,5 +98,14 @@ public class ArticleController {
     public String updateReply(@RequestParam String oldReplyId, Reply reply) {
         replyService.updateReply(reply, oldReplyId);
         return "redirect:/article/" + reply.getArticleId();
+    }
+
+    @DeleteMapping("/article/reply/delete")
+    public String deleteReply(ReplyDto replyDto, HttpSession session) {
+        if(!replyDto.getUserId().equals(session.getAttribute("userId"))) {
+            throw new IllegalArgumentException("다른 사람의 댓글은 삭제할 수 없습니다.");
+        }
+        replyService.deleteReply(replyDto);
+        return "redirect:/article/" + replyDto.getArticleId();
     }
 }

@@ -31,7 +31,11 @@ public class ReplyService {
         return replyDao.findReplyByReplyId(Integer.parseInt(replyId));
     }
 
-    public void updateReply(Reply reply, String replyId) {
-        replyDao.updateReply(reply, replyId);
+    public void updateReply(Reply reply, String oldReplyId) {
+        replyDao.updateReply(reply, oldReplyId);
+    }
+
+    public void deleteReply(ReplyDto replyDto) {
+        replyDao.deleteReply(replyDto);
     }
 }

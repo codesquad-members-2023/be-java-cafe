@@ -83,9 +83,12 @@
                                                th:href="@{reply/{replyId}/update(replyId=${replyDto.getReplyId()})}">수정</a>
                                         </li>
                                         <li>
-                                            <form class="delete-answer-form" action="/questions/413/answers/1405"
+                                            <form class="delete-answer-form" action="/article/reply/delete"
                                                   method="POST">
                                                 <input type="hidden" name="_method" value="DELETE">
+                                                <input type="hidden" name="replyId" th:value="${replyDto.getReplyId()}">
+                                                <input type="hidden" name="articleId" th:value="${replyDto.getArticleId()}">
+                                                <input type="hidden" name="userId" th:value="${replyDto.getUserId()}">
                                                 <button type="submit" class="delete-answer-button">삭제</button>
                                             </form>
                                         </li>
