@@ -21,10 +21,19 @@
                 </a>
 
             </div>
+            {{^sessionedUser}}
             <ul class="nav navbar-nav navbar-right">
                 <li class="active"><a href="/user/list">멤버 리스트</a></li>
                 <li><a class="black-component" href="/user/login" role="button">로그인</a></li>
                 <li><a class="black-component" href="/user/form" role="button">회원가입</a></li>
             </ul>
+            {{/sessionedUser}}
+            {{#sessionedUser}}
+            <ul class="nav navbar-nav navbar-right">
+                <li class="active"><a href="/user/list">멤버 리스트</a></li>
+                <li><a class="black-component" href="/user/login" role="button">회원정보수정</a></li>
+                <li><a class="black-component" href="/user/logout" role="button">로그아웃</a></li>
+            </ul>
+            {{/sessionedUser}}
         </div>
     </nav>

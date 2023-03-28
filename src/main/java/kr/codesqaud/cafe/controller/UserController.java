@@ -52,4 +52,10 @@ public class UserController {
         memberService.editeMember(member);
         return "redirect:/user/list";
     }
+
+    @GetMapping("/user/logout")
+    public String logoutUser(HttpSession httpSession) {
+        httpSession.invalidate();
+        return "redirect:/";
+    }
 }
