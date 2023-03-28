@@ -1,6 +1,7 @@
 package kr.codesqaud.cafe.service;
 
 import kr.codesqaud.cafe.domain.Reply;
+import kr.codesqaud.cafe.domain.User;
 import kr.codesqaud.cafe.repository.JdbcTemplateReplyRepository;
 
 import java.util.List;
@@ -29,6 +30,17 @@ public class ReplyService {
      */
     public boolean delete(long id) {
         return replyRepository.deleteReply(id);
+    }
+
+    /**
+     * 댓글 검증
+     */
+    public boolean sessionCheck(User sessionUser, long id) {
+        Reply checkId = findByReplyId(id).orElseThrow(null);
+        if (checkId == null || !checkId.getWriter().equals(sessionUser.getUserId())) {
+            return false;
+        }
+        return true;
     }
 
     /**

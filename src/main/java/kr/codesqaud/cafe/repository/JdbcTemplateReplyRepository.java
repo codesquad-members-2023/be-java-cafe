@@ -41,12 +41,12 @@ public class JdbcTemplateReplyRepository {
     }
 
     public Optional<Reply> findById(long id) {
-        List<Reply> result = jdbcTemplate.query("select * from cafe_article where id = ?", replyRowMapper(), id);
+        List<Reply> result = jdbcTemplate.query("select * from CAFE_REPLY where id = ?", replyRowMapper(), id);
         return result.stream().findAny();
     }
 
     public List<Reply> findAllReply(long articleId) {
-        return jdbcTemplate.query("select * from cafe_reply where articleId=?", replyRowMapper(), articleId);
+        return jdbcTemplate.query("select * from CAFE_REPLY where articleId=?", replyRowMapper(), articleId);
     }
 
     private RowMapper<Reply> replyRowMapper() {
