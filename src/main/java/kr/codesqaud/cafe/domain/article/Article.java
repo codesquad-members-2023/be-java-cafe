@@ -6,18 +6,26 @@ import java.time.format.DateTimeFormatter;
 public class Article {
 
 	private Long articleSequence;
-	private String writer;
 	private String title;
 	private String contents;
 	private LocalDateTime writtenTime;
+	private Long userSequence;
 
 	public Article() {
 	}
 
-	public Article(String writer, String title, String contents) {
-		this.writer = writer;
+	public Article(Long userSequence, String title, String contents) {
+		this.userSequence = userSequence;
 		this.title = title;
 		this.contents = contents;
+	}
+
+	public Long getUserSequence() {
+		return userSequence;
+	}
+
+	public void setUserSequence(Long userSequence) {
+		this.userSequence = userSequence;
 	}
 
 	public Long getArticleSequence() {
@@ -26,14 +34,6 @@ public class Article {
 
 	public void setArticleSequence(Long articleSequence) {
 		this.articleSequence = articleSequence;
-	}
-
-	public String getWriter() {
-		return writer;
-	}
-
-	public void setWriter(String writer) {
-		this.writer = writer;
 	}
 
 	public String getTitle() {
