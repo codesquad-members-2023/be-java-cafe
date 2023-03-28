@@ -8,15 +8,6 @@ public class ManageMemberException extends RuntimeException {
         return status;
     }
 
-    public ManageMemberException() {
-    }
-
-
-    public ManageMemberException(String message, ExceptionStatus status) {
-        super(message);
-        this.status = status;
-    }
-
     public ManageMemberException(ExceptionStatus errorCode) {
         super(errorCode.getMessage());
         this.status = errorCode;
