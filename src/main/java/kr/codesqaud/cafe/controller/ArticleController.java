@@ -85,7 +85,7 @@ public class ArticleController {
         User sessionUser = (User) sessionUtil.getUserInfo(session);
         if (!articleService.sessionCheck(id, sessionUser)) {
             log.debug("질문 수정 전송 검증: 실패(로그아웃 되었습니다!!!)");
-            return "error_logout";
+            return "error_delete";
         }
 
         article.setId(id);
@@ -97,6 +97,13 @@ public class ArticleController {
     // 게시글 삭제 DELETE (서비스)
     @DeleteMapping("/articles/{id}/delete")
     public String deleteArticle(@PathVariable long id, HttpSession session) {
+        // 댓글 존재 여부 검증
+        List<Reply> replyList = replyService.findAllReply(id);
+        if(!replyList.isEmpty()) {
+            log.debug("게시글 삭제: 실패(댓글이 존재합니다.)");
+            return "error_delete";
+        }
+
         User sessionUser = (User) sessionUtil.getUserInfo(session);
         if (!articleService.sessionCheck(id, sessionUser)) {
             log.debug("게시글 삭제: 실패(본인이 아님!!!! 떽!!!)");
