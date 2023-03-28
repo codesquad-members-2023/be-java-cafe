@@ -41,6 +41,14 @@ public class JdbcTemplateReplyRepository {
         return false;
     }
 
+    public boolean deleteReplyFormArticle(long articleId) {
+        if (!findAllReply(articleId).isEmpty()) {
+            jdbcTemplate.update("UPDATE CAFE_REPLY SET deleted=true where ARTICLEID=?", articleId);
+            return true;
+        }
+        return false;
+    }
+
     public Optional<Reply> findById(long id) {
         List<Reply> result = jdbcTemplate.query("select * from CAFE_REPLY where id = ? AND deleted = false", replyRowMapper(), id);
         return result.stream().findAny();

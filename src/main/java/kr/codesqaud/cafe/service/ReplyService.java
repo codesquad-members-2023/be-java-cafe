@@ -6,6 +6,7 @@ import kr.codesqaud.cafe.repository.JdbcTemplateReplyRepository;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 public class ReplyService {
     private final JdbcTemplateReplyRepository replyRepository;
@@ -32,6 +33,10 @@ public class ReplyService {
         return replyRepository.deleteReply(id);
     }
 
+    public boolean deleteReplyAll(long articleId) {
+        return replyRepository.deleteReplyFormArticle(articleId);
+    }
+
     /**
      * 댓글 검증
      */
@@ -42,9 +47,17 @@ public class ReplyService {
 
     /**
      * 댓글 조회
+     * 1. articleId 에 해당하는 모든 댓글
+     * 2. 로그인 유저와 같지 않은 댓글
      */
     public List<Reply> findAllReply(long articleId) {
         return replyRepository.findAllReply(articleId);
+    }
+
+    public List<Reply> findAllOtherReply(long articleId, String userId) {
+        return findAllReply(articleId).stream()
+                .filter(reply -> !reply.getWriter().equals(userId))
+                .collect(Collectors.toList());
     }
 
     public Optional<Reply> findByReplyId(long id) {
