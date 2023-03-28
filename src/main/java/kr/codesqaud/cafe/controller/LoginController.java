@@ -38,6 +38,6 @@ public class LoginController {
 			return "redirect:/";
 		}
 
-		return "user/login";
+		return "user/login_failed";
 	}
 }
