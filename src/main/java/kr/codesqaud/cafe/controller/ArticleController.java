@@ -40,9 +40,8 @@ public class ArticleController {
 
     @GetMapping("/qna/qna_form")
     public String writeArticle(HttpSession session, Model model) {
-
-        User user = (User) session.getAttribute("user");
-        model.addAttribute("username", user.getName());
+//        User user = (User) session.getAttribute("user");
+//        model.addAttribute("username", user.getName());
         model.addAttribute("article", new Article());
 
         return "qna/qna_form";
