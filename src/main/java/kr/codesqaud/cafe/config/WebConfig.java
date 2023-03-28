@@ -1,7 +1,7 @@
 package kr.codesqaud.cafe.config;
 
-import kr.codesqaud.cafe.filter.LogInterceptor;
-import kr.codesqaud.cafe.filter.LoginCheckInterceptor;
+import kr.codesqaud.cafe.interceptor.LogInterceptor;
+import kr.codesqaud.cafe.interceptor.LoginCheckInterceptor;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;

@@ -1,4 +1,4 @@
-package kr.codesqaud.cafe.controller;
+package kr.codesqaud.cafe.exception;
 
 import kr.codesqaud.cafe.exception.userException.UserException;
 import kr.codesqaud.cafe.exception.userException.UserLoginException;

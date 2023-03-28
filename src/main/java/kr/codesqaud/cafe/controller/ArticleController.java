@@ -26,11 +26,9 @@ public class ArticleController {
         this.replyRepository = replyRepository;
     }
 
-    @GetMapping("/createForm")
+    @GetMapping("/create")
     public String create(@SessionAttribute(name = ConstConfig.SESSION_ID) User user, Model model) {
-        // TODO : 뷰 템플렛에 User 객체에 대한 정보를 넘겨줄 필요성이 없어보이므로, 제거 할 예정
-        model.addAttribute("user", user);
-        return "qna/createForm";
+        return "qna/create";
     }
 
     @PostMapping("/create")

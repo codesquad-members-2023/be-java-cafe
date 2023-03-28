@@ -1,4 +1,4 @@
-package kr.codesqaud.cafe.filter;
+package kr.codesqaud.cafe.interceptor;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

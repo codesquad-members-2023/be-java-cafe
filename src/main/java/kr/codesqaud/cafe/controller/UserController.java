@@ -59,8 +59,7 @@ public class UserController {
 
     @GetMapping("/update")
     public String updateForm(HttpSession session,
-                             Model model
-                             ) {
+                             Model model) {
         User user = (User) session.getAttribute(ConstConfig.SESSION_ID);
         if (user == null) throw new UserSessionExpireException();
 

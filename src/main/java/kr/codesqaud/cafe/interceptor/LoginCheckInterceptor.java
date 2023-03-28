@@ -1,4 +1,4 @@
-package kr.codesqaud.cafe.filter;
+package kr.codesqaud.cafe.interceptor;
 
 import kr.codesqaud.cafe.config.ConstConfig;
 import org.springframework.web.servlet.HandlerInterceptor;
