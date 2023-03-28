@@ -17,18 +17,12 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testImplementation 'junit:junit:4.13.1'
-
-	implementation 'org.projectlombok:lombok'
-
-
-
 	// 데이터 베이스 주입
-	implementation 'org.springframework.boot:spring-boot-starter-jdbc'
-	runtimeOnly 'com.h2database:h2'
+//	implementation 'org.springframework.boot:spring-boot-starter-jdbc'
 
-	// 테스트용 lombok 주입
-	testAnnotationProcessor 'org.projectlombok:lombok'
-	testCompileOnly 'org.projectlombok:lombok'
+	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+//	implementation group: 'mysql', name: 'mysql-connector-java', version: '8.0.28'
+	implementation 'mysql:mysql-connector-java:8.0.28'
 }
 
 tasks.named('test') {
