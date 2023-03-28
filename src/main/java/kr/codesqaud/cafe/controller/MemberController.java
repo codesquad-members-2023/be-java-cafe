@@ -54,12 +54,12 @@ public class MemberController {
 		return "user/list";
 	}
 
-	@GetMapping("/profile/{userId}")
-	public String userProfile(HttpSession session, @PathVariable String userId, Model model) throws SQLException {
+	@GetMapping("/profile/{userSequence}")
+	public String userProfile(HttpSession session, @PathVariable Long userSequence, Model model) throws SQLException {
 		if (session.getAttribute(SESSIONED_USER) == null) {
 			return "user/login";
 		}
-		Optional<Member> findUser = namedJdbcTemplateMemberRepository.findById(userId);
+		Optional<Member> findUser = namedJdbcTemplateMemberRepository.findByNumber(userSequence);
 		model.addAttribute("user", findUser.orElseThrow());
 		return "user/profile";
 	}
