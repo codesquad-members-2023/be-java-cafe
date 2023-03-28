@@ -15,7 +15,8 @@ CREATE TABLE cafe_article
     writer   VARCHAR(20)   NOT NULL,
     title    VARCHAR(50)   NOT NULL,
     contents VARCHAR(500)  NOT NULL,
-    time     smalldatetime not null default now()
+    time     smalldatetime not null default now(),
+    deleted  boolean                default false
 );
 
 DROP TABLE IF EXISTS cafe_reply CASCADE;
