@@ -2,6 +2,7 @@ package kr.codesqaud.cafe.controller;
 
 import kr.codesqaud.cafe.SessionConstant;
 import kr.codesqaud.cafe.domain.Article;
+import kr.codesqaud.cafe.domain.Reply;
 import kr.codesqaud.cafe.domain.dto.ArticleWithWriter;
 import kr.codesqaud.cafe.domain.dto.ReplyWithUser;
 import kr.codesqaud.cafe.repository.ArticleRepository;
@@ -87,6 +88,15 @@ public class ArticleController {
         Article updateArticle = new Article(0, title, contents);
 
         articleRepository.update(index, updateArticle);
+
+        return "redirect:/articles/{index}";
+    }
+
+    @PostMapping("/articles/{index}/replies")
+    public String reply(@PathVariable int index, @RequestParam String contents, HttpSession session) {
+        Reply reply = new Reply(contents, (int) session.getAttribute(SessionConstant.LOGIN_USER_ID), index);
+
+        replyRepository.save(reply);
 
         return "redirect:/articles/{index}";
     }

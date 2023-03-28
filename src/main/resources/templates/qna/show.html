@@ -86,11 +86,11 @@
                               </div>
                           </article>
                       </div>
-                      <form class="submit-write">
+                      <form class="submit-write" method="POST" action="#" th:action="@{/articles/{id}/replies(id=${article.id})}">
                           <div class="form-group" style="padding:14px;">
-                              <textarea class="form-control" placeholder="Update your status"></textarea>
+                              <textarea class="form-control" placeholder="Update your status" name="contents"></textarea>
                           </div>
-                          <button class="btn btn-success pull-right" type="button">답변하기</button>
+                          <button class="btn btn-success pull-right" type="button submit">답변하기</button>
                           <div class="clearfix" />
                       </form>
                   </div>
