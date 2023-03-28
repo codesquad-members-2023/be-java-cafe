@@ -79,4 +79,12 @@ public class UserController {
         return "users/profile";
     }
 
+    @GetMapping("/{loggedInId}/edit")
+    public String findUser(HttpSession httpSession, Model model) {
+        long loggedInUserId = (long) httpSession.getAttribute("loggedInId");
+        User user = userRepository.findUserById(loggedInUserId);
+        model.addAttribute(user);
+        log.debug("debug log={}", user.getName());
+        return "qna/list";
+    }
 }
