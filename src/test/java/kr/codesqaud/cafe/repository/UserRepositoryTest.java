@@ -1,41 +1,29 @@
 package kr.codesqaud.cafe.repository;
 
+import static org.assertj.core.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.*;
-import static org.assertj.core.api.Assertions.assertThat;
 
-import javax.sql.DataSource;
-
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.JdbcTest;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.datasource.DriverManagerDataSource;
+import org.springframework.test.context.jdbc.Sql;
 
+import kr.codesqaud.cafe.exceptions.UserInfoException;
 import kr.codesqaud.cafe.model.User;
 
 @JdbcTest
+@Sql("classpath:test-schema.sql")
 class UserRepositoryTest {
-    private DataSource dataSource;
     private UserRepository userRepository;
+    @Autowired
     JdbcTemplate jdbcTemplate;
 
     @BeforeEach
     public void setup() {
-        dataSource = new DriverManagerDataSource("jdbc:h2:mem:test", "sa", "");
-        userRepository = new JdbcUserRepository(dataSource);
-        jdbcTemplate = new JdbcTemplate(dataSource);
-
-        jdbcTemplate.execute("CREATE TABLE USERS\n"
-                + "(\n"
-                + "id VARCHAR(255),\n"
-                + "password VARCHAR(255),\n"
-                + "name VARCHAR(255),\n"
-                + "email VARCHAR(255),\n"
-                + "idx INT AUTO_INCREMENT,\n"
-                + "PRIMARY KEY (idx)\n"
-                + ")");
+        userRepository = new JdbcUserRepository(jdbcTemplate.getDataSource());
 
         User user1 = new User("conux", "asd", "J", "ho@naver.com");
         User user2 = new User("tonux", "asd", "Js", "ho2@naver.com");
@@ -43,14 +31,9 @@ class UserRepositoryTest {
         userRepository.addUser(user2);
     }
 
-    @AfterEach
-    public void clean() {
-        jdbcTemplate.update("delete from users; alter table users alter column idx restart with 1;");
-    }
-
     @Test
     @DisplayName("ID가 일치하는 유저를 찾아서 반환한다.")
-    void findById() {
+    void findById() throws UserInfoException {
         User user = userRepository.findById("conux");
         //then
         assertThat(user.getName()).isEqualTo("J");
@@ -58,7 +41,7 @@ class UserRepositoryTest {
 
     @Test
     @DisplayName("유저를 추가한다.")
-    void addUser() {
+    void addUser() throws UserInfoException {
         userRepository.addUser(new User("poro", "123", "gwonwoo", "ngw7617@naver.com"));
         //then
         assertThat(userRepository.findById("poro").getName()).isEqualTo("gwonwoo");
@@ -66,7 +49,7 @@ class UserRepositoryTest {
 
     @Test
     @DisplayName("유저의 정보를 업데이트한다.")
-    void updateUser() {
+    void updateUser() throws UserInfoException {
         //when
         userRepository.updateUser("conux", "asd", "skarnjsdn1", "Jayho", "ngw7617@naver.com");
         //then

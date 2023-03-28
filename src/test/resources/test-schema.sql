@@ -1,3 +1,4 @@
+DROP TABLE IF EXISTS ARTICLES;
 CREATE TABLE ARTICLES
 (
 writer VARCHAR(255),
@@ -8,6 +9,7 @@ creationtime timestamp with time zone,
 PRIMARY KEY (id)
 );
 
+DROP TABLE IF EXISTS USERS;
 CREATE TABLE USERS
 (
 id VARCHAR(255),
