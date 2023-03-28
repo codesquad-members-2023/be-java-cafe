@@ -2,23 +2,24 @@ package kr.codesqaud.cafe.domain;
 
 import java.time.LocalDateTime;
 
-public class Article {
+public class Reply {
 
     private int id;
-    private String title;
     private String contents;
     private LocalDateTime createDate;
     private int userId;
+    private int articleId;
 
-    public Article() {
+
+    public Reply() {
         this.createDate = LocalDateTime.now();
     }
 
-    public Article(int userId, String title, String contents) {
-        this.userId = userId;
-        this.title = title;
+    public Reply(String contents, int userId, int articleId) {
         this.contents = contents;
         this.createDate = LocalDateTime.now();
+        this.userId = userId;
+        this.articleId = articleId;
     }
 
     public int getId() {
@@ -27,14 +28,6 @@ public class Article {
 
     public void setId(int id) {
         this.id = id;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
     }
 
     public String getContents() {
@@ -49,10 +42,6 @@ public class Article {
         return createDate;
     }
 
-    public void setCreateDate(LocalDateTime createDate) {
-        this.createDate = createDate;
-    }
-
     public int getUserId() {
         return userId;
     }
@@ -61,5 +50,13 @@ public class Article {
         this.userId = userId;
     }
 
+    public int getArticleId() {
+        return articleId;
+    }
 
+    public void setArticleId(int articleId) {
+        this.articleId = articleId;
+    }
 }
+
+

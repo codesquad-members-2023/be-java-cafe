@@ -15,4 +15,15 @@ create table article
     createDate timestamp,
     user_id    int,
     foreign key (user_id) references users (id)
-)
+);
+
+create table reply
+(
+    id         int         primary key auto_increment,
+    contents   varchar(50) not null,
+    createDate timestamp,
+    user_id    int,
+    article_id int,
+    foreign key (user_id) references users (id),
+    foreign key (article_id) references article (id)
+);
