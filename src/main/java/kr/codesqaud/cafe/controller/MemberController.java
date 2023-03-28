@@ -9,7 +9,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import static kr.codesqaud.cafe.controller.Constants.SESSIONED_USER;
+import static kr.codesqaud.cafe.Constants.SESSIONED_USER;
 
 import javax.servlet.http.HttpSession;
 import java.sql.SQLException;
