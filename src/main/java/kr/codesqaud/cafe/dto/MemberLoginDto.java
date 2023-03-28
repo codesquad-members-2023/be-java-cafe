@@ -4,10 +4,20 @@ public class MemberLoginDto {
 
 	private String userId;
 	private String password;
+	private Long userSequence;
 
-	public MemberLoginDto(String userId, String password) {
+	public MemberLoginDto(Long userSequence, String userId, String password) {
+		this.userSequence = userSequence;
 		this.userId = userId;
 		this.password = password;
+	}
+
+	public Long getUserSequence() {
+		return userSequence;
+	}
+
+	public void setUserSequence(Long userSequence) {
+		this.userSequence = userSequence;
 	}
 
 	public String getUserId() {
