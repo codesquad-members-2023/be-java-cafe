@@ -9,11 +9,13 @@ import javax.servlet.http.HttpSession;
 
 public class UpdateUserInterceptor implements HandlerInterceptor {
 
+    private final String LOGIN_USER = "user";
+
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         HttpSession session = request.getSession();
 
-        User loginedUser = (User) session.getAttribute("user");
+        User loginedUser = (User) session.getAttribute(LOGIN_USER);
         String[] split = request.getRequestURI().split("/");
         String userId = split[split.length -1];
 
