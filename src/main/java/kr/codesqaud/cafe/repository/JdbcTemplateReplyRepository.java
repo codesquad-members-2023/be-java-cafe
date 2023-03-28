@@ -34,19 +34,20 @@ public class JdbcTemplateReplyRepository {
 
     public boolean deleteReply(long id) {
         if (findById(id).isPresent()) {
-            jdbcTemplate.update("DELETE CAFE_REPLY where ID=?", id);
+            jdbcTemplate.update("UPDATE CAFE_REPLY SET deleted=true where ID=?", id);
+//            jdbcTemplate.update("DELETE CAFE_REPLY where ID=?", id);
             return true;
         }
         return false;
     }
 
     public Optional<Reply> findById(long id) {
-        List<Reply> result = jdbcTemplate.query("select * from CAFE_REPLY where id = ?", replyRowMapper(), id);
+        List<Reply> result = jdbcTemplate.query("select * from CAFE_REPLY where id = ? AND deleted = false", replyRowMapper(), id);
         return result.stream().findAny();
     }
 
     public List<Reply> findAllReply(long articleId) {
-        return jdbcTemplate.query("select * from CAFE_REPLY where articleId=?", replyRowMapper(), articleId);
+        return jdbcTemplate.query("select * from CAFE_REPLY where articleId=? AND deleted = false", replyRowMapper(), articleId);
     }
 
     private RowMapper<Reply> replyRowMapper() {

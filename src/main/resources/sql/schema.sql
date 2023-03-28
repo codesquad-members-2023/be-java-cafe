@@ -26,6 +26,7 @@ CREATE TABLE cafe_reply
     writer    VARCHAR(20)   NOT NULL,
     contents  VARCHAR(300)  NOT NULL,
     time      smalldatetime not null default now(),
+    deleted   boolean                default false,
     articleId BIGINT,
     FOREIGN KEY (articleId) REFERENCES cafe_article (id)
 );
