@@ -67,14 +67,14 @@ class H2ArticleRepositoryTest {
 
     @Test
     @DisplayName("article ID로 글쓴이 ID를 알 수 있어야 한다.")
-    public void findWriterIdById() throws Exception{
+    void findWriterIdById() throws Exception{
         Article byId = repository.findById(1L);
         assertThat(byId.getWriterId()).isEqualTo(2L);
     }
 
     @Test
     @DisplayName("article ID로 글쓴이 닉네임을 알 수 있어야 한다.")
-    public void findWriterNickNameById() throws Exception{
+    void findWriterNickNameById() throws Exception{
         Article byId = repository.findById(1L);
         assertThat(byId.getWriterNickName()).isEqualTo("산지기");
         System.out.printf(byId.toString());
@@ -82,7 +82,7 @@ class H2ArticleRepositoryTest {
 
     @Test
     @DisplayName("article을 업데이트하여 제목을 바꿀 수 있다.")
-    public void updateTest() throws Exception{
+    void updateTest() throws Exception{
         Article exArticle = repository.findById(1L);
 
         Article newArticle = new Article();
@@ -95,7 +95,7 @@ class H2ArticleRepositoryTest {
 
     @Test
     @DisplayName("article을 업데이트하여 내용을 바꿀 수 있다.")
-    public void updateContentsTest() throws Exception{
+    void updateContentsTest() throws Exception{
         Article exArticle = repository.findById(1L);
 
         Article newArticle = new Article();
@@ -108,7 +108,7 @@ class H2ArticleRepositoryTest {
 
     @Test
     @DisplayName("article을 업데이트하여 업데이트 일시가 변경되어야 한다.")
-    public void updateUpdateDatetimeTest() throws Exception{
+    void updateUpdateDatetimeTest() throws Exception{
         LocalDateTime before = LocalDateTime.now();
         Article exArticle = repository.findById(1L);
 
@@ -122,7 +122,7 @@ class H2ArticleRepositoryTest {
 
     @Test
     @DisplayName("article을 업데이트하여도 생성 일시가 변경되면 안된다.")
-    public void updateCreatedDatetimeTest() throws Exception{
+    void updateCreatedDatetimeTest() throws Exception{
         Article exArticle = repository.findById(1L);
         LocalDateTime createdDate = exArticle.getCreatedDate();
 
@@ -136,7 +136,7 @@ class H2ArticleRepositoryTest {
 
     @Test
     @DisplayName("article을 id로 삭제하면 전체 리스트 크기도 1줄어든다.")
-    public void deleteMember() {
+    void deleteMember() {
         int exSize = repository.findAll().size();
         repository.delete(1L);
         assertThat(repository.findAll()).hasSize(exSize-1);
@@ -144,7 +144,7 @@ class H2ArticleRepositoryTest {
 
     @Test
     @DisplayName("article을 id로 삭제 후 findById를 하면 예외가 발생해야 한다.")
-    public void deleteMemberThenFindById() {
+    void deleteMemberThenFindById() {
        repository.delete(1L);
        assertThatThrownBy(() -> repository.findById(1L)).isInstanceOf(EmptyResultDataAccessException.class);
     }

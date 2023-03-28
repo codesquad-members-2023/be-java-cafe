@@ -17,11 +17,11 @@ public class AuthorityInterceptor implements HandlerInterceptor {
     public static final String[] LOGIN_INESSENTIAL = {"/", "/login", "/users/form", "/users/login", "/users/join"};
     private static final String[] PRIVATE_PATH = {
             "/users/\\d+/update",
-            "/articles/\\d+/update", "/articles/\\d/delete"};
+            "/articles/\\d+/update", "/articles/\\d+/delete"
+    };
 
     Logger LOG = LoggerFactory.getLogger(AuthorityInterceptor.class);
 
-    // 컨트롤러의 메서드에 매핑된 특정 URI가 호출됐을 때 실행되는 메서드
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         SessionUser sessionUser = SessionUser.getSessionUser(request.getSession(false));
@@ -37,7 +37,7 @@ public class AuthorityInterceptor implements HandlerInterceptor {
         SessionUser sessionUser = SessionUser.getSessionUser(request.getSession(false));
         String requestURI = request.getRequestURI();
 
-        if (!isPrivatePath(requestURI)) { // 개인정보 수정
+        if (!isPrivatePath(requestURI)) {
             return;
         }
 
@@ -54,7 +54,6 @@ public class AuthorityInterceptor implements HandlerInterceptor {
         return Long.parseLong(requestURI.replaceAll("[^\\d+]", ""));
     }
 
-    // 요청 처리가 완료된 후 사용자 지정 논리를 실행할 수 있습니다.
     @Override
     public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex) throws Exception {
         HandlerInterceptor.super.afterCompletion(request, response, handler, ex);

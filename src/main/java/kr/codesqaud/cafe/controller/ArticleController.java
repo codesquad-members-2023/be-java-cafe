@@ -4,8 +4,6 @@ import kr.codesqaud.cafe.domain.Article;
 import kr.codesqaud.cafe.domain.Member;
 import kr.codesqaud.cafe.repository.ArticleRepository;
 import kr.codesqaud.cafe.repository.MemberRepository;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -18,8 +16,6 @@ public class ArticleController {
 
     private final ArticleRepository articleRepository;
     private final MemberRepository memberRepository;
-
-    Logger logger = LoggerFactory.getLogger(ArticleController.class);
 
     public ArticleController(ArticleRepository articleRepository, MemberRepository memberRepository) {
         this.articleRepository = articleRepository;
