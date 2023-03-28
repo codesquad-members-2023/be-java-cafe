@@ -64,26 +64,25 @@ public class MemberController {
 		return "user/profile";
 	}
 
-	@GetMapping("/update/{userId}")
-	public String editUserForm(HttpSession session, @PathVariable String userId, Model model) throws SQLException {
+	@GetMapping("/update/{userSequence}")
+	public String editUserForm(HttpSession session, @PathVariable Long userSequence, Model model) throws SQLException {
 
-		String loginUserId = (String) session.getAttribute(SESSIONED_USER);
-
-		if (loginUserId == null) {
+		if (session.getAttribute(SESSIONED_USER) == null) {
 			return "redirect:/login";
 		}
 
-		if(!userId.equals(loginUserId)) {
+		Long loginUserSequence = (Long) session.getAttribute(SESSIONED_USER);
+		if (loginUserSequence != userSequence) {
 			return "redirect:/";
 		}
 
-		Member member = namedJdbcTemplateMemberRepository.findById(loginUserId).get();
+		Member member = namedJdbcTemplateMemberRepository.findByNumber(userSequence).get();
 
 		model.addAttribute(member);
 		return "user/updateForm";
 	}
 
-	@PutMapping("/update/{userId}")
+	@PutMapping("/update/{userSequence}")
 	public String edit(@ModelAttribute Member user) throws SQLException {
 		namedJdbcTemplateMemberRepository.update(user);
 		return "redirect:/users/list";
