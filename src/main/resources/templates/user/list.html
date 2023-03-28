@@ -21,7 +21,7 @@
                 <tbody>
                 <tr th:each="user:${users}">
                     <th scope="row" th:text="${user.userSequence}">사용자 번호</th>
-                    <td><a th:href="@{|/users/profile/${user.userId}|}" th:text="${user.userId}">사용자 ID</a></td>
+                    <td><a th:href="@{|/users/profile/${user.userSequence}|}" th:text="${user.userId}">사용자 ID</a></td>
                     <td th:text="${user.name}">사용자 이름</td>
                     <td th:text="${user.email}">사용자 메일</td>
                     <td><a th:if="${session.sessionedUser==user.userId}"
