@@ -1,4 +1,4 @@
-package kr.codesqaud.cafe.controller;
+package kr.codesqaud.cafe;
 
 public final class Constants {
 	private Constants() {
