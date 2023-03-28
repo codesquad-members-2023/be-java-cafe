@@ -9,6 +9,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import static kr.codesqaud.cafe.controller.Constants.SESSIONED_USER;
+
 import javax.servlet.http.HttpSession;
 import java.sql.SQLException;
 import java.util.List;
@@ -58,7 +60,7 @@ public class MemberController {
 
 	@GetMapping("/update/{userId}")
 	public String editUserForm(HttpSession session, @PathVariable String userId, Model model) throws SQLException {
-		Object value = session.getAttribute("sessionedUser");
+		Object value = session.getAttribute(SESSIONED_USER);
 		if (value == null) {
 			return "redirect:/login";
 		}
