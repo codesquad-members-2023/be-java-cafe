@@ -8,4 +8,6 @@ import kr.codesqaud.cafe.model.ReplyDto;
 public interface ReplyRepository {
     public void addReply(Reply reply);
     public List<ReplyDto> getReplyList();
+
+    public void deleteReply(long articleId, long replyId);
 }

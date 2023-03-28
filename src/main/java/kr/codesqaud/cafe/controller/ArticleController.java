@@ -121,4 +121,18 @@ public class ArticleController {
         return "redirect:/qna/{articleId}";
     }
 
+    @DeleteMapping(value = "/qna/{articleId}/reply/{replyId}")
+    public String replyDelete(@PathVariable long articleId, @PathVariable long replyId, HttpSession httpSession)
+            throws ArticleInfoException {
+        String writer = articleRepository.findById(articleId).getWriter();
+        if (!httpSession.getAttribute("sessionedUser").equals(writer)) {
+            throw new ArticleInfoException(UNAUTHORIZED_MODIFICATION_MESSAGE,
+                    WRITER_NOT_MATCHING_CODE);
+        }
+
+        replyRepository.deleteReply(articleId, replyId);
+
+        return "redirect:/qna/{articleId}";
+    }
+
 }

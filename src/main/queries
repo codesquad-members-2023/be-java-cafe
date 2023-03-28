@@ -1,4 +1,16 @@
-CREATE TABLE test2
+DROP TABLE IF EXISTS ARTICLES;
+CREATE TABLE ARTICLES
+(
+writer VARCHAR(255),
+title VARCHAR(255),
+contents VARCHAR(500),
+id int AUTO_INCREMENT,
+creationtime timestamp with time zone,
+PRIMARY KEY (id)
+);
+
+DROP TABLE IF EXISTS USERS;
+CREATE TABLE USERS
 (
 id VARCHAR(255),
 password VARCHAR(255),
@@ -6,28 +18,19 @@ name VARCHAR(255),
 email VARCHAR(255),
 idx INT AUTO_INCREMENT,
 PRIMARY KEY (idx)
-);
+)
 
-CREATE TABLE articles
+DROP TABLE IF EXISTS REPLIES;
+CREATE TABLE REPLIES
 (
 writer VARCHAR(255),
-title VARCHAR(255),
-contents VARCHAR(500),
-id INT(10) AUTO_INCREMENT PRIMARY KEY
-);
-
-
-## H2 init
-
-
-CREATE TABLE articles
-(
-writer VARCHAR(255),
-title VARCHAR(255),
 contents VARCHAR(500),
 id int AUTO_INCREMENT,
+articleId int,
+creationtime timestamp with time zone,
 PRIMARY KEY (id)
-);
+)
+
 
 TCP 실행
 java -cp h2-1.4.200.jar org.h2.tools.Console -tcp

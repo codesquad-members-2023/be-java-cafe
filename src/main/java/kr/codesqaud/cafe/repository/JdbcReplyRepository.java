@@ -41,4 +41,8 @@ public class JdbcReplyRepository implements ReplyRepository {
 
     }
 
+    @Override
+    public void deleteReply(long articleId, long replyId) {
+        jdbcTemplate.update("delete from replies where articleId=? and id=?", articleId, replyId);
+    }
 }
