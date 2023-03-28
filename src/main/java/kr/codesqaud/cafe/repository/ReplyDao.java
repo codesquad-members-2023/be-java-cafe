@@ -30,6 +30,11 @@ public class ReplyDao {
         return jdbcTemplate.query(sql, new BeanPropertyRowMapper<>(ReplyDto.class), articleId);
     }
 
+    public List<ReplyDto> findReplyByArticleIdAndUserId(int articleId, String userId) {
+        String sql = "SELECT * FROM REPLY WHERE ARTICLE_ID = ? AND USER_ID = ? AND DELETED = false";
+        return jdbcTemplate.query(sql, new BeanPropertyRowMapper<>(ReplyDto.class), articleId, userId);
+    }
+
     public ReplyDto findReplyByReplyId(int replyId) {
         String sql = "SELECT * FROM REPLY WHERE REPLY_ID = ? AND DELETED = false";
         return jdbcTemplate.queryForObject(sql, new BeanPropertyRowMapper<>(ReplyDto.class), replyId);

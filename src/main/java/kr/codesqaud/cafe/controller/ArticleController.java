@@ -3,7 +3,6 @@ package kr.codesqaud.cafe.controller;
 import javax.servlet.http.HttpSession;
 import kr.codesqaud.cafe.model.Article;
 import kr.codesqaud.cafe.model.Reply;
-import kr.codesqaud.cafe.repository.ArticleDto;
 import kr.codesqaud.cafe.repository.ReplyDto;
 import kr.codesqaud.cafe.service.ArticleService;
 import kr.codesqaud.cafe.service.ReplyService;
@@ -74,6 +73,10 @@ public class ArticleController {
     public String deleteArticle(String articleId, String userId, HttpSession session) {
         if (!userId.equals(session.getAttribute("userId"))) {
             throw new IllegalArgumentException("다른 사람의 게시글은 삭제할 수 없습니다.");
+        }
+        if(replyService.findReplyAllByArticleId(Integer.parseInt(articleId)).size()
+                != replyService.findReplyByArticleIdAndUserId(Integer.parseInt(articleId), userId).size()) {
+            throw new IllegalArgumentException("다른 사람의 댓글이 있는 게시물은 삭제할 수 없습니다.");
         }
         articleService.deleteArticle(Integer.parseInt(articleId));
         return "redirect:/";

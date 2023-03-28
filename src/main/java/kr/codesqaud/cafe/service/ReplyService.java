@@ -27,6 +27,10 @@ public class ReplyService {
         return replyDao.findReplyAllByArticleId(articleId);
     }
 
+    public List<ReplyDto> findReplyByArticleIdAndUserId(int articleId, String userId) {
+        return replyDao.findReplyByArticleIdAndUserId(articleId, userId);
+    }
+
     public ReplyDto findReplyByReplyId(String replyId) {
         return replyDao.findReplyByReplyId(Integer.parseInt(replyId));
     }
