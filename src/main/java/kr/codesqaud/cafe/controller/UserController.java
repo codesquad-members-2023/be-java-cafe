@@ -94,12 +94,13 @@ public class UserController {
     public String editUser(HttpSession httpSession, @ModelAttribute User user) {
 
         long loggedInUserId = (long) httpSession.getAttribute("loggedInId");
-        userRepository.update(user, loggedInUserId);
+        User dbUser = userRepository.findUserById(loggedInUserId);
 
-        log.info("user.getPassword={}", user.getPassword());
-        log.info("user.getName={}", user.getName());
-        log.info("user.getEmai={}", user.getEmail());
-        log.info("id={}", loggedInUserId);
+        if (!dbUser.getPassword().equals(user.getPassword())) {
+            return "redirect:/users/{loggedInId}/edit";
+        }
+
+        userRepository.update(user, loggedInUserId);
 
         return "redirect:/qna/list";
     }
