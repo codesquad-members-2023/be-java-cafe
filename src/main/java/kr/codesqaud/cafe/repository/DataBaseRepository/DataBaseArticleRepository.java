@@ -1,4 +1,4 @@
-package kr.codesqaud.cafe.repository.h2Repository;
+package kr.codesqaud.cafe.repository.DataBaseRepository;
 
 import kr.codesqaud.cafe.basic.Article;
 import kr.codesqaud.cafe.repository.ArticleRepository;
@@ -15,13 +15,13 @@ import java.util.List;
 
 @Repository
 @Primary
-public class H2ArticleRepository implements ArticleRepository {
+public class DataBaseArticleRepository implements ArticleRepository {
     private static final Logger logger = LoggerFactory.getLogger("article database");
 
     public final JdbcTemplate jdbcTemplate;
 
     @Autowired
-    public H2ArticleRepository(DataSource dataSource) {
+    public DataBaseArticleRepository(DataSource dataSource) {
         jdbcTemplate = new JdbcTemplate(dataSource);
     }
 

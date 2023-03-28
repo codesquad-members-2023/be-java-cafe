@@ -1,8 +1,6 @@
-package kr.codesqaud.cafe.repository.h2Repository;
+package kr.codesqaud.cafe.repository.DataBaseRepository;
 
-import kr.codesqaud.cafe.basic.Article;
 import kr.codesqaud.cafe.basic.Reply;
-import kr.codesqaud.cafe.repository.ArticleRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,18 +10,17 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
-import java.sql.SQLException;
 import java.util.List;
 
 @Repository
 @Primary
-public class H2ReplyRepository  {
+public class DatabaseReplyRepository {
     private static final Logger logger = LoggerFactory.getLogger("article database");
 
     public final JdbcTemplate jdbcTemplate;
 
     @Autowired
-    public H2ReplyRepository(DataSource dataSource) {
+    public DatabaseReplyRepository(DataSource dataSource) {
         jdbcTemplate = new JdbcTemplate(dataSource);
     }
 

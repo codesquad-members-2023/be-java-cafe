@@ -3,21 +3,19 @@ package kr.codesqaud.cafe.controller;
 import kr.codesqaud.cafe.basic.Reply;
 import kr.codesqaud.cafe.basic.User;
 import kr.codesqaud.cafe.config.ConstConfig;
-import kr.codesqaud.cafe.repository.h2Repository.H2ReplyRepository;
+import kr.codesqaud.cafe.repository.DataBaseRepository.DatabaseReplyRepository;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
-import java.util.List;
 
 @Controller
 @RequestMapping("/reply")
 public class ReplyController {
 
-    H2ReplyRepository replyRepository;
+    DatabaseReplyRepository replyRepository;
 
-    public ReplyController(H2ReplyRepository replyRepository) {
+    public ReplyController(DatabaseReplyRepository replyRepository) {
         this.replyRepository = replyRepository;
     }
 

@@ -6,7 +6,7 @@ import kr.codesqaud.cafe.basic.Reply;
 import kr.codesqaud.cafe.basic.User;
 import kr.codesqaud.cafe.config.ConstConfig;
 import kr.codesqaud.cafe.repository.ArticleRepository;
-import kr.codesqaud.cafe.repository.h2Repository.H2ReplyRepository;
+import kr.codesqaud.cafe.repository.DataBaseRepository.DatabaseReplyRepository;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -19,9 +19,9 @@ import java.util.List;
 public class ArticleController {
 
     ArticleRepository articleRepository;
-    H2ReplyRepository replyRepository;
+    DatabaseReplyRepository replyRepository;
 
-    public ArticleController(ArticleRepository articleRepository, H2ReplyRepository replyRepository) {
+    public ArticleController(ArticleRepository articleRepository, DatabaseReplyRepository replyRepository) {
         this.articleRepository = articleRepository;
         this.replyRepository = replyRepository;
     }

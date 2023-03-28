@@ -1,4 +1,4 @@
-package kr.codesqaud.cafe.repository.h2Repository;
+package kr.codesqaud.cafe.repository.DataBaseRepository;
 
 import kr.codesqaud.cafe.basic.Article;
 import lombok.extern.slf4j.Slf4j;
@@ -22,25 +22,25 @@ import java.util.List;
 
 @Slf4j
 @SpringBootTest
-class H2ArticleRepositoryTest {
+class DataBaseArticleRepositoryTest {
 
     @Autowired
-    private H2ArticleRepository articleRepository;
+    private DataBaseArticleRepository articleRepository;
 
     @Autowired
-    private H2UserRepository userRepository;
+    private DatabaseUserRepository userRepository;
 
     @TestConfiguration
     static class TestConfig {
 
         @Bean
-        H2ArticleRepository articleRepository(DataSource dataSource) {
-            return new H2ArticleRepository(dataSource);
+        DataBaseArticleRepository articleRepository(DataSource dataSource) {
+            return new DataBaseArticleRepository(dataSource);
         }
 
         @Bean
-        H2UserRepository userRepository(DataSource dataSource) {
-            return new H2UserRepository(dataSource);
+        DatabaseUserRepository userRepository(DataSource dataSource) {
+            return new DatabaseUserRepository(dataSource);
         }
     }
 

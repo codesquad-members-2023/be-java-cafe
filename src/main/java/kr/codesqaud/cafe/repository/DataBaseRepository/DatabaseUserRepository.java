@@ -1,4 +1,4 @@
-package kr.codesqaud.cafe.repository.h2Repository;
+package kr.codesqaud.cafe.repository.DataBaseRepository;
 
 import kr.codesqaud.cafe.basic.User;
 import kr.codesqaud.cafe.basic.UserDTO;
@@ -17,14 +17,14 @@ import java.util.Optional;
 
 @Repository
 @Primary
-public class H2UserRepository implements UserRepository {
+public class DatabaseUserRepository implements UserRepository {
 
     private static final Logger logger = LoggerFactory.getLogger("user database");
 
     public final JdbcTemplate jdbcTemplate;
 
     @Autowired
-    public H2UserRepository(DataSource dataSource) {
+    public DatabaseUserRepository(DataSource dataSource) {
         jdbcTemplate = new JdbcTemplate(dataSource);
     };
 
