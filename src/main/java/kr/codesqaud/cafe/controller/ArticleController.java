@@ -8,9 +8,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
 import static kr.codesqaud.cafe.constant.ConstUrl.REDIRECT_INDEX;
 
 @Controller
@@ -33,6 +33,19 @@ public class ArticleController {
         articleRepository.save(article);
         return REDIRECT_INDEX;
     }
+
+    @GetMapping("/articles/{id}/update")
+    public String updateArticleForm(@PathVariable long id, Model model) {
+        model.addAttribute("article", articleRepository.findById(id));
+        return "qna/updateForm";
+    }
+
+    @PutMapping("/articles/{id}/update")
+    public String updateArticle(Article newArticle, @PathVariable Long id, RedirectAttributes redirectAttributes) {
+        Article exArticle = articleRepository.findById(id);
+        articleRepository.update(exArticle, newArticle);
+        redirectAttributes.addFlashAttribute("id", id);
+        return "redirect:/articles/{id}";
     }
 
     @GetMapping("/articles/{id}")

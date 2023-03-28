@@ -2,7 +2,6 @@ package kr.codesqaud.cafe.repository;
 
 import kr.codesqaud.cafe.domain.Article;
 import kr.codesqaud.cafe.domain.Member;
-import org.springframework.beans.BeanUtils;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
@@ -13,6 +12,8 @@ import org.springframework.stereotype.Repository;
 import javax.sql.DataSource;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.*;
 
 @Repository
@@ -57,7 +58,19 @@ public class H2ArticleRepository implements ArticleRepository {
         return jdbcTemplate.query(sql, new ArticleRowMapper());
     }
 
-    private static class ArticleRowMapper implements RowMapper<Article> {
+    @Override
+    public void update(Article exArticle, Article newArticle) {
+        String sql = "UPDATE ARTICLE SET TITLE = :title, CONTENTS = :contents, CREATED_AT = :created, UPDATED_AT = :updated WHERE USER_ID = :user_id AND ID = :id";
+        MapSqlParameterSource params = new MapSqlParameterSource();
+        params.addValue("title", newArticle.getTitle())
+            .addValue("contents", newArticle.getContents())
+            .addValue("id", exArticle.getId())
+            .addValue("user_id", exArticle.getWriterId())
+            .addValue("created", exArticle.getCreatedDate())
+            .addValue("updated", Timestamp.valueOf(LocalDateTime.now()));
+
+        namedParameterJdbcTemplate.update(sql, params);
+    }
 
         @Override
         public Article mapRow(ResultSet rs, int rowNum) throws SQLException {
