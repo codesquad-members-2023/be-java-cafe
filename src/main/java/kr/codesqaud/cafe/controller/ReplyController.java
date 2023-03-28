@@ -2,9 +2,11 @@ package kr.codesqaud.cafe.controller;
 
 import kr.codesqaud.cafe.SessionConstant;
 import kr.codesqaud.cafe.domain.Reply;
+import kr.codesqaud.cafe.domain.dto.ArticleWithWriter;
 import kr.codesqaud.cafe.repository.H2DBReplyRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -29,4 +31,9 @@ public class ReplyController {
 
         return "redirect:/articles/{index}";
     }
+
+//    @DeleteMapping("/articles/{articleId}/replies/{replyId}")
+//    public String delete(@PathVariable int articleId, @PathVariable int replyId, HttpSession session) {
+//        int userId = (int) session.getAttribute(SessionConstant.LOGIN_USER_ID);
+//    }
 }

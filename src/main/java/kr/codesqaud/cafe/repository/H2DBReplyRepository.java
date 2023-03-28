@@ -34,6 +34,14 @@ public class H2DBReplyRepository {
         template.update(sql, param);
     }
 
+    public Reply findById(int id) {
+        String sql = "select id, contents, createDate, user_id, article_id " +
+                "from reply where id=:id";
+        Map<String, Integer> param = Map.of("id", id);
+
+        return template.queryForObject(sql, param, BeanPropertyRowMapper.newInstance(Reply.class));
+    }
+
     public List<ReplyWithUser> findByArticleId(int articleId) {
         String sql = "select r.id, r.user_id, " +
                 "(select u.user_id from users u where r.user_id=u.id) as userName, " +

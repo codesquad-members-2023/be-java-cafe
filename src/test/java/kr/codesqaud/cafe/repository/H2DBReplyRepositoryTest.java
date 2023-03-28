@@ -85,4 +85,19 @@ class H2DBReplyRepositoryTest {
         assertThat(replies.get(0).getUserName()).isEqualTo("Yoon");
         assertThat(replies.get(1).getUserName()).isEqualTo("Hyun");
     }
+
+    @Test
+    @DisplayName("댓글 id를 통해 특정 댓글 검색이 가능하다.")
+    void findById() {
+        Reply reply1 = new Reply("진짜임?", 2, 1);
+        Reply reply2 = new Reply("가짜임ㅋㅋ", 1, 1);
+
+        replyRepository.save(reply1);
+        replyRepository.save(reply2);
+
+        Reply findReply = replyRepository.findById(1);
+
+        assertThat(findReply.getUserId()).isEqualTo(2);
+        assertThat(findReply.getContents()).isEqualTo("진짜임?");
+    }
 }
