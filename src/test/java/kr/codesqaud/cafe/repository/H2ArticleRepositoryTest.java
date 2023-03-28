@@ -79,4 +79,58 @@ class H2ArticleRepositoryTest {
         assertThat(byId.getWriterNickName()).isEqualTo("산지기");
         System.out.printf(byId.toString());
     }
+
+    @Test
+    @DisplayName("article을 업데이트하여 제목을 바꿀 수 있다.")
+    public void updateTest() throws Exception{
+        Article exArticle = repository.findById(1L);
+
+        Article newArticle = new Article();
+        newArticle.setTitle("테스트 article");
+        newArticle.setContents("테스트 contents");
+        repository.update(exArticle, newArticle);
+
+        assertThat(repository.findById(exArticle.getId()).getTitle()).isEqualTo("테스트 article");
+    }
+
+    @Test
+    @DisplayName("article을 업데이트하여 내용을 바꿀 수 있다.")
+    public void updateContentsTest() throws Exception{
+        Article exArticle = repository.findById(1L);
+
+        Article newArticle = new Article();
+        newArticle.setTitle("테스트 article");
+        newArticle.setContents("테스트 contents");
+        repository.update(exArticle, newArticle);
+
+        assertThat(repository.findById(exArticle.getId()).getContents()).isEqualTo("테스트 contents");
+    }
+
+    @Test
+    @DisplayName("article을 업데이트하여 업데이트 일시가 변경되어야 한다.")
+    public void updateUpdateDatetimeTest() throws Exception{
+        LocalDateTime before = LocalDateTime.now();
+        Article exArticle = repository.findById(1L);
+
+        Article newArticle = new Article();
+        newArticle.setTitle("테스트 article");
+        newArticle.setContents("테스트 contents");
+        repository.update(exArticle, newArticle);
+
+        assertThat(repository.findById(exArticle.getId()).getUpdatedDate()).isAfter(before);
+    }
+
+    @Test
+    @DisplayName("article을 업데이트하여도 생성 일시가 변경되면 안된다.")
+    public void updateCreatedDatetimeTest() throws Exception{
+        Article exArticle = repository.findById(1L);
+        LocalDateTime createdDate = exArticle.getCreatedDate();
+
+        Article newArticle = new Article();
+        newArticle.setTitle("테스트 article");
+        newArticle.setContents("테스트 contents");
+        repository.update(exArticle, newArticle);
+
+        assertThat(repository.findById(exArticle.getId()).getCreatedDate()).isEqualTo(createdDate);
+    }
 }
