@@ -3,6 +3,8 @@ package kr.codesqaud.cafe.repository;
 import kr.codesqaud.cafe.domain.Article;
 import kr.codesqaud.cafe.domain.Reply;
 import kr.codesqaud.cafe.domain.User;
+import kr.codesqaud.cafe.domain.dto.ReplyWithUser;
+import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -13,6 +15,9 @@ import org.springframework.jdbc.datasource.DriverManagerDataSource;
 
 import javax.sql.DataSource;
 
+import java.util.List;
+
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
@@ -55,5 +60,29 @@ class H2DBReplyRepositoryTest {
     void save() {
         Reply reply = new Reply("진짜임?", 2, 1);
         replyRepository.save(reply);
+
+        List<ReplyWithUser> replies = replyRepository.findAll();
+
+        assertThat(replies.size()).isEqualTo(1);
+        ReplyWithUser replyWithUser = replies.get(0);
+
+        assertThat(replyWithUser.getUserName()).isEqualTo("Yoon");
+        assertThat(replyWithUser.getContents()).isEqualTo("진짜임?");
+    }
+
+    @Test
+    @DisplayName("댓글들을 모두 가져올 수 있다.")
+    void findAll() {
+        Reply reply1 = new Reply("진짜임?", 2, 1);
+        Reply reply2 = new Reply("가짜임ㅋㅋ", 1, 1);
+
+        replyRepository.save(reply1);
+        replyRepository.save(reply2);
+
+        List<ReplyWithUser> replies = replyRepository.findAll();
+
+        assertThat(replies.size()).isEqualTo(2);
+        assertThat(replies.get(0).getUserName()).isEqualTo("Yoon");
+        assertThat(replies.get(1).getUserName()).isEqualTo("Hyun");
     }
 }
