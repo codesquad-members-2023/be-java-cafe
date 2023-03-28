@@ -13,3 +13,6 @@
 # 끄적끄적
 ### H2 DB 시퀸스 초기화
   - `alter table <테이블명> alter column <컬럼명> restart with 1`
+
+# 배포 URL
+### http://54.180.13.74:8080/
