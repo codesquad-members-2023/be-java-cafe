@@ -11,6 +11,7 @@ import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 @Primary
@@ -48,10 +49,10 @@ public class DatabaseReplyRepository {
         return jdbcTemplate.query(sql, new BeanPropertyRowMapper<>(Reply.class), articleId);
     }
 
-    public Reply findByReplyId(int replyId) {
+    public Optional<Reply> findByReplyId(int replyId) {
         String sql = "select replyId, articleId, writer, content, createAt from replies where replyId = ? ORDER BY createAt";
 
-        return jdbcTemplate.queryForObject(sql, new BeanPropertyRowMapper<>(Reply.class), replyId);
+        return Optional.ofNullable(jdbcTemplate.queryForObject(sql, new BeanPropertyRowMapper<>(Reply.class), replyId));
     }
 
     public List<Reply> findAll() {

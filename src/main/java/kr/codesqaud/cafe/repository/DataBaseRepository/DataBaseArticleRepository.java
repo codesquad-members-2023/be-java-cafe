@@ -12,6 +12,7 @@ import org.springframework.stereotype.Repository;
 import javax.sql.DataSource;
 import java.sql.*;
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 @Primary
@@ -44,10 +45,10 @@ public class DataBaseArticleRepository implements ArticleRepository {
         return jdbcTemplate.update(sql, articleId);
     }
 
-    public Article findByArticleId(int index) {
+    public Optional<Article> findByArticleId(int index) {
         String sql = "select articleId, writer, title, contents, timeStamp from articles where articleId = ?";
 
-        return jdbcTemplate.queryForObject(sql, new BeanPropertyRowMapper<>(Article.class), index);
+        return Optional.ofNullable(jdbcTemplate.queryForObject(sql, new BeanPropertyRowMapper<>(Article.class), index));
     }
 
     public List<Article> findAll() {

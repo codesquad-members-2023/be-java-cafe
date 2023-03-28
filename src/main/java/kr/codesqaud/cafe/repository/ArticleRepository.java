@@ -3,6 +3,7 @@ package kr.codesqaud.cafe.repository;
 import kr.codesqaud.cafe.basic.Article;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface ArticleRepository {
 
@@ -12,7 +13,7 @@ public interface ArticleRepository {
 
     public int delete(int articleId);
 
-    public Article findByArticleId(int index);
+    public Optional<Article> findByArticleId(int index);
 
     public List<Article> findAll() ;
 }
