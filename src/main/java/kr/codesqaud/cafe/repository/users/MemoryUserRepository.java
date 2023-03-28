@@ -26,9 +26,13 @@ public class MemoryUserRepository implements UserRepository {
         return null;
     }
 
+    @Override
+    public User findDBUser(String userId, String password) {
+        return new User();
+    }
+
     public User findUserById(String userId) {
         User user = store.get(userId);
         return user;
     }
-
 }

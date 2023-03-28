@@ -2,6 +2,7 @@ package kr.codesqaud.cafe.controller;
 
 import kr.codesqaud.cafe.domain.User;
 import kr.codesqaud.cafe.repository.users.UserRepository;
+import kr.codesqaud.cafe.util.SessionConst;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +10,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpSession;
 import java.util.List;
 
 @Controller
@@ -21,6 +23,34 @@ public class UserController {
     @Autowired
     public UserController(UserRepository userRepository) {
         this.userRepository = userRepository;
+    }
+
+    @GetMapping("/login")
+    public String test() {
+        return "users/login";
+    }
+
+    @PostMapping("/login")
+    public String validateUser(@RequestParam String userId, @RequestParam String password, HttpSession session) {
+
+        log.info("userId, password [{}][{}]", userId, password);
+        User dbUser = userRepository.findDBUser(userId, password);
+
+        if (!dbUser.getUserId().equals(userId) || !dbUser.getPassword().equals(password)) {
+            return "users/login_failed";
+        }
+
+        session.setAttribute(SessionConst.LOGIN_USERID, dbUser.getId());
+        return "redirect:/qna/list";
+    }
+
+    @GetMapping("/logout")
+
+    public String orderLogout(HttpSession httpSession) {
+        if (httpSession.getAttribute("loggedInId") != null) {
+            httpSession.invalidate();
+        }
+        return "redirect:/qna/list";
     }
 
     @GetMapping("/form")

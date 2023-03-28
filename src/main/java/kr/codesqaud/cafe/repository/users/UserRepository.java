@@ -6,9 +6,11 @@ import java.util.List;
 
 public interface UserRepository {
 
-    public void save(User user);
+    void save(User user);
 
-    public List<User> findAllUsers();
+    List<User> findAllUsers();
 
-    public User findUserById(long id);
+    User findUserById(long id);
+
+    User findDBUser(String userId, String password);
 }
