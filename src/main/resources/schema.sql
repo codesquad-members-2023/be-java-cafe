@@ -1,5 +1,5 @@
-drop table if exists member;
 drop table if exists article;
+drop table if exists member;
 
 create table member
 (
@@ -8,7 +8,7 @@ create table member
     member_password varchar(64) not null,
     member_name     varchar(64) not null,
     member_email    varchar(64) not null,
-    primary key (member_id)
+    primary key (member_id, member_number)
 );
 
 create table article
