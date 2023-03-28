@@ -44,6 +44,15 @@ public class UserController {
         return "redirect:/qna/list";
     }
 
+    @GetMapping("/logout")
+
+    public String orderLogout(HttpSession httpSession) {
+        if (httpSession.getAttribute("loggedInId") != null) {
+            httpSession.invalidate();
+        }
+        return "redirect:/qna/list";
+    }
+
     @GetMapping("/form")
     public String findUserFormPage() {
         return "users/form";
