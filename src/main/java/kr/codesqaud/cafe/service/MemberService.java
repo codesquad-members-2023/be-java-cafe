@@ -42,4 +42,12 @@ public class MemberService {
         }
         memberRepository.editeMember(member);
     }
+
+    public boolean checkMember(Member member) {
+        String password = memberRepository.findOneMemberbyEmail(member.getEmail()).getPassword();
+        if (password.equals(member.getPassword())) {
+            return true;
+        }
+        return false;
+    }
 }

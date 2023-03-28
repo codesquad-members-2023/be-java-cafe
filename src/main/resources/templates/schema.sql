@@ -5,7 +5,7 @@ create table member (
     email varchar(255),
     nickName varchar(255) not null,
     password varchar(255) not null,
-    signUpDate Date
+    signUpDate Date default now()
 );
 
 
@@ -14,5 +14,6 @@ create table article (
     writer varchar(255),
     title varchar(255),
     contents varchar(255),
-    registrationDate DateTime
+    registrationDate DateTime default now()
 );
+
