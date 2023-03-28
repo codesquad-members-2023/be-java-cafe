@@ -30,8 +30,7 @@ public class ArticleController {
     }
 
     @GetMapping("/openForm")
-    public String openForm(Model model) {
-        model.addAttribute(new ArticleDto());
+    public String openForm() {
         return "qna/form";
     }
 
