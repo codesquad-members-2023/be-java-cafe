@@ -60,13 +60,19 @@ public class MemberController {
 
 	@GetMapping("/update/{userId}")
 	public String editUserForm(HttpSession session, @PathVariable String userId, Model model) throws SQLException {
-		Member member = (Member) session.getAttribute(SESSIONED_USER);
-		if (member == null) {
+
+		String loginUserId = (String) session.getAttribute(SESSIONED_USER);
+
+		if (loginUserId == null) {
 			return "redirect:/login";
 		}
-		if(!member.getUserId().equals(userId)) {
+
+		if(!userId.equals(loginUserId)) {
 			return "redirect:/";
 		}
+
+		Member member = namedJdbcTemplateMemberRepository.findById(loginUserId).get();
+
 		model.addAttribute(member);
 		return "user/updateForm";
 	}
