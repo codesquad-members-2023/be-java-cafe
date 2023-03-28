@@ -1,6 +1,7 @@
 package kr.codesqaud.cafe.repository.article;
 
 import kr.codesqaud.cafe.domain.Article;
+import kr.codesqaud.cafe.domain.Reply;
 import kr.codesqaud.cafe.dto.article.ArticleFormDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Primary;
@@ -65,5 +66,12 @@ public class H2JDBCArticleRepository implements ArticleRepository {
         String sql = "select member.name from article inner join member on article.userid = member.userid where article.userid = ? group by member.name";
 
         return template.queryForObject(sql, String.class, userId);
+    }
+
+    @Override
+    public List<Reply> findAllReplyByArticleId(int articleId) {
+        String sql = "select * from reply where articleid=?";
+
+        return template.query(sql, new BeanPropertyRowMapper<>(Reply.class), articleId);
     }
 }
