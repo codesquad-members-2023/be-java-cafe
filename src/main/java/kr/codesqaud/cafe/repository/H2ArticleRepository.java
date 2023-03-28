@@ -79,7 +79,7 @@ public class H2ArticleRepository implements ArticleRepository {
 
            article.setId(rs.getLong("article_id"));
            article.setCreatedDate(rs.getTimestamp("article_createddate").toLocalDateTime());
-           article.setCreatedDate(rs.getTimestamp("article_updateddate").toLocalDateTime());
+           article.setUpdatedDate(rs.getTimestamp("article_updateddate").toLocalDateTime());
 
            writer.setId(rs.getLong("member_id"));
 
