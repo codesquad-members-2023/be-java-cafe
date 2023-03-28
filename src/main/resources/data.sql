@@ -5,8 +5,8 @@ insert into article (userid, title, contents, timestamp) values ('first', 'first
 insert into article (userid, title, contents, timestamp) values ('second', 'second-title', 'second-contents', now());
 
 
-insert into reply (articleId, userid, contents, timestamp) values ('1', 'first', '첫 번째 첫 번째 댓글', now());
-insert into reply (articleId, userid, contents, timestamp) values ('1', 'second', '첫 번쨰 두 번째 댓글', now());
+insert into reply (articleId, userid, contents, timestamp, deleted) values ('1', 'first', '첫 번째 첫 번째 댓글', now(), false);
+insert into reply (articleId, userid, contents, timestamp, deleted) values ('1', 'second', '첫 번쨰 두 번째 댓글', now(), false);
 
-insert into reply (articleId, userid, contents, timestamp) values ('2', 'first', '두 번째글  첫 번째 댓글', now());
-insert into reply (articleId, userid, contents, timestamp) values ('2', 'second', '두 번째 두 번째 댓글', now());
+insert into reply (articleId, userid, contents, timestamp, deleted) values ('2', 'first', '두 번째글  첫 번째 댓글', now(), false);
+insert into reply (articleId, userid, contents, timestamp, deleted) values ('2', 'second', '두 번째 두 번째 댓글', now(), false);

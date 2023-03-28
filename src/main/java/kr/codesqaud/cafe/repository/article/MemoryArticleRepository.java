@@ -1,7 +1,6 @@
 package kr.codesqaud.cafe.repository.article;
 
 import kr.codesqaud.cafe.domain.Article;
-import kr.codesqaud.cafe.domain.Reply;
 import kr.codesqaud.cafe.dto.article.ArticleFormDTO;
 import org.springframework.stereotype.Repository;
 
@@ -42,11 +41,6 @@ public class MemoryArticleRepository implements ArticleRepository {
 
     @Override
     public String findUsernameByArticleUserId(String userId) {
-        return null;
-    }
-
-    @Override
-    public List<Reply> findAllReplyByArticleId(int articleId) {
         return null;
     }
 }

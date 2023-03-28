@@ -24,6 +24,7 @@ create table reply (
     userid varchar(64) not null,
     contents varchar(64) not null,
     timestamp timestamp not null,
+    deleted boolean not null,
     foreign key (userid) references member(userid),
     foreign key (articleId) references article(id)
 );

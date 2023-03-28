@@ -53,7 +53,7 @@
 
                     <div class="qna-comment">
                         <div class="qna-comment-slipp">
-                            <p class="qna-comment-count"><strong>2</strong>개의 의견</p>
+                            <p class="qna-comment-count"><strong th:text="${replyList.size()}">2</strong>개의 의견</p>
                             <div class="qna-comment-slipp-articles">
 
 
@@ -70,16 +70,16 @@
                                             </a>
                                         </div>
                                     </div>
-                                    <div class="article-doc comment-doc" th:text="${reply.contents}">
+                                    <div class="article-doc comment-doc" name="contents" th:text="${reply.contents}">
                                         <p>이 글만으로는 원인 파악하기 힘들겠다. 소스 코드와 설정을 단순화해서 공유해 주면 같이 디버깅해줄 수도 있겠다.</p>
                                     </div>
                                     <div class="article-util">
                                         <ul class="article-util-list">
                                             <li>
-                                                <a class="link-modify-article" href="/questions/413/answers/1405/form">수정</a>
+                                                <a class="link-modify-article" href="#">수정</a>
                                             </li>
                                             <li>
-                                                <form class="form-delete" action="/questions/413/answers/1405"
+                                                <form class="form-delete" th:action="@{/qna/show/reply/{replyId}(replyId = ${reply.id})}"
                                                       method="POST">
                                                     <input type="hidden" name="_method" value="DELETE">
 

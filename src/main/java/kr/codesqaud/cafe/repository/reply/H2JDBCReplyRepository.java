@@ -8,6 +8,7 @@ import org.springframework.stereotype.Repository;
 
 import java.sql.Timestamp;
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public class H2JDBCReplyRepository implements ReplyRepository {
@@ -31,5 +32,19 @@ public class H2JDBCReplyRepository implements ReplyRepository {
         String sql = "select * from reply where articleid=? and deleted = false";
 
         return template.query(sql, new BeanPropertyRowMapper<>(Reply.class), articleId);
+    }
+
+    @Override
+    public Optional<Reply> findReplyByReplyId(int replyId) {
+        String sql = "select * from reply where id=? and deleted = false";
+
+        return Optional.ofNullable(template.queryForObject(sql, new BeanPropertyRowMapper<>(Reply.class), replyId));
+    }
+
+    @Override
+    public void delete(int replyId) {
+        String sql = "update reply set deleted = true where id = ?";
+
+        template.update(sql, replyId);
     }
 }
