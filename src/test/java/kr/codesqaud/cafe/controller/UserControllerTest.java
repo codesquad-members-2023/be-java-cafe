@@ -1,5 +1,6 @@
 package kr.codesqaud.cafe.controller;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -16,6 +17,7 @@ import org.springframework.util.MultiValueMap;
 
 import kr.codesqaud.cafe.model.User;
 import kr.codesqaud.cafe.exceptions.UserInfoException;
+import kr.codesqaud.cafe.repository.UserRepository;
 
 import static org.mockito.BDDMockito.given;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -31,16 +33,23 @@ class UserControllerTest {
     private MockMvc mvc;
 
     @MockBean
-    private JoinService joinService;
+    private UserRepository userRepository;
+    private MockHttpSession mockHttpSession;
+
+    @BeforeEach
+    private void setup() {
+        mockHttpSession = new MockHttpSession();
+        mockHttpSession.setAttribute("sessionedUser", "poro");
+    }
 
     @Test
     @DisplayName("유저 프로필을 조회하면 ID가 일치하는 회원을 모델에 저장하고 뷰로 표시한다.")
     void userProfileTest() throws Exception {
         User poro = new User("poro", "123", "포로", "ngw7617@naver.com", 1);
 
-        given(joinService.lookupUser("poro")).willReturn(poro);
+        given(userRepository.findById("poro")).willReturn(poro);
 
-        mvc.perform(get("/users/poro"))
+        mvc.perform(get("/users/poro").session(mockHttpSession))
                 .andExpect(status().isOk())
                 .andExpect(view().name("user/profile"))
                 .andExpect(model().attributeExists("user"))
@@ -52,9 +61,9 @@ class UserControllerTest {
     void userListTest() throws Exception {
         User poro = new User("poro", "123", "포로", "ngw7617@naver.com", 1);
 
-        given(joinService.lookupAllUser()).willReturn(Collections.singletonList(poro));
+        given(userRepository.getAllUsers()).willReturn(Collections.singletonList(poro));
 
-        mvc.perform(get("/users/list"))
+        mvc.perform(get("/users/list").session(mockHttpSession))
                 .andExpect(status().isOk())
                 .andExpect(view().name("user/list"))
                 .andExpect(model().attributeExists("user"))
@@ -98,21 +107,19 @@ class UserControllerTest {
         @Test
         @DisplayName("로그인되지 않은 상태면 타인의 회원 정보 수정 폼에 접근하면 예외가 발생된다.")
         void NonMembersUpdateFormTest() throws Exception {
-            MockHttpSession mockHttpSession = new MockHttpSession();
+            MockHttpSession invalidHttpSession = new MockHttpSession();
             //given : 로그인 되지 않음
 
             //Advice에서 Catch되므로 assertThrows로 검증할 수 없다.
-            mvc.perform(get("/users/honux/form").session(mockHttpSession))
-                    .andExpect(status().isOk())
-                    .andExpect(view().name("user/login_failed"));
+            mvc.perform(get("/users/honux/form").session(invalidHttpSession))
+                    .andExpect(status().is3xxRedirection())
+                    .andExpect(redirectedUrl("/users/login_failed"));
         }
 
         @Test
         @DisplayName("로그인된 상태라도 타인의 회원 정보 수정 폼에 접근하면 예외가 발생된다.")
         void illegalUserUpdateFormTest() throws Exception {
-            MockHttpSession mockHttpSession = new MockHttpSession();
             //given : 로그인 된 상태
-            mockHttpSession.setAttribute("sessionedUser", "poro");
 
             //Advice에서 Catch되므로 assertThrows로 검증할 수 없다.
             mvc.perform(get("/users/honux/form").session(mockHttpSession))
@@ -131,7 +138,7 @@ class UserControllerTest {
         paramsMap.add("name", "포로");
         paramsMap.add("email", "ngw7617@naver.com");
 
-        mvc.perform(put("/users/poro/update").params(paramsMap))
+        mvc.perform(put("/users/poro/update").params(paramsMap).session(mockHttpSession))
                 .andExpect(status().is3xxRedirection())
                 .andExpect(view().name("redirect:/users/list"));
     }
@@ -146,7 +153,7 @@ class UserControllerTest {
             paramsMap.add("userId", "poro");
             paramsMap.add("password", "123");
             User poro = new User("poro", "123", "포로", "ngw7617@naver.com", 1);
-            given(joinService.lookupUser("poro")).willReturn(poro);
+            given(userRepository.findById("poro")).willReturn(poro);
 
             MockHttpSession mockHttpSession = new MockHttpSession();
 
@@ -162,7 +169,7 @@ class UserControllerTest {
             paramsMap.add("userId", "poro");
             paramsMap.add("password", "afk");
             User poro = new User("poro", "123", "포로", "ngw7617@naver.com", 1);
-            given(joinService.lookupUser("poro")).willReturn(poro);
+            given(userRepository.findById("poro")).willReturn(poro);
 
             MockHttpSession mockHttpSession = new MockHttpSession();
 
@@ -176,8 +183,6 @@ class UserControllerTest {
     @DisplayName("로그아웃하면 세션을 종료하고 홈 화면으로 이동한다.")
     void logout() throws Exception {
         //given : 로그인 된 상태
-        MockHttpSession mockHttpSession = new MockHttpSession();
-        mockHttpSession.setAttribute("sessionedUser", "poro");
 
         mvc.perform(get("/users/logout").session(mockHttpSession))
                 .andExpect(new ResultMatcher() {
