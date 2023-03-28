@@ -56,11 +56,13 @@
 
                 <div class="qna-comment">
                     <div class="qna-comment-slipp">
-                        <p class="qna-comment-count"><strong th:if="${replyDtoList} != null" th:text="${replyDtoList.size()}"></strong>개의 의견</p>
+                        <p class="qna-comment-count"><strong th:if="${replyDtoList} != null"
+                                                             th:text="${replyDtoList.size()}"></strong>개의 의견</p>
                         <div class="qna-comment-slipp-articl
                         es">
 
-                            <article th:if="${replyDtoList} != null" th:each="replyDto : ${replyDtoList}" class="article" id="answer-1405">
+                            <article th:if="${replyDtoList} != null" th:each="replyDto : ${replyDtoList}"
+                                     class="article" id="answer-1405">
                                 <div class="article-header">
                                     <div class="article-header-thumb">
                                         <img src="https://graph.facebook.com/v2.3/1324855987/picture"
@@ -70,7 +72,8 @@
                                         <a th:text="${replyDto.getUserId()}"
                                            th:href="@{../users/{userId}(userId=${replyDto.getUserId()})}"
                                            class="article-author-name"></a>
-                                        <a th:text="${replyDto.getTime()}" href="#" class="article-header-time" title="퍼머링크"></a>
+                                        <a th:text="${replyDto.getTime()}" href="#" class="article-header-time"
+                                           title="퍼머링크"></a>
                                     </div>
                                 </div>
                                 <div class="article-doc comment-doc">
@@ -87,7 +90,8 @@
                                                   method="POST">
                                                 <input type="hidden" name="_method" value="DELETE">
                                                 <input type="hidden" name="replyId" th:value="${replyDto.getReplyId()}">
-                                                <input type="hidden" name="articleId" th:value="${replyDto.getArticleId()}">
+                                                <input type="hidden" name="articleId"
+                                                       th:value="${replyDto.getArticleId()}">
                                                 <input type="hidden" name="userId" th:value="${replyDto.getUserId()}">
                                                 <button type="submit" class="delete-answer-button">삭제</button>
                                             </form>
@@ -101,7 +105,8 @@
                                         <input type="hidden" name="userId" th:value="${session.userId}">
                                         <input type="hidden" name="articleId" th:value="${articleDto.articleId}">
                                     </label>
-                                        <textarea class="form-control" name="contents" placeholder="Update your status"></textarea>
+                                    <textarea class="form-control" name="contents"
+                                              placeholder="Update your status"></textarea>
                                 </div>
                                 <button class="btn btn-success pull-right" type="submit">답변하기</button>
                                 <div class="clearfix"/>

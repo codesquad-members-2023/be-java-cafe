@@ -74,7 +74,7 @@ public class ArticleController {
         if (!userId.equals(session.getAttribute("userId"))) {
             throw new IllegalArgumentException("다른 사람의 게시글은 삭제할 수 없습니다.");
         }
-        if(replyService.findReplyAllByArticleId(Integer.parseInt(articleId)).size()
+        if (replyService.findReplyAllByArticleId(Integer.parseInt(articleId)).size()
                 != replyService.findReplyByArticleIdAndUserId(Integer.parseInt(articleId), userId).size()) {
             throw new IllegalArgumentException("다른 사람의 댓글이 있는 게시물은 삭제할 수 없습니다.");
         }
@@ -90,7 +90,7 @@ public class ArticleController {
 
     @GetMapping("/article/reply/{replyId}/update")
     public String updateReplyForm(@PathVariable("replyId") String replyId, Model model, HttpSession session) {
-        if(!replyService.findReplyByReplyId(replyId).getUserId().equals(session.getAttribute("userId"))) {
+        if (!replyService.findReplyByReplyId(replyId).getUserId().equals(session.getAttribute("userId"))) {
             throw new IllegalArgumentException("다른 사람의 댓글은 수정할 수 없습니다.");
         }
         model.addAttribute(replyService.findReplyByReplyId(replyId));
@@ -105,7 +105,7 @@ public class ArticleController {
 
     @DeleteMapping("/article/reply/delete")
     public String deleteReply(ReplyDto replyDto, HttpSession session) {
-        if(!replyDto.getUserId().equals(session.getAttribute("userId"))) {
+        if (!replyDto.getUserId().equals(session.getAttribute("userId"))) {
             throw new IllegalArgumentException("다른 사람의 댓글은 삭제할 수 없습니다.");
         }
         replyService.deleteReply(replyDto);
