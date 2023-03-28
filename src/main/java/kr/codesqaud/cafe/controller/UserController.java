@@ -81,10 +81,26 @@ public class UserController {
 
     @GetMapping("/{loggedInId}/edit")
     public String findUser(HttpSession httpSession, Model model) {
+
         long loggedInUserId = (long) httpSession.getAttribute("loggedInId");
         User user = userRepository.findUserById(loggedInUserId);
         model.addAttribute(user);
         log.debug("debug log={}", user.getName());
+
         return "users/edit";
+    }
+
+    @PutMapping("/{loggedInId}/edit")
+    public String editUser(HttpSession httpSession, @ModelAttribute User user) {
+
+        long loggedInUserId = (long) httpSession.getAttribute("loggedInId");
+        userRepository.update(user, loggedInUserId);
+
+        log.info("user.getPassword={}", user.getPassword());
+        log.info("user.getName={}", user.getName());
+        log.info("user.getEmai={}", user.getEmail());
+        log.info("id={}", loggedInUserId);
+
+        return "redirect:/qna/list";
     }
 }

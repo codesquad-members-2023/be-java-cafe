@@ -13,4 +13,6 @@ public interface UserRepository {
     User findUserById(long id);
 
     User findDBUser(String userId, String password);
+
+    void update(User user, long id);
 }

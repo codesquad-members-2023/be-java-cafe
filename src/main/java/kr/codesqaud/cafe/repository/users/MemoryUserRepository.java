@@ -31,6 +31,11 @@ public class MemoryUserRepository implements UserRepository {
         return new User();
     }
 
+    @Override
+    public void update(User user, long id) {
+
+    }
+
     public User findUserById(String userId) {
         User user = store.get(userId);
         return user;

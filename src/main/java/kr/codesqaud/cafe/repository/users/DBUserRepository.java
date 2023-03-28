@@ -36,6 +36,15 @@ public class DBUserRepository implements UserRepository {
     }
 
     @Override
+    public void update(User user, long id) {
+        String sql = "update member set password = ?, name = ?, email = ? where id = ?";
+
+        log.info("update");
+
+//        jdbcTemplate.update(sql, user.getPassword(), user.getName(), user.getEmail(), id);
+    }
+
+    @Override
     public void save(User user) {
         String sql = "insert into member (userId, password, name, email) values(?, ?, ?, ?)";
 
