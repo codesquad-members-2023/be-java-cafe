@@ -10,6 +10,9 @@ public class ArticleWithWriterDto {
 	private LocalDateTime writtenTime;
 	private Long userSequence;
 
+	public ArticleWithWriterDto() {
+	}
+
 	public ArticleWithWriterDto(Long articleSequence, String title, String contents, LocalDateTime writtenTime, Long userSequence) {
 		this.articleSequence = articleSequence;
 		this.title = title;
