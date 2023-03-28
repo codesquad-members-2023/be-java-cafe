@@ -37,7 +37,8 @@ public class H2DBArticleRepository implements ArticleRepository {
     @Override
     public ArticleWithWriter findById(int id) {
         String sql = "select a.id, a.title, a.contents, a.createDate, a.user_id, " +
-                "(select user_id from users u where u.id=a.user_id) as writer " +
+                "(select user_id from users u where u.id=a.user_id) as writer, " +
+                "(select count(*) from reply r where a.id=r.article_id) as replyCount " +
                 "from article a where a.id=:id";
 
         try {
@@ -51,7 +52,8 @@ public class H2DBArticleRepository implements ArticleRepository {
 
     @Override
     public List<ArticleWithWriter> findAll() {
-        String sql = "select a.id, a.title, a.contents, a.createDate, a.user_id, u.user_id as writer " +
+        String sql = "select a.id, a.title, a.contents, a.createDate, a.user_id, u.user_id as writer, " +
+                "(select count(*) from reply r where a.id=r.article_id) as replyCount " +
                 "from article a join users u on a.user_id=u.id order by a.id desc";
 
         return template.query(sql, BeanPropertyRowMapper.newInstance(ArticleWithWriter.class));
