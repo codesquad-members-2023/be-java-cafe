@@ -45,7 +45,7 @@ public class MemberController {
     @GetMapping("/logout")
     public String logout(HttpSession httpSession) {
         httpSession.invalidate();
-        return "redirect:/";
+        return REDIRECT_INDEX;
     }
 
     @PostMapping("/login")
@@ -57,7 +57,7 @@ public class MemberController {
         }
 
         httpSession.setAttribute(SESSION_USER, new SessionUser(member.getId(), member.getNickname()));
-        return "redirect:/";
+        return REDIRECT_INDEX;
     }
 
     @PostMapping("/users/join")
@@ -69,7 +69,7 @@ public class MemberController {
         }
 
         memberRepository.save(member);
-        return "redirect:/users";
+        return REDIRECT_INDEX;
     }
 
     @GetMapping("/users")

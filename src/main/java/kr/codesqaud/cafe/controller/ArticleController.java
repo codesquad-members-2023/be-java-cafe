@@ -11,6 +11,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import static kr.codesqaud.cafe.constant.ConstUrl.REDIRECT_INDEX;
 
 @Controller
 public class ArticleController {
@@ -30,7 +31,8 @@ public class ArticleController {
         Member member = memberRepository.findById(writerId);
         Article article = new Article(member, title, contents);
         articleRepository.save(article);
-        return "redirect:/";
+        return REDIRECT_INDEX;
+    }
     }
 
     @GetMapping("/articles/{id}")
