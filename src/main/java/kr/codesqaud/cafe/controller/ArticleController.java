@@ -10,6 +10,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpSession;
 import java.util.List;
 
 @Controller
@@ -39,10 +40,15 @@ public class ArticleController {
     }
 
     @GetMapping("/qna/{id}")
-    public String findArticle(@PathVariable int id, Model model) {
+    public String findArticle(@PathVariable int id, Model model, HttpSession httpSession) {
+
+        if (httpSession.getAttribute("loggedInId") == null) {
+            return "redirect:/qna/list";
+        }
+
         Article article = articleRepository.findByArticleId(id);
         model.addAttribute("article", article);
-        log.info("debug log={}", "findArticle");
+
         return "qna/show";
     }
 }
