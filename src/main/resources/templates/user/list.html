@@ -24,8 +24,8 @@
                     <td><a th:href="@{|/users/profile/${user.userSequence}|}" th:text="${user.userId}">사용자 ID</a></td>
                     <td th:text="${user.name}">사용자 이름</td>
                     <td th:text="${user.email}">사용자 메일</td>
-                    <td><a th:if="${session.sessionedUser==user.userId}"
-                            th:href="@{/users/update/{userId}(userId=${user.userId})}"
+                    <td><a th:if="${session.sessionedUser==user.userSequence}"
+                            th:href="@{/users/update/{userSequence}(userSequence=${user.userSequence})}"
                             href="#" class="btn btn-success" role="button">수정</a></td>
                 </tr>
                 </tbody>
