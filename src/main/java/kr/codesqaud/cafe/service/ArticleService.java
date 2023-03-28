@@ -48,10 +48,7 @@ public class ArticleService {
 
     public boolean sessionCheck(long id, User sessionUser) {
         Article checkId = articleCheck(id, sessionUser);
-        if (checkId == null || !checkId.getWriter().equals(sessionUser.getUserId())) {
-            return false;
-        }
-        return true;
+        return checkId != null && checkId.getWriter().equals(sessionUser.getUserId());
     }
 
     /**

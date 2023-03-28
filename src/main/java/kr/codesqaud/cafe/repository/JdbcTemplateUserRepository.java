@@ -23,7 +23,7 @@ public class JdbcTemplateUserRepository implements UserRepository {
         // 아이디 중복 여부 확인
         if (findByUserId(user.getUserId()).isEmpty()) {
             jdbcTemplate.update("INSERT INTO CAFE_USER(USERID, PASSWORD, NAME, EMAIL) VALUES (?, ?, ?, ?)"
-                    ,user.getUserId(), user.getPassword(), user.getName(), user.getEmail());
+                    , user.getUserId(), user.getPassword(), user.getName(), user.getEmail());
             User tempUser = findByUserId(user.getUserId()).orElseThrow(null);
             user.setId(tempUser.getId());
             return true;

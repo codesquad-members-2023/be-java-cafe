@@ -45,7 +45,7 @@ public class JdbcTemplateArticleRepository implements ArticleRepository {
 
     public boolean deleteArticle(long id) {
         // 해당 번호 게시글 존재여부 체크
-        if(findById(id).isPresent()) {
+        if (findById(id).isPresent()) {
             jdbcTemplate.update("update CAFE_ARTICLE set deleted = true where ID = ?", id);
 //            jdbcTemplate.update("DELETE CAFE_ARTICLE where ID=?", id);
             return true;

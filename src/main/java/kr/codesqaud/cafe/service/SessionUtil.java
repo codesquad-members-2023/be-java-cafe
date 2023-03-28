@@ -10,7 +10,7 @@ public class SessionUtil {
     /**
      * 세션 유저 조회
      */
-    public Object getUserInfo(HttpSession session){
+    public Object getUserInfo(HttpSession session) {
         return session.getAttribute(LOGIN_USER);
     }
 

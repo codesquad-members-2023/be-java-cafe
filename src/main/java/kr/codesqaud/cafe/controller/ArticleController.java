@@ -59,7 +59,7 @@ public class ArticleController {
             model.addAttribute("articleId", article.get().getId());
             model.addAttribute("replySize", replies.size());
             model.addAttribute("reply", replies);
-            
+
             return "qna/show";
         }
         log.debug("질문글 Mapping: 맵핑 실패 ㅠㅠㅠ");
@@ -96,18 +96,20 @@ public class ArticleController {
 
     // 게시글 삭제 DELETE (서비스)
     @DeleteMapping("/articles/{id}/delete")
-    public String deleteArticle(@PathVariable long id, HttpSession session) {
-        // 댓글 존재 여부 검증
-        List<Reply> replyList = replyService.findAllReply(id);
-        if(!replyList.isEmpty()) {
-            log.debug("게시글 삭제: 실패(댓글이 존재합니다.)");
-            return "error_delete";
-        }
-
+    public String deleteArticle(@PathVariable long id, HttpSession session, Model model) {
+        // 로그인 유저 = 게시글 작성자 검증
         User sessionUser = (User) sessionUtil.getUserInfo(session);
         if (!articleService.sessionCheck(id, sessionUser)) {
             log.debug("게시글 삭제: 실패(본인이 아님!!!! 떽!!!)");
             return "error";
+        }
+
+        // 댓글 존재 여부 검증
+        List<Reply> replyList = replyService.findAllReply(id);
+        if (!replyList.isEmpty()) {
+            log.debug("게시글 삭제: 실패(댓글이 존재합니다.)");
+            model.addAttribute("errorMessage", "실패(댓글이 존재합니다.)");
+            return "error_delete";
         }
 
         articleService.delete(id);

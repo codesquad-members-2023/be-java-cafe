@@ -37,10 +37,7 @@ public class ReplyService {
      */
     public boolean sessionCheck(User sessionUser, long id) {
         Reply checkId = findByReplyId(id).orElseThrow(null);
-        if (checkId == null || !checkId.getWriter().equals(sessionUser.getUserId())) {
-            return false;
-        }
-        return true;
+        return checkId != null && checkId.getWriter().equals(sessionUser.getUserId());
     }
 
     /**
