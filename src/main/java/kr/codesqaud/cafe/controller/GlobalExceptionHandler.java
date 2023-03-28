@@ -17,14 +17,6 @@ public class GlobalExceptionHandler {
         return "error/error";
     }
 
-    @ExceptionHandler(Exception.class)
-    public String handleException(HttpServletResponse response, Model model) {
-        response.setStatus(HttpServletResponse.SC_NOT_FOUND);
-        model.addAttribute("ex", "잘못된 접근입니다.");
-
-        return "error/error";
-    }
-
     @ExceptionHandler(AddressException.class)
     public String handleAddress(HttpServletResponse response, Model model) {
         response.setStatus(HttpServletResponse.SC_NOT_FOUND);
