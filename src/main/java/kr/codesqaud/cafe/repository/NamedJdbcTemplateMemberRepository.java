@@ -41,6 +41,16 @@ public class NamedJdbcTemplateMemberRepository {
 		}
 	}
 
+	public Optional<Member> findByNumber(Long userSequence) {
+		try {
+			String sql = "select member_number, member_id, member_password, member_name, member_email from member where member_number=:userSequence";
+			SqlParameterSource sqlParameterSource = new MapSqlParameterSource("userSequence", userSequence);
+			return Optional.of(template.queryForObject(sql, sqlParameterSource, memberRowMapper()));
+		} catch (EmptyResultDataAccessException e) {
+			return Optional.empty();
+		}
+	}
+
 	public List<Member> showAllUsers() {
 		String sql = "select member_number, member_id, member_password, member_name, member_email from member";
 		return template.query(sql, memberRowMapper());
