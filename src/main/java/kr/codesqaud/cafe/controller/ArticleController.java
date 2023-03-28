@@ -3,6 +3,8 @@ package kr.codesqaud.cafe.controller;
 import kr.codesqaud.cafe.domain.Article;
 import kr.codesqaud.cafe.repository.article.ArticleRepository;
 
+import kr.codesqaud.cafe.util.SessionConst;
+import kr.codesqaud.cafe.util.ValidateConst;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,7 +27,12 @@ public class ArticleController {
     }
 
     @PostMapping("/qna")
-    public String addUser(@ModelAttribute Article article) {
+    public String addArticle(@ModelAttribute Article article, Model model, HttpSession httpSession) {
+
+        if (httpSession.getAttribute("loggedInId") == null) {
+            model.addAttribute("errorMessage", ValidateConst.UNKNOWN_USER);
+            return "util/error";
+        }
         articleRepository.save(article);
         log.debug("debug log={}", article.getContents());
         return "redirect:/qna/list";
@@ -43,7 +50,8 @@ public class ArticleController {
     public String findArticle(@PathVariable int id, Model model, HttpSession httpSession) {
 
         if (httpSession.getAttribute("loggedInId") == null) {
-            return "redirect:/qna/list";
+            model.addAttribute("errorMessage", ValidateConst.UNKNOWN_USER);
+            return "util/error";
         }
 
         Article article = articleRepository.findByArticleId(id);

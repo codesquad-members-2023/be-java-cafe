@@ -45,7 +45,6 @@ public class UserController {
     }
 
     @GetMapping("/logout")
-
     public String orderLogout(HttpSession httpSession) {
         if (httpSession.getAttribute("loggedInId") != null) {
             httpSession.invalidate();
