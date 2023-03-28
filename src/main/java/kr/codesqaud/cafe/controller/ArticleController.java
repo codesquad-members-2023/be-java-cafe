@@ -33,9 +33,23 @@ public class ArticleController {
             model.addAttribute("errorMessage", ValidateConst.UNKNOWN_USER);
             return "util/error";
         }
+
         articleRepository.save(article);
         log.debug("debug log={}", article.getContents());
         return "redirect:/qna/list";
+    }
+
+    @GetMapping("/qna/form")
+    public String orderQnaForm(HttpSession httpSession, Model model) {
+
+        log.info("orderQnaForm, httpSession={}", httpSession.getAttribute("loggedInId"));
+
+        if (httpSession.getAttribute("loggedInId") == null) {
+            model.addAttribute("errorMessage", ValidateConst.UNKNOWN_USER);
+            return "util/error";
+        }
+
+        return "qna/form";
     }
 
     @GetMapping(value = {"/qna/list", "/"})
