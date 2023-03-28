@@ -2,16 +2,14 @@ package kr.codesqaud.cafe.repository;
 
 import java.time.format.DateTimeFormatter;
 import java.util.List;
-import java.util.Optional;
 
 import javax.sql.DataSource;
 
-import kr.codesqaud.cafe.exceptions.ArticleInfoException;
-import kr.codesqaud.cafe.exceptions.UserInfoException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 
+import kr.codesqaud.cafe.exceptions.ArticleInfoException;
 import kr.codesqaud.cafe.model.Article;
 import kr.codesqaud.cafe.model.ArticleDto;
 

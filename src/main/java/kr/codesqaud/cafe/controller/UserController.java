@@ -1,29 +1,19 @@
 package kr.codesqaud.cafe.controller;
 
-import java.util.Map;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-<<<<<<< HEAD
-import kr.codesqaud.cafe.repository.UserRepository;
-=======
 
-import org.apache.catalina.connector.Request;
->>>>>>> b111b59 (feat(step-5):유효하지 않은 URL로 접근 시 예외 페이지로 Request를 forward하도록 NotFoundInterceptor(임시 이름) 구현)
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.Mapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import kr.codesqaud.cafe.model.User;
 import kr.codesqaud.cafe.exceptions.UserInfoException;
+import kr.codesqaud.cafe.model.User;
+import kr.codesqaud.cafe.repository.UserRepository;
 
 @Controller
 public class UserController {

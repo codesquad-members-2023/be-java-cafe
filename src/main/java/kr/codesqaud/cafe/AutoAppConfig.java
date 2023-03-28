@@ -10,12 +10,9 @@ import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
-import kr.codesqaud.cafe.interceptors.CacheInvalidator;
-import kr.codesqaud.cafe.interceptors.LoggerInterceptor;
 import kr.codesqaud.cafe.repository.ArticleRepository;
 import kr.codesqaud.cafe.repository.JdbcArticleRepository;
 import kr.codesqaud.cafe.repository.JdbcUserRepository;
-
 import kr.codesqaud.cafe.repository.UserRepository;
 
 @Configuration
@@ -25,23 +22,22 @@ public class AutoAppConfig implements WebMvcConfigurer {
     private final HandlerInterceptor loginInterceptor;
     private final HandlerInterceptor loggerInterceptor;
     private final HandlerInterceptor cacheInvalidator;
-    private final HandlerInterceptor notFoundInterceptor;
+    private final HandlerInterceptor invalidAddressInterceptor;
 
     public AutoAppConfig(DataSource dataSource, HandlerInterceptor loginInterceptor,
-            HandlerInterceptor loggerInterceptor, HandlerInterceptor cacheInvalidator, HandlerInterceptor notFoundInterceptor) {
+            HandlerInterceptor loggerInterceptor, HandlerInterceptor cacheInvalidator,
+            HandlerInterceptor invalidAddressInterceptor) {
         this.dataSource = dataSource;
         this.loginInterceptor = loginInterceptor;
         this.loggerInterceptor = loggerInterceptor;
         this.cacheInvalidator = cacheInvalidator;
-        this.notFoundInterceptor = notFoundInterceptor;
+        this.invalidAddressInterceptor = invalidAddressInterceptor;
     }
-
 
     @Bean
     public UserRepository userRepository() {
         return new JdbcUserRepository(dataSource);
     }
-
 
     @Bean
     public ArticleRepository articleRepository() {
@@ -60,17 +56,15 @@ public class AutoAppConfig implements WebMvcConfigurer {
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
-        registry.addInterceptor(notFoundInterceptor)
+
+        registry.addInterceptor(invalidAddressInterceptor)
                 .order(100)
                 .addPathPatterns("/**")//모든 URL에 대해서, 404를 발생.
-                .excludePathPatterns("/", "/css/**", "/*.ico", "/js/**", "/images/**", "/fonts/**",
-                        "/users/**", "/qna/**", "/api/**");
+                .excludePathPatterns("/", "/users/**", "/qna/**", "/api/error");
         registry.addInterceptor(loginInterceptor)
-                .order(1000)
-                .addPathPatterns("/**")
-                .excludePathPatterns("/", "/css/**", "/*.ico", "/js/**", "/images/**", "/fonts/**",
-                        "/users/login_failed", "/users/form",
-                        "/users/login", "/users/create", "/error", "/api/**");
+                .addPathPatterns("/users/**", "/qna/**")
+                .excludePathPatterns("/users/login_failed", "/users/form",
+                        "/users/login", "/users/create", "/api/error");
         registry.addInterceptor(loggerInterceptor)
                 .order(Ordered.LOWEST_PRECEDENCE)
                 .addPathPatterns("/**")

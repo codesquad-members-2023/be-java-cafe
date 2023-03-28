@@ -9,9 +9,6 @@ import javax.servlet.http.HttpSession;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
 
-import kr.codesqaud.cafe.controller.ArticleController;
-import kr.codesqaud.cafe.exceptions.UserInfoException;
-
 @Component
 public class LoginInterceptor implements HandlerInterceptor {
 
