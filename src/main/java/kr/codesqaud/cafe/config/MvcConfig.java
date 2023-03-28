@@ -17,6 +17,7 @@ public class MvcConfig implements WebMvcConfigurer {
         registry.addViewController("/user/form").setViewName("user/form");
         registry.addViewController("/qna/form").setViewName("qna/form");
         registry.addViewController("/user/login").setViewName("user/login");
+        registry.addViewController("/user/form_failed").setViewName("user/form_failed");
     }
 
     @Override
@@ -25,7 +26,7 @@ public class MvcConfig implements WebMvcConfigurer {
         registry.addInterceptor(new LoginCheckInterceptor())
                 .order(interceptorExecutionOrder)
                 .addPathPatterns("/**")
-                .excludePathPatterns("/", "/user/login", "/login", "/user/login_failed", "/user/form"
+                .excludePathPatterns("/", "/user/login", "/login", "/user/login_failed", "/user/form", "/user/form_failed"
                         , "/fonts/**", "/js/**", "/images/**", "/css/**", "/*.ico", "/error");
     }
 }

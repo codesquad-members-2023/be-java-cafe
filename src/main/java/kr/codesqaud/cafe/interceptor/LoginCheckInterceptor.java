@@ -24,7 +24,15 @@ public class LoginCheckInterceptor implements HandlerInterceptor {
         if (session == null || session.getAttribute("loginUser") == null) {
             log.info("미인증 사용자 요청");
 
-            // 로그인으로 redirect
+            // 회원가입 실패시 회원가입 실패 페이지로 redirect
+            if (requestURI.equals("/users")){
+                log.info("회원가입 실패");
+
+                response.sendRedirect("/user/form_failed");
+                return false;
+            }
+
+            // 로그인이 필요한 페이지 접근시 로그인 페이지로 redirect
             response.sendRedirect("/user/login");
             return false;
         }

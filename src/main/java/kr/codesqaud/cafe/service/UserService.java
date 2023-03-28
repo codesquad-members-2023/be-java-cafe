@@ -38,10 +38,11 @@ public class UserService {
 
     /**
      * 회원 검증
+     * 인터셉터와 로그인 실패 페이지 연결을 위해 orElse(null)을 활용
      */
     public User passwordCheck(String userId, String password) {
         return userRepository.findByUserId(userId)
                 .filter(user -> user.getPassword().equals(password))
-                .orElseThrow(null);
+                .stream().findFirst().orElse(null);
     }
 }

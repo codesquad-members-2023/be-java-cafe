@@ -61,7 +61,7 @@ public class UserController {
             log.debug("프로필 Mapping: 성공");
             return "user/profile";
         }
-        log.debug("프로필 MappingT: 실패");
+        log.debug("프로필 Mapping: 실패");
         return "user/profile_failed";
     }
 
