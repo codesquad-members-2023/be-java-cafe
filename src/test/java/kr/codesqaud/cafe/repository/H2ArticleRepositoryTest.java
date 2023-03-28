@@ -133,4 +133,19 @@ class H2ArticleRepositoryTest {
 
         assertThat(repository.findById(exArticle.getId()).getCreatedDate()).isEqualTo(createdDate);
     }
+
+    @Test
+    @DisplayName("article을 id로 삭제하면 전체 리스트 크기도 1줄어든다.")
+    public void deleteMember() {
+        int exSize = repository.findAll().size();
+        repository.delete(1L);
+        assertThat(repository.findAll()).hasSize(exSize-1);
+    }
+
+    @Test
+    @DisplayName("article을 id로 삭제 후 findById를 하면 예외가 발생해야 한다.")
+    public void deleteMemberThenFindById() {
+       repository.delete(1L);
+       assertThatThrownBy(() -> repository.findById(1L)).isInstanceOf(EmptyResultDataAccessException.class);
+    }
 }
