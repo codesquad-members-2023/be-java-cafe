@@ -1,7 +1,7 @@
 DROP TABLE IF EXISTS USERS;
 CREATE TABLE USERS
 (
-id VARCHAR(255) UNIQUE,
+id VARCHAR(255),
 idx INT AUTO_INCREMENT,
 password VARCHAR(255) NOT NULL,
 name VARCHAR(255) NOT NULL,
@@ -17,7 +17,7 @@ writer VARCHAR(255) NOT NULL,
 title VARCHAR(255) NOT NULL,
 contents VARCHAR(500) NOT NULL,
 creationtime timestamp with time zone NOT NULL,
-deleted BOOLEAN DEFAULT FALSE,
+deleted BOOLEAN DEFAULT FALSE NOT NULL,
 PRIMARY KEY (id),
 FOREIGN KEY (writer)
 REFERENCES USERS(id)
@@ -30,8 +30,8 @@ id int AUTO_INCREMENT,
 writer VARCHAR(255) NOT NULL,
 articleId int NOT NULL,
 contents VARCHAR(500) NOT NULL,
-creationtime timestamp with time zone,
-deleted BOOLEAN DEFAULT FALSE,
+creationtime timestamp with time zone NOT NULL,
+deleted BOOLEAN DEFAULT FALSE NOT NULL,
 PRIMARY KEY (id),
 FOREIGN KEY (writer)
 REFERENCES USERS(id),
