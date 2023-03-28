@@ -33,7 +33,7 @@ public class GlobalExceptionHandler {
                 redirectAttributes.addAttribute(MESSAGE, e.getMessage());
                 long id = ((SessionUser) httpSession.getAttribute(SESSION_USER)).getId();
                 redirectAttributes.addFlashAttribute(id);
-                return "redirect:/user/{id}/update";
+                return "redirect:/users/{id}/update";
             default: return DEFAULT_ERROR_PAGE;
         }
     }

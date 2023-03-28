@@ -26,7 +26,7 @@ public class MemberController {
         this.memberRepository = userRepository;
     }
 
-    @GetMapping("/user/{id}/update")
+    @GetMapping("/users/{id}/update")
     public String updateForm(@PathVariable long id, HttpSession httpSession, Model model) {
         SessionUser sessionedUser = (SessionUser) httpSession.getAttribute(SESSION_USER);
 
@@ -60,7 +60,7 @@ public class MemberController {
         return "redirect:/";
     }
 
-    @PostMapping("/users")
+    @PostMapping("/users/join")
     public String addUser(String userId, String email, String nickname, String password) {
         Member member = new Member(userId, nickname, email, password);
 
