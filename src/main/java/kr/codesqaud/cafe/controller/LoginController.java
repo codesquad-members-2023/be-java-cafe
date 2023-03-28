@@ -34,7 +34,7 @@ public class LoginController {
 		Member loginMember = loginService.login(memberLoginDto);
 
 		if (loginMember != null) {
-			session.setAttribute(SESSIONED_USER, loginMember);
+			session.setAttribute(SESSIONED_USER, loginMember.getUserId());
 			return "redirect:/";
 		}
 
