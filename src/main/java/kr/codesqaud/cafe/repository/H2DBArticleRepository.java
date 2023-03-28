@@ -26,8 +26,8 @@ public class H2DBArticleRepository implements ArticleRepository {
 
     @Override
     public void save(Article article) {
-        String sql = "insert into article (title, contents, createDate, user_id) " +
-                "values (:title, :contents, :createDate, :userId)";
+        String sql = "insert into article (title, contents, createDate, deleted, user_id) " +
+                "values (:title, :contents, :createDate, false, :userId)";
 
         SqlParameterSource param = new BeanPropertySqlParameterSource(article);
 
@@ -39,7 +39,7 @@ public class H2DBArticleRepository implements ArticleRepository {
         String sql = "select a.id, a.title, a.contents, a.createDate, a.user_id, " +
                 "(select user_id from users u where u.id=a.user_id) as writer, " +
                 "(select count(*) from reply r where a.id=r.article_id) as replyCount " +
-                "from article a where a.id=:id";
+                "from article a where a.id=:id and a.deleted=false";
 
         try {
             Map<String, Integer> param = Map.of("id", id);
@@ -54,14 +54,15 @@ public class H2DBArticleRepository implements ArticleRepository {
     public List<ArticleWithWriter> findAll() {
         String sql = "select a.id, a.title, a.contents, a.createDate, a.user_id, u.user_id as writer, " +
                 "(select count(*) from reply r where a.id=r.article_id) as replyCount " +
-                "from article a join users u on a.user_id=u.id order by a.id desc";
+                "from article a join users u on a.user_id=u.id " +
+                "where a.deleted=false order by a.id desc";
 
         return template.query(sql, BeanPropertyRowMapper.newInstance(ArticleWithWriter.class));
     }
 
     @Override
     public void delete(int id) {
-        String sql = "delete from article where id=:id";
+        String sql = "update article set deleted=true where id=:id;";
 
         Map<String, Integer> param = Map.of("id", id);
         template.update(sql, param);
