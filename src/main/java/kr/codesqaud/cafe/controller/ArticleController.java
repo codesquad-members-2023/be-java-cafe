@@ -1,6 +1,7 @@
 package kr.codesqaud.cafe.controller;
 
 import kr.codesqaud.cafe.domain.article.Article;
+import kr.codesqaud.cafe.dto.ArticleWithWriterDto;
 import kr.codesqaud.cafe.repository.NamedJdbcTemplateArticleRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -28,7 +29,7 @@ public class ArticleController {
 
 	@GetMapping("/")
 	public String listArticles(Model model) throws SQLException {
-		List<Article> articles = articleRepository.showAllArticles();
+		List<ArticleWithWriterDto> articles = articleRepository.showAllArticles();
 		model.addAttribute("articles", articles);
 		log.trace("게시글 갯수: {}", articles.size());
 		return "index";
@@ -43,7 +44,8 @@ public class ArticleController {
 	}
 
 	@PostMapping("/qna/questions")
-	public String saveQuestion(@ModelAttribute("article") Article article) throws SQLException {
+	public String saveQuestion(@RequestParam String title, @RequestParam String contents, HttpSession session) throws SQLException {
+		Article article = new Article((Long) session.getAttribute(SESSIONED_USER), title, contents);
 		articleRepository.write(article);
 		return "redirect:/";
 	}
@@ -53,9 +55,8 @@ public class ArticleController {
 		if (session.getAttribute(SESSIONED_USER) == null) {
 			return "user/login";
 		}
-		Article findArticle = articleRepository.findByArticleSequence(articleSequence);
+		ArticleWithWriterDto findArticle = articleRepository.findByArticleSequence(articleSequence);
 		model.addAttribute("article", findArticle);
-		log.trace("제목: {}, 글쓴이: {}, 내용: {}", findArticle.getTitle(), findArticle.getWriter(), findArticle.getContents());
 		return "qna/show";
 	}
 }
