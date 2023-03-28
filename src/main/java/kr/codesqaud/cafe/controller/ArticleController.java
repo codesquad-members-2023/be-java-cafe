@@ -63,7 +63,8 @@ public class ArticleController {
 
     @GetMapping("/qna/show/{id}")
     public String showArticle(@PathVariable int id, Model model) {
-        Article article = articleRepository.findArticleById(id);
+        Article article = articleRepository.findArticleById(id)
+                .orElseThrow(() -> new IllegalArgumentException("없는 질문글입니다."));
         String userName = articleRepository.findUsernameByArticleUserId(article.getUserId());
         model.addAttribute("userName", userName);
         model.addAttribute("article", article);
@@ -74,7 +75,8 @@ public class ArticleController {
 
     @GetMapping("/qna/update_article/{articleId}")
     public String updateArticleForm(@PathVariable int articleId, Model model, HttpSession session) {
-        Article article = articleRepository.findArticleById(articleId);
+        Article article = articleRepository.findArticleById(articleId)
+                .orElseThrow(() -> new IllegalArgumentException("없는 질문글입니다."));
         User user = (User) session.getAttribute("user");
         if (user.getUserId().equals(article.getUserId())) {
             model.addAttribute("article", article);
@@ -100,7 +102,8 @@ public class ArticleController {
 
     @DeleteMapping("/qna/show/{articleId}/delete")
     public String deleteArticle(@PathVariable int articleId, HttpSession session) {
-        Article findArticle = articleRepository.findArticleById(articleId);
+        Article findArticle = articleRepository.findArticleById(articleId)
+                .orElseThrow(() -> new IllegalArgumentException("없는 질문글입니다."));
         User user = (User) session.getAttribute("user");
 
         if (user.getUserId().equals(findArticle.getUserId())) {

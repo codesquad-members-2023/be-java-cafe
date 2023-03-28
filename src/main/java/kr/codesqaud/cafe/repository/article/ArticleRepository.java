@@ -4,13 +4,14 @@ import kr.codesqaud.cafe.domain.Article;
 import kr.codesqaud.cafe.dto.article.ArticleFormDTO;
 
 import java.util.List;
+import java.util.Optional;
 
 
 public interface ArticleRepository {
 
     void save(ArticleFormDTO article);
 
-    Article findArticleById(int id);
+    Optional<Article> findArticleById(int id);
 
     List<Article> findAllArticle();
 
