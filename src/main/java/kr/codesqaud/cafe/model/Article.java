@@ -8,20 +8,13 @@ public class Article {
     private String title;
     private String contents;
     private LocalDateTime creationTime;
+    private Reply reply;
 
-    public Article(long id, User user, String title, String contents, LocalDateTime creationTime) {
-        this.id = id;
+    public Article(User user, String title, String contents, LocalDateTime creationTime) {
         this.user = user;
         this.title = title;
         this.contents = contents;
         this.creationTime = creationTime;
-    }
-
-    public Article(User user, String title, String contents) {
-        this.user = user;
-        this.title = title;
-        this.contents = contents;
-        creationTime = LocalDateTime.now();
     }
 
     public LocalDateTime getCreationTime() {

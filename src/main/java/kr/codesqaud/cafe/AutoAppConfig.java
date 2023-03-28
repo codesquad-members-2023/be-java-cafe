@@ -12,12 +12,15 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import kr.codesqaud.cafe.repository.ArticleRepository;
 import kr.codesqaud.cafe.repository.JdbcArticleRepository;
+import kr.codesqaud.cafe.repository.JdbcReplyRepository;
 import kr.codesqaud.cafe.repository.JdbcUserRepository;
+import kr.codesqaud.cafe.repository.ReplyRepository;
 import kr.codesqaud.cafe.repository.UserRepository;
 
 @Configuration
 public class AutoAppConfig implements WebMvcConfigurer {
 
+    public static final int MID_PRECEDENCE = 0;
     private final DataSource dataSource;
     private final HandlerInterceptor loginInterceptor;
     private final HandlerInterceptor loggerInterceptor;
@@ -44,6 +47,11 @@ public class AutoAppConfig implements WebMvcConfigurer {
         return new JdbcArticleRepository(dataSource);
     }
 
+    @Bean
+    public ReplyRepository replyRepository() {
+        return new JdbcReplyRepository(dataSource);
+    }
+
     @Override
     public void addViewControllers(ViewControllerRegistry registry) {
         registry.setOrder(Ordered.HIGHEST_PRECEDENCE);
@@ -58,10 +66,12 @@ public class AutoAppConfig implements WebMvcConfigurer {
     public void addInterceptors(InterceptorRegistry registry) {
 
         registry.addInterceptor(invalidAddressInterceptor)
-                .order(100)
+                .order(Ordered.HIGHEST_PRECEDENCE)
                 .addPathPatterns("/**")//모든 URL에 대해서, 404를 발생.
-                .excludePathPatterns("/", "/users/**", "/qna/**", "/api/error");
+                .excludePathPatterns("/", "/users/**", "/qna/**", "/css/**", "/*.ico", "/js/**", "/images/**",
+                        "/fonts/**", "/api/error");
         registry.addInterceptor(loginInterceptor)
+                .order(MID_PRECEDENCE)
                 .addPathPatterns("/users/**", "/qna/**")
                 .excludePathPatterns("/users/login_failed", "/users/form",
                         "/users/login", "/users/create", "/api/error");
