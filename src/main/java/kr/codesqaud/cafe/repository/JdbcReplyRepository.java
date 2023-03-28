@@ -8,7 +8,6 @@ import javax.sql.DataSource;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 
-import kr.codesqaud.cafe.model.ArticleDto;
 import kr.codesqaud.cafe.model.Reply;
 import kr.codesqaud.cafe.model.ReplyDto;
 
@@ -27,10 +26,11 @@ public class JdbcReplyRepository implements ReplyRepository {
                 reply.getContents(), reply.getCreationTime(), reply.getArticleId());
     }
 
-    public List<ReplyDto> getReplyList() {
+    @Override
+    public List<ReplyDto> getReplyList(long articleId) {
         return jdbcTemplate.query(
-                "select id, writer, contents, articleId, creationTime from replies order by id",
-                replyRowMapper());
+                "select id, writer, contents, articleId, creationTime from replies where articleId=? and deleted=false order by id"
+                ,replyRowMapper(), articleId);
     }
 
     private RowMapper<ReplyDto> replyRowMapper() {
@@ -43,6 +43,16 @@ public class JdbcReplyRepository implements ReplyRepository {
 
     @Override
     public void deleteReply(long articleId, long replyId) {
-        jdbcTemplate.update("delete from replies where articleId=? and id=?", articleId, replyId);
+        jdbcTemplate.update("update replies set deleted=true where articleId=? and id=?", articleId, replyId);
+
+    }
+
+    @Override
+    public boolean validateDelete(long articleId, String userId) {
+        //삭제안되어있는 상태의 내 아이디가 아닌 글을 고른다.
+        int numberOfRepliesWrittenByOthers = jdbcTemplate.query(
+                "select id, writer, contents, articleId, creationTime from replies where articleId=? and writer<>? and deleted=false order by id"
+                ,replyRowMapper(), articleId, userId).size();
+        return numberOfRepliesWrittenByOthers == 0;
     }
 }

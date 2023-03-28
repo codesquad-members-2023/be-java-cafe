@@ -59,7 +59,7 @@ public class ArticleController {
     @GetMapping(value = "/qna/{id}")
     public String articleDetails(@PathVariable long id, Model model) throws ArticleInfoException {
         model.addAttribute("article", articleRepository.findById(id));
-        model.addAttribute("reply", replyRepository.getReplyList());
+        model.addAttribute("reply", replyRepository.getReplyList(id));
 
         return "qna/show";
     }
@@ -90,15 +90,19 @@ public class ArticleController {
         return "redirect:/";
     }
 
-    @DeleteMapping(value = "/qna/{id}/form")
-    public String articleDelete(@PathVariable long id, HttpSession httpSession)
+    @DeleteMapping(value = "/qna/{articleId}/form")
+    public String articleDelete(@PathVariable long articleId, HttpSession httpSession)
             throws ArticleInfoException {
-        String writer = articleRepository.findById(id).getWriter();
+        String writer = articleRepository.findById(articleId).getWriter();
         if (!httpSession.getAttribute("sessionedUser").equals(writer)) {
             throw new ArticleInfoException(UNAUTHORIZED_MODIFICATION_MESSAGE,
                     WRITER_NOT_MATCHING_CODE);
         }
-        articleRepository.deleteArticle(id);
+        //댓글이 존재하는 경우 삭제 불가
+        if (!replyRepository.validateDelete(articleId, writer)) {
+            throw new ArticleInfoException(REQUIRE_ON_COMMENT_DELETE_MESSAGE,REQUIRE_ON_COMMENT_DELETE_CODE);
+        }
+        articleRepository.deleteArticle(articleId);
         return "redirect:/";
     }
 
@@ -106,11 +110,7 @@ public class ArticleController {
     public String replyForm(@PathVariable long articleId, @RequestParam String replyContents,
             RedirectAttributes redirectAttributes, HttpSession httpSession)
             throws ArticleInfoException, UserInfoException {
-        String userId = articleRepository.findById(articleId).getWriter();
-        if (!httpSession.getAttribute("sessionedUser").equals(userId)) {
-            throw new ArticleInfoException(UNAUTHORIZED_MODIFICATION_MESSAGE,
-                    WRITER_NOT_MATCHING_CODE);
-        }
+        String userId = (String)httpSession.getAttribute("sessionedUser");
 
         replyRepository.addReply(
                 new Reply(userRepository.findById(userId), replyContents, LocalDateTime.now(),
