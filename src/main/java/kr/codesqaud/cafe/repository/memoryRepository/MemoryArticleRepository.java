@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Repository
-public class MemoryArticleRepository implements ArticleRepository {
+public class MemoryArticleRepository {
 
     private final List<Article> articleRepository;
 
@@ -34,12 +34,12 @@ public class MemoryArticleRepository implements ArticleRepository {
         return new ArrayList<>(articleRepository);
     }
 
-    @Override
+
     public int update(int articleId, String Title, String content) {
         return 0;
     }
 
-    @Override
+
     public int delete(int articleId) {
         return 0;
     }

@@ -1,6 +1,7 @@
 package kr.codesqaud.cafe.repository.h2Repository;
 
 import kr.codesqaud.cafe.basic.User;
+import kr.codesqaud.cafe.basic.UserDTO;
 import kr.codesqaud.cafe.repository.UserRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -28,10 +29,10 @@ public class H2UserRepository implements UserRepository {
     };
 
     @Override
-    public void join(User user) {
+    public void join(UserDTO userDTO) {
         String sql = "insert into users(userId, password, name, email) values (?, ?, ?, ?)";
 
-        jdbcTemplate.update(sql, user.getUserId(), user.getPassword(), user.getName(), user.getEmail());
+        jdbcTemplate.update(sql, userDTO.getUserId(), userDTO.getPassword(), userDTO.getName(), userDTO.getEmail());
     }
 
     @Override
@@ -53,9 +54,9 @@ public class H2UserRepository implements UserRepository {
     }
 
     @Override
-    public int update(User user) {
+    public int update(UserDTO userDTO) {
         String sql = "update users set password=? , name=?, email=? where userId=?";
 
-        return jdbcTemplate.update(sql, user.getPassword(), user.getName(), user.getEmail(), user.getUserId());
+        return jdbcTemplate.update(sql, userDTO.getPassword(), userDTO.getName(), userDTO.getEmail(), userDTO.getUserId());
     }
 }

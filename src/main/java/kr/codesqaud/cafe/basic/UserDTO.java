@@ -1,21 +1,12 @@
 package kr.codesqaud.cafe.basic;
 
-public class User {
+public class UserDTO {
     private String userId;
     private String password;
     private String name;
     private String email;
 
-    public User() {
-
-    }
-
-    public User(UserDTO userDTO) {
-        this.userId = userDTO.getUserId();
-        this.password = userDTO.getPassword();
-        this.name = userDTO.getName();
-        this.email = userDTO.getEmail();
-    }
+    public UserDTO() {};
 
     public String getUserId() {
         return userId;
@@ -47,9 +38,5 @@ public class User {
 
     public void setEmail(String email) {
         this.email = email;
-    }
-
-    public boolean isSamePassword(String password) {
-        return this.password.equals(password);
     }
 }
