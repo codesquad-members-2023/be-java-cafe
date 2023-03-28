@@ -28,22 +28,11 @@ public class NamedJdbcTemplateArticleRepository {
 		template.update("insert into article(article_title, article_contents, member_number) values (:title, :contents, :userSequence)", sqlParameterSource);
 	}
 
-//	public List<Article> showAllArticles() {
-//		String sql = "select article_number, article_title, article_contents, article_writtentime from article";
-//		return template.query(sql, articleRowMapper());
-//	}
-
 	public List<ArticleWithWriterDto> showAllArticles() {
 		String sql = "select a.article_number, a.article_title, a.article_contents, a.article_writtentime, a.member_number, m.member_id as writer, " +
 			"from article a join member m on a.member_number=m.member_number";
 		return template.query(sql, articleWithWriterDtoRowMapper());
 	}
-
-//	public Article findByArticleSequence(Long articleSequence) {
-//		String sql = "select article_number, article_title, article_contents, article_writtentime from article where article_number = :articleSequence";
-//		SqlParameterSource sqlParameterSource = new MapSqlParameterSource("articleSequence", articleSequence);
-//		return template.queryForObject(sql, sqlParameterSource, articleRowMapper());
-//	}
 
 	public ArticleWithWriterDto findByArticleSequence(Long articleSequence) {
 		String sql = "select a.article_number, a.article_title, a.article_contents, a.article_writtentime, a.member_number, " +
