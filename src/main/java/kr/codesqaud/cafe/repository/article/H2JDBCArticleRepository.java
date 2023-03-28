@@ -68,10 +68,4 @@ public class H2JDBCArticleRepository implements ArticleRepository {
         return template.queryForObject(sql, String.class, userId);
     }
 
-    @Override
-    public List<Reply> findAllReplyByArticleId(int articleId) {
-        String sql = "select * from reply where articleid=?";
-
-        return template.query(sql, new BeanPropertyRowMapper<>(Reply.class), articleId);
-    }
 }

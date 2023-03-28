@@ -6,6 +6,7 @@ import kr.codesqaud.cafe.domain.User;
 import kr.codesqaud.cafe.dto.article.ArticleFormDTO;
 import kr.codesqaud.cafe.dto.article.ArticleUpdateDTO;
 import kr.codesqaud.cafe.repository.article.ArticleRepository;
+import kr.codesqaud.cafe.repository.reply.ReplyRepository;
 import kr.codesqaud.cafe.util.SessionUtil;
 import kr.codesqaud.cafe.validation.article.ArticleNewFormValidator;
 import kr.codesqaud.cafe.validation.article.ArticleUpdateValidator;
@@ -22,13 +23,15 @@ import java.util.List;
 public class ArticleController {
 
     private final ArticleRepository articleRepository;
+    private final ReplyRepository replyRepository;
     private final ArticleNewFormValidator articleNewFormValidator;
     private final ArticleUpdateValidator articleUpdateValidator;
     private final SessionUtil sessionUtil;
 
     @Autowired
-    public ArticleController(ArticleRepository articleRepository, ArticleNewFormValidator articleNewFormValidator, ArticleUpdateValidator articleUpdateValidator, SessionUtil sessionUtil) {
+    public ArticleController(ArticleRepository articleRepository, ReplyRepository replyRepository, ArticleNewFormValidator articleNewFormValidator, ArticleUpdateValidator articleUpdateValidator, SessionUtil sessionUtil) {
         this.articleRepository = articleRepository;
+        this.replyRepository = replyRepository;
         this.articleNewFormValidator = articleNewFormValidator;
         this.articleUpdateValidator = articleUpdateValidator;
         this.sessionUtil = sessionUtil;
@@ -69,7 +72,7 @@ public class ArticleController {
                 .orElseThrow(() -> new IllegalArgumentException("없는 질문글입니다."));
         String userName = articleRepository.findUsernameByArticleUserId(article.getUserId());
 
-        List<Reply> replyList = articleRepository.findAllReplyByArticleId(id);
+        List<Reply> replyList = replyRepository.findAllReplyByArticleId(id);
 
         model.addAttribute("userName", userName);
         model.addAttribute("article", article);

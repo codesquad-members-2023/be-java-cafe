@@ -21,6 +21,4 @@ public interface ArticleRepository {
     void deleteArticle(int articleId);
 
     String findUsernameByArticleUserId(String userId);
-
-    List<Reply> findAllReplyByArticleId(int articleId);
 }
