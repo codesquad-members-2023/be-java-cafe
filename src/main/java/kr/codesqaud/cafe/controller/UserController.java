@@ -85,6 +85,6 @@ public class UserController {
         User user = userRepository.findUserById(loggedInUserId);
         model.addAttribute(user);
         log.debug("debug log={}", user.getName());
-        return "qna/list";
+        return "users/edit";
     }
 }
