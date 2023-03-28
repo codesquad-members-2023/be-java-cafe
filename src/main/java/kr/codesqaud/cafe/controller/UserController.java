@@ -70,11 +70,11 @@ public class UserController {
         Optional<User> user = userRepository.findById(id);
 
         if (user.isPresent()) {
-            if (user.get().getPassword().equals(userForm.getPrePassword())) {
+            if (user.get().matchPassword(userForm.getPrePassword())) {
                 userRepository.save(new User(userForm.getId(), userForm.getName(), userForm.getEmail(), userForm.getPassword()));
                 return "redirect:/users";
             }
-            model.addAttribute("user", user.get());
+            model.addAttribute(SessionConst.LOGIN_USER, user.get());
             return "user/updateForm_failed";
         }
         //id가 db에 존재하지 않을 경우 홈 화면으로
@@ -87,7 +87,7 @@ public class UserController {
 
         if (user.isPresent()) {
             if (user.get().getPassword().equals(userForm.getPassword())) {
-                session.setAttribute("loginUser", user.get());
+                session.setAttribute(SessionConst.LOGIN_USER, user.get());
 
                 return "redirect:/users";
             }
