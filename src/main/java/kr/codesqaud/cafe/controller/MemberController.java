@@ -44,7 +44,10 @@ public class MemberController {
 	}
 
 	@GetMapping("/list")
-	public String users(Model model) throws SQLException {
+	public String users(HttpSession session, Model model) throws SQLException {
+		if (session.getAttribute(SESSIONED_USER) == null) {
+			return "user/login";
+		}
 		List<Member> members = namedJdbcTemplateMemberRepository.showAllUsers();
 		model.addAttribute("users", members);
 		log.trace("사용자 수: {}", members.size());
@@ -52,7 +55,10 @@ public class MemberController {
 	}
 
 	@GetMapping("/profile/{userId}")
-	public String userProfile(@PathVariable String userId, Model model) throws SQLException {
+	public String userProfile(HttpSession session, @PathVariable String userId, Model model) throws SQLException {
+		if (session.getAttribute(SESSIONED_USER) == null) {
+			return "user/login";
+		}
 		Optional<Member> findUser = namedJdbcTemplateMemberRepository.findById(userId);
 		model.addAttribute("user", findUser.orElseThrow());
 		return "user/profile";
