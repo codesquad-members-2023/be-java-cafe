@@ -61,7 +61,7 @@ class H2DBReplyRepositoryTest {
         Reply reply = new Reply("진짜임?", 2, 1);
         replyRepository.save(reply);
 
-        List<ReplyWithUser> replies = replyRepository.findAll();
+        List<ReplyWithUser> replies = replyRepository.findByArticleId(1);
 
         assertThat(replies.size()).isEqualTo(1);
         ReplyWithUser replyWithUser = replies.get(0);
@@ -79,7 +79,7 @@ class H2DBReplyRepositoryTest {
         replyRepository.save(reply1);
         replyRepository.save(reply2);
 
-        List<ReplyWithUser> replies = replyRepository.findAll();
+        List<ReplyWithUser> replies = replyRepository.findByArticleId(1);
 
         assertThat(replies.size()).isEqualTo(2);
         assertThat(replies.get(0).getUserName()).isEqualTo("Yoon");

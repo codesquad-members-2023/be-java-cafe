@@ -1,7 +1,10 @@
 package kr.codesqaud.cafe.repository;
 
 import kr.codesqaud.cafe.domain.Reply;
+import kr.codesqaud.cafe.domain.dto.ArticleWithWriter;
 import kr.codesqaud.cafe.domain.dto.ReplyWithUser;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
@@ -10,12 +13,14 @@ import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
 import java.util.List;
+import java.util.Map;
 
 @Repository
 public class H2DBReplyRepository {
 
     private final NamedParameterJdbcTemplate template;
 
+    @Autowired
     public H2DBReplyRepository(DataSource dataSource) {
         this.template = new NamedParameterJdbcTemplate(dataSource);
     }
@@ -29,12 +34,14 @@ public class H2DBReplyRepository {
         template.update(sql, param);
     }
 
-    public List<ReplyWithUser> findAll() {
+    public List<ReplyWithUser> findByArticleId(int articleId) {
         String sql = "select r.id, r.user_id, " +
                 "(select u.user_id from users u where r.user_id=u.id) as userName, " +
-                "r.contents, r.createDate " +
-                "from reply r join article a on r.article_id=a.id";
+                "r.contents, r.createDate from reply r " +
+                "where r.article_id=:articleId";
 
-        return template.query(sql, BeanPropertyRowMapper.newInstance(ReplyWithUser.class));
+
+        Map<String, Integer> param = Map.of("articleId", articleId);
+        return template.query(sql, param, BeanPropertyRowMapper.newInstance(ReplyWithUser.class));
     }
 }
