@@ -72,6 +72,14 @@ public class H2ArticleRepository implements ArticleRepository {
         namedParameterJdbcTemplate.update(sql, params);
     }
 
+    @Override
+    public void delete(long id) {
+        String sql = "DELETE FROM ARTICLE WHERE id = :id";
+        MapSqlParameterSource param = new MapSqlParameterSource("id", id);
+        namedParameterJdbcTemplate.update(sql, param);
+    }
+
+    private static class ArticleRowMapper implements RowMapper<Article> {
         @Override
         public Article mapRow(ResultSet rs, int rowNum) throws SQLException {
            Article article = new BeanPropertyRowMapper<>(Article.class).mapRow(rs, rowNum);

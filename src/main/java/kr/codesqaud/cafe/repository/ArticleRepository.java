@@ -9,4 +9,6 @@ public interface ArticleRepository {
     Article findById(Long id);
     List<Article> findAll();
     void update(Article exArticle, Article newArticle);
+
+    void delete(long id);
 }

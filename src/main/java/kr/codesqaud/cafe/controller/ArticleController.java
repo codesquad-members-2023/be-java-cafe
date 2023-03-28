@@ -34,6 +34,12 @@ public class ArticleController {
         return REDIRECT_INDEX;
     }
 
+    @DeleteMapping("/articles/{id}/delete")
+    public String deleteArticle(@PathVariable long id) {
+        articleRepository.delete(id);
+        return REDIRECT_INDEX;
+    }
+
     @GetMapping("/articles/{id}/update")
     public String updateArticleForm(@PathVariable long id, Model model) {
         model.addAttribute("article", articleRepository.findById(id));
