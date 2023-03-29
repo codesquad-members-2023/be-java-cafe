@@ -10,8 +10,10 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 
 import javax.servlet.http.HttpSession;
+import java.util.Optional;
 
 @Controller
 public class ArticleController {
@@ -43,5 +45,25 @@ public class ArticleController {
     public String articleShow(Model model, @PathVariable int id) {
         model.addAttribute("article", articleRepository.findById(id));
         return "qna/show";
+    }
+
+    @GetMapping("/articles/{articleId}/form")
+    public String articleCorrection(Model model, @PathVariable String articleId, HttpSession session) {
+        Article article = articleRepository.findById(Long.parseLong(articleId));
+        //없으면 어떻게 나오는거지?
+        //수정하려는 id와 세션 id 일치할 때
+        if (UserSession.isEqualSessionIdTo(article.getWriter(), session)) {
+            model.addAttribute("article", article);
+            return "qna/updateForm";
+        }
+        return "error";
+    }
+
+    @PutMapping("/articles/{articleId}/form")
+    public String articleUpdate(ArticleForm articleForm, @PathVariable String articleId) {
+        Article article = articleRepository.findById(Long.parseLong(articleId));
+
+        articleRepository.update(articleForm.getTitle(), articleForm.getContent(), Long.toString(article.getId()));
+        return "redirect:/";
     }
 }
