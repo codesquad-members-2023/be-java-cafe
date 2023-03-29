@@ -61,4 +61,21 @@ public class H2AnswerRepository implements AnswerRepository{
             .addValue("updated", LocalDateTime.now());
         namedParameterJdbcTemplate.update(sql, params);
     }
+
+    @Override
+    public void delete(long id) {
+        String sql = "DELETE FROM ANSWER WHERE id = :id";
+        MapSqlParameterSource param = new MapSqlParameterSource("id", id);
+        namedParameterJdbcTemplate.update(sql, param);
+    }
+
+    private static class AnswerRowMapper implements RowMapper<Answer> {
+        @Override
+        public Answer mapRow(ResultSet rs, int rowNum) throws SQLException {
+            AnswerViewDto answerViewDto = new BeanPropertyRowMapper<>(AnswerViewDto.class).mapRow(rs, rowNum);
+            answerViewDto.setCreatedDate(rs.getTimestamp("CREATED_AT").toLocalDateTime());
+            answerViewDto.setUpdatedDate(rs.getTimestamp("UPDATED_AT").toLocalDateTime());
+            return answerViewDto.toDomain();
+        }
+    }
 }
