@@ -40,7 +40,7 @@
                                    href="/questions/423/form">수정</a>
                             </li>
                             <li>
-                                <form class="form-delete" action="/questions/423" method="POST">
+                                <form class="form-delete" th:action="@{/articles/{articleSequence}/delete(articleSequence=${article.articleSequence})}" action="/questions/423" method="POST">
                                     <input type="hidden" name="_method" value="DELETE">
                                     <button class="link-delete-article" type="submit">삭제</button>
                                 </form>
