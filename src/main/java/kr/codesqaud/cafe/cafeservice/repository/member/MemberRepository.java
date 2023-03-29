@@ -1,10 +1,9 @@
-package kr.codesqaud.cafe.cafeservice.repository;
+package kr.codesqaud.cafe.cafeservice.repository.member;
 
 import kr.codesqaud.cafe.cafeservice.domain.Member;
 import org.springframework.stereotype.Repository;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 @Repository
 public interface MemberRepository {
