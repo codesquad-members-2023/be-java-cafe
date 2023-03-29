@@ -62,9 +62,8 @@ public class Article {
     public String getFormattedCreatedAt() {
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
-        String test = createdAt.format(formatter);
-        log.info("createdAt test {}", test);
-        return test;
+        String formatted = createdAt.format(formatter);
+        return formatted;
     }
 
     public void setCreatedAt(LocalDateTime createdAt) {
