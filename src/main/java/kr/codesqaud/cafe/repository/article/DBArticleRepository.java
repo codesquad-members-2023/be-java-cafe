@@ -47,7 +47,15 @@ public class DBArticleRepository implements ArticleRepository {
     }
 
     @Override
-    public void deleteAriticle(long id) {
+    public void updateArticle(long articleId, String title, String contents) {
+        String sql = "update article set title = ?, contents = ? where id = ?";
+
+        jdbcTemplate.update(sql, title, contents, articleId);
+    }
+
+
+    @Override
+    public void deleteArticle(long id) {
         String sql = "delete from article where id = ?";
 
         jdbcTemplate.update(sql, id);
