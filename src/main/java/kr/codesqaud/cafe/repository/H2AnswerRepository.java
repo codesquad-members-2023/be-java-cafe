@@ -63,6 +63,16 @@ public class H2AnswerRepository implements AnswerRepository{
     }
 
     @Override
+    public void update(Answer answer, long answerId) {
+        String sql = "UPDATE ANSWER SET CONTENTS = :contents, UPDATED_AT = :updated WHERE ID = :id";
+        MapSqlParameterSource params = new MapSqlParameterSource();
+        params.addValue("id", answerId)
+                .addValue("contents", answer.getContents())
+                .addValue("updated", LocalDateTime.now());
+        namedParameterJdbcTemplate.update(sql, params);
+    }
+
+    @Override
     public void delete(long id) {
         String sql = "DELETE FROM ANSWER WHERE id = :id";
         MapSqlParameterSource param = new MapSqlParameterSource("id", id);
