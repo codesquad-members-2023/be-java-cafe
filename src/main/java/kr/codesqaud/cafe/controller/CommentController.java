@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.HttpSession;
+import java.time.LocalDateTime;
 
 @Controller
 public class CommentController {
@@ -56,7 +57,10 @@ public class CommentController {
             return "util/error";
         }
 
+        LocalDateTime now = LocalDateTime.now();
+        commentRepository.deleteComment(commentId, now);
 
+        return "redirect:/qna/{articleId}";
 
     }
 

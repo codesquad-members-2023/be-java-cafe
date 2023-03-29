@@ -10,6 +10,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Primary
@@ -52,5 +53,12 @@ public class DBCommentRepository implements CommentRepository {
         String sql = "select commentId, articleId, writer, contents, createdAt from comment where commentId = ?";
 
         return jdbcTemplate.queryForObject(sql, new BeanPropertyRowMapper<>(Comment.class), commentId);
+    }
+
+    @Override
+    public void deleteComment(long commentId, LocalDateTime now) {
+        String sql = "update comment set deletedAt = ? where commentId = ?";
+
+        jdbcTemplate.update(sql, now, commentId);
     }
 }
