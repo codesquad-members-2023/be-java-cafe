@@ -55,12 +55,10 @@ public class UserController {
         Optional<User> user = userRepository.findById(id);
 
         if (user.isPresent()) {
-            User SessionUser = UserSession.getAttribute(session);
-            if (SessionUser != null) {
-                if (SessionUser.getId().equals(user.get().getId())) {
-                    model.addAttribute("user", user.get());
-                    return "user/updateForm";
-                }
+            //세션 id와 업데이트할 id가 일치한지 확인
+            if (UserSession.isEqualSessionIdTo(user.get().getId(), session)) {
+                model.addAttribute("user", user.get());
+                return "user/updateForm";
             }
         }
         //수정하려는 사용자 정보와 로그인한 사용자 정보가 다를 때
