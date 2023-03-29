@@ -41,6 +41,12 @@ public class NamedJdbcTemplateArticleRepository {
 		return template.queryForObject(sql, sqlParameterSource, articleWithWriterDtoRowMapper());
 	}
 
+	public void update(ArticleWithWriterDto updateParam) {
+		String sql = "update article set article_title=:title, article_contents=:contents where article_number=:articleSequence";
+		SqlParameterSource sqlParameterSource = new BeanPropertySqlParameterSource(updateParam);
+		template.update(sql, sqlParameterSource);
+	}
+
 	private RowMapper<Article> articleRowMapper() {
 		return new RowMapper<Article>() {
 			@Override
