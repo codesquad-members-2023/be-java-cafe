@@ -38,7 +38,7 @@ public class ArticleController {
 
         // 현재 로그인 유저Id 게시글에 set
         User sessionUser = (User) sessionUtil.getUserInfo(session);
-        article.setWriter(sessionUser.getUserId());
+        article.setWriter(sessionUser.getName());
 
         articleService.write(article);
         return "redirect:/";
@@ -46,7 +46,7 @@ public class ArticleController {
 
     // 질문 상세보기 Mapping (서비스)
     @GetMapping("/articles/{id}")
-    public String showBoardDetails(Model model, @PathVariable long id, HttpSession session) {
+    public String showBoardDetails(Model model, @PathVariable long id) {
         Optional<Article> article = articleService.findByArticleId(id);
 
         // 질문글 유무 확인후 성공/실패 넘겨주기
@@ -105,7 +105,7 @@ public class ArticleController {
         }
 
         // 댓글 존재 여부 검증
-        List<Reply> replyCheckList = replyService.findAllOtherReply(id, sessionUser.getUserId());
+        List<Reply> replyCheckList = replyService.findAllOtherReply(id, sessionUser.getName());
         if (replyCheckList != null && !replyCheckList.isEmpty()) {
             log.debug("게시글 삭제: 실패(본인이 아닌 댓글이 존재 합니다.)");
             model.addAttribute("errorMessage", "실패(본인이 아닌 댓글이 존재 합니다.)");

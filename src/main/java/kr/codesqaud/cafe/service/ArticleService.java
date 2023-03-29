@@ -42,13 +42,13 @@ public class ArticleService {
      */
     public Article articleCheck(long id, User sessionUser) {
         return articleRepository.findById(id)
-                .filter(article -> article.getWriter().equals(sessionUser.getUserId()))
+                .filter(article -> article.getWriter().equals(sessionUser.getName()))
                 .orElseThrow(null);
     }
 
     public boolean sessionCheck(long id, User sessionUser) {
         Article checkId = articleCheck(id, sessionUser);
-        return checkId != null && checkId.getWriter().equals(sessionUser.getUserId());
+        return checkId != null && checkId.getWriter().equals(sessionUser.getName());
     }
 
     /**

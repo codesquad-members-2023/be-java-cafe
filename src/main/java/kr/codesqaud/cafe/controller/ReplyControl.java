@@ -30,7 +30,7 @@ public class ReplyControl {
         User sessionUser = (User) sessionUtil.getUserInfo(session);
         if (sessionUser != null) {
             reply.setArticleId(articleId);
-            reply.setWriter(sessionUser.getUserId());
+            reply.setWriter(sessionUser.getName());
             replyService.write(reply);
             return "redirect:/articles/{articleId}";
         }
