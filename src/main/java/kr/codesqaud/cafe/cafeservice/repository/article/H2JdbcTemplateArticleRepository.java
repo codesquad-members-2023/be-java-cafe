@@ -36,6 +36,19 @@ public class H2JdbcTemplateArticleRepository implements ArticleRepository {
     }
 
     @Override
+    public void delete(Long id) {
+        String sql = "DELETE FROM article WHERE id = ?;";
+        template.update(sql, id);
+    }
+
+    @Override
+    public void update(Optional<Article> article, String title, String content) {
+        Long findId = article.orElseThrow().getId();
+        String sql = "UPDATE article SET title = ?, content = ? WHERE id = ?";
+        template.update(sql, title, content, findId);
+    }
+
+    @Override
     public Optional<Article> findById(Long id) {
         String sql = "SELECT id,writer, title, content,created_date,reply_count FROM article WHERE id = ?";
         try {

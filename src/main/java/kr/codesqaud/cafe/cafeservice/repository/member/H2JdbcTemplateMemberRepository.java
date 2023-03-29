@@ -1,4 +1,4 @@
-package kr.codesqaud.cafe.cafeservice.repository;
+package kr.codesqaud.cafe.cafeservice.repository.member;
 
 import kr.codesqaud.cafe.cafeservice.domain.Member;
 import org.springframework.context.annotation.Primary;
@@ -6,8 +6,6 @@ import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
-import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
-import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
