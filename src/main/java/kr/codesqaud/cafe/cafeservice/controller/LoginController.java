@@ -32,7 +32,7 @@ public class LoginController {
     public String login(@RequestParam String userId, @RequestParam String password, HttpSession session) {
         Member loginMember = loginService.login(userId, password);
         if (loginMember == null) {
-            return "error";
+            throw new NullPointerException();
         }
 
         session.setAttribute(SessionConst.LOGIN_MEMBER, new LoginSessionUtils(loginMember.getId(), loginMember.getPassword()));
