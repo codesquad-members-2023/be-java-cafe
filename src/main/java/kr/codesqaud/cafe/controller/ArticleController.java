@@ -5,7 +5,6 @@ import kr.codesqaud.cafe.domain.Reply;
 import kr.codesqaud.cafe.domain.User;
 import kr.codesqaud.cafe.service.ArticleService;
 import kr.codesqaud.cafe.service.ReplyService;
-import kr.codesqaud.cafe.service.SessionUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,18 +16,18 @@ import javax.servlet.http.HttpSession;
 import java.util.List;
 import java.util.Optional;
 
+import static kr.codesqaud.cafe.service.SessionUtil.getUserInfo;
+
 @Controller
 public class ArticleController {
     private final Logger log = LoggerFactory.getLogger(UserController.class);
     private final ArticleService articleService;
     private final ReplyService replyService;
-    private final SessionUtil sessionUtil;
 
     @Autowired
-    public ArticleController(ArticleService articleService, ReplyService replyService, SessionUtil sessionUtil) {
+    public ArticleController(ArticleService articleService, ReplyService replyService) {
         this.articleService = articleService;
         this.replyService = replyService;
-        this.sessionUtil = sessionUtil;
     }
 
     // 질문하기 POST (서비스)
@@ -37,7 +36,7 @@ public class ArticleController {
         log.debug("질문하기: 글쓰기전 5분동안 생각하기!");
 
         // 현재 로그인 유저Id 게시글에 set
-        User sessionUser = (User) sessionUtil.getUserInfo(session);
+        User sessionUser = (User) getUserInfo(session);
         article.setWriter(sessionUser.getName());
 
         articleService.write(article);
@@ -69,7 +68,7 @@ public class ArticleController {
     // 질문 수정하기 Mapping (서비스)
     @GetMapping("/articles/{id}/update")
     public String editing(HttpSession session, @PathVariable long id) {
-        User sessionUser = (User) sessionUtil.getUserInfo(session);
+        User sessionUser = (User) getUserInfo(session);
         if (!articleService.sessionCheck(id, sessionUser)) {
             log.debug("질문 수정 검증: 본인글이 아닙니다!!! 떽!!!!");
             return "error";
@@ -82,7 +81,7 @@ public class ArticleController {
     // 게시글 수정 PUT (서비스)
     @PutMapping("/articles/{id}/update")
     public String updateArticle(@ModelAttribute Article article, @PathVariable long id, HttpSession session) {
-        User sessionUser = (User) sessionUtil.getUserInfo(session);
+        User sessionUser = (User) getUserInfo(session);
         if (!articleService.sessionCheck(id, sessionUser)) {
             log.debug("질문 수정 전송 검증: 실패(로그아웃 되었습니다!!!)");
             return "error_delete";
@@ -98,7 +97,7 @@ public class ArticleController {
     @DeleteMapping("/articles/{id}/delete")
     public String deleteArticle(@PathVariable long id, HttpSession session, Model model) {
         // 로그인 유저 = 게시글 작성자 검증
-        User sessionUser = (User) sessionUtil.getUserInfo(session);
+        User sessionUser = (User) getUserInfo(session);
         if (!articleService.sessionCheck(id, sessionUser)) {
             log.debug("게시글 삭제: 실패(본인이 아님!!!! 떽!!!)");
             return "error";

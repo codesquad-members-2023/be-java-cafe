@@ -10,11 +10,11 @@ public class SessionUtil {
     /**
      * 세션 유저 조회
      */
-    public Object getUserInfo(HttpSession session) {
+    public static Object getUserInfo(HttpSession session) {
         return session.getAttribute(LOGIN_USER);
     }
 
-    public void setUserInfo(HttpSession session, User loginUser) {
+    public static void setUserInfo(HttpSession session, User loginUser) {
         session.setAttribute(LOGIN_USER, loginUser);
     }
 }
