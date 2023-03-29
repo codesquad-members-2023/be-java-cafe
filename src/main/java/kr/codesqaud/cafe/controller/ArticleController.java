@@ -53,9 +53,8 @@ public class ArticleController {
 	@PutMapping("/articles/{articleSequence}/edit")
 	public String updateQuestion(@RequestParam String title, @RequestParam String contents, @PathVariable Long articleSequence) {
 		ArticleWithWriterDto articleWithWriterDto = new ArticleWithWriterDto(articleSequence, title, contents);
-		System.out.println("바뀐 제목: " + articleWithWriterDto.getTitle());
-		System.out.println("바뀐 내용: " + articleWithWriterDto.getContents());
-		System.out.println("글 번호: " + articleWithWriterDto.getArticleSequence());
+
+		log.info("글 번호: {}, 제목: {}, 내용: {}", articleWithWriterDto.getArticleSequence(), articleWithWriterDto.getTitle(), articleWithWriterDto.getContents());
 
 		articleRepository.update(articleWithWriterDto);
 
@@ -75,20 +74,16 @@ public class ArticleController {
 	@GetMapping("/articles/{articleSequence}/edit")
 	public String articleEditForm(HttpSession session, @PathVariable Long articleSequence, Model model) {
 		if (session.getAttribute(SESSIONED_USER) == null) {
-			System.out.println("비어있는 세션");
+			log.info("비어있는 세션 !!");
 			return "user/login";
 		}
 
 		ArticleWithWriterDto findArticle = articleRepository.findByArticleSequence(articleSequence);
 		if (findArticle.getUserSequence() != session.getAttribute(SESSIONED_USER)) {
-			System.out.println("다른 유저의 글입니다!");
+			log.info("다른 유저의 글 !!");
 			return "redirect:/articles/{articleSequence}";
 		}
 
-		System.out.println("제목: " + findArticle.getTitle());
-		System.out.println("글쓴이: " + findArticle.getWriter());
-		System.out.println("사용자 번호: " + findArticle.getUserSequence());
-		System.out.println("내용: " + findArticle.getContents());
 		model.addAttribute("findArticle", findArticle);
 
 		return "qna/editForm";
@@ -98,11 +93,11 @@ public class ArticleController {
 	public String articleDelete(HttpSession session, @PathVariable Long articleSequence) {
 		ArticleWithWriterDto article = articleRepository.findByArticleSequence(articleSequence);
 		if (session.getAttribute(SESSIONED_USER) != article.getUserSequence()) {
-			System.out.println("다른 사람의 글은 삭제 불가능!!!");
+			log.info("다른 유저의 글은 삭제 불가능 !!");
 			return "redirect:/articles/{articleSequence}";
 		}
-
 		articleRepository.delete(articleRepository.findByArticleSequence(articleSequence));
+		log.info("삭제 완료 !! 삭제 후 게시글 수: {}", articleRepository.showAllArticles().size());
 		return "redirect:/";
 	}
 
