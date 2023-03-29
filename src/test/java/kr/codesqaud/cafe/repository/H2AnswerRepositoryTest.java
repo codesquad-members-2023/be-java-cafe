@@ -85,3 +85,14 @@ class H2AnswerRepositoryTest {
         repository.update(exAnswer, newAnswer);
         assertThat(repository.findById(1L).getUpdatedDate()).isAfter(exAnswer.getUpdatedDate());
     }
+
+    @Test
+    @DisplayName("댓글을 삭제하면 총 댓글 개수가 줄어야 한다.")
+    void delete() {
+        repository.save(answer);
+        int size = repository.findAll(1L).size();
+        repository.delete(1L);
+        assertThat(repository.findAll(1L)).hasSize(size-1);
+    }
+
+}
