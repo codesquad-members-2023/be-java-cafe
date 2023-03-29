@@ -55,7 +55,7 @@ public class ArticleController {
 		ArticleWithWriterDto articleWithWriterDto = new ArticleWithWriterDto(articleSequence, title, contents);
 		System.out.println("바뀐 제목: " + articleWithWriterDto.getTitle());
 		System.out.println("바뀐 내용: " + articleWithWriterDto.getContents());
-		System.out.println("글 번호: "+articleWithWriterDto.getArticleSequence());
+		System.out.println("글 번호: " + articleWithWriterDto.getArticleSequence());
 
 		articleRepository.update(articleWithWriterDto);
 
@@ -86,11 +86,24 @@ public class ArticleController {
 		}
 
 		System.out.println("제목: " + findArticle.getTitle());
-		System.out.println("글쓴이: "+findArticle.getWriter());
-		System.out.println("사용자 번호: "+findArticle.getUserSequence());
+		System.out.println("글쓴이: " + findArticle.getWriter());
+		System.out.println("사용자 번호: " + findArticle.getUserSequence());
 		System.out.println("내용: " + findArticle.getContents());
 		model.addAttribute("findArticle", findArticle);
 
 		return "qna/editForm";
 	}
+
+	@DeleteMapping("/articles/{articleSequence}/delete")
+	public String articleDelete(HttpSession session, @PathVariable Long articleSequence) {
+		ArticleWithWriterDto article = articleRepository.findByArticleSequence(articleSequence);
+		if (session.getAttribute(SESSIONED_USER) != article.getUserSequence()) {
+			System.out.println("다른 사람의 글은 삭제 불가능!!!");
+			return "redirect:/articles/{articleSequence}";
+		}
+
+		articleRepository.delete(articleRepository.findByArticleSequence(articleSequence));
+		return "redirect:/";
+	}
+
 }
