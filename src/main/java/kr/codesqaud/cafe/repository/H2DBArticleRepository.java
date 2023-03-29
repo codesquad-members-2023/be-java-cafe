@@ -37,7 +37,7 @@ public class H2DBArticleRepository implements ArticleRepository {
     @Override
     public ArticleWithWriter findById(int id) {
         String sql = "select a.id, a.title, a.contents, a.createDate, a.user_id, u.user_id as writer, " +
-                "(select count(*) from reply r where a.id=r.article_id) as replyCount " +
+                "(select count(*) from reply r where a.id=r.article_id and r.deleted=false) as replyCount " +
                 "from article a join users u on a.user_id=u.id " +
                 "where a.id=:id and a.deleted=false";
 
@@ -53,7 +53,7 @@ public class H2DBArticleRepository implements ArticleRepository {
     @Override
     public List<ArticleWithWriter> findAll() {
         String sql = "select a.id, a.title, a.contents, a.createDate, a.user_id, u.user_id as writer, " +
-                "(select count(*) from reply r where a.id=r.article_id) as replyCount " +
+                "(select count(*) from reply r where a.id=r.article_id and r.deleted=false) as replyCount " +
                 "from article a join users u on a.user_id=u.id " +
                 "where a.deleted=false order by a.id desc";
 

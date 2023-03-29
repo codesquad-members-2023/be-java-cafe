@@ -23,6 +23,7 @@ create table reply
     id         int         primary key auto_increment,
     contents   varchar(50) not null,
     createDate timestamp,
+    deleted    boolean,
     user_id    int,
     article_id int,
     foreign key (user_id) references users (id),
