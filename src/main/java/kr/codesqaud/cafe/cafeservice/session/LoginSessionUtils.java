@@ -17,6 +17,12 @@ public class LoginSessionUtils {
         return password;
     }
 
+    public static void sessionCheckId(Long id, LoginSessionUtils sessionUtils) {
+        if (sessionUtils.getId() != id) {
+            throw new NullPointerException();
+        }
+    }
+
     @Override
     public String toString() {
         return "LoginSessionUtils{" +
