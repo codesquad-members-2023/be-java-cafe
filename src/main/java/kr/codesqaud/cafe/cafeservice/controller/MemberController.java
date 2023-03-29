@@ -88,17 +88,11 @@ public class MemberController {
 
 
     @PutMapping("/users/{id}/updateForm")
-    public String memberUpdateForm(@PathVariable Long id, @ModelAttribute Member member) {
-        try {
-            repository.update(id, member);
-            return "redirect:/users";
-        } catch (NoSuchElementException e) {
-            log.debug("예외발생");
-            return "fail";
-        } catch (Exception e) {
-            log.error("Exception 예외발생", e);
-            return "fail";
-        }
+    public String memberUpdateForm(@PathVariable Long id, @ModelAttribute Member member, HttpSession session) {
+        LoginSessionUtils sessionUtils = (LoginSessionUtils) session.getAttribute(SessionConst.LOGIN_MEMBER);
+        LoginSessionUtils.sessionCheckId(id, sessionUtils);
+        repository.update(id, member);
+        return "redirect:/users";
     }
 }
 
