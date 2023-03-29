@@ -51,4 +51,14 @@ public class H2AnswerRepository implements AnswerRepository{
         MapSqlParameterSource param = new MapSqlParameterSource("id", id);
         return namedParameterJdbcTemplate.queryForObject(sql, param, new AnswerRowMapper());
     }
+
+    @Override
+    public void update(Answer exAnswer, Answer newAnswer) {
+        String sql = "UPDATE ANSWER SET CONTENTS = :contents, UPDATED_AT = :updated WHERE ID = :id";
+        MapSqlParameterSource params = new MapSqlParameterSource();
+        params.addValue("id", exAnswer.getId())
+            .addValue("contents", newAnswer.getContents())
+            .addValue("updated", LocalDateTime.now());
+        namedParameterJdbcTemplate.update(sql, params);
+    }
 }
