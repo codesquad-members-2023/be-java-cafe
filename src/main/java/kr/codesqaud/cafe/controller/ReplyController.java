@@ -31,3 +31,21 @@ public class ReplyController {
         jdbcReplyRepository.save(reply);
         return "redirect:/articles/{articleId}";
     }
+
+    @DeleteMapping("/articles/{articleId}/replies/{replyId}")
+    public String delete(HttpSession session, @PathVariable Long articleId, @PathVariable Long replyId){
+        Reply reply = jdbcReplyRepository.findOne(replyId).orElseThrow();
+        vaildateAuthorization(session,reply);
+        jdbcReplyRepository.delete(replyId);
+        return "redirect:/articles/{articleId}";
+    }
+
+    public void vaildateAuthorization(HttpSession memberSession, Reply reply) {
+        Member value = (Member) memberSession.getAttribute(MemberSessionUser.LOGIN_MEMBER);
+        String loginId = value.getUserId();
+        String writerId = reply.getReplyWriter();
+        if (loginId != writerId) {
+            throw new IllegalArgumentException();
+        }
+    }
+}

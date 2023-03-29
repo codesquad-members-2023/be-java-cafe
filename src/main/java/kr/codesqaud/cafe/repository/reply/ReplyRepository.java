@@ -10,3 +10,11 @@ public interface ReplyRepository {
 
     void save(Reply reply) ;
 
+    Optional<Reply> findOne(Long id);
+
+    List<Reply> findAll(Long id);
+
+    void update(Reply reply);
+
+    void delete(Long id);
+}
