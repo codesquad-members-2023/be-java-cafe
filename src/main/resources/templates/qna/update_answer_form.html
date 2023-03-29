@@ -32,7 +32,7 @@
                               <a class="link-modify-article" href="/articles/{{id}}/update">수정</a>
                           </li>
                           <li>
-                              <form class="form-delete" action="/questions/{{id}}" method="POST">
+                              <form class="form-delete" action="/articles/{{id}}/delete" method="POST">
                                   <input type="hidden" name="_method" value="DELETE">
                                   <button class="link-delete-article" type="submit">삭제</button>
                               </form>
@@ -81,7 +81,7 @@
                           {{/answers}}
                           <form class="submit-write" action="/articles/{{id}}/answers" method="post">
                               <div class="form-group" style="padding:14px;">
-                                  <textarea class="form-control" name="contents" placeholder="Update your answer!"></textarea>
+                                  <textarea class="form-control" name="contents" placeholder="Update your answer!">{{content}}</textarea>
                               </div>
                               <button class="btn btn-success pull-right" type="submit">답변하기</button>
                               <div class="clearfix" />
