@@ -11,4 +11,6 @@ public interface ArticleRepository {
     List<Article> findAllArticles();
 
     Article findByArticleId(long id);
+
+    void deleteAriticle(long id);
 }

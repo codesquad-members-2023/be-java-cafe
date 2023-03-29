@@ -73,4 +73,25 @@ public class ArticleController {
 
         return "qna/show";
     }
+
+
+    @DeleteMapping("/qna/{articleId}")
+    public String deleteArticle(@PathVariable long articleId, HttpSession httpSession, Model model) {
+
+        if (!validateIdentity(articleId, httpSession)) {
+            model.addAttribute("errorMessage", ValidateConst.NOT_YOURS);
+            return "util/error";
+        }
+
+        articleRepository.deleteAriticle(articleId);
+
+        return "redirect:/qna/list";
+    }
+
+    private boolean validateIdentity(long articleId, HttpSession httpSession) {
+
+        Article targetArticle = articleRepository.findByArticleId(articleId);
+
+        return targetArticle.getWriter() == (long) httpSession.getAttribute(SessionConst.LOGIN_USERID);
+    }
 }

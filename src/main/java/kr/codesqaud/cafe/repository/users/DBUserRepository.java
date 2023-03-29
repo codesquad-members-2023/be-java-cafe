@@ -41,7 +41,7 @@ public class DBUserRepository implements UserRepository {
 
         log.info("update");
 
-//        jdbcTemplate.update(sql, user.getPassword(), user.getName(), user.getEmail(), id);
+        jdbcTemplate.update(sql, user.getPassword(), user.getName(), user.getEmail(), id);
     }
 
     @Override
