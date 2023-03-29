@@ -1,6 +1,7 @@
 package kr.codesqaud.cafe.domain;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 public class Comment {
 
@@ -52,6 +53,13 @@ public class Comment {
 
     public void setContents(String contents) {
         this.contents = contents;
+    }
+
+    public String getFormattedCreatedAt() {
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+        String formatted = createdAt.format(formatter);
+        return formatted;
     }
 
     public LocalDateTime getCreatedAt() {
