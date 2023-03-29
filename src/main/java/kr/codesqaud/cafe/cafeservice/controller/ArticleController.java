@@ -1,6 +1,7 @@
 package kr.codesqaud.cafe.cafeservice.controller;
 
 import kr.codesqaud.cafe.cafeservice.domain.Article;
+import kr.codesqaud.cafe.cafeservice.exhandler.exception.ArticleNotFoundException;
 import kr.codesqaud.cafe.cafeservice.repository.article.ArticleRepository;
 import kr.codesqaud.cafe.cafeservice.session.LoginSessionUtils;
 import kr.codesqaud.cafe.cafeservice.session.SessionConst;
@@ -72,7 +73,8 @@ public class ArticleController {
                                 @PathVariable Long id) {
         //TODO 자기가 작성한 글이 아니면 수정 할 수 없다.
         Optional<Article> findArticle = repository.findById(id);
-        repository.update(findArticle, title, content);
+        Article article = findArticle.orElseThrow(() -> new ArticleNotFoundException("에러"));
+        repository.update(article, title, content);
         return "redirect:/";
     }
 }
