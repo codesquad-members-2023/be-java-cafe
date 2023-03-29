@@ -81,8 +81,15 @@ public class MemberController {
     @PutMapping ("/users/{id}/update")
     public String updateProfile(@ModelAttribute Member member,
                                 @PathVariable Long id,
-                                @RequestParam String exPassword) {
+                                @RequestParam String exPassword,
+                                HttpSession httpSession) throws InvalidAuthorityException {
         Member exMember = memberRepository.findById(id);
+        SessionUser sessionUser = SessionUser.getSessionUser(httpSession);
+
+        if(!sessionUser.equals(id)) {
+            throw new InvalidAuthorityException(INVALID_MEMBER);
+        }
+
         if (!exMember.isValidPassword(exPassword)) {
             throw new ManageMemberException(UPDATE_FAILED_WRONG_PASSWORD);
         }
