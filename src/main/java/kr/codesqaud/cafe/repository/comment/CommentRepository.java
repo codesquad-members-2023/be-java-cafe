@@ -2,6 +2,7 @@ package kr.codesqaud.cafe.repository.comment;
 
 import kr.codesqaud.cafe.domain.Comment;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 public interface CommentRepository {
@@ -13,4 +14,6 @@ public interface CommentRepository {
     List<Comment> findAllCommentsByArticleId(long articleId);
 
     int findNumOfCommentsByArticleId(long articleId);
+
+    void deleteComment(long commentId, LocalDateTime now);
 }
