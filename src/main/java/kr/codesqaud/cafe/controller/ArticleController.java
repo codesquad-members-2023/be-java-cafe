@@ -80,6 +80,9 @@ public class ArticleController {
         List<Comment> commentList = commentRepository.findAllCommentsByArticleId(id);
         model.addAttribute("comments", commentList);
 
+        int numOfComments = commentRepository.findNumOfCommentsByArticleId(id);
+        model.addAttribute("numOfComments", numOfComments);
+
         return "qna/show";
     }
 

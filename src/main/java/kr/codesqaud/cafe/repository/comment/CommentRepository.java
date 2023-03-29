@@ -7,4 +7,6 @@ import java.util.List;
 public interface CommentRepository {
 
     List<Comment> findAllCommentsByArticleId(long articleId);
+
+    int findNumOfCommentsByArticleId(long articleId);
 }
