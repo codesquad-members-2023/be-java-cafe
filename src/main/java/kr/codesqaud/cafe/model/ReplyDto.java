@@ -1,23 +1,20 @@
 package kr.codesqaud.cafe.model;
 
-public class ArticleDto {
+import java.time.LocalDateTime;
 
+public class ReplyDto {
     private long id;
     private String writer;
-    private String title;
     private String contents;
     private String formattedCreationTime;
+    private long articleId;
 
-    public ArticleDto(long id, String writer, String title, String contents, String formattedCreationTime) {
+    public ReplyDto(long id, String writer, String contents, String formattedCreationTime, long articleId) {
         this.id = id;
         this.writer = writer;
-        this.title = title;
         this.contents = contents;
         this.formattedCreationTime = formattedCreationTime;
-    }
-
-    public String getFormattedCreationTime() {
-        return formattedCreationTime;
+        this.articleId = articleId;
     }
 
     public long getId() {
@@ -28,11 +25,16 @@ public class ArticleDto {
         return writer;
     }
 
-    public String getTitle() {
-        return title;
-    }
-
     public String getContents() {
         return contents;
     }
+
+    public String getFormattedCreationTime() {
+        return formattedCreationTime;
+    }
+
+    public long getArticleId() {
+        return articleId;
+    }
 }
+

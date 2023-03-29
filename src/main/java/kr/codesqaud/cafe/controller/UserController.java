@@ -1,7 +1,7 @@
 package kr.codesqaud.cafe.controller;
 
 import javax.servlet.http.HttpSession;
-import kr.codesqaud.cafe.repository.UserRepository;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -11,8 +11,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import kr.codesqaud.cafe.model.User;
 import kr.codesqaud.cafe.exceptions.UserInfoException;
+import kr.codesqaud.cafe.model.User;
+import kr.codesqaud.cafe.repository.UserRepository;
 
 @Controller
 public class UserController {

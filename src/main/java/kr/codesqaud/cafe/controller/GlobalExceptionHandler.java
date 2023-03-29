@@ -2,13 +2,13 @@ package kr.codesqaud.cafe.controller;
 
 import javax.servlet.http.HttpSession;
 
-import kr.codesqaud.cafe.exceptions.ArticleInfoException;
-import kr.codesqaud.cafe.exceptions.UserInfoException;
-
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import kr.codesqaud.cafe.exceptions.ArticleInfoException;
+import kr.codesqaud.cafe.exceptions.UserInfoException;
 
 @ControllerAdvice
 public class GlobalExceptionHandler {

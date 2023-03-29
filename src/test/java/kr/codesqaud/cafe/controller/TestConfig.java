@@ -2,7 +2,6 @@ package kr.codesqaud.cafe.controller;
 
 import javax.sql.DataSource;
 
-import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;

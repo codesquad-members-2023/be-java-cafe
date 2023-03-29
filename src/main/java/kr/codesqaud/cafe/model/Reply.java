@@ -2,23 +2,18 @@ package kr.codesqaud.cafe.model;
 
 import java.time.LocalDateTime;
 
-public class Article {
+public class Reply {
     private long id;
     private User user;
-    private String title;
     private String contents;
     private LocalDateTime creationTime;
-    private Reply reply;
+    private long articleId;
 
-    public Article(User user, String title, String contents, LocalDateTime creationTime) {
+    public Reply(User user, String contents, LocalDateTime creationTime, long articleId) {
         this.user = user;
-        this.title = title;
         this.contents = contents;
         this.creationTime = creationTime;
-    }
-
-    public LocalDateTime getCreationTime() {
-        return creationTime;
+        this.articleId = articleId;
     }
 
     public long getId() {
@@ -29,12 +24,15 @@ public class Article {
         return user;
     }
 
-    public String getTitle() {
-        return title;
-    }
-
     public String getContents() {
         return contents;
     }
 
+    public LocalDateTime getCreationTime() {
+        return creationTime;
+    }
+
+    public long getArticleId() {
+        return articleId;
+    }
 }

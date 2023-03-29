@@ -1,33 +1,44 @@
-CREATE TABLE test2
+DROP TABLE IF EXISTS USERS;
+CREATE TABLE USERS
 (
 id VARCHAR(255),
-password VARCHAR(255),
-name VARCHAR(255),
-email VARCHAR(255),
 idx INT AUTO_INCREMENT,
-PRIMARY KEY (idx)
-);
-
-CREATE TABLE articles
-(
-writer VARCHAR(255),
-title VARCHAR(255),
-contents VARCHAR(500),
-id INT(10) AUTO_INCREMENT PRIMARY KEY
-);
-
-
-## H2 init
-
-
-CREATE TABLE articles
-(
-writer VARCHAR(255),
-title VARCHAR(255),
-contents VARCHAR(500),
-id int AUTO_INCREMENT,
+password VARCHAR(255) NOT NULL,
+name VARCHAR(255) NOT NULL,
+email VARCHAR(255) NOT NULL,
 PRIMARY KEY (id)
+)
+
+DROP TABLE IF EXISTS ARTICLES;
+CREATE TABLE ARTICLES
+(
+id int AUTO_INCREMENT,
+writer VARCHAR(255) NOT NULL,
+title VARCHAR(255) NOT NULL,
+contents VARCHAR(500) NOT NULL,
+creationtime timestamp with time zone NOT NULL,
+deleted BOOLEAN DEFAULT FALSE NOT NULL,
+PRIMARY KEY (id),
+FOREIGN KEY (writer)
+REFERENCES USERS(id)
 );
+
+DROP TABLE IF EXISTS REPLIES;
+CREATE TABLE REPLIES
+(
+id int AUTO_INCREMENT,
+writer VARCHAR(255) NOT NULL,
+articleId int NOT NULL,
+contents VARCHAR(500) NOT NULL,
+creationtime timestamp with time zone NOT NULL,
+deleted BOOLEAN DEFAULT FALSE NOT NULL,
+PRIMARY KEY (id),
+FOREIGN KEY (writer)
+REFERENCES USERS(id),
+FOREIGN KEY (articleId)
+REFERENCES ARTICLES(id)
+)
+
 
 TCP 실행
 java -cp h2-1.4.200.jar org.h2.tools.Console -tcp
