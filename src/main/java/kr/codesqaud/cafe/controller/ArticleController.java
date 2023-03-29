@@ -116,10 +116,24 @@ public class ArticleController {
         User user = sessionUtil.getSessionedUser(session);
 
         if (user.getUserId().equals(findArticle.getUserId())) {
+            checkArticleReply(articleId, user.getUserId());
             articleRepository.deleteArticle(articleId);
             return "redirect:/";
         }
 
         throw new IllegalArgumentException("글 작성자만 삭제할 수 있습니다");
+    }
+
+    // 자신의 질문글에 다른 사람의 댓글이 있을 시 예외 처리
+    private void checkArticleReply(int articleId, String userId) {
+        List<Reply> allReplyByArticleId = replyRepository.findAllReplyByArticleId(articleId);
+
+        long count = allReplyByArticleId.stream()
+                .filter(replyId -> !replyId.getUserId().equals(userId))
+                .count();
+
+        if (count > 0) {
+            throw new IllegalArgumentException("다른 사람의 댓글이 있을 경우 삭제할 수 없습니다.");
+        }
     }
 }
