@@ -3,9 +3,13 @@ package kr.codesqaud.cafe.repository;
 import kr.codesqaud.cafe.domain.Article;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
+import java.sql.PreparedStatement;
+import java.sql.Statement;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -22,13 +26,22 @@ public class JdbcTemplateArticleRepository implements ArticleRepository {
     public boolean saveArticle(Article article) {
         // 인덱스 중복 여부 확인
         if (findById(article.getId()).isEmpty()) {
-            // jdbcTemplate으로 변경 / PK값을 가져오는 방법이 이것뿐인가?;;;;
-            jdbcTemplate.update("INSERT INTO CAFE_ARTICLE(WRITER, TITLE, CONTENTS, cafeUserId) " +
-                            "VALUES (?, ?, ?, (select id from cafe_user where name = ?))"
-                    , article.getWriter(), article.getTitle(), LocalDateTime.now(), article.getWriter());
-            // 방법을 몰라서 마지막 pk값을 가져옴 ㅠ
-            List<Article> lastValue = jdbcTemplate.query("SELECT MAX(ID) FROM CAFE_ARTICLE", articlePKMapper());
-            article.setId(lastValue.get(0).getId());
+            // 한번에 PK를 가져오는 방식으로 변경
+            String sql = "INSERT INTO CAFE_ARTICLE(WRITER, TITLE, CONTENTS, cafeUserId) " +
+                    "VALUES (?, ?, ?, (select id from cafe_user where name = ?))";
+            KeyHolder keyHolder = new GeneratedKeyHolder();
+
+            jdbcTemplate.update(connection -> {
+                PreparedStatement pstmt = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+                pstmt.setString(1, article.getWriter());
+                pstmt.setString(2, article.getTitle());
+                pstmt.setString(3, article.getContents());
+                pstmt.setString(4, article.getWriter());
+                return pstmt;
+            }, keyHolder);
+
+            long id = (long) keyHolder.getKeys().get("id");
+            article.setId(id);
             return true;
         }
         return false;
@@ -47,8 +60,10 @@ public class JdbcTemplateArticleRepository implements ArticleRepository {
     public boolean deleteArticle(long id) {
         // 해당 번호 게시글 존재여부 체크
         if (findById(id).isPresent()) {
-            jdbcTemplate.update("update CAFE_ARTICLE set deleted = true where ID = ?", id);
-//            jdbcTemplate.update("DELETE CAFE_ARTICLE where ID=?", id);
+            // 게시글 삭제시 댓글도 삭제 되게 변경
+            String sqlReply = "UPDATE CAFE_REPLY SET deleted=true where ARTICLEID = " + id;
+            String sqlArticle = "update CAFE_ARTICLE set deleted = true where ID = " + id;
+            jdbcTemplate.batchUpdate(sqlReply, sqlArticle);
             return true;
         }
         return false;

@@ -3,6 +3,7 @@ package kr.codesqaud.cafe.service;
 import kr.codesqaud.cafe.domain.Reply;
 import kr.codesqaud.cafe.domain.User;
 import kr.codesqaud.cafe.repository.JdbcTemplateReplyRepository;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -33,10 +34,6 @@ public class ReplyService {
         return replyRepository.deleteReply(id);
     }
 
-    public boolean deleteReplyAll(long articleId) {
-        return replyRepository.deleteReplyFormArticle(articleId);
-    }
-
     /**
      * 댓글 검증
      */
@@ -50,11 +47,13 @@ public class ReplyService {
      * 1. articleId 에 해당하는 모든 댓글
      * 2. 로그인 유저와 같지 않은 댓글
      */
+    @Transactional(readOnly = true)
     public List<Reply> findAllReply(long articleId) {
         return replyRepository.findAllReply(articleId);
     }
 
-    public List<Reply> findAllOtherReply(long articleId, String userId) {
+    @Transactional(readOnly = true)
+    public List<Reply> findAllNonMatchReply(long articleId, String userId) {
         return findAllReply(articleId).stream()
                 .filter(reply -> !reply.getWriter().equals(userId))
                 .collect(Collectors.toList());

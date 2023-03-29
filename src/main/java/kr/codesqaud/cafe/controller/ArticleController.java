@@ -104,7 +104,7 @@ public class ArticleController {
         }
 
         // 댓글 존재 여부 검증
-        List<Reply> replyCheckList = replyService.findAllOtherReply(id, sessionUser.getName());
+        List<Reply> replyCheckList = replyService.findAllNonMatchReply(id, sessionUser.getName());
         if (replyCheckList != null && !replyCheckList.isEmpty()) {
             log.debug("게시글 삭제: 실패(본인이 아닌 댓글이 존재 합니다.)");
             model.addAttribute("errorMessage", "실패(본인이 아닌 댓글이 존재 합니다.)");
@@ -112,7 +112,6 @@ public class ArticleController {
         }
 
         articleService.delete(id);
-        replyService.deleteReplyAll(id);
         log.debug("게시글 삭제: 성공");
         return "redirect:/";
     }

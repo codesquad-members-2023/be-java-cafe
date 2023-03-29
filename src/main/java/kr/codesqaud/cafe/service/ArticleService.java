@@ -3,6 +3,7 @@ package kr.codesqaud.cafe.service;
 import kr.codesqaud.cafe.domain.Article;
 import kr.codesqaud.cafe.domain.User;
 import kr.codesqaud.cafe.repository.JdbcTemplateArticleRepository;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -54,6 +55,7 @@ public class ArticleService {
     /**
      * 게시글 삭제
      */
+    @Transactional(readOnly = true)
     public boolean delete(long id) {
         return articleRepository.deleteArticle(id);
     }
