@@ -1,6 +1,7 @@
 package kr.codesqaud.cafe.repository.article;
 
 import kr.codesqaud.cafe.domain.Article;
+import kr.codesqaud.cafe.domain.Reply;
 import kr.codesqaud.cafe.dto.article.ArticleFormDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Primary;
@@ -12,6 +13,7 @@ import javax.sql.DataSource;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 @Primary
@@ -32,10 +34,10 @@ public class H2JDBCArticleRepository implements ArticleRepository {
     }
 
     @Override
-    public Article findArticleById(int id) {
+    public Optional<Article> findArticleById(int id) {
         String sql = "select * from article where id=?";
 
-        return template.queryForObject(sql, new BeanPropertyRowMapper<>(Article.class), id);
+        return Optional.ofNullable(template.queryForObject(sql, new BeanPropertyRowMapper<>(Article.class), id));
     }
 
     @Override
@@ -65,4 +67,5 @@ public class H2JDBCArticleRepository implements ArticleRepository {
 
         return template.queryForObject(sql, String.class, userId);
     }
+
 }

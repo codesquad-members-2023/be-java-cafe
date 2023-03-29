@@ -14,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.sql.DataSource;
 import java.util.List;
+import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.*;
 
@@ -37,9 +38,9 @@ class ArticleTest {
         ArticleFormDTO article = new ArticleFormDTO("first", "title", "contents");
         articleRepository.save(article);
 
-        Article findArticle = articleRepository.findArticleById(articleId);
+        Optional<Article> findArticle = articleRepository.findArticleById(articleId);
 
-        assertThat(findArticle.getId()).isEqualTo(articleId);
+        assertThat(findArticle.get().getId()).isEqualTo(articleId);
     }
 
     @Test
@@ -67,7 +68,7 @@ class ArticleTest {
 
         articleRepository.updateArticle(article.getTitle(), article.getContents(), firstArticleId);
 
-        Article changedArticle = articleRepository.findArticleById(firstArticleId);
+        Article changedArticle = articleRepository.findArticleById(firstArticleId).get();
 
         assertThat(changedArticle.getTitle()).isEqualTo(changeTitle);
         assertThat(changedArticle.getContents()).isEqualTo(changeContent);

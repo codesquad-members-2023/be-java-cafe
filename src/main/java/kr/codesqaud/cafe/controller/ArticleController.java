@@ -1,10 +1,13 @@
 package kr.codesqaud.cafe.controller;
 
 import kr.codesqaud.cafe.domain.Article;
+import kr.codesqaud.cafe.domain.Reply;
 import kr.codesqaud.cafe.domain.User;
 import kr.codesqaud.cafe.dto.article.ArticleFormDTO;
 import kr.codesqaud.cafe.dto.article.ArticleUpdateDTO;
 import kr.codesqaud.cafe.repository.article.ArticleRepository;
+import kr.codesqaud.cafe.repository.reply.ReplyRepository;
+import kr.codesqaud.cafe.util.SessionUtil;
 import kr.codesqaud.cafe.validation.article.ArticleNewFormValidator;
 import kr.codesqaud.cafe.validation.article.ArticleUpdateValidator;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,14 +23,18 @@ import java.util.List;
 public class ArticleController {
 
     private final ArticleRepository articleRepository;
+    private final ReplyRepository replyRepository;
     private final ArticleNewFormValidator articleNewFormValidator;
     private final ArticleUpdateValidator articleUpdateValidator;
+    private final SessionUtil sessionUtil;
 
     @Autowired
-    public ArticleController(ArticleRepository articleRepository, ArticleNewFormValidator articleNewFormValidator, ArticleUpdateValidator articleUpdateValidator) {
+    public ArticleController(ArticleRepository articleRepository, ReplyRepository replyRepository, ArticleNewFormValidator articleNewFormValidator, ArticleUpdateValidator articleUpdateValidator, SessionUtil sessionUtil) {
         this.articleRepository = articleRepository;
+        this.replyRepository = replyRepository;
         this.articleNewFormValidator = articleNewFormValidator;
         this.articleUpdateValidator = articleUpdateValidator;
+        this.sessionUtil = sessionUtil;
     }
 
     @GetMapping("/")
@@ -39,10 +46,7 @@ public class ArticleController {
     }
 
     @GetMapping("/qna/qna_form")
-    public String writeArticle(HttpSession session, Model model) {
-
-        User user = (User) session.getAttribute("user");
-        model.addAttribute("username", user.getName());
+    public String writeArticleForm (Model model) {
         model.addAttribute("article", new Article());
 
         return "qna/qna_form";
@@ -55,7 +59,7 @@ public class ArticleController {
             model.addAttribute("userId", article.getUserId());
             return "qna/qna_form";
         }
-        User user = (User) session.getAttribute("user");
+        User user = sessionUtil.getSessionedUser(session);
         article.setUserId(user.getUserId());
         articleRepository.save(article);
 
@@ -64,10 +68,15 @@ public class ArticleController {
 
     @GetMapping("/qna/show/{id}")
     public String showArticle(@PathVariable int id, Model model) {
-        Article article = articleRepository.findArticleById(id);
+        Article article = articleRepository.findArticleById(id)
+                .orElseThrow(() -> new IllegalArgumentException("없는 질문글입니다."));
         String userName = articleRepository.findUsernameByArticleUserId(article.getUserId());
+
+        List<Reply> replyList = replyRepository.findAllReplyByArticleId(id);
+
         model.addAttribute("userName", userName);
         model.addAttribute("article", article);
+        model.addAttribute("replyList", replyList);
 
         return "qna/show";
     }
@@ -75,8 +84,9 @@ public class ArticleController {
 
     @GetMapping("/qna/update_article/{articleId}")
     public String updateArticleForm(@PathVariable int articleId, Model model, HttpSession session) {
-        Article article = articleRepository.findArticleById(articleId);
-        User user = (User) session.getAttribute("user");
+        Article article = articleRepository.findArticleById(articleId)
+                .orElseThrow(() -> new IllegalArgumentException("없는 질문글입니다."));
+        User user = sessionUtil.getSessionedUser(session);
         if (user.getUserId().equals(article.getUserId())) {
             model.addAttribute("article", article);
             model.addAttribute("user", user);
@@ -101,8 +111,9 @@ public class ArticleController {
 
     @DeleteMapping("/qna/show/{articleId}/delete")
     public String deleteArticle(@PathVariable int articleId, HttpSession session) {
-        Article findArticle = articleRepository.findArticleById(articleId);
-        User user = (User) session.getAttribute("user");
+        Article findArticle = articleRepository.findArticleById(articleId)
+                .orElseThrow(() -> new IllegalArgumentException("없는 질문글입니다."));
+        User user = sessionUtil.getSessionedUser(session);
 
         if (user.getUserId().equals(findArticle.getUserId())) {
             articleRepository.deleteArticle(articleId);
