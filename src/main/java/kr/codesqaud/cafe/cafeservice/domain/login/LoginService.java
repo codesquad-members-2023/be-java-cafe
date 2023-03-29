@@ -1,12 +1,10 @@
 package kr.codesqaud.cafe.cafeservice.domain.login;
 
 import kr.codesqaud.cafe.cafeservice.domain.Member;
-import kr.codesqaud.cafe.cafeservice.repository.MemberRepository;
+import kr.codesqaud.cafe.cafeservice.repository.member.MemberRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
-
-import java.util.Optional;
 
 @Service
 @Primary
