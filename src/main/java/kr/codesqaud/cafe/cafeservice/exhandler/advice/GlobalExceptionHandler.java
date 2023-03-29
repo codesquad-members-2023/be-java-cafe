@@ -1,48 +1,39 @@
 package kr.codesqaud.cafe.cafeservice.exhandler.advice;
 
+import kr.codesqaud.cafe.cafeservice.controller.MemberController;
 import kr.codesqaud.cafe.cafeservice.exhandler.exception.ArticleNotFoundException;
 import kr.codesqaud.cafe.cafeservice.exhandler.exception.MemberNotFoundException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
-import java.util.NoSuchElementException;
 
 @ControllerAdvice
 public class GlobalExceptionHandler {
-
-    @ExceptionHandler(NoSuchElementException.class)
-    @ResponseStatus(HttpStatus.NOT_FOUND)
-    public String MemberNotFoundException(MemberNotFoundException e, Model model) {
-        model.addAttribute("errorMessage", e.getMessage());
-        return "error";
-    }
-
-    @ExceptionHandler(NullPointerException.class)
-    public String MemberNullPointException(NullPointerException e, Model model) {
-        model.addAttribute("errorMessage", e.getMessage());
-        return "error";
-    }
+    private final Logger log = LoggerFactory.getLogger(MemberController.class);
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(ArticleNotFoundException.class)
-    public String ArticleNotFoundException(ArticleNotFoundException e, Model model) {
+    public String articleNotFoundException(ArticleNotFoundException e, Model model) {
         model.addAttribute("errorMessage", e.getMessage());
-        return "error";
+        return "layout/error";
     }
 
-    @ExceptionHandler(value = Exception.class)
-    private String noSuchException(Exception e, Model model) {
-        model.addAttribute("message", e.getMessage());
-        e.printStackTrace();
-        return "error";
+    @ResponseStatus(HttpStatus.FORBIDDEN)
+    @ExceptionHandler(MemberNotFoundException.class)
+    public String memberNotFountException(MemberNotFoundException e, Model model) {
+        model.addAttribute("errorMessage", e.getMessage());
+        return "layout/error";
     }
 
-    @ExceptionHandler(IllegalArgumentException.class)
-    public String IllegalArgumentException(Model model, IllegalArgumentException e) {
-        model.addAttribute("errorMessage", e.getMessage());
-        return "error";
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    @ExceptionHandler
+    public String exHandle(Exception e) {
+        log.error("[exceptionHandle] ex", e);
+        return "layout/error";
     }
 }
