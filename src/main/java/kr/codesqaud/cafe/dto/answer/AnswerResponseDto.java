@@ -1,25 +1,24 @@
 package kr.codesqaud.cafe.dto.answer;
 
 import kr.codesqaud.cafe.domain.Answer;
-import kr.codesqaud.cafe.domain.Member;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 public class AnswerResponseDto {
-    private long id;
+    private long answerId;
     private String contents;
     private long writerIndex;
     private String userId;
     private String nickname;
     private LocalDateTime createdDate;
 
-    public long getId() {
-        return id;
+    public long getAnswerId() {
+        return answerId;
     }
 
-    public void setId(long id) {
-        this.id = id;
+    public void setAnswerId(long answerId) {
+        this.answerId = answerId;
     }
 
     public String getContents() {
@@ -68,7 +67,7 @@ public class AnswerResponseDto {
 
     public static AnswerResponseDto toDto(Answer answer) {
         AnswerResponseDto answerDBDto = new AnswerResponseDto();
-        answerDBDto.setId(answer.getId());
+        answerDBDto.setAnswerId(answer.getId());
         answerDBDto.setContents(answer.getContents());
         answerDBDto.setWriterIndex(answer.getWriterId());
         answerDBDto.setNickname(answer.getWriterNickname());
