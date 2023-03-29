@@ -82,8 +82,8 @@ class H2DBReplyRepositoryTest {
         List<ReplyWithUser> replies = replyRepository.findByArticleId(1);
 
         assertThat(replies.size()).isEqualTo(2);
-        assertThat(replies.get(0).getUserName()).isEqualTo("Yoon");
-        assertThat(replies.get(1).getUserName()).isEqualTo("Hyun");
+        assertThat(replies.get(0).getUserName()).isEqualTo("Hyun");
+        assertThat(replies.get(1).getUserName()).isEqualTo("Yoon");
     }
 
     @Test

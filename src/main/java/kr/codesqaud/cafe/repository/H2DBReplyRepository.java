@@ -7,6 +7,8 @@ import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
@@ -23,13 +25,16 @@ public class H2DBReplyRepository {
         this.template = new NamedParameterJdbcTemplate(dataSource);
     }
 
-    public void save(Reply reply) {
+    public int save(Reply reply) {
         String sql = "insert into reply (contents, createDate, deleted, user_id, article_id) " +
                 "values (:contents, :createDate, false, :userId, :articleId)";
 
         SqlParameterSource param = new BeanPropertySqlParameterSource(reply);
 
-        template.update(sql, param);
+        KeyHolder keyHolder = new GeneratedKeyHolder();
+        template.update(sql, param, keyHolder);
+
+        return keyHolder.getKey().intValue();
     }
 
     public Reply findById(int id) {
@@ -43,7 +48,7 @@ public class H2DBReplyRepository {
     public List<ReplyWithUser> findByArticleId(int articleId) {
         String sql = "select r.id, r.user_id, u.user_id as userName, r.contents, r.createDate " +
                 "from reply r join users u on r.user_id=u.id " +
-                "where r.article_id=:articleId and r.deleted=false";
+                "where r.article_id=:articleId and r.deleted=false order by r.id desc";
 
         Map<String, Integer> param = Map.of("articleId", articleId);
         return template.query(sql, param, BeanPropertyRowMapper.newInstance(ReplyWithUser.class));
