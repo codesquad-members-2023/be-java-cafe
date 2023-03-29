@@ -63,7 +63,6 @@ public class CommentController {
     }
 
     private boolean validateIdentity(long commentId, HttpSession httpSession) {
-
         Comment targetComment = commentRepository.findByCommentId(commentId);
 
         return targetComment.getWriter() == (long) httpSession.getAttribute(SessionConst.LOGIN_USERID);
