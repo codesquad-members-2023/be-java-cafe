@@ -17,12 +17,17 @@ public class MemoryArticleRepository implements ArticleRepository{
     }
 
     @Override
+    public void update(String title, String content, String articleId) {
+
+    }
+
+    @Override
     public List<Article> findAll() {
         return articles;
     }
 
     @Override
-    public Article findById(int index) {
-        return articles.get(index - 1);
+    public Article findById(long index) {
+        return articles.get((int)index - 1);
     }
 }

@@ -36,10 +36,6 @@ public class Article {
         return content;
     }
 
-    public Long getIndex() {
-        return id;
-    }
-
     public Long getId() {
         return id;
     }

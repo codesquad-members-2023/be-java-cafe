@@ -28,18 +28,18 @@ public class JdbcUserRepository implements UserRepository{
     @Override
     public void save(User user) {
         //Todo: `BeanPropertySqlParameterSource` 사용해서 파라미터 값 받을 수 있도록 수정
-        String sql = "INSERT INTO members (id, name, password, email) VALUES (?, ?, ?, ?) ON DUPLICATE KEY UPDATE name=?, password=?, email=?";
+        String sql = "INSERT INTO member (member_id, name, password, email) VALUES (?, ?, ?, ?) ON DUPLICATE KEY UPDATE name=?, password=?, email=?";
         jdbcTemplate.update(sql, user.getId(), user.getName(), user.getPassword(), user.getEmail(), user.getName(), user.getPassword(), user.getEmail());
     }
 
     @Override
     public List<User> findAll() {
-        return jdbcTemplate.query("select * from members", userRowMapper());
+        return jdbcTemplate.query("select * from member", userRowMapper());
     }
 
     @Override
     public Optional<User> findById(String id) {
-        List<User> result = jdbcTemplate.query("select * from members where id = ?", userRowMapper(), id);
+        List<User> result = jdbcTemplate.query("select * from member where member_id = ?", userRowMapper(), id);
         if (result.isEmpty()) {
             return Optional.empty();
         }
@@ -50,7 +50,7 @@ public class JdbcUserRepository implements UserRepository{
         return new RowMapper<User>() {
             @Override
             public User mapRow(ResultSet rs, int rowNum) throws SQLException {
-                return new User(rs.getString("id"), rs.getString("name"), rs.getString("email"), rs.getString("password"));
+                return new User(rs.getString("member_id"), rs.getString("name"), rs.getString("email"), rs.getString("password"));
             }
         };
     }

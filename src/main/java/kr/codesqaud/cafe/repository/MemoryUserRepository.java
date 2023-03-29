@@ -20,6 +20,7 @@ public class MemoryUserRepository implements UserRepository {
         users.add(user);
         logger.info("save");
     }
+
     @Override
     public Optional<User> findById(String id) {
         return users.stream()
