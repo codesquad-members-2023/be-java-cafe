@@ -24,7 +24,7 @@ public class ArticleController {
 
     @PostMapping("/articles")
     public String post(ArticleForm form, HttpSession session) {
-        User loginUser = (User) session.getAttribute(SessionConst.LOGIN_USER);
+        User loginUser = UserSession.getAttribute(session);
         Article article = new Article(loginUser.getId(), form.getTitle(), form.getContent());
 
         articleRepository.save(article);

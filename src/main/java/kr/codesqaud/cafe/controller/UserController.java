@@ -8,7 +8,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
@@ -56,9 +55,9 @@ public class UserController {
         Optional<User> user = userRepository.findById(id);
 
         if (user.isPresent()) {
-            User sessionUser = (User) session.getAttribute(SessionConst.LOGIN_USER);
-            if (sessionUser != null) {
-                if (sessionUser.getId().equals(user.get().getId())) {
+            User SessionUser = UserSession.getAttribute(session);
+            if (SessionUser != null) {
+                if (SessionUser.getId().equals(user.get().getId())) {
                     model.addAttribute("user", user.get());
                     return "user/updateForm";
                 }
@@ -77,7 +76,7 @@ public class UserController {
                 userRepository.save(new User(userForm.getId(), userForm.getName(), userForm.getEmail(), userForm.getPassword()));
                 return "redirect:/users";
             }
-            model.addAttribute(SessionConst.LOGIN_USER, user.get());
+            model.addAttribute(UserSession.LOGIN_USER, user.get());
             logger.debug("세션에 로그인 정보 저장");
             return "user/updateForm_failed";
         }
@@ -92,7 +91,7 @@ public class UserController {
 
         if (user.isPresent()) {
             if (user.get().isEqualPasswordTo(userForm.getPassword())) {
-                session.setAttribute(SessionConst.LOGIN_USER, user.get());
+                session.setAttribute(UserSession.LOGIN_USER, user.get());
 
                 return "redirect:/users";
             }
@@ -106,6 +105,4 @@ public class UserController {
 
         return "index";
     }
-
-    //private boolean isEqualSessionTo()
 }
