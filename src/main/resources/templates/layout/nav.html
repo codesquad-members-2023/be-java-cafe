@@ -32,8 +32,10 @@
                         <li><a href="https://facebook.com" target="_blank">Facebook</a></li>
                     </ul>
                 </li>
-                <li><a href="/users"><i class="glyphicon glyphicon-th-list"></i></a></li>
-                <!--                <li><a href="/users"><i class="glyphicon glyphicon-user"></i></a></li>-->
+                {{#loginUser}}
+                <!--                <li><a href="/users"><i class="glyphicon glyphicon-th-list"></i></a></li>-->
+                <li><a href="/users/{{userId}}"><i class="glyphicon glyphicon-user"></i></a></li>
+                {{/loginUser}}
             </ul>
         </div>
     </div>

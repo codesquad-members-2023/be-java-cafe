@@ -45,8 +45,9 @@ public class JdbcTemplateArticleRepository implements ArticleRepository {
 
     public boolean deleteArticle(long id) {
         // 해당 번호 게시글 존재여부 체크
-        if(findById(id).isPresent()) {
-            jdbcTemplate.update("DELETE CAFE_ARTICLE where ID=?", id);
+        if (findById(id).isPresent()) {
+            jdbcTemplate.update("update CAFE_ARTICLE set deleted = true where ID = ?", id);
+//            jdbcTemplate.update("DELETE CAFE_ARTICLE where ID=?", id);
             return true;
         }
         return false;
@@ -54,13 +55,13 @@ public class JdbcTemplateArticleRepository implements ArticleRepository {
 
     @Override
     public Optional<Article> findById(long id) {
-        List<Article> result = jdbcTemplate.query("select * from cafe_article where id = ?", articleRowMapper(), id);
+        List<Article> result = jdbcTemplate.query("select * from cafe_article where id = ? AND deleted = false", articleRowMapper(), id);
         return result.stream().findAny();
     }
 
     @Override
     public List<Article> findAllArticle() {
-        List<Article> result = jdbcTemplate.query("select * from cafe_article ORDER BY id desc ", articleRowMapper());
+        List<Article> result = jdbcTemplate.query("select * from cafe_article where deleted = false ORDER BY id desc ", articleRowMapper());
         return result;
     }
 

@@ -8,12 +8,25 @@ CREATE TABLE cafe_user
     email    VARCHAR(50)        NOT NULL
 );
 
-DROP TABLE IF EXISTS cafe_article;
+DROP TABLE IF EXISTS cafe_article CASCADE;
 CREATE TABLE cafe_article
 (
     id       BIGINT AUTO_INCREMENT PRIMARY KEY,
     writer   VARCHAR(20)   NOT NULL,
     title    VARCHAR(50)   NOT NULL,
     contents VARCHAR(500)  NOT NULL,
-    time     smalldatetime not null default now()
+    time     smalldatetime not null default now(),
+    deleted  boolean                default false
+);
+
+DROP TABLE IF EXISTS cafe_reply CASCADE;
+CREATE TABLE cafe_reply
+(
+    id        BIGINT AUTO_INCREMENT PRIMARY KEY,
+    writer    VARCHAR(20)   NOT NULL,
+    contents  VARCHAR(300)  NOT NULL,
+    time      smalldatetime not null default now(),
+    deleted   boolean                default false,
+    articleId BIGINT,
+    FOREIGN KEY (articleId) REFERENCES cafe_article (id)
 );
