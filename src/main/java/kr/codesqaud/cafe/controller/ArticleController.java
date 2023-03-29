@@ -3,10 +3,12 @@ package kr.codesqaud.cafe.controller;
 import static kr.codesqaud.cafe.exceptions.ArticleInfoException.*;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 import javax.servlet.http.HttpSession;
 
 import kr.codesqaud.cafe.exceptions.UserInfoException;
+import kr.codesqaud.cafe.model.ArticleDto;
 import kr.codesqaud.cafe.model.Reply;
 import kr.codesqaud.cafe.repository.ArticleRepository;
 import kr.codesqaud.cafe.repository.ReplyRepository;
@@ -60,6 +62,7 @@ public class ArticleController {
     public String articleDetails(@PathVariable long id, Model model) throws ArticleInfoException {
         model.addAttribute("article", articleRepository.findById(id));
         model.addAttribute("reply", replyRepository.getReplyList(id));
+        model.addAttribute("replyCount", replyRepository.getReplyList(id).size());
 
         return "qna/show";
     }
@@ -90,7 +93,7 @@ public class ArticleController {
         return "redirect:/";
     }
 
-    @DeleteMapping(value = "/qna/{articleId}/form")
+    @DeleteMapping(value = "/qna/{articleId}")
     public String articleDelete(@PathVariable long articleId, HttpSession httpSession)
             throws ArticleInfoException {
         String writer = articleRepository.findById(articleId).getWriter();
@@ -100,7 +103,7 @@ public class ArticleController {
         }
         //댓글이 존재하는 경우 삭제 불가
         if (!replyRepository.validateDelete(articleId, writer)) {
-            throw new ArticleInfoException(REQUIRE_ON_COMMENT_DELETE_MESSAGE,REQUIRE_ON_COMMENT_DELETE_CODE);
+            throw new ArticleInfoException(REQUIRE_ON_COMMENT_DELETE_MESSAGE, REQUIRE_ON_COMMENT_DELETE_CODE);
         }
         articleRepository.deleteArticle(articleId);
         return "redirect:/";
@@ -123,10 +126,12 @@ public class ArticleController {
 
     @DeleteMapping(value = "/qna/{articleId}/reply/{replyId}")
     public String replyDelete(@PathVariable long articleId, @PathVariable long replyId, HttpSession httpSession)
-            throws ArticleInfoException {
-        String writer = articleRepository.findById(articleId).getWriter();
-        if (!httpSession.getAttribute("sessionedUser").equals(writer)) {
-            throw new ArticleInfoException(UNAUTHORIZED_MODIFICATION_MESSAGE,
+            throws ArticleInfoException, UserInfoException {
+        //로그인한 유저
+        String userId = (String)httpSession.getAttribute("sessionedUser");
+        String writer = replyRepository.findById(replyId, articleId).getWriter();
+        if (!userId.equals(writer)) {
+            throw new ArticleInfoException(UNAUTHORIZED_DELETE_MESSAGE,
                     WRITER_NOT_MATCHING_CODE);
         }
 

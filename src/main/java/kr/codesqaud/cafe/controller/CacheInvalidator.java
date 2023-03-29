@@ -1,4 +1,4 @@
-package kr.codesqaud.cafe.interceptors;
+package kr.codesqaud.cafe.controller;
 
 import java.io.IOException;
 

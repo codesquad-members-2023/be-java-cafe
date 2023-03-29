@@ -5,9 +5,11 @@ import java.util.List;
 
 import javax.sql.DataSource;
 
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 
+import kr.codesqaud.cafe.exceptions.ArticleInfoException;
 import kr.codesqaud.cafe.model.Reply;
 import kr.codesqaud.cafe.model.ReplyDto;
 
@@ -30,7 +32,20 @@ public class JdbcReplyRepository implements ReplyRepository {
     public List<ReplyDto> getReplyList(long articleId) {
         return jdbcTemplate.query(
                 "select id, writer, contents, articleId, creationTime from replies where articleId=? and deleted=false order by id"
-                ,replyRowMapper(), articleId);
+                , replyRowMapper(), articleId);
+
+    }
+
+    @Override
+    public ReplyDto findById(long replyId, long articleId) throws ArticleInfoException {
+        try {
+            return jdbcTemplate.queryForObject(
+                    "select id, writer, contents, articleId, creationTime from replies where articleId=? and deleted=false and id=? order by id"
+                    , replyRowMapper(), articleId, replyId);
+        } catch (EmptyResultDataAccessException e) {
+            throw new ArticleInfoException(ArticleInfoException.INVALID_REPLY_MESSAGE,
+                    ArticleInfoException.INVALID_REPLY_CODE);
+        }
     }
 
     private RowMapper<ReplyDto> replyRowMapper() {
@@ -52,7 +67,7 @@ public class JdbcReplyRepository implements ReplyRepository {
         //삭제안되어있는 상태의 내 아이디가 아닌 글을 고른다.
         int numberOfRepliesWrittenByOthers = jdbcTemplate.query(
                 "select id, writer, contents, articleId, creationTime from replies where articleId=? and writer<>? and deleted=false order by id"
-                ,replyRowMapper(), articleId, userId).size();
+                , replyRowMapper(), articleId, userId).size();
         return numberOfRepliesWrittenByOthers == 0;
     }
 }
