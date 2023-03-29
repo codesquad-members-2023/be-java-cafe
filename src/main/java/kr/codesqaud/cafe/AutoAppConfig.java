@@ -19,8 +19,6 @@ import kr.codesqaud.cafe.repository.UserRepository;
 
 @Configuration
 public class AutoAppConfig implements WebMvcConfigurer {
-
-    public static final int MID_PRECEDENCE = 0;
     private final DataSource dataSource;
     private final HandlerInterceptor loginInterceptor;
     private final HandlerInterceptor loggerInterceptor;
@@ -64,24 +62,29 @@ public class AutoAppConfig implements WebMvcConfigurer {
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
+        final int midPrecedence = 0;
+        final String[] invalidAddressPattern = {"/", "/users/**", "/qna/**", "/css/**", "/*.ico", "/js/**", "/images/**",
+                "/fonts/**", "/api/error"};
+        final String[] openAddressPattern = {"/users/login_failed", "/users/form",
+                "/users/login", "/users/create", "/api/error"};
+        final String[] staticsPattern = {"/css/**", "/*.ico", "/js/**", "/images/**", "/fonts/**"};
+        final String[] closeAddressPattern = {"/users/**", "/qna/**"};
 
         registry.addInterceptor(invalidAddressInterceptor)
                 .order(Ordered.HIGHEST_PRECEDENCE)
                 .addPathPatterns("/**")//모든 URL에 대해서, 404를 발생.
-                .excludePathPatterns("/", "/users/**", "/qna/**", "/css/**", "/*.ico", "/js/**", "/images/**",
-                        "/fonts/**", "/api/error");
+                .excludePathPatterns(invalidAddressPattern);
         registry.addInterceptor(loginInterceptor)
-                .order(MID_PRECEDENCE)
-                .addPathPatterns("/users/**", "/qna/**")
-                .excludePathPatterns("/users/login_failed", "/users/form",
-                        "/users/login", "/users/create", "/api/error");
+                .order(midPrecedence)
+                .addPathPatterns(closeAddressPattern)
+                .excludePathPatterns(openAddressPattern);
         registry.addInterceptor(loggerInterceptor)
                 .order(Ordered.LOWEST_PRECEDENCE)
                 .addPathPatterns("/**")
-                .excludePathPatterns("/css/**", "/*.ico", "/js/**", "/images/**", "/fonts/**");
+                .excludePathPatterns(staticsPattern);
         registry.addInterceptor(cacheInvalidator)
                 .order(Ordered.LOWEST_PRECEDENCE)
                 .addPathPatterns("/**")
-                .excludePathPatterns("/css/**", "/*.ico", "/js/**", "/images/**", "/fonts/**");
+                .excludePathPatterns(staticsPattern);
     }
 }

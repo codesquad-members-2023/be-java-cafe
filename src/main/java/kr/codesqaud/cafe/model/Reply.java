@@ -4,13 +4,13 @@ import java.time.LocalDateTime;
 
 public class Reply {
     private long id;
-    private User user;
+    private String userId;
     private String contents;
     private LocalDateTime creationTime;
     private long articleId;
 
-    public Reply(User user, String contents, LocalDateTime creationTime, long articleId) {
-        this.user = user;
+    public Reply(String userId, String contents, LocalDateTime creationTime, long articleId) {
+        this.userId = userId;
         this.contents = contents;
         this.creationTime = creationTime;
         this.articleId = articleId;
@@ -20,8 +20,8 @@ public class Reply {
         return id;
     }
 
-    public User getUser() {
-        return user;
+    public String getUserId() {
+        return userId;
     }
 
     public String getContents() {

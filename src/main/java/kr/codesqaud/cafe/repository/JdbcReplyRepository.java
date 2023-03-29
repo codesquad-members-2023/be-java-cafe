@@ -1,5 +1,7 @@
 package kr.codesqaud.cafe.repository;
 
+import static kr.codesqaud.cafe.exceptions.ArticleInfoException.*;
+
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 
@@ -22,29 +24,25 @@ public class JdbcReplyRepository implements ReplyRepository {
 
     @Override
     public void addReply(Reply reply) {
-        jdbcTemplate.update(
-                "insert into replies(writer, contents, creationTime, articleId) values(?, ?, ?, ?)",
-                reply.getUser().getId(),
-                reply.getContents(), reply.getCreationTime(), reply.getArticleId());
+        final String insertReply = "insert into replies(writer, contents, creationTime, articleId) values(?, ?, ?, ?)";
+        jdbcTemplate.update(insertReply, reply.getUserId(), reply.getContents(), reply.getCreationTime(),
+                reply.getArticleId());
     }
 
     @Override
     public List<ReplyDto> getReplyList(long articleId) {
-        return jdbcTemplate.query(
-                "select id, writer, contents, articleId, creationTime from replies where articleId=? and deleted=false order by id"
-                , replyRowMapper(), articleId);
+        final String selectRepliesInArticle = "select id, writer, contents, articleId, creationTime from replies where articleId=? and deleted=false order by id";
+        return jdbcTemplate.query(selectRepliesInArticle, replyRowMapper(), articleId);
 
     }
 
     @Override
     public ReplyDto findById(long replyId, long articleId) throws ArticleInfoException {
+        final String findReplyById = "select id, writer, contents, articleId, creationTime from replies where articleId=? and deleted=false and id=? order by id";
         try {
-            return jdbcTemplate.queryForObject(
-                    "select id, writer, contents, articleId, creationTime from replies where articleId=? and deleted=false and id=? order by id"
-                    , replyRowMapper(), articleId, replyId);
+            return jdbcTemplate.queryForObject(findReplyById, replyRowMapper(), articleId, replyId);
         } catch (EmptyResultDataAccessException e) {
-            throw new ArticleInfoException(ArticleInfoException.INVALID_REPLY_MESSAGE,
-                    ArticleInfoException.INVALID_REPLY_CODE);
+            throw new ArticleInfoException(INVALID_REPLY_MESSAGE, INVALID_REPLY_CODE);
         }
     }
 
@@ -58,16 +56,16 @@ public class JdbcReplyRepository implements ReplyRepository {
 
     @Override
     public void deleteReply(long articleId, long replyId) {
-        jdbcTemplate.update("update replies set deleted=true where articleId=? and id=?", articleId, replyId);
-
+        final String deleteReply = "update replies set deleted=true where articleId=? and id=?";
+        jdbcTemplate.update(deleteReply, articleId, replyId);
     }
 
     @Override
     public boolean validateDelete(long articleId, String userId) {
+        final String countRepliesByOthers = "select count(id) from replies where articleId=? and writer<>? and deleted=false order by id";
         //삭제안되어있는 상태의 내 아이디가 아닌 글을 고른다.
-        int numberOfRepliesWrittenByOthers = jdbcTemplate.query(
-                "select id, writer, contents, articleId, creationTime from replies where articleId=? and writer<>? and deleted=false order by id"
-                , replyRowMapper(), articleId, userId).size();
+        int numberOfRepliesWrittenByOthers = jdbcTemplate.query(countRepliesByOthers, replyRowMapper(), articleId,
+                userId).size();
         return numberOfRepliesWrittenByOthers == 0;
     }
 }
