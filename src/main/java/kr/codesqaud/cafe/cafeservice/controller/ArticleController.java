@@ -43,17 +43,10 @@ public class ArticleController {
 
     @GetMapping("/articles/{id}")
     public String showArticle(@PathVariable Long id, Model model) {
-        try {
-            Optional<Article> findArticle = repository.findById(id);
-            if (findArticle.isPresent()) {
-                model.addAttribute("article", findArticle.get());
-                return "qna/show";
-            } else {
-                return "fail";
-            }
-        } catch (NoSuchElementException e) {
-            return "fail";
-        }
+        Optional<Article> findArticle = repository.findById(id);
+        model.addAttribute("article", findArticle.orElseThrow());
+        return "qna/show";
+
     }
 
     @DeleteMapping("/questions/{id}delete")
