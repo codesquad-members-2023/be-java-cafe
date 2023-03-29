@@ -29,15 +29,15 @@ public class ArticleController {
     }
 
     @GetMapping("/create")
-    public String create(@SessionAttribute(name = ConstantConfig.SESSION_ID) User user, Model model) {
+    public String create() {
         return "qna/create";
     }
 
     @PostMapping("/create")
     public String create(@RequestParam String title,
                          @RequestParam String contents,
-                         @SessionAttribute(name = ConstantConfig.SESSION_ID) User user) {
-        articleRepository.save(new Article(user.getUserId(), title, contents));
+                         @SessionAttribute(name = ConstantConfig.SESSION_ID) String userId) {
+        articleRepository.save(new Article(userId, title, contents));
         return "redirect:/qna/list";
     }
 
