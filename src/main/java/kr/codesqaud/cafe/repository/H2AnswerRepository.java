@@ -35,3 +35,12 @@ public class H2AnswerRepository implements AnswerRepository{
             .addValue("updated", LocalDateTime.now());
         namedParameterJdbcTemplate.update(sql, params);
     }
+
+    @Override
+    public List<Answer> findAll(long articleId) {
+        String sql = "SELECT A.ID, A.CONTENTS, A.USER_ID, A.ARTICLE_ID, A.CREATED_AT as created_date, A.UPDATED_AT as updated_date, " +
+                "M.ID as writer_id, M.NICKNAME as writer_nickname FROM ANSWER A LEFT JOIN MEMBER M on M.ID = A.USER_ID WHERE ARTICLE_ID = :articleId";
+        MapSqlParameterSource param = new MapSqlParameterSource("articleId", articleId);
+        return namedParameterJdbcTemplate.query(sql, param, new AnswerRowMapper());
+    }
+}
