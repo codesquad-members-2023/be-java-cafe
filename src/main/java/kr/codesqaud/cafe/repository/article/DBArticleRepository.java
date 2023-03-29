@@ -45,4 +45,11 @@ public class DBArticleRepository implements ArticleRepository {
 
         return jdbcTemplate.queryForObject(sql, new BeanPropertyRowMapper<>(Article.class), id);
     }
+
+    @Override
+    public void deleteAriticle(long id) {
+        String sql = "delete from article where id = ?";
+
+        jdbcTemplate.update(sql, id);
+    }
 }
