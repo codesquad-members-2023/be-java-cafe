@@ -9,3 +9,6 @@ VALUES (0, 'test1', '테스트 게시물', '테스트', '2023-03-23 20:18', fals
 
 INSERT INTO ARTICLE(ARTICLE_ID, USER_ID, TITLE, CONTENTS, TIME, DELETED)
 VALUES (1, 'test2', '테스트 게시물2', '테스트2', '2023-03-23 20:19', false);
+
+INSERT INTO REPLY(REPLY_ID, ARTICLE_ID, USER_ID, CONTENTS, TIME, DELETED)
+VALUES (0, '0', 'test2', '테스트댓글', '2023-03-27 18:19', false);

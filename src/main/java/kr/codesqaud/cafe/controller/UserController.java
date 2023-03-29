@@ -64,7 +64,7 @@ public class UserController {
             session.setAttribute("userId", userDto.getUserId());
             return "redirect:/";
         }
-        return "redirect:/user/login_failed/html";
+        return "redirect:/user/login_failed.html";
     }
 
     @GetMapping("/logout")
