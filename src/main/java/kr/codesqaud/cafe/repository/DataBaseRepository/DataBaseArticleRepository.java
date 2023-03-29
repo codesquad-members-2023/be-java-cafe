@@ -1,4 +1,4 @@
-package kr.codesqaud.cafe.repository.h2Repository;
+package kr.codesqaud.cafe.repository.DataBaseRepository;
 
 import kr.codesqaud.cafe.basic.Article;
 import kr.codesqaud.cafe.repository.ArticleRepository;
@@ -12,35 +12,43 @@ import org.springframework.stereotype.Repository;
 import javax.sql.DataSource;
 import java.sql.*;
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 @Primary
-public class H2ArticleRepository implements ArticleRepository {
+public class DataBaseArticleRepository implements ArticleRepository {
     private static final Logger logger = LoggerFactory.getLogger("article database");
 
     public final JdbcTemplate jdbcTemplate;
 
     @Autowired
-    public H2ArticleRepository(DataSource dataSource) {
+    public DataBaseArticleRepository(DataSource dataSource) {
         jdbcTemplate = new JdbcTemplate(dataSource);
     }
 
-    public void save(Article article) {
-        String sql = "insert into articles(writer, title, contents, timeStamp) values (?, ?, ?, ?)";
+    public int save(Article article) {
+        String sql = "insert into articles(writer, title, contents) values (?, ?, ?)";
 
-        jdbcTemplate.update(sql, article.getWriter(), article.getTitle(), article.getContents(), article.getTimeStamp());
+        return jdbcTemplate.update(sql, article.getWriter(), article.getTitle(), article.getContents());
     }
 
-    public int delete(int index) {
+    @Override
+    public int update(int articleId, String title, String content) {
+        String sql = "update articles set title = ?, contents = ? where articleId = ?";
+
+        return jdbcTemplate.update(sql, title, content ,articleId);
+    }
+
+    public int delete(int articleId) {
         String sql = "delete from articles where articleId=?";
 
-        return jdbcTemplate.update(sql, index);
+        return jdbcTemplate.update(sql, articleId);
     }
 
-    public Article findByIndex(int index) {
+    public Optional<Article> findByArticleId(int index) {
         String sql = "select articleId, writer, title, contents, timeStamp from articles where articleId = ?";
 
-        return jdbcTemplate.queryForObject(sql, new BeanPropertyRowMapper<>(Article.class), index);
+        return Optional.ofNullable(jdbcTemplate.queryForObject(sql, new BeanPropertyRowMapper<>(Article.class), index));
     }
 
     public List<Article> findAll() {

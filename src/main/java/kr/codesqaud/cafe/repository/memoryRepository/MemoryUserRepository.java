@@ -9,7 +9,7 @@ import java.util.*;
 
 
 @Repository
-public class MemoryUserRepository implements UserRepository {
+public class MemoryUserRepository  {
     private final List<User> userRepository;
 
     @Autowired
@@ -31,7 +31,7 @@ public class MemoryUserRepository implements UserRepository {
         return new ArrayList<>(userRepository);
     }
 
-    @Override
+
     public int update(User user) {
         // TODO : 사용자 찾는 부분과 비밀번호 검증의 부분을 분리하는게 맞을 것 같음
         Optional<User> optionalUser = userRepository.stream()

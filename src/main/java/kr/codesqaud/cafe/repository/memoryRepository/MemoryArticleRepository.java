@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Repository
-public class MemoryArticleRepository implements ArticleRepository {
+public class MemoryArticleRepository {
 
     private final List<Article> articleRepository;
 
@@ -19,13 +19,14 @@ public class MemoryArticleRepository implements ArticleRepository {
         this.articleRepository = new ArrayList<>();
     }
 
-    public void save(Article article) {
+    public int save(Article article) {
         int articleId = articleRepository.size() + 1;
         article.setArticleId(articleId);
         articleRepository.add(article);
+        return 0;
     }
 
-    public Article findByIndex(int index) {
+    public Article findByArticleId(int index) {
         return new Article(articleRepository.get(index));
     }
 
@@ -33,4 +34,13 @@ public class MemoryArticleRepository implements ArticleRepository {
         return new ArrayList<>(articleRepository);
     }
 
+
+    public int update(int articleId, String Title, String content) {
+        return 0;
+    }
+
+
+    public int delete(int articleId) {
+        return 0;
+    }
 }

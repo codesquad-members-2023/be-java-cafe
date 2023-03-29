@@ -1,7 +1,9 @@
 package kr.codesqaud.cafe.controller;
 
 import kr.codesqaud.cafe.basic.User;
-import kr.codesqaud.cafe.config.ConstConfig;
+import kr.codesqaud.cafe.basic.UserDTO;
+import kr.codesqaud.cafe.config.ConstantConfig;
+import kr.codesqaud.cafe.exception.gobalExeption.NotFoundException;
 import kr.codesqaud.cafe.exception.userException.*;
 import kr.codesqaud.cafe.repository.UserRepository;
 import kr.codesqaud.cafe.service.UserService;
@@ -27,14 +29,15 @@ public class UserController {
         this.userService = userService;
     }
 
+    @GetMapping("/create")
+    public String create() {
+        return "user/create";
+    }
+
     @PostMapping("/create")
-    public String create(@RequestParam String userId,
-                         @RequestParam String password,
-                         @RequestParam String name,
-                         @RequestParam String email,
-                         Model model
-    ) {
-        userRepository.join(new User(userId, password, name, email));
+    public String create(@ModelAttribute UserDTO userDTO,
+                         Model model) {
+        userRepository.join(userDTO);
 
         return "redirect:/user/list";
     }
@@ -50,7 +53,7 @@ public class UserController {
     public String profile(@PathVariable String userId,
                           Model model) {
         Optional<User> optionalUser = userRepository.findUserById(userId);
-        if (optionalUser.isEmpty()) throw new UserException("유저의 정보를 불러오는데 실패했습니다.");
+        if (optionalUser.isEmpty()) throw new NotFoundException("유저의 정보를 불러오는데 실패했습니다.");
 
 
         model.addAttribute("user", optionalUser.get());
@@ -59,39 +62,42 @@ public class UserController {
 
     @GetMapping("/update")
     public String updateForm(HttpSession session,
-                             Model model
-                             ) {
-        User user = (User) session.getAttribute(ConstConfig.SESSION_ID);
+                             Model model) {
+        User user = (User) session.getAttribute(ConstantConfig.SESSION_ID);
         if (user == null) throw new UserSessionExpireException();
 
         model.addAttribute("user", user);
-        return "user/updateForm";
+        return "user/update";
     }
 
-    @PutMapping("/update")
-    public String update(@RequestParam String curPassword,
-                         @RequestParam String password,
-                         @RequestParam String name,
-                         @RequestParam String email,
+    @PutMapping("/update/{userId}")
+    public String update(@ModelAttribute UserDTO userDTO,
+                         @PathVariable String userId,
+                         @RequestParam String curPassword,
                          HttpSession session) {
-        User user = (User) session.getAttribute(ConstConfig.SESSION_ID);
+        User user = (User) session.getAttribute(ConstantConfig.SESSION_ID);
         if (user == null) throw new UserSessionExpireException();
         if (!user.isSamePassword(curPassword)) throw new UserUpdateException("잘못된 비밀번호 입니다.");
+        if (!userService.update(userDTO)) throw new UserUpdateException("업데이트에 실패했습니다.");
 
-        if (!userService.update(user, password, name, email)) throw new UserUpdateException("업데이트에 실패했습니다.");
         return "redirect:/user/list";
     }
 
+    @GetMapping("/login")
+    public String update() {
+        return "user/login";
+    }
+
     @PostMapping("/login")
-    public String login(@RequestParam String userId,
-                        @RequestParam String password,
+    public String login(@ModelAttribute UserDTO userDTO,
+                        @RequestParam(defaultValue = "/") String requestURL,
                         HttpSession session) {
-        Optional<User> optionalUser = userService.login(userId, password);
+        Optional<User> optionalUser = userService.login(userDTO);
         if (optionalUser.isEmpty()) throw new UserLoginException();
 
-        session.setAttribute(ConstConfig.SESSION_ID, optionalUser.get());
-        session.setAttribute(ConstConfig.SESSION_LOGIN, true);
-        return "redirect:/";
+        session.setAttribute(ConstantConfig.SESSION_ID, optionalUser.get());
+        session.setAttribute(ConstantConfig.SESSION_LOGIN, true);
+        return "redirect:" + requestURL;
     }
 
     @GetMapping("/logout")

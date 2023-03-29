@@ -1,6 +1,7 @@
-package kr.codesqaud.cafe.repository.h2Repository;
+package kr.codesqaud.cafe.repository.DataBaseRepository;
 
 import kr.codesqaud.cafe.basic.User;
+import kr.codesqaud.cafe.basic.UserDTO;
 import kr.codesqaud.cafe.repository.UserRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,22 +17,22 @@ import java.util.Optional;
 
 @Repository
 @Primary
-public class H2UserRepository implements UserRepository {
+public class DatabaseUserRepository implements UserRepository {
 
     private static final Logger logger = LoggerFactory.getLogger("user database");
 
     public final JdbcTemplate jdbcTemplate;
 
     @Autowired
-    public H2UserRepository(DataSource dataSource) {
+    public DatabaseUserRepository(DataSource dataSource) {
         jdbcTemplate = new JdbcTemplate(dataSource);
     };
 
     @Override
-    public void join(User user) {
+    public void join(UserDTO userDTO) {
         String sql = "insert into users(userId, password, name, email) values (?, ?, ?, ?)";
 
-        jdbcTemplate.update(sql, user.getUserId(), user.getPassword(), user.getName(), user.getEmail());
+        jdbcTemplate.update(sql, userDTO.getUserId(), userDTO.getPassword(), userDTO.getName(), userDTO.getEmail());
     }
 
     @Override
@@ -53,9 +54,9 @@ public class H2UserRepository implements UserRepository {
     }
 
     @Override
-    public int update(User user) {
+    public int update(UserDTO userDTO) {
         String sql = "update users set password=? , name=?, email=? where userId=?";
 
-        return jdbcTemplate.update(sql, user.getPassword(), user.getName(), user.getEmail(), user.getUserId());
+        return jdbcTemplate.update(sql, userDTO.getPassword(), userDTO.getName(), userDTO.getEmail(), userDTO.getUserId());
     }
 }

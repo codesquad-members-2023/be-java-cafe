@@ -14,10 +14,11 @@
             <h2 th:text="|${user.userId} 사용자 정보 변경하기|"> 소제목 : 사용자 정보 변경하기</h2>
             <br>
             <div class="alert alert-danger" role="alert" th:if="${exception != null}" th:text="${exception}">에러 메세지</div>
-            <form name="question" method="post" th:action="@{/user/update}">
+            <form name="question" method="post" th:action="@{/user/update/{userId}(userId=${user.userId})}">
                 <input type="hidden" name="_method" value="PUT">
+
                 <div class="form-group">
-                    <label for="curPassword">비밀번호</label>
+                    <label for="curPassword">현재 비밀번호</label>
                     <input type="password" class="form-control" id="curPassword" name="curPassword" placeholder="Password">
                 </div>
                 <div class="form-group">

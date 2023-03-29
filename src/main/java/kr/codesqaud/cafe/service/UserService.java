@@ -2,6 +2,7 @@ package kr.codesqaud.cafe.service;
 
 
 import kr.codesqaud.cafe.basic.User;
+import kr.codesqaud.cafe.basic.UserDTO;
 import kr.codesqaud.cafe.repository.UserRepository;
 import org.springframework.stereotype.Service;
 
@@ -16,16 +17,13 @@ public class UserService {
         this.userRepository = userRepository;
     }
 
-    public Optional<User> login(String userId, String password) {
-        return userRepository.findUserById(userId)
-                .filter((user) -> user.getPassword().equals(password));
+    public Optional<User> login(UserDTO userDTO) {
+        return userRepository.findUserById(userDTO.getUserId())
+                .filter((user) -> user.getPassword().equals(userDTO.getPassword()));
     }
 
-    public Boolean update(User user, String password, String email, String name) {
-        user.setPassword(password);
-        user.setEmail(email);
-        user.setName(name);
-        return userRepository.update(user) >= 1;
+    public Boolean update(UserDTO userDTO) {
+        return userRepository.update(userDTO) >= 1;
     }
 
 }

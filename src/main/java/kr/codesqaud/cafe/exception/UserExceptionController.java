@@ -1,5 +1,6 @@
-package kr.codesqaud.cafe.controller;
+package kr.codesqaud.cafe.exception;
 
+import kr.codesqaud.cafe.exception.gobalExeption.NotFoundException;
 import kr.codesqaud.cafe.exception.userException.UserException;
 import kr.codesqaud.cafe.exception.userException.UserLoginException;
 import kr.codesqaud.cafe.exception.userException.UserSessionExpireException;
@@ -9,7 +10,14 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
 @ControllerAdvice
-public class ExceptionController {
+public class UserExceptionController {
+
+    @ExceptionHandler(NotFoundException.class)
+    public String notFoundException(Exception e,
+                                    Model model) {
+        model.addAttribute("exception", e.getMessage());
+        return "errorPage";
+    }
 
     @ExceptionHandler({UserException.class})
     public String userException(Exception e,
@@ -22,14 +30,14 @@ public class ExceptionController {
     public String userSessionExpireException(Exception e,
                                 Model model) {
         model.addAttribute("exception", e.getMessage());
-        return "user/loginForm";
+        return "user/login";
     }
 
     @ExceptionHandler(UserLoginException.class)
     public String userLoginException(Exception e,
                                      Model model) {
         model.addAttribute("exception", e.getMessage());
-        return "user/loginForm";
+        return "user/login";
     }
 
 
