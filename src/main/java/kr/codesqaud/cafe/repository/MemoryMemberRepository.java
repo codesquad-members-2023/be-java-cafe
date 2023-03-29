@@ -19,15 +19,15 @@ public class MemoryMemberRepository implements MemberRepository {
     }
 
     @Override
-    public Member findOneMemberbyEmail(String email) {
-        return repository.get(email);
+    public Optional<Member> findOneMemberbyEmail(String email) {
+        return Optional.ofNullable(repository.get(email));
     }
 
     @Override
-    public Member findOneMemberbyNickName(String nickName) {
+    public Optional<Member> findOneMemberbyNickName(String nickName) {
         return repository.values().stream()
                 .filter(member -> member.getNickName().equals(nickName))
-                .findAny().get();
+                .findAny();
     }
 
     @Override

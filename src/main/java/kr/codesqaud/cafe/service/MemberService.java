@@ -5,6 +5,7 @@ import kr.codesqaud.cafe.repository.MemberRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class MemberService {
@@ -23,11 +24,11 @@ public class MemberService {
         return memberRepository.findAll();
     }
 
-    public Member findOneMemberByEmail(String userEmail) {
+    public Optional<Member> findOneMemberByEmail(String userEmail) {
         return memberRepository.findOneMemberbyEmail(userEmail);
     }
 
-    public Member findOneMemberByNickname(String nickName) {
+    public Optional<Member> findOneMemberByNickname(String nickName) {
         return memberRepository.findOneMemberbyNickName(nickName);
     }
 
@@ -36,16 +37,15 @@ public class MemberService {
     }
 
     public void editeMember(Member member) {
-        String password = memberRepository.findOneMemberbyEmail(member.getEmail()).getPassword();
+        String password = memberRepository.findOneMemberbyEmail(member.getEmail()).orElseThrow().getPassword();
         if (!member.getPassword().equals(password)) {
             return;
         }
         memberRepository.editeMember(member);
     }
 
-    public boolean checkMember(Member member) {
-        String password = memberRepository.findOneMemberbyEmail(member.getEmail()).getPassword();
-        if (password.equals(member.getPassword())) {
+    public boolean checkMember(Member member, Member storgedMember) {
+        if (storgedMember != null && storgedMember.getPassword().equals(member.getPassword())) {
             return true;
         }
         return false;

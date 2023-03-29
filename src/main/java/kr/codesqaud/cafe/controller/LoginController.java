@@ -19,8 +19,9 @@ public class LoginController {
 
     @PostMapping("/login")
     public String login(Member member, HttpSession httpSession) {
-        if(memberService.checkMember(member)) {
-            httpSession.setAttribute("sessionedUser", member);
+        Member loginMember = memberService.findOneMemberByEmail(member.getEmail()).orElse(null);
+        if (loginMember != null && memberService.checkMember(loginMember, member)) {
+            httpSession.setAttribute("sessionedUser", loginMember);
             return "redirect:/";
         }
         return "redirect:/login_fail";
