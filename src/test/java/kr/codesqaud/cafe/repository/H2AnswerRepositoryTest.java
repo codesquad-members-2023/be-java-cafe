@@ -2,8 +2,6 @@ package kr.codesqaud.cafe.repository;
 
 import kr.codesqaud.cafe.domain.Answer;
 import kr.codesqaud.cafe.domain.Article;
-import kr.codesqaud.cafe.domain.Member;
-import kr.codesqaud.cafe.dto.AnswerViewDto;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -12,10 +10,7 @@ import org.springframework.boot.test.autoconfigure.jdbc.JdbcTest;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.test.context.jdbc.Sql;
 
-import java.util.List;
-
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
 
 @JdbcTest
 @Sql("classpath:db/init.sql")
@@ -68,4 +63,25 @@ class H2AnswerRepositoryTest {
         int before = repository.findAll(1L).size();
         repository.save(answer);
         assertThat(repository.findById(1L).getWriterNickname()).isEqualTo("자바지기");
+    }
+
+    @Test
+    @DisplayName("댓글을 수정하면 댓글 contents가 바뀌어야 한다.")
+    void update() {
+        repository.save(answer);
+        Answer exAnswer = repository.findById(1L);
+        Answer newAnswer = new Answer();
+        newAnswer.setContents("수정된 테스트 댓글 내용");
+        repository.update(exAnswer, newAnswer);
+        assertThat(repository.findById(1L).getContents()).isEqualTo("수정된 테스트 댓글 내용");
+    }
+    @Test
+    @DisplayName("댓글을 수정하면 댓글 업데이트 시간을 바뀌어야 한다.")
+    void updateUpdateddate() {
+        repository.save(answer);
+        Answer exAnswer = repository.findById(1L);
+        Answer newAnswer = new Answer();
+        newAnswer.setContents("수정된 테스트 댓글 내용");
+        repository.update(exAnswer, newAnswer);
+        assertThat(repository.findById(1L).getUpdatedDate()).isAfter(exAnswer.getUpdatedDate());
     }
