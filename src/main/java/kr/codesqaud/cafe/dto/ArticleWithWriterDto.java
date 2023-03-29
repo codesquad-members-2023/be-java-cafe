@@ -15,7 +15,13 @@ public class ArticleWithWriterDto {
 	public ArticleWithWriterDto() {
 	}
 
-	public ArticleWithWriterDto(Long articleSequence, String title, String contents, LocalDateTime writtenTime,String writer, Long userSequence) {
+	public ArticleWithWriterDto(Long articleSequence, String title, String contents) {
+		this.articleSequence = articleSequence;
+		this.title = title;
+		this.contents = contents;
+	}
+
+	public ArticleWithWriterDto(Long articleSequence, String title, String contents, LocalDateTime writtenTime, String writer, Long userSequence) {
 		this.articleSequence = articleSequence;
 		this.title = title;
 		this.contents = contents;
