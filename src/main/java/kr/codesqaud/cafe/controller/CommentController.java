@@ -1,13 +1,16 @@
 package kr.codesqaud.cafe.controller;
 
+import kr.codesqaud.cafe.domain.Article;
 import kr.codesqaud.cafe.domain.Comment;
 import kr.codesqaud.cafe.repository.comment.CommentRepository;
+import kr.codesqaud.cafe.util.SessionConst;
 import kr.codesqaud.cafe.util.ValidateConst;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -40,5 +43,27 @@ public class CommentController {
         commentRepository.save(new Comment(articleId, writer, contents));
 
         return "redirect:/qna/{articleId}";
+    }
+
+    @DeleteMapping("/qna/{articleId}/{commentId}")
+    public String deleteComment(@PathVariable long articleId,
+                                @PathVariable long commentId,
+                                HttpSession httpSession,
+                                Model model) {
+
+        if (!validateIdentity(commentId, httpSession)) {
+            model.addAttribute("errorMessage", ValidateConst.NOT_YOURS);
+            return "util/error";
+        }
+
+
+
+    }
+
+    private boolean validateIdentity(long commentId, HttpSession httpSession) {
+
+        Comment targetComment = commentRepository.findByCommentId(commentId);
+
+        return targetComment.getWriter() == (long) httpSession.getAttribute(SessionConst.LOGIN_USERID);
     }
 }

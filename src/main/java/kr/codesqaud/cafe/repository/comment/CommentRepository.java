@@ -8,6 +8,8 @@ public interface CommentRepository {
 
     void save(Comment comment);
 
+    Comment findByCommentId(long commentId);
+
     List<Comment> findAllCommentsByArticleId(long articleId);
 
     int findNumOfCommentsByArticleId(long articleId);
