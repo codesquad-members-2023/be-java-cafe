@@ -41,10 +41,10 @@ public class ArticleController {
         return "redirect:/";
     }
 
-    @GetMapping("/articles/{index}")
-    public String showArticle(@PathVariable Long index, Model model) {
+    @GetMapping("/articles/{id}")
+    public String showArticle(@PathVariable Long id, Model model) {
         try {
-            Optional<Article> findArticle = repository.findById(index);
+            Optional<Article> findArticle = repository.findById(id);
             if (findArticle.isPresent()) {
                 model.addAttribute("article", findArticle.get());
                 return "qna/show";
@@ -57,7 +57,9 @@ public class ArticleController {
     }
 
     @DeleteMapping("/questions/{id}delete")
-    public String deleteArticle(@PathVariable Long id) {
+    public String deleteArticle(@PathVariable Long id, HttpSession session) {
+        LoginSessionUtils sessionUtils = (LoginSessionUtils) session.getAttribute(SessionConst.LOGIN_MEMBER);
+        sessionCheckId(id, sessionUtils);
         repository.delete(id);
         return "redirect:/";
     }
@@ -66,12 +68,10 @@ public class ArticleController {
     public String updateArticleForm(@PathVariable Long id, Model model, HttpSession session) {
         Object attribute = session.getAttribute(SessionConst.LOGIN_MEMBER);
         LoginSessionUtils sessionUtils = (LoginSessionUtils) attribute;
-        if (sessionUtils.getId() == id) {
-            Optional<Article> findArticle = repository.findById(id);
-            model.addAttribute("article", findArticle.orElseThrow());
-            return "qna/updateForm";
-        }
-        return "error";
+        sessionCheckId(id, sessionUtils);
+        Optional<Article> findArticle = repository.findById(id);
+        model.addAttribute("article", findArticle.orElseThrow());
+        return "qna/updateForm";
     }
 
     @PutMapping("/articles/{id}/update")
@@ -81,5 +81,12 @@ public class ArticleController {
         Optional<Article> findArticle = repository.findById(id);
         repository.update(findArticle, title, content);
         return "redirect:/";
+    }
+
+
+    private void sessionCheckId(Long id, LoginSessionUtils sessionUtils) {
+        if (sessionUtils.getId() != id) {
+            throw new NullPointerException();
+        }
     }
 }
