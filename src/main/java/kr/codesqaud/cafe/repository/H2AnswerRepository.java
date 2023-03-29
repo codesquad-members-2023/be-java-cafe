@@ -43,4 +43,12 @@ public class H2AnswerRepository implements AnswerRepository{
         MapSqlParameterSource param = new MapSqlParameterSource("articleId", articleId);
         return namedParameterJdbcTemplate.query(sql, param, new AnswerRowMapper());
     }
+
+    @Override
+    public Answer findById(long id) {
+        String sql = "SELECT A.ID, A.CONTENTS, A.USER_ID, A.ARTICLE_ID, A.CREATED_AT, A.UPDATED_AT, " +
+                "M.ID as writer_id, M.NICKNAME as writer_nickname FROM ANSWER A LEFT JOIN MEMBER M on M.ID = A.USER_ID WHERE A.ID = :id";
+        MapSqlParameterSource param = new MapSqlParameterSource("id", id);
+        return namedParameterJdbcTemplate.queryForObject(sql, param, new AnswerRowMapper());
+    }
 }
