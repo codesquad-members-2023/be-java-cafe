@@ -1,40 +1,36 @@
 package kr.codesqaud.cafe.cafeservice.repository;
 
 import kr.codesqaud.cafe.cafeservice.domain.Article;
-import kr.codesqaud.cafe.cafeservice.repository.article.H2JdbcTemplateArticleRepository;
+import kr.codesqaud.cafe.cafeservice.repository.article.H2ArticleRepository;
 import org.junit.jupiter.api.*;
-import org.junit.runner.RunWith;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.autoconfigure.jdbc.JdbcTest;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.jdbc.JdbcTestUtils;
-import org.springframework.transaction.annotation.Transactional;
 
 import javax.sql.DataSource;
+import java.sql.SQLException;
 import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-@RunWith(SpringRunner.class)
-@SpringBootTest
-@Transactional
+@JdbcTest
 class JdbcRepositoryTest {
 
     Logger log = LoggerFactory.getLogger(JdbcRepositoryTest.class);
 
     @Autowired
     private DataSource dataSource;
-    H2JdbcTemplateArticleRepository repository;
+    H2ArticleRepository repository;
     private JdbcTemplate jdbcTemplate;
 
     @BeforeEach
     void init() {
         jdbcTemplate = new JdbcTemplate(dataSource);
-        repository = new H2JdbcTemplateArticleRepository(dataSource);
+        repository = new H2ArticleRepository();
     }
 
     @AfterEach
@@ -49,7 +45,7 @@ class JdbcRepositoryTest {
 
     @Test
     @DisplayName("게시글 저장 테스트")
-    void testSave() {
+    void testSave() throws SQLException {
         // given
         Article article = new Article();
         article.setWriter("writer1");
@@ -66,7 +62,7 @@ class JdbcRepositoryTest {
 
     @Test
     @DisplayName("전체 게시글 조회 테스트")
-    void findAll() {
+    void findAll() throws SQLException {
         // given
         Article article1 = new Article();
         article1.setWriter("writer1");
@@ -90,7 +86,7 @@ class JdbcRepositoryTest {
 
     @Test
     @DisplayName("게시글 ID로 조회 테스트 - 존재하는 경우")
-    void findById() {
+    void findById() throws SQLException {
         // given
         Article article = new Article();
         article.setWriter("writer1");
@@ -110,7 +106,7 @@ class JdbcRepositoryTest {
 
     @Test
     @DisplayName("게시글 ID로 조회 테스트 - 존재하지 않는 경우")
-    void findByIdx() {
+    void findByIdx() throws SQLException {
         // given
         Long id = 1000L;
 
