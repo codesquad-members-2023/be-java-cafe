@@ -10,4 +10,6 @@ public interface AnswerRepository {
     Answer findById(long id);
     void update(Answer exAnswer, Answer newAnswer);
     void delete(long id);
+
+    void update(Answer answer, long answerId);
 }

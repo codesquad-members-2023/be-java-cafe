@@ -1,7 +1,7 @@
 package kr.codesqaud.cafe.repository;
 
 import kr.codesqaud.cafe.domain.Answer;
-import kr.codesqaud.cafe.dto.AnswerViewDto;
+import kr.codesqaud.cafe.dto.answer.AnswerDbDto;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
@@ -39,7 +39,7 @@ public class H2AnswerRepository implements AnswerRepository{
     @Override
     public List<Answer> findAll(long articleId) {
         String sql = "SELECT A.ID, A.CONTENTS, A.USER_ID, A.ARTICLE_ID, A.CREATED_AT as created_date, A.UPDATED_AT as updated_date, " +
-                "M.ID as writer_id, M.NICKNAME as writer_nickname FROM ANSWER A LEFT JOIN MEMBER M on M.ID = A.USER_ID WHERE ARTICLE_ID = :articleId";
+                "M.ID as writer_index, M.USERID, M.NICKNAME, M.EMAIL, M.PASSWORD, M.CREATED_AT as member_created_at, M.UPDATED_AT as member_updated_at FROM ANSWER A LEFT JOIN MEMBER M on M.ID = A.USER_ID WHERE ARTICLE_ID = :articleId";
         MapSqlParameterSource param = new MapSqlParameterSource("articleId", articleId);
         return namedParameterJdbcTemplate.query(sql, param, new AnswerRowMapper());
     }
@@ -47,7 +47,7 @@ public class H2AnswerRepository implements AnswerRepository{
     @Override
     public Answer findById(long id) {
         String sql = "SELECT A.ID, A.CONTENTS, A.USER_ID, A.ARTICLE_ID, A.CREATED_AT, A.UPDATED_AT, " +
-                "M.ID as writer_id, M.NICKNAME as writer_nickname FROM ANSWER A LEFT JOIN MEMBER M on M.ID = A.USER_ID WHERE A.ID = :id";
+                "M.ID as writer_index, M.USERID, M.NICKNAME, M.EMAIL, M.PASSWORD, M.CREATED_AT as MEMBER_CREATED_AT, M.UPDATED_AT as member_updated_at FROM ANSWER A LEFT JOIN MEMBER M on M.ID = A.USER_ID WHERE A.ID = :id";
         MapSqlParameterSource param = new MapSqlParameterSource("id", id);
         return namedParameterJdbcTemplate.queryForObject(sql, param, new AnswerRowMapper());
     }
@@ -82,10 +82,12 @@ public class H2AnswerRepository implements AnswerRepository{
     private static class AnswerRowMapper implements RowMapper<Answer> {
         @Override
         public Answer mapRow(ResultSet rs, int rowNum) throws SQLException {
-            AnswerViewDto answerViewDto = new BeanPropertyRowMapper<>(AnswerViewDto.class).mapRow(rs, rowNum);
-            answerViewDto.setCreatedDate(rs.getTimestamp("CREATED_AT").toLocalDateTime());
-            answerViewDto.setUpdatedDate(rs.getTimestamp("UPDATED_AT").toLocalDateTime());
-            return answerViewDto.toDomain();
+            AnswerDbDto answerDBDto = new BeanPropertyRowMapper<>(AnswerDbDto.class).mapRow(rs, rowNum);
+            answerDBDto.setCreatedDate(rs.getTimestamp("CREATED_AT").toLocalDateTime());
+            answerDBDto.setUpdatedDate(rs.getTimestamp("UPDATED_AT").toLocalDateTime());
+            answerDBDto.setMemberCreatedAt(rs.getTimestamp("MEMBER_CREATED_AT").toLocalDateTime());
+            answerDBDto.setMemberUpdatedAt(rs.getTimestamp("MEMBER_UPDATED_AT").toLocalDateTime());
+            return answerDBDto.toDomain();
         }
     }
 }
