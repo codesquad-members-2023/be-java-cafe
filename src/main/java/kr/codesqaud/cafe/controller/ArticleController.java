@@ -92,12 +92,17 @@ public class ArticleController {
     }
 
     @PutMapping("qna/{articleId}")
-    public String updateArticle(@PathVariable long articleId, @ModelAttribute Article article, HttpSession httpSession, Model model) {
+    public String updateArticle(@PathVariable long articleId,
+                                @RequestParam String title,
+                                @RequestParam String contents,
+                                HttpSession httpSession, Model model) {
 
         if (!validateIdentity(articleId, httpSession)) {
             model.addAttribute("errorMessage", ValidateConst.NOT_YOURS);
             return "util/error";
         }
+
+        articleRepository.updateArticle(articleId, title, contents);
 
         return "redirect:/qna/list";
     }
@@ -110,7 +115,7 @@ public class ArticleController {
             return "util/error";
         }
 
-        articleRepository.deleteAriticle(articleId);
+        articleRepository.deleteArticle(articleId);
 
         return "redirect:/qna/list";
     }
