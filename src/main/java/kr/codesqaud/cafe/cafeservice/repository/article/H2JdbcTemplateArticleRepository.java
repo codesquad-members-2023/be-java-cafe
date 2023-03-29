@@ -42,8 +42,8 @@ public class H2JdbcTemplateArticleRepository implements ArticleRepository {
     }
 
     @Override
-    public void update(Optional<Article> article, String title, String content) {
-        Long findId = article.orElseThrow().getId();
+    public void update(Article article, String title, String content) {
+        Long findId = article.getId();
         String sql = "UPDATE article SET title = ?, content = ? WHERE id = ?";
         template.update(sql, title, content, findId);
     }

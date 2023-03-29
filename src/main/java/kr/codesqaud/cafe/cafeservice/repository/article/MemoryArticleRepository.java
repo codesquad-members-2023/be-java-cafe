@@ -34,7 +34,7 @@ public class MemoryArticleRepository implements ArticleRepository {
     }
 
     @Override
-    public void update(Optional<Article> article, String title, String content) {
+    public void update(Article article, String title, String content) {
     }
 
     public Article findOne(Long id) {
