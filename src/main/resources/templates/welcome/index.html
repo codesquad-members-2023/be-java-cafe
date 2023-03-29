@@ -31,7 +31,9 @@
                             </div>
                             <div class="reply" title="댓글">
                                 <i class="icon-reply"></i>
-                                <span class="point" th:text="${article.id}"></span>
+
+                                <span class="point" th:text="${article.replyList.size()}"></span>
+
                             </div>
                         </div>
                     </div>

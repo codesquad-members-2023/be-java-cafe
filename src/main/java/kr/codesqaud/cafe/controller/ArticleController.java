@@ -40,6 +40,10 @@ public class ArticleController {
     @GetMapping("/")
     public String welcomePage(Model model) {
         List<Article> allArticle = articleRepository.findAllArticle();
+        for (Article article : allArticle) {
+            List<Reply> replies = replyRepository.findAllReplyByArticleId(article.getId());
+            article.setReplyList(replies);
+        }
         model.addAttribute(allArticle);
 
         return "welcome/index";

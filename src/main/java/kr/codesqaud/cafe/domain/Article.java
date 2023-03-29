@@ -1,6 +1,7 @@
 package kr.codesqaud.cafe.domain;
 
 import java.sql.Timestamp;
+import java.util.List;
 
 public class Article {
     private int id;
@@ -8,15 +9,18 @@ public class Article {
     private String title;
     private String contents;
     private Timestamp timestamp;
+    private List<Reply> replyList;
 
     public Article() {
     }
 
-    public Article(String userId, String title, String contents, Timestamp timestamp) {
+    public Article(int id, String userId, String title, String contents, Timestamp timestamp, List<Reply> replyList) {
+        this.id = id;
         this.userId = userId;
         this.title = title;
         this.contents = contents;
         this.timestamp = timestamp;
+        this.replyList = replyList;
     }
 
     public String getUserId() {
@@ -57,5 +61,13 @@ public class Article {
 
     public void setTimestamp(Timestamp timestamp) {
         this.timestamp = timestamp;
+    }
+
+    public List<Reply> getReplyList() {
+        return replyList;
+    }
+
+    public void setReplyList(List<Reply> replyList) {
+        this.replyList = replyList;
     }
 }
