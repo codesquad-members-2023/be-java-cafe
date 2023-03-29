@@ -1,7 +1,9 @@
 package kr.codesqaud.cafe.dto;
 
+import javax.servlet.http.HttpSession;
+
 public class SessionUser {
-    public static final String SESSION_USER = "SessionedUser";
+    public static final String SESSION_USER = "sessionedUser";
     private long id;
     private String nickName;
 
@@ -24,6 +26,14 @@ public class SessionUser {
     public SessionUser(long id, String nickName) {
         this.id = id;
         this.nickName = nickName;
+    }
+
+    public static SessionUser getSessionUser(HttpSession session) {
+        try {
+            return (SessionUser) session.getAttribute(SESSION_USER);
+        } catch (NullPointerException e) {
+            return null;
+        }
     }
 
     public boolean equals(long id) {

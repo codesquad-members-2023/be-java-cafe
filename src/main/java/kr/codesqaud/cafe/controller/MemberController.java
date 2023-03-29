@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpSession;
 import java.util.List;
 
+import static kr.codesqaud.cafe.constant.ConstUrl.REDIRECT_INDEX;
 import static kr.codesqaud.cafe.dto.SessionUser.SESSION_USER;
 import static kr.codesqaud.cafe.exception.ExceptionStatus.*;
 
@@ -20,24 +21,14 @@ import static kr.codesqaud.cafe.exception.ExceptionStatus.*;
 public class MemberController {
 
     private final MemberRepository memberRepository;
-    private Logger LOG = LoggerFactory.getLogger(MemberController.class.getName());
+    private Logger LOG = LoggerFactory.getLogger(MemberController.class);
 
     public MemberController(MemberRepository userRepository) {
         this.memberRepository = userRepository;
     }
 
-    @GetMapping("/user/{id}/update")
+    @GetMapping("/users/{id}/update")
     public String updateForm(@PathVariable long id, HttpSession httpSession, Model model) {
-        SessionUser sessionedUser = (SessionUser) httpSession.getAttribute(SESSION_USER);
-
-        if (sessionedUser == null) {
-            throw new ManageMemberException(NO_SESSION_USER);
-        }
-
-        if (sessionedUser.equals(id)) {
-            throw new ManageMemberException(DIFFERENT_MEMBER);
-        }
-
         model.addAttribute("profile", memberRepository.findById(id));
         return "user/updateForm";
     }
@@ -45,7 +36,7 @@ public class MemberController {
     @GetMapping("/logout")
     public String logout(HttpSession httpSession) {
         httpSession.invalidate();
-        return "redirect:/";
+        return REDIRECT_INDEX;
     }
 
     @PostMapping("/login")
@@ -57,10 +48,10 @@ public class MemberController {
         }
 
         httpSession.setAttribute(SESSION_USER, new SessionUser(member.getId(), member.getNickname()));
-        return "redirect:/";
+        return REDIRECT_INDEX;
     }
 
-    @PostMapping("/users")
+    @PostMapping("/users/join")
     public String addUser(String userId, String email, String nickname, String password) {
         Member member = new Member(userId, nickname, email, password);
 
@@ -69,7 +60,7 @@ public class MemberController {
         }
 
         memberRepository.save(member);
-        return "redirect:/users";
+        return REDIRECT_INDEX;
     }
 
     @GetMapping("/users")

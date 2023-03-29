@@ -1,6 +1,7 @@
 package kr.codesqaud.cafe.controller;
 
 import kr.codesqaud.cafe.dto.SessionUser;
+import kr.codesqaud.cafe.exception.InvalidAuthorityException;
 import kr.codesqaud.cafe.exception.ManageMemberException;
 import org.springframework.http.HttpStatus;
 import org.springframework.ui.Model;
@@ -19,13 +20,25 @@ public class GlobalExceptionHandler {
     private static final String MESSAGE = "message";
     private static final String DEFAULT_ERROR_PAGE = "error";
 
+    @ResponseStatus(HttpStatus.FORBIDDEN)
+    @ExceptionHandler(value = InvalidAuthorityException.class)
+    public String handleInvalidAuthorityException(InvalidAuthorityException e, Model model, RedirectAttributes redirectAttributes) {
+        model.addAttribute(MESSAGE, e.getMessage());
+
+        switch (e.getStatus()) {
+            case NO_SESSION_USER:
+                return "user/login_failed";
+            case INVALID_MEMBER:
+            default: return DEFAULT_ERROR_PAGE;
+        }
+    }
+
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(value = ManageMemberException.class)
     public String handleFailToManageMemberException(ManageMemberException e, Model model, RedirectAttributes redirectAttributes, HttpSession httpSession) {
         model.addAttribute(MESSAGE, e.getMessage());
 
         switch (e.getStatus()) {
-            case NO_SESSION_USER:
             case LOGIN_FAILED:
             case DUPLICATE_MEMBER_INFO:
                 return "user/login_failed";
@@ -33,7 +46,7 @@ public class GlobalExceptionHandler {
                 redirectAttributes.addAttribute(MESSAGE, e.getMessage());
                 long id = ((SessionUser) httpSession.getAttribute(SESSION_USER)).getId();
                 redirectAttributes.addFlashAttribute(id);
-                return "redirect:/user/{id}/update";
+                return "redirect:/users/{id}/update";
             default: return DEFAULT_ERROR_PAGE;
         }
     }
