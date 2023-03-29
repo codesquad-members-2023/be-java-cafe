@@ -24,6 +24,14 @@ public class DBCommentRepository implements CommentRepository {
         this.jdbcTemplate = new JdbcTemplate(dataSource);
     }
 
+
+    @Override
+    public void save(Comment comment) {
+        String sql = "insert into comment (articleId, writer, contents) values(?, ?, ?)";
+
+        jdbcTemplate.update(sql, comment.getArticleId(), comment.getWriter(), comment.getContents());
+    }
+
     @Override
     public List<Comment> findAllCommentsByArticleId(long articleId) {
         String sql = "select writer, contents, createdAt from comment where articleId = ? and deletedAt is null";
