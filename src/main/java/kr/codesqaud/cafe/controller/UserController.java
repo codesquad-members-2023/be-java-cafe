@@ -3,9 +3,12 @@ package kr.codesqaud.cafe.controller;
 import kr.codesqaud.cafe.domain.User;
 import kr.codesqaud.cafe.dto.UserForm;
 import kr.codesqaud.cafe.repository.UserRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
@@ -15,6 +18,7 @@ import java.util.Optional;
 public class UserController {
 
     private final UserRepository userRepository;
+    private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
     @Autowired //의존성 주입
     public UserController(UserRepository userRepository) {
@@ -52,9 +56,8 @@ public class UserController {
         Optional<User> user = userRepository.findById(id);
 
         if (user.isPresent()) {
-            Object value = session.getAttribute("loginUser");
-            if (value != null) {
-                User sessionUser = (User) value;
+            User sessionUser = (User) session.getAttribute(SessionConst.LOGIN_USER);
+            if (sessionUser != null) {
                 if (sessionUser.getId().equals(user.get().getId())) {
                     model.addAttribute("user", user.get());
                     return "user/updateForm";
@@ -70,23 +73,25 @@ public class UserController {
         Optional<User> user = userRepository.findById(id);
 
         if (user.isPresent()) {
-            if (user.get().matchPassword(userForm.getPrePassword())) {
+            if (user.get().isEqualPasswordTo(userForm.getPrePassword())) {
                 userRepository.save(new User(userForm.getId(), userForm.getName(), userForm.getEmail(), userForm.getPassword()));
                 return "redirect:/users";
             }
             model.addAttribute(SessionConst.LOGIN_USER, user.get());
+            logger.debug("세션에 로그인 정보 저장");
             return "user/updateForm_failed";
         }
-        //id가 db에 존재하지 않을 경우 홈 화면으로
-        return "index";
+        //id가 db에 존재하지 않을 경우 에러 화면으로
+        return "error";
     }
 
     @PostMapping("/login")
     public String login(UserForm userForm, HttpSession session) {
         Optional<User> user = userRepository.findById(userForm.getId());
+        logger.debug("in login controller");
 
         if (user.isPresent()) {
-            if (user.get().getPassword().equals(userForm.getPassword())) {
+            if (user.get().isEqualPasswordTo(userForm.getPassword())) {
                 session.setAttribute(SessionConst.LOGIN_USER, user.get());
 
                 return "redirect:/users";
@@ -101,4 +106,6 @@ public class UserController {
 
         return "index";
     }
+
+    //private boolean isEqualSessionTo()
 }
