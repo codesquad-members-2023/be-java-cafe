@@ -53,32 +53,26 @@ public class NamedJdbcTemplateArticleRepository {
 	}
 
 	private RowMapper<Article> articleRowMapper() {
-		return new RowMapper<Article>() {
-			@Override
-			public Article mapRow(ResultSet rs, int rowNum) throws SQLException {
-				Article article = new Article();
-				article.setArticleSequence(rs.getLong("article_number"));
-				article.setTitle(rs.getString("article_title"));
-				article.setContents(rs.getString("article_contents"));
-				article.setWrittenTime(rs.getTimestamp("article_writtentime").toLocalDateTime());
-				return article;
-			}
+		return (rs, rowNum) -> {
+			Article article = new Article();
+			article.setArticleSequence(rs.getLong("article_number"));
+			article.setTitle(rs.getString("article_title"));
+			article.setContents(rs.getString("article_contents"));
+			article.setWrittenTime(rs.getTimestamp("article_writtentime").toLocalDateTime());
+			return article;
 		};
 	}
 
 	private RowMapper<ArticleWithWriterDto> articleWithWriterDtoRowMapper() {
-		return new RowMapper<ArticleWithWriterDto>() {
-			@Override
-			public ArticleWithWriterDto mapRow(ResultSet rs, int rowNum) throws SQLException {
-				ArticleWithWriterDto articleWithWriterDto = new ArticleWithWriterDto();
-				articleWithWriterDto.setArticleSequence(rs.getLong("article_number"));
-				articleWithWriterDto.setTitle(rs.getString("article_title"));
-				articleWithWriterDto.setContents(rs.getString("article_contents"));
-				articleWithWriterDto.setWrittenTime(rs.getTimestamp("article_writtentime").toLocalDateTime());
-				articleWithWriterDto.setUserSequence(rs.getLong("member_number"));
-				articleWithWriterDto.setWriter(rs.getString("member_id"));
-				return articleWithWriterDto;
-			}
+		return (rs, rowNum) -> {
+			ArticleWithWriterDto articleWithWriterDto = new ArticleWithWriterDto();
+			articleWithWriterDto.setArticleSequence(rs.getLong("article_number"));
+			articleWithWriterDto.setTitle(rs.getString("article_title"));
+			articleWithWriterDto.setContents(rs.getString("article_contents"));
+			articleWithWriterDto.setWrittenTime(rs.getTimestamp("article_writtentime").toLocalDateTime());
+			articleWithWriterDto.setUserSequence(rs.getLong("member_number"));
+			articleWithWriterDto.setWriter(rs.getString("member_id"));
+			return articleWithWriterDto;
 		};
 	}
 }
