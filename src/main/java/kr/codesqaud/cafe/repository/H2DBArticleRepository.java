@@ -62,7 +62,11 @@ public class H2DBArticleRepository implements ArticleRepository {
 
     @Override
     public void delete(int id) {
-        String sql = "update article set deleted=true where id=:id;";
+        String sql = "set autocommit false;" +
+                "update reply set deleted=true where article_id=:id;" +
+                "update article set deleted=true where id=:id;" +
+                "commit;" +
+                "set autocommit true;";
 
         Map<String, Integer> param = Map.of("id", id);
         template.update(sql, param);

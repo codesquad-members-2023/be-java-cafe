@@ -38,7 +38,7 @@ public class ReplyController {
         int userId = (int) session.getAttribute(SessionConstant.LOGIN_USER_ID);
 
         if (userId != reply.getUserId()) {
-            throw new IllegalArgumentException("[ERROR] 자신이 작성하지 않은 게시물은 삭제할 수 없습니다.");
+            throw new IllegalArgumentException("[ERROR] 자신이 작성하지 않은 댓글은 삭제할 수 없습니다.");
         }
 
         replyRepository.delete(replyId);
