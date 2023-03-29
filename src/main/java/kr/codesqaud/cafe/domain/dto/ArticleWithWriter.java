@@ -14,7 +14,6 @@ public class ArticleWithWriter {
 
     public ArticleWithWriter() {
         this.createDate = LocalDateTime.now();
-        this.replyCount = 0;
     }
 
     public ArticleWithWriter(int id, String title, String contents, int userId, String writer) {
@@ -25,7 +24,6 @@ public class ArticleWithWriter {
         this.writer = writer;
 
         this.createDate = LocalDateTime.now();
-        this.replyCount = 0;
     }
 
     public int getId() {

@@ -1,24 +1,24 @@
-package kr.codesqaud.cafe.domain;
+package kr.codesqaud.cafe.domain.dto;
 
 import java.time.LocalDateTime;
 
-public class Article {
+public class ReplyWithUser {
 
     private int id;
-    private String title;
+    private int userId;
+    private String userName;
     private String contents;
     private LocalDateTime createDate;
-    private int userId;
 
-    public Article() {
-        this.createDate = LocalDateTime.now();
+    public ReplyWithUser() {
     }
 
-    public Article(int userId, String title, String contents) {
+    public ReplyWithUser(int id, int userId, String userName, String contents, LocalDateTime createDate) {
+        this.id = id;
         this.userId = userId;
-        this.title = title;
+        this.userName = userName;
         this.contents = contents;
-        this.createDate = LocalDateTime.now();
+        this.createDate = createDate;
     }
 
     public int getId() {
@@ -29,12 +29,20 @@ public class Article {
         this.id = id;
     }
 
-    public String getTitle() {
-        return title;
+    public int getUserId() {
+        return userId;
     }
 
-    public void setTitle(String title) {
-        this.title = title;
+    public void setUserId(int userId) {
+        this.userId = userId;
+    }
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
     }
 
     public String getContents() {
@@ -52,14 +60,4 @@ public class Article {
     public void setCreateDate(LocalDateTime createDate) {
         this.createDate = createDate;
     }
-
-    public int getUserId() {
-        return userId;
-    }
-
-    public void setUserId(int userId) {
-        this.userId = userId;
-    }
-
-
 }
