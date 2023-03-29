@@ -74,6 +74,33 @@ public class ArticleController {
         return "qna/show";
     }
 
+    @GetMapping("qna/{articleId}/edit")
+    public String orderEditForm(@PathVariable long articleId, HttpSession httpSession, Model model) {
+
+        log.info("articleId = {}", articleId);
+
+        if (!validateIdentity(articleId, httpSession)) {
+            model.addAttribute("errorMessage", ValidateConst.NOT_YOURS);
+            return "util/error";
+        }
+
+        Article article = articleRepository.findByArticleId(articleId);
+        model.addAttribute("article", article);
+        log.info("filterd article = {}", article.getId());
+
+        return "qna/edit";
+    }
+
+    @PutMapping("qna/{articleId}")
+    public String updateArticle(@PathVariable long articleId, @ModelAttribute Article article, HttpSession httpSession, Model model) {
+
+        if (!validateIdentity(articleId, httpSession)) {
+            model.addAttribute("errorMessage", ValidateConst.NOT_YOURS);
+            return "util/error";
+        }
+
+        return "redirect:/qna/list";
+    }
 
     @DeleteMapping("/qna/{articleId}")
     public String deleteArticle(@PathVariable long articleId, HttpSession httpSession, Model model) {
