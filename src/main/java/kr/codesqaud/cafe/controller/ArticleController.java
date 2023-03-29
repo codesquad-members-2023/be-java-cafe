@@ -27,15 +27,18 @@ public class ArticleController {
     }
 
     @PostMapping("/qna")
-    public String addArticle(@ModelAttribute Article article, Model model, HttpSession httpSession) {
+    public String addArticle(@RequestParam String title,
+                             @RequestParam String contents,
+                             Model model, HttpSession httpSession) {
 
-        if (httpSession.getAttribute("loggedInId") == null) {
+        if (httpSession.getAttribute(SessionConst.LOGIN_USERID) == null) {
             model.addAttribute("errorMessage", ValidateConst.UNKNOWN_USER);
             return "util/error";
         }
 
-        articleRepository.save(article);
-        log.debug("debug log={}", article.getContents());
+        long writer = (long) httpSession.getAttribute(SessionConst.LOGIN_USERID);
+        articleRepository.save(new Article(writer, title, contents));
+
         return "redirect:/qna/list";
     }
 
@@ -45,8 +48,7 @@ public class ArticleController {
         log.info("orderQnaForm, httpSession={}", httpSession.getAttribute("loggedInId"));
 
         if (httpSession.getAttribute("loggedInId") == null) {
-            model.addAttribute("errorMessage", ValidateConst.UNKNOWN_USER);
-            return "util/error";
+            return "redirect:/users/login";
         }
 
         return "qna/form";
