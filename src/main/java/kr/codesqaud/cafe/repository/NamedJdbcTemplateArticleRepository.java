@@ -11,7 +11,6 @@ import org.springframework.stereotype.Repository;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.time.LocalDateTime;
 import java.util.List;
 
 @Repository
@@ -35,8 +34,8 @@ public class NamedJdbcTemplateArticleRepository {
 	}
 
 	public ArticleWithWriterDto findByArticleSequence(Long articleSequence) {
-		String sql = "select a.article_number, a.article_title, a.article_contents, a.article_writtentime, a.member_number, " +
-			"(select member_id from member m where m.member_number=a.member_number) as writer from article a where a.article_number=:articleSequence";
+		String sql = "select a.article_number, a.article_title, a.article_contents, a.article_writtentime, a.member_number," +
+			"m.member_id from article a inner join member m on a.member_number = m.member_number where a.article_number=:articleSequence";
 		SqlParameterSource sqlParameterSource = new MapSqlParameterSource("articleSequence", articleSequence);
 		return template.queryForObject(sql, sqlParameterSource, articleWithWriterDtoRowMapper());
 	}
@@ -78,7 +77,7 @@ public class NamedJdbcTemplateArticleRepository {
 				articleWithWriterDto.setContents(rs.getString("article_contents"));
 				articleWithWriterDto.setWrittenTime(rs.getTimestamp("article_writtentime").toLocalDateTime());
 				articleWithWriterDto.setUserSequence(rs.getLong("member_number"));
-				articleWithWriterDto.setWriter(rs.getString("writer"));
+				articleWithWriterDto.setWriter(rs.getString("member_id"));
 				return articleWithWriterDto;
 			}
 		};
