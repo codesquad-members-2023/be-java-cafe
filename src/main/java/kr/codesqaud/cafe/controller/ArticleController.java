@@ -1,8 +1,10 @@
 package kr.codesqaud.cafe.controller;
 
 import kr.codesqaud.cafe.domain.Article;
+import kr.codesqaud.cafe.domain.Comment;
 import kr.codesqaud.cafe.repository.article.ArticleRepository;
 
+import kr.codesqaud.cafe.repository.comment.CommentRepository;
 import kr.codesqaud.cafe.util.SessionConst;
 import kr.codesqaud.cafe.util.ValidateConst;
 import org.slf4j.Logger;
@@ -20,10 +22,12 @@ public class ArticleController {
 
     private final Logger log = LoggerFactory.getLogger(getClass());
     private final ArticleRepository articleRepository;
+    private final CommentRepository commentRepository;
 
     @Autowired
-    public ArticleController(ArticleRepository articleRepository) {
+    public ArticleController(ArticleRepository articleRepository, CommentRepository commentRepository) {
         this.articleRepository = articleRepository;
+        this.commentRepository = commentRepository;
     }
 
     @PostMapping("/qna")
@@ -72,6 +76,9 @@ public class ArticleController {
 
         Article article = articleRepository.findByArticleId(id);
         model.addAttribute("article", article);
+
+        List<Comment> commentList = commentRepository.findAllCommentsByArticleId(id);
+        model.addAttribute("comments", commentList);
 
         return "qna/show";
     }
