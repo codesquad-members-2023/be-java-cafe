@@ -1,15 +1,7 @@
 package kr.codesqaud.cafe.repository;
 
-import kr.codesqaud.cafe.domain.Member;
-import kr.codesqaud.cafe.repository.Member.JdbcMemberRepository;
-import kr.codesqaud.cafe.repository.Member.MemberRepository;
-import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.autoconfigure.jdbc.JdbcTest;
 
-import java.util.List;
-import java.util.Optional;
-
-import static org.assertj.core.api.Assertions.*;
 @JdbcTest
 class UserRepositoryTest {
 
