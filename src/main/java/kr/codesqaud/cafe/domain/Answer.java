@@ -5,7 +5,7 @@ import java.time.format.DateTimeFormatter;
 
 public class Answer {
     private Long id;
-    private Article article;
+    private long articleId;
     private Member writer;
     private String contents;
     private LocalDateTime createdDate;
@@ -19,12 +19,12 @@ public class Answer {
         this.id = id;
     }
 
-    public Article getArticle() {
-        return article;
+    public void setArticleId(long articleId) {
+        this.articleId = articleId;
     }
 
-    public void setArticle(Article article) {
-        this.article = article;
+    public long getArticleId() {
+        return articleId;
     }
 
     public Member getWriter() {
@@ -71,5 +71,13 @@ public class Answer {
 
     public boolean equals(long answerId) {
         return this.id == answerId;
+    }
+
+    public long getWriterId() {
+       return writer.getId();
+    }
+
+    public String getWriterNickname() {
+        return writer.getNickname();
     }
 }
