@@ -113,15 +113,25 @@ public class ArticleController {
     public String deleteArticle(@PathVariable int articleId, HttpSession session) {
         Article findArticle = articleRepository.findArticleById(articleId)
                 .orElseThrow(() -> new IllegalArgumentException("없는 질문글입니다."));
-        User user = sessionUtil.getSessionedUser(session);
 
-        if (user.getUserId().equals(findArticle.getUserId())) {
-            checkArticleReply(articleId, user.getUserId());
-            articleRepository.deleteArticle(articleId);
+        String articleUserId = findArticle.getUserId();
+        if (canDelete(session, articleUserId, articleId)) {
             return "redirect:/";
         }
 
         throw new IllegalArgumentException("글 작성자만 삭제할 수 있습니다");
+    }
+
+    private boolean canDelete(HttpSession session, String articleUserId, int articleId) {
+        User user = sessionUtil.getSessionedUser(session);
+
+        if (user.getUserId().equals(articleUserId)) {
+            checkArticleReply(articleId, user.getUserId());
+            articleRepository.deleteArticle(articleId);
+            removeAllReply(articleId);
+            return true;
+        }
+        return false;
     }
 
     // 자신의 질문글에 다른 사람의 댓글이 있을 시 예외 처리
@@ -134,6 +144,14 @@ public class ArticleController {
 
         if (count > 0) {
             throw new IllegalArgumentException("다른 사람의 댓글이 있을 경우 삭제할 수 없습니다.");
+        }
+    }
+
+    private void removeAllReply(int articleId) {
+        List<Reply> allReplyByArticleId = replyRepository.findAllReplyByArticleId(articleId);
+
+        for (Reply reply : allReplyByArticleId) {
+            replyRepository.delete(reply.getId());
         }
     }
 }
