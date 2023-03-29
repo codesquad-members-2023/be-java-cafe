@@ -2,12 +2,14 @@ package kr.codesqaud.cafe.domain;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 
 public class Article {
     private Long id;
     private Member writer;
     private String title;
     private String contents;
+    private List<Answer> answerList;
     private LocalDateTime createdDate;
     private LocalDateTime updatedDate;
 
@@ -73,6 +75,14 @@ public class Article {
 
     public void setUpdatedDate(LocalDateTime updatedDate) {
         this.updatedDate = updatedDate;
+    }
+
+    public List<Answer> getAnswerList() {
+        return answerList;
+    }
+
+    public void setAnswerList(List<Answer> answerList) {
+        this.answerList = answerList;
     }
 
     public Article() {
