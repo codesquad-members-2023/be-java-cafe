@@ -48,7 +48,6 @@ public class NamedJdbcTemplateArticleRepository {
 
 	public void delete(ArticleWithWriterDto article) {
 		String sql = "delete from article where article_number=:articleSequence";
-		System.out.println("sql 실행");
 		SqlParameterSource sqlParameterSource = new BeanPropertySqlParameterSource(article);
 		template.update(sql, sqlParameterSource);
 	}
