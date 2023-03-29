@@ -9,6 +9,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import kr.codesqaud.cafe.exceptions.ArticleInfoException;
 import kr.codesqaud.cafe.exceptions.UserInfoException;
+import kr.codesqaud.cafe.utils.SessionUtils;
 
 @ControllerAdvice
 public class GlobalExceptionHandler {
@@ -18,7 +19,7 @@ public class GlobalExceptionHandler {
             RedirectAttributes redirectAttributes) {
 
         if (e.getErrorCode() == UserInfoException.WRONG_MODIFICATION_PASSWORD_CODE) {
-            String id = (String)httpSession.getAttribute("sessionedUser");
+            String id = SessionUtils.getSessionId(httpSession);
 
             redirectAttributes.addFlashAttribute(id);
             redirectAttributes.addFlashAttribute(e.getMessage());

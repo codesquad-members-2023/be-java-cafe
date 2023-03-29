@@ -1,5 +1,9 @@
 package kr.codesqaud.cafe.controller;
 
+import static kr.codesqaud.cafe.exceptions.UserInfoException.*;
+import static kr.codesqaud.cafe.utils.SessionUtils.*;
+import static kr.codesqaud.cafe.validator.AuthorValidator.*;
+
 import javax.servlet.http.HttpSession;
 
 import org.springframework.stereotype.Controller;
@@ -39,8 +43,8 @@ public class UserController {
 
     @PostMapping("/users/create")
     public String userAdd(@RequestParam String userId, @RequestParam String password,
-        @RequestParam String name,
-        @RequestParam String email) {
+            @RequestParam String name,
+            @RequestParam String email) {
         //POST method, /create form으로 전송하는 요청을 처리
         userRepository.addUser(new User(userId, password, name, email));
         //redirection
@@ -48,17 +52,14 @@ public class UserController {
     }
 
     @GetMapping("/users/{id}/form")
-    public String userUpdateForm(@PathVariable String id, Model model, HttpSession session, @ModelAttribute String error)
-        throws UserInfoException {
+    public String userUpdateForm(@PathVariable String id, Model model, HttpSession session,
+            @ModelAttribute String error)
+            throws UserInfoException {
         //세션에 로그인 되지 않은 경우 로그인 에러를 발생시킨다.
-        if (session.getAttribute("sessionedUser") == null) {
-            throw new UserInfoException(UserInfoException.NON_AUTHORIZED_USER_MESSAGE, UserInfoException.NON_AUTHORIZED_USER_CODE);
-        }
+        validateUser(getSessionId(session) != null, NON_AUTHORIZED_USER_MESSAGE, NON_AUTHORIZED_USER_CODE);
         String loginId = (String)session.getAttribute("sessionedUser");
         //로그인 아이디가 일치하지 않는 다른 회원의 정보 수정 URL에 접근할 수 없다.
-        if (!loginId.equals(id)) {
-            throw new UserInfoException(UserInfoException.ILLEGAL_ACCESS_MESSAGE, UserInfoException.ILLEGAL_MODIFICATION_ACCESS_CODE);
-        }
+        validateUser(loginId.equals(id), ILLEGAL_ACCESS_MESSAGE, ILLEGAL_MODIFICATION_ACCESS_CODE);
         model.addAttribute("userId", id);
         //ERROR 메시지를 전달 받은 경우 회원 정보 수정 뷰에 에러 메시지를 전달한다.
         if (error.length() >= 1) {
@@ -70,9 +71,9 @@ public class UserController {
 
     @PutMapping("/users/{id}/update")
     public String userUpdateCommit(@PathVariable String id, @RequestParam String userId,
-        @RequestParam String password,
-        @RequestParam String newPassword,
-        @RequestParam String name, @RequestParam String email) throws UserInfoException {
+            @RequestParam String password,
+            @RequestParam String newPassword,
+            @RequestParam String name, @RequestParam String email) throws UserInfoException {
         //id를 저장
         userRepository.updateUser(id, password, newPassword, name, email);
 
@@ -86,11 +87,9 @@ public class UserController {
 
     @PostMapping("/users/login")
     public String login(@RequestParam String userId, @RequestParam String password,
-        HttpSession session) throws UserInfoException {
+            HttpSession session) throws UserInfoException {
         User sessionedUser = userRepository.findById(userId);
-        if (!sessionedUser.validate(password)) {
-            throw new UserInfoException(UserInfoException.WRONG_PASSWORD_MESSAGE, UserInfoException.WRONG_LOGIN_PASSWORD_CODE);
-        }
+        validateUser(sessionedUser.validate(password), WRONG_PASSWORD_MESSAGE, WRONG_LOGIN_PASSWORD_CODE);
 
         session.setAttribute("sessionedUser", sessionedUser.getId());
         return "redirect:/";
@@ -98,7 +97,7 @@ public class UserController {
 
     @GetMapping("/users/login_failed")
     public String unauthorizedAccess(Model model) {
-        model.addAttribute("error", UserInfoException.NON_AUTHORIZED_USER_MESSAGE);
+        model.addAttribute("error", NON_AUTHORIZED_USER_MESSAGE);
         return "user/login_failed";
     }
 
