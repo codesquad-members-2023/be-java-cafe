@@ -28,7 +28,7 @@ public class DBUserRepository implements UserRepository {
     public User findDBUser(String userId, String password) {
         String existUserQuery = "select id, userId, password from member where userId = ?";
 
-        log.info("Repository userId password [{}][{}]", userId, password);
+        log.debug("Repository userId password [{}][{}]", userId, password);
 
         User loginUser = jdbcTemplate.queryForObject(existUserQuery, new BeanPropertyRowMapper<>(User.class), userId);
 
