@@ -23,8 +23,19 @@ function addAnswer(e) {
             console.log(data);
             var answerTemplate = $("#answerTemplate").html();
             var template = answerTemplate.format(data.userId, data.timestamp, data.contents);
-            $(".qna-comment-slipp-articles").prepend(template);
             $("textarea[name=contents]").val("");
+
+            // 새로운 댓글을 마지막 댓글로 추가
+            var articles = $(".qna-comment-slipp-articles > article");
+            var lastArticle = articles.last();
+            var newArticle = $(template);
+
+            // 새로운 댓글을 마지막 댓글로 추가
+            lastArticle.after(newArticle);
+
+            // 댓글 수 업데이트
+            var numReplies = $(".qna-comment-slipp-articles > article").length;
+            $(".qna-comment-count strong").val(numReplies);
         }
     });
 }
