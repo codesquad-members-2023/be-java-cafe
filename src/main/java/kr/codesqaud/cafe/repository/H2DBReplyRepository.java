@@ -48,7 +48,7 @@ public class H2DBReplyRepository {
     public List<ReplyWithUser> findByArticleId(int articleId) {
         String sql = "select r.id, r.user_id, u.user_id as userName, r.contents, r.createDate " +
                 "from reply r join users u on r.user_id=u.id " +
-                "where r.article_id=:articleId and r.deleted=false order by r.id desc";
+                "where r.article_id=:articleId and r.deleted=false";
 
         Map<String, Integer> param = Map.of("articleId", articleId);
         return template.query(sql, param, BeanPropertyRowMapper.newInstance(ReplyWithUser.class));

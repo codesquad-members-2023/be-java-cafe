@@ -27,9 +27,8 @@ function save() {
         var answerTemplate = $("#answerTemplate").html();
         var template = answerTemplate.format(data.userName, data.createDate,
             data.contents, articleIndex, data.id);
-        $(".qna-comment-slipp-articles").prepend(template);
+        $(".qna-comment-slipp-articles").append(template);
         $("textarea[name=contents]").val("");
-
     }).fail((err) => {
         alert(JSON.stringify(err));
     });
