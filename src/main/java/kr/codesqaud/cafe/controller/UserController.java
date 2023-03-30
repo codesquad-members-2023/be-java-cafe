@@ -24,9 +24,10 @@ public class UserController {
         this.userRepository = userRepository;
     }
 
-    @PostMapping("/users")
+    @PostMapping("/join")
     public String join(UserForm form) {
         User user = new User(form.getId(), form.getName(), form.getEmail(), form.getPassword());
+
 
         userRepository.save(user);
 
@@ -101,6 +102,6 @@ public class UserController {
     public String logout(HttpSession session) {
         session.invalidate();
 
-        return "index";
+        return "redirect:/";
     }
 }
