@@ -30,7 +30,7 @@ const makeReplyFooter = function (replyId) {
                                href="/questions/413/answers/1405/form">수정</a>
                         </li>
                         <li>
-                            <form class="delete-answer-form" action="/reply/delete/${replyId}" method="POST">
+                            <form name="${replyId}" class="delete-answer-form" method="POST">
                                 <input type="hidden" name="_method" value="DELETE">
                                 <button type="submit" class="delete-answer-button">삭제</button>
                             </form>
@@ -65,8 +65,8 @@ const requestReply = function(articleId){
             for (let i = 0; i < replies.length; i++) {
                 contexts += makeReply(replies[i]);
             }
-            console.log(contexts);
             document.querySelector("#qna-comment-box").innerHTML = contexts;
         })
+        .then(() => deleteFunction());
 };
 

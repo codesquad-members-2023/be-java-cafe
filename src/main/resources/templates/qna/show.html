@@ -9,7 +9,7 @@
 <div th:replace="navigation_bar.html::navbar"></div>
 <div th:replace="navigation_bar.html::subnav"></div>
 
-<div class="container" id="main">
+<div class="container" id="main" th:name="${article.articleId}">
     <div class="col-md-12 col-sm-12 col-lg-12">
         <div class="panel panel-default">
             <header class="qna-header">
@@ -64,9 +64,10 @@
 
                             <form id="question" name="question" class="submit-write">
                                 <div class="form-group" style="padding:14px;">
-                                    <textarea name="content" class="form-control" placeholder="Update your status"></textarea>
+                                    <textarea name="content" class="form-control"
+                                              placeholder="Update your status"></textarea>
                                 </div>
-                                <button class="btn btn-success pull-right" type="submit" >답변하기</button>
+                                <button class="btn btn-success pull-right" type="submit">답변하기</button>
                                 <div class="clearfix"/>
                             </form>
                         </div>
@@ -86,27 +87,52 @@
 <script src="/js/restAPI.js"></script>
 
 <script>
-    const form = document.getElementById("question");
-    form.addEventListener('submit', ev => {test(ev)})
-    const updateFormURL = document.getElementById("link-modify-article").href;
-    const index = updateFormURL.lastIndexOf("/");
-    const requestId = updateFormURL.substring(index + 1);
 
-    fetch(`/reply/${requestId}`)
-        .then(response => response.json())
-        .then(replies => {
-            let contexts = '';
-            for (let i = 0; i < replies.length; i++) {
-                contexts += makeReply(replies[i]);
-            }
-            console.log(contexts);
-            document.querySelector("#qna-comment-box").innerHTML = contexts;
-        })
+    const deleteFunction = function () {
+        const deleteForms = document.querySelectorAll(".delete-answer-form")
+        deleteForms.forEach(deleteForm => {
+            deleteForm.addEventListener("submit", evt => {
+                evt.preventDefault();
+                const replyId = deleteForm.getAttribute("name");
+                const formData = new FormData();
+                formData.append("replyId", replyId);
+                fetch("/reply/delete", {
+                    method: "DELETE",
+                    headers:{
+                        'Content-Type' : 'application/json'
+                    },
+                    body:JSON.stringify(Object.fromEntries(formData))
+                })
+                    .then(() =>initReply());
+            });
+        });
+    }
 
+    const articleId = document.getElementById("main").getAttribute("name");
+    const initReply = function () {
+        fetch(`/reply/${articleId}`)
+            .then(response => response.json())
+            .then(replies => {
+                let contexts = '';
+                for (let i = 0; i < replies.length; i++) {
+                    contexts += makeReply(replies[i]);
+                }
+                document.querySelector("#qna-comment-box").innerHTML = contexts;
+            })
+            .then(() => {
+                deleteFunction()
+            } )
+    }
+    initReply();
+
+    const replyForm = document.getElementById("question");
+    replyForm.addEventListener('submit', evt => {
+        test(evt)
+    })
     const test = function (ev) {
         ev.preventDefault();
-        requestReply(requestId)
-        form.querySelector("textarea").value = "";
+        requestReply(articleId)
+        replyForm.querySelector("textarea").value = "";
     }
 </script>
 
