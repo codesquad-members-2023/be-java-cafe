@@ -29,4 +29,14 @@ public class MemoryArticleRepository implements ArticleRepository {
         Article article = store.get(id);
         return article;
     }
+
+    @Override
+    public void updateArticle(long articleId, String title, String contents) {
+
+    }
+
+    @Override
+    public void deleteArticle(long id) {
+
+    }
 }

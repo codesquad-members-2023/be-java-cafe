@@ -11,4 +11,8 @@ public interface ArticleRepository {
     List<Article> findAllArticles();
 
     Article findByArticleId(long id);
+
+    void updateArticle(long articleId, String title, String contents);
+
+    void deleteArticle(long id);
 }

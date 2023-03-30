@@ -22,8 +22,8 @@ public class Article {
     }
 
     public Article(long writer, String title, String contents) {
-        this.title = title;
         this.writer = writer;
+        this.title = title;
         this.contents = contents;
     }
 
