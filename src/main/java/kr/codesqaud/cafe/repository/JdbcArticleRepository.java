@@ -43,6 +43,12 @@ public class JdbcArticleRepository implements ArticleRepository {
         return jdbcTemplate.queryForObject("select * from article where article_id = ?", articleRowMapper(), id);
     }
 
+    @Override
+    public void delete(String id) {
+        String sql = "delete from article where article_id = ?";
+        jdbcTemplate.update(sql, id);
+    }
+
     private RowMapper<Article> articleRowMapper() { //sql 결과를 받기위해 row mapping 필요
         return new RowMapper<Article>() {
             @Override
