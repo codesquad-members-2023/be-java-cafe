@@ -3,6 +3,7 @@ package kr.codesqaud.cafe.repository;
 import kr.codesqaud.cafe.domain.Article;
 import kr.codesqaud.cafe.domain.User;
 import kr.codesqaud.cafe.domain.dto.ArticleWithWriter;
+import kr.codesqaud.cafe.domain.dto.SimpleArticleWithWriter;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -73,7 +74,7 @@ class H2DBArticleRepositoryTest {
         articleRepository.save(article1);
         articleRepository.save(article2);
 
-        List<ArticleWithWriter> articles = articleRepository.findAll();
+        List<SimpleArticleWithWriter> articles = articleRepository.findAll();
         assertThat(articles.size()).isEqualTo(2);
     }
 
@@ -105,12 +106,11 @@ class H2DBArticleRepositoryTest {
 
         articleRepository.delete(1);
 
-        List<ArticleWithWriter> articles = articleRepository.findAll();
+        List<SimpleArticleWithWriter> articles = articleRepository.findAll();
 
         assertThat(articles.size()).isEqualTo(1);
 
-        ArticleWithWriter restArticle = articles.get(0);
-        assertThat(restArticle.getContents()).isEqualTo("미안하다. 이거보여줄려고 또 어그로끌었다.");
+        SimpleArticleWithWriter restArticle = articles.get(0);
         assertThat(restArticle.getTitle()).isEqualTo("진짜 실화냐?");
     }
 

@@ -4,6 +4,7 @@ import kr.codesqaud.cafe.SessionConstant;
 import kr.codesqaud.cafe.domain.Article;
 import kr.codesqaud.cafe.domain.dto.ArticleWithWriter;
 import kr.codesqaud.cafe.domain.dto.ReplyWithUser;
+import kr.codesqaud.cafe.domain.dto.SimpleArticleWithWriter;
 import kr.codesqaud.cafe.repository.ArticleRepository;
 import kr.codesqaud.cafe.repository.H2DBReplyRepository;
 import org.slf4j.Logger;
@@ -34,7 +35,7 @@ public class ArticleController {
 
     @GetMapping("/")
     public String showArticles(Model model) {
-        List<ArticleWithWriter> articles = articleRepository.findAll();
+        List<SimpleArticleWithWriter> articles = articleRepository.findAll();
         model.addAttribute("articles", articles);
 
         return "index";
