@@ -2,6 +2,7 @@ package kr.codesqaud.cafe.controller;
 
 import kr.codesqaud.cafe.domain.article.Article;
 import kr.codesqaud.cafe.dto.ArticleWithWriterDto;
+import kr.codesqaud.cafe.dto.ArticleWithoutContentsDto;
 import kr.codesqaud.cafe.repository.NamedJdbcTemplateArticleRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -29,7 +30,7 @@ public class ArticleController {
 
 	@GetMapping("/")
 	public String listArticles(Model model) throws SQLException {
-		List<ArticleWithWriterDto> articles = articleRepository.findAllArticlesWithWriter();
+		List<ArticleWithoutContentsDto> articles = articleRepository.findAllArticlesWithoutContents();
 		model.addAttribute("articles", articles);
 		log.trace("게시글 갯수: {}", articles.size());
 		return "index";
@@ -97,7 +98,7 @@ public class ArticleController {
 			return "redirect:/articles/{articleSequence}";
 		}
 		articleRepository.delete(articleRepository.findByArticleSequence(articleSequence));
-		log.info("삭제 완료 !! 삭제 후 게시글 수: {}", articleRepository.findAllArticlesWithWriter().size());
+		log.info("삭제 완료 !! 삭제 후 게시글 수: {}", articleRepository.findAllArticlesWithoutContents().size());
 		return "redirect:/";
 	}
 
