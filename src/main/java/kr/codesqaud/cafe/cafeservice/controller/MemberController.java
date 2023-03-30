@@ -1,7 +1,7 @@
 package kr.codesqaud.cafe.cafeservice.controller;
 
 import kr.codesqaud.cafe.cafeservice.domain.Member;
-import kr.codesqaud.cafe.cafeservice.exhandler.exception.ArticleNotFoundException;
+import kr.codesqaud.cafe.cafeservice.exhandler.exception.MemberNotFoundException;
 import kr.codesqaud.cafe.cafeservice.repository.member.MemberRepository;
 import kr.codesqaud.cafe.cafeservice.session.LoginSessionUtils;
 import kr.codesqaud.cafe.cafeservice.session.SessionConst;
@@ -14,8 +14,9 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
 import java.util.List;
-import java.util.NoSuchElementException;
 import java.util.Optional;
+
+import static kr.codesqaud.cafe.cafeservice.session.LoginSessionUtils.*;
 
 @Controller
 public class MemberController {
@@ -59,38 +60,26 @@ public class MemberController {
 
     @GetMapping("/users/{userId}")
     public String findByProfile(@PathVariable Long userId, Model model) {
-        try {
-            Optional<Member> byId = repository.findById(userId);
-            model.addAttribute("profile", byId.orElseThrow());
-
-            if (byId == null) {
-                throw new ArticleNotFoundException("Article not found with id " + byId);
-            }
-
-            return "user/profile";
-        } catch (NoSuchElementException e) {
-            log.debug("예외발생");
-            return "fail";
-        }
+        Optional<Member> findMember = repository.findById(userId);
+        Member member = findMember.orElseThrow(() -> new MemberNotFoundException("사용자를 찾을 수 없습니다."));
+        model.addAttribute("profile", member);
+        return "user/profile";
     }
 
     @GetMapping("/users/{id}/updateForm")
     public String showUpdateForm(@PathVariable Long id, Model model, HttpSession session) {
-        Object attribute = session.getAttribute(SessionConst.LOGIN_MEMBER);
-        LoginSessionUtils sessionUtils = (LoginSessionUtils) attribute;
-        if (sessionUtils.getId() == id) {
-            Optional<Member> byId = repository.findById(id);
-            model.addAttribute("user", byId.orElseThrow());
-            return "user/updateForm";
-        }
-        return "error";
+        LoginSessionUtils sessionUtils = (LoginSessionUtils) session.getAttribute(SessionConst.LOGIN_MEMBER);
+        sessionCheckId(id, sessionUtils);
+        Optional<Member> byId = repository.findById(id);
+        model.addAttribute("user", byId.orElseThrow());
+        return "user/updateForm";
     }
 
 
     @PutMapping("/users/{id}/updateForm")
     public String memberUpdateForm(@PathVariable Long id, @ModelAttribute Member member, HttpSession session) {
         LoginSessionUtils sessionUtils = (LoginSessionUtils) session.getAttribute(SessionConst.LOGIN_MEMBER);
-        LoginSessionUtils.sessionCheckId(id, sessionUtils);
+        sessionCheckId(id, sessionUtils);
         repository.update(id, member);
         return "redirect:/users";
     }
