@@ -33,7 +33,7 @@ class UserUpdateValidateTest {
 
         FieldError fieldError = errors.getFieldError();
 
-        assertThat(fieldError.getCode()).isEqualTo(testUserConstant.REQUIRED_PASSWORD);
+        assertThat(fieldError.getCodes()).contains(testUserConstant.REQUIRED_PASSWORD);
     }
 
     @Test

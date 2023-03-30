@@ -14,15 +14,9 @@ import static org.assertj.core.api.Assertions.assertThat;
 @SpringBootTest
 class ArticleUpdateTest {
 
-
-    private final ArticleUpdateValidator articleValidator;
+    private final ArticleUpdateValidator articleValidator = new ArticleUpdateValidator();
     private ArticleErrorConstant articleError = new ArticleErrorConstant();
     private ArticleInformationConstant articleInformation = new ArticleInformationConstant();
-
-    @Autowired
-    public ArticleUpdateTest(ArticleUpdateValidator articleValidator) {
-        this.articleValidator = articleValidator;
-    }
 
     @Test
     @DisplayName("업데이트 시, 제목이 비어있으면 에러 발생")
