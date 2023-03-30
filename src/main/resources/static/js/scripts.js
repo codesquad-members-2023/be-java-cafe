@@ -16,6 +16,7 @@ function save() {
     var queryString = $(".submit-write textarea[name='contents']").serialize();
     var url = window.location.pathname + '/replies';
     var articleIndex = window.location.pathname.split('articles/')[1];
+    var replyCounter = $(".qna-comment-count strong");
 
 
     $.ajax({
@@ -29,6 +30,10 @@ function save() {
             data.contents, articleIndex, data.id);
         $(".qna-comment-slipp-articles").append(template);
         $("textarea[name=contents]").val("");
+
+        var replyCount = Number(replyCounter.text());
+        replyCounter.text(replyCount + 1);
+
     }).fail((err) => {
         alert(JSON.stringify(err));
     });
