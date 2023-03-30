@@ -1,10 +1,8 @@
 package kr.codesqaud.cafe.service;
 
 import kr.codesqaud.cafe.domain.User;
-import kr.codesqaud.cafe.repository.H2DBArticleRepository;
-import kr.codesqaud.cafe.repository.H2DBUserRepository;
+import kr.codesqaud.cafe.repository.MySQLUserRepository;
 import kr.codesqaud.cafe.repository.UserRepository;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -12,14 +10,11 @@ import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
-import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
 
 import javax.sql.DataSource;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 class LoginServiceTest {
@@ -31,7 +26,7 @@ class LoginServiceTest {
     @BeforeEach
     void init() {
         dataSource = new DriverManagerDataSource("jdbc:h2:mem:test", "sa", "");
-        repository = new H2DBUserRepository(dataSource);
+        repository = new MySQLUserRepository(dataSource);
         loginService = new LoginService(repository);
     }
 

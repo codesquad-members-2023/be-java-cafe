@@ -23,13 +23,13 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 class H2DBArticleRepositoryTest {
 
     private DataSource dataSource;
-    private H2DBUserRepository userRepository;
+    private MySQLUserRepository userRepository;
     private H2DBArticleRepository articleRepository;
 
     @BeforeEach
     void init() {
         dataSource = new DriverManagerDataSource("jdbc:h2:mem:test", "sa", "");
-        userRepository = new H2DBUserRepository(dataSource);
+        userRepository = new MySQLUserRepository(dataSource);
         articleRepository = new H2DBArticleRepository(dataSource);
 
         userRepository.save(new User("Hyun", "1234", "황현", "ghkdgus29@naver.com"));

@@ -16,15 +16,15 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 @SpringBootTest
-class H2DBUserRepositoryTest {
+class MySQLUserRepositoryTest {
 
     private DataSource dataSource;
-    private H2DBUserRepository repository;
+    private MySQLUserRepository repository;
 
     @BeforeEach
     void init() {
         dataSource = new DriverManagerDataSource("jdbc:h2:mem:test", "sa", "");
-        repository = new H2DBUserRepository(dataSource);
+        repository = new MySQLUserRepository(dataSource);
     }
 
     @AfterEach

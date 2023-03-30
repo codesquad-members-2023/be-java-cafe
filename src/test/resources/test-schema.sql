@@ -29,3 +29,7 @@ create table reply
     foreign key (user_id) references users (id),
     foreign key (article_id) references article (id)
 );
+
+
+
+

@@ -10,17 +10,19 @@ import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.sql.DataSource;
 import java.util.List;
 import java.util.Map;
 
 @Repository
-public class H2DBArticleRepository implements ArticleRepository {
+@Primary
+public class MySQLArticleRepository implements ArticleRepository {
 
     private final NamedParameterJdbcTemplate template;
 
-    public H2DBArticleRepository(DataSource dataSource) {
+    public MySQLArticleRepository(DataSource dataSource) {
         this.template = new NamedParameterJdbcTemplate(dataSource);
     }
 
@@ -61,15 +63,14 @@ public class H2DBArticleRepository implements ArticleRepository {
     }
 
     @Override
+    @Transactional
     public void delete(int id) {
-        String sql = "set autocommit false;" +
-                "update reply set deleted=true where article_id=:id;" +
-                "update article set deleted=true where id=:id;" +
-                "commit;" +
-                "set autocommit true;";
+        String softDeleteReplySql = "update reply set deleted=true where article_id=:id";
+        String softDeleteArticleSql = "update article set deleted=true where id=:id";
 
         Map<String, Integer> param = Map.of("id", id);
-        template.update(sql, param);
+        template.update(softDeleteReplySql, param);
+        template.update(softDeleteArticleSql, param);
     }
 
     @Override

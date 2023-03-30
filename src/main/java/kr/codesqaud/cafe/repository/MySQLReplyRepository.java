@@ -16,12 +16,12 @@ import java.util.List;
 import java.util.Map;
 
 @Repository
-public class H2DBReplyRepository {
+public class MySQLReplyRepository {
 
     private final NamedParameterJdbcTemplate template;
 
     @Autowired
-    public H2DBReplyRepository(DataSource dataSource) {
+    public MySQLReplyRepository(DataSource dataSource) {
         this.template = new NamedParameterJdbcTemplate(dataSource);
     }
 

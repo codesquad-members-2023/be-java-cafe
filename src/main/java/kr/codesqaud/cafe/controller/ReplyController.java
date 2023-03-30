@@ -4,7 +4,7 @@ import kr.codesqaud.cafe.SessionConstant;
 import kr.codesqaud.cafe.domain.Reply;
 import kr.codesqaud.cafe.domain.dto.ReplyWithUser;
 import kr.codesqaud.cafe.domain.dto.Result;
-import kr.codesqaud.cafe.repository.H2DBReplyRepository;
+import kr.codesqaud.cafe.repository.MySQLReplyRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,10 +18,10 @@ public class ReplyController {
 
     private final Logger log = LoggerFactory.getLogger(getClass());
 
-    private final H2DBReplyRepository replyRepository;
+    private final MySQLReplyRepository replyRepository;
 
     @Autowired
-    public ReplyController(H2DBReplyRepository replyRepository) {
+    public ReplyController(MySQLReplyRepository replyRepository) {
         this.replyRepository = replyRepository;
     }
 
