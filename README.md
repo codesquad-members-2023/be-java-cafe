@@ -8,17 +8,20 @@
 
 ### 월요일
 - [ ]  test 코드 작성
-- [ ]  reply class 만들기
-   - [ ] repository 만들기
-- [ ]  댓글 db 연결
-- [ ] DB 2 섹션 2. 데이터 접근 기술 - 스프링 JdbcTemplate  
+- [x]  reply class 만들기
+   - [x] repository 만들기
+- [x]  댓글 db 연결
+- [x] DB 2 섹션 2. 데이터 접근 기술 - 스프링 JdbcTemplate  
 
 ### 화요일
 - [ ] ajax에 대해 공부하기
 
 ### 수요일
+- [x] 6단계 구현
 
 ### 목요일
+- [ ] 6단계 피드백 리팩토링
+- [ ] 7단계 시작
 
 ### 금요일
 

@@ -1,11 +1,8 @@
 package kr.codesqaud.cafe.domain;
 
-import org.springframework.jdbc.core.RowMapper;
 
-import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.Date;
 
 public class Article {
 

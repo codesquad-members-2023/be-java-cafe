@@ -1,8 +1,7 @@
-package kr.codesqaud.cafe.repository.Member;
+package kr.codesqaud.cafe.repository.member;
 
 import kr.codesqaud.cafe.domain.Member;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
