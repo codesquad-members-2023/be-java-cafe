@@ -7,6 +7,7 @@ import kr.codesqaud.cafe.dto.answer.AnswerResponseDto;
 import kr.codesqaud.cafe.exception.ExceptionStatus;
 import kr.codesqaud.cafe.exception.InvalidAuthorityException;
 import kr.codesqaud.cafe.repository.AnswerRepository;
+
 import kr.codesqaud.cafe.repository.ArticleRepository;
 import kr.codesqaud.cafe.repository.MemberRepository;
 import org.springframework.stereotype.Controller;
@@ -15,9 +16,9 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpSession;
-
 import java.util.List;
 import java.util.stream.Collectors;
+
 
 import static kr.codesqaud.cafe.constant.ConstUrl.REDIRECT_INDEX;
 

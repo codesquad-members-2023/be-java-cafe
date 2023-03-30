@@ -24,12 +24,10 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 class H2ArticleRepositoryTest {
     @Autowired
     JdbcTemplate jdbcTemplate;
-
     ArticleRepository repository;
     MemberRepository memberRepository;
     Member member;
     Article article;
-
 
     @BeforeEach
     void init() throws FileNotFoundException {
