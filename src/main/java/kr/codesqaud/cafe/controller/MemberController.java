@@ -9,6 +9,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import static kr.codesqaud.cafe.Constants.SESSIONED_USER;
+
 import javax.servlet.http.HttpSession;
 import java.sql.SQLException;
 import java.util.List;
@@ -49,31 +51,34 @@ public class MemberController {
 		return "user/list";
 	}
 
-	@GetMapping("/profile/{userId}")
-	public String userProfile(@PathVariable String userId, Model model) throws SQLException {
-		Optional<Member> findUser = namedJdbcTemplateMemberRepository.findById(userId);
+	@GetMapping("/profile/{userSequence}")
+	public String getProfile(@PathVariable Long userSequence, Model model) throws SQLException {
+		Optional<Member> findUser = namedJdbcTemplateMemberRepository.findByNumber(userSequence);
 		model.addAttribute("user", findUser.orElseThrow());
 		return "user/profile";
 	}
 
-	@GetMapping("/update/{userId}")
-	public String editUserForm(HttpSession session, @PathVariable String userId, Model model) throws SQLException {
-		Object value = session.getAttribute("sessionedUser");
-		if (value == null) {
-			return "redirect:/login";
-		}
-		Member member = (Member) value;
-		if(!member.getUserId().equals(userId)) {
+	@GetMapping("/update/{userSequence}")
+	public String editUserForm(HttpSession session, @PathVariable Long userSequence, Model model) throws SQLException {
+		Long loginUserSequence = (Long) getAttributeFromSession(session);
+		if (loginUserSequence != userSequence) {
 			return "redirect:/";
 		}
+
+		Member member = namedJdbcTemplateMemberRepository.findByNumber(userSequence).get();
+
 		model.addAttribute(member);
 		return "user/updateForm";
 	}
 
-	@PutMapping("/update/{userId}")
+	@PutMapping("/update/{userSequence}")
 	public String edit(@ModelAttribute Member user) throws SQLException {
 		namedJdbcTemplateMemberRepository.update(user);
 		return "redirect:/users/list";
+	}
+
+	private Object getAttributeFromSession(HttpSession session) {
+		return session.getAttribute(SESSIONED_USER);
 	}
 
 }

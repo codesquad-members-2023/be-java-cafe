@@ -22,7 +22,7 @@
                                 <i class="icon-add-comment"></i>
                                 <span th:text="${article.writtenTime}"
                                       class="time">글 쓴 시간</span>
-                                <a th:href="@{|/users/profile/${article.writer}|}"
+                                <a th:href="@{/users/profile/{member_number}(member_number=${article.userSequence})}"
                                    href="./user/profile.html" class="author" th:text="${article.writer}">글쓴이</a>
                             </div>
                             <div class="reply" title="댓글">
@@ -47,7 +47,7 @@
                     </ul>
                 </div>
                 <div class="col-md-3 qna-write">
-                    <a th:href="@{qna/questions}"
+                    <a th:href="@{qna/questions/form}"
                        href="./qna/form.html" class="btn btn-primary pull-right" role="button">질문하기</a>
                 </div>
             </div>

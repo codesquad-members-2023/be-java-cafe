@@ -16,7 +16,7 @@ public class LoginService {
 		this.namedJdbcTemplateMemberRepository = namedJdbcTemplateMemberRepository;
 	}
 
-	public Member login(MemberLoginDto memberLoginDto) {
+	public <Optional> Member login(MemberLoginDto memberLoginDto) {
 		return namedJdbcTemplateMemberRepository.findById(memberLoginDto.getUserId())
 			.filter(member -> member.getPassword().equals(memberLoginDto.getPassword()))
 			.orElse(null);

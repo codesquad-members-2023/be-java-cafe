@@ -21,9 +21,10 @@
                                  class="article-author-thumb" alt="">
                         </div>
                         <div class="article-header-text">
-                            <a href="/members/92/kimmunsu" class="article-author-name" th:text="${article.writer}">글쓴이</a>
-                            <a href="/questions/413" class="article-header-time" title="퍼머링크">
-                                2015-12-30 01:47
+                            <a th:href="@{/users/profile/{userSequence}(userSequence=${article.userSequence})}"
+                                    href="/members/92/kimmunsu" class="article-author-name" th:text="${article.writer}">글쓴이</a>
+                            <a href="/questions/413" class="article-header-time" title="퍼머링크" th:text="${article.writtenTime}">
+                                작성 시간
                                 <i class="icon-link"></i>
                             </a>
                         </div>
@@ -34,10 +35,12 @@
                     <div class="article-util">
                         <ul class="article-util-list">
                             <li>
-                                <a class="link-modify-article" href="/questions/423/form">수정</a>
+                                <a class="link-modify-article"
+                                   th:href="@{/articles/{articleSequence}/edit(articleSequence=${article.articleSequence})}"
+                                   href="/questions/423/form">수정</a>
                             </li>
                             <li>
-                                <form class="form-delete" action="/questions/423" method="POST">
+                                <form class="form-delete" th:action="@{/articles/{articleSequence}/delete(articleSequence=${article.articleSequence})}" action="/questions/423" method="POST">
                                     <input type="hidden" name="_method" value="DELETE">
                                     <button class="link-delete-article" type="submit">삭제</button>
                                 </form>

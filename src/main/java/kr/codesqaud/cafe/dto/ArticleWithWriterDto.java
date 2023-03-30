@@ -1,31 +1,32 @@
-package kr.codesqaud.cafe.domain.article;
+package kr.codesqaud.cafe.dto;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
-public class Article {
+public class ArticleWithWriterDto {
 
 	private Long articleSequence;
 	private String title;
 	private String contents;
 	private LocalDateTime writtenTime;
 	private Long userSequence;
+	private String writer;
 
-	public Article() {
+	public ArticleWithWriterDto() {
 	}
 
-	public Article(Long userSequence, String title, String contents) {
-		this.userSequence = userSequence;
+	public ArticleWithWriterDto(Long articleSequence, String title, String contents) {
+		this.articleSequence = articleSequence;
 		this.title = title;
 		this.contents = contents;
 	}
 
-	public Long getUserSequence() {
-		return userSequence;
+	public String getWriter() {
+		return writer;
 	}
 
-	public void setUserSequence(Long userSequence) {
-		this.userSequence = userSequence;
+	public void setWriter(String writer) {
+		this.writer = writer;
 	}
 
 	public Long getArticleSequence() {
@@ -52,11 +53,19 @@ public class Article {
 		this.contents = contents;
 	}
 
+	public String getWrittenTime() {
+		return writtenTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+	}
+
 	public void setWrittenTime(LocalDateTime writtenTime) {
 		this.writtenTime = writtenTime;
 	}
 
-	public String getWrittenTime() {
-		return writtenTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+	public Long getUserSequence() {
+		return userSequence;
+	}
+
+	public void setUserSequence(Long userSequence) {
+		this.userSequence = userSequence;
 	}
 }
