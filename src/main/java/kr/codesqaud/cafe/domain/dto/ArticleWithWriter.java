@@ -1,5 +1,8 @@
 package kr.codesqaud.cafe.domain.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import org.springframework.format.annotation.DateTimeFormat;
+
 import java.time.LocalDateTime;
 
 public class ArticleWithWriter {
@@ -7,6 +10,8 @@ public class ArticleWithWriter {
     private int id;
     private String title;
     private String contents;
+
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDateTime createDate;
     private int userId;
     private String writer;
