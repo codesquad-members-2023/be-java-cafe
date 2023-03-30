@@ -45,8 +45,7 @@ public class ArticleController {
 
     @GetMapping("/articles/{id}")
     public String showArticle(@PathVariable Long id, Model model) {
-        Optional<Article> findArticle = repository.findById(id);
-        Article article = findArticle.orElseThrow(() -> new ArticleNotFoundException("글을 찾을 수 없습니다."));
+        Article article = validFindById(id, "글을 찾을 수 없습니다.");
         model.addAttribute("article", article);
         return "qna/show";
 
@@ -54,6 +53,8 @@ public class ArticleController {
 
     @DeleteMapping("/questions/{id}delete")
     public String deleteArticle(@PathVariable Long id, HttpSession session) {
+        //Todo 세션아이디(로그인아이디)  Article의 FK키 와 비교
+        Article article = validFindById(id, "글을 찾을 수 없습니다.");
         LoginSessionUtils sessionUtils = (LoginSessionUtils) session.getAttribute(SessionConst.LOGIN_MEMBER);
         sessionCheckId(id, sessionUtils);
         repository.delete(id);
@@ -64,8 +65,7 @@ public class ArticleController {
     public String updateArticleForm(@PathVariable Long id, Model model, HttpSession session) {
         LoginSessionUtils sessionUtils = (LoginSessionUtils) session.getAttribute(SessionConst.LOGIN_MEMBER);
         sessionCheckId(id, sessionUtils);
-        Optional<Article> findArticle = repository.findById(id);
-        Article article = findArticle.orElseThrow(() -> new ArticleNotFoundException("글을 찾을 수 없습니다."));
+        Article article = validFindById(id, "글을 찾을 수 없습니다.");
         model.addAttribute("article", article);
         return "qna/updateForm";
     }
@@ -74,9 +74,13 @@ public class ArticleController {
     public String updateArticle(@RequestParam String title, @RequestParam String content,
                                 @PathVariable Long id) {
         //TODO 자기가 작성한 글이 아니면 수정 할 수 없다.
-        Optional<Article> findArticle = repository.findById(id);
-        Article article = findArticle.orElseThrow(() -> new ArticleNotFoundException("수정할 수 없습니다"));
+        Article article = validFindById(id, "수정할 수 없습니다");
         repository.update(article, title, content);
         return "redirect:/";
+    }
+
+    private Article validFindById(Long id, String message) {
+        Optional<Article> findArticle = repository.findById(id);
+        return findArticle.orElseThrow(() -> new ArticleNotFoundException(message));
     }
 }
