@@ -6,6 +6,7 @@ build/
 !**/src/test/**/build/
 .gitignore
 db/be-java-cafe.mv.db
+db/be-java-cafe.trace.db
 
 ### STS ###
 .apt_generated
