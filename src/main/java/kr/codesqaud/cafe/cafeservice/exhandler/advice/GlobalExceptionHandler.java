@@ -17,22 +17,19 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 public class GlobalExceptionHandler {
     private final Logger log = LoggerFactory.getLogger(MemberController.class);
 
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(ArticleNotFoundException.class)
     public String articleNotFoundException(ArticleNotFoundException e, Model model) {
         model.addAttribute("errorMessage", e.getMessage());
         return "layout/error";
     }
 
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(MemberNotFoundException.class)
     public String memberNotFountException(MemberNotFoundException e, Model model) {
         model.addAttribute("errorMessage", e.getMessage());
         return "layout/error";
     }
 
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    @ExceptionHandler(MemberNotFoundException.class)
+    @ExceptionHandler(LoginNotFoundException.class)
     public String loginException(LoginNotFoundException e, Model model) {
         model.addAttribute("errorMessage", e.getMessage());
         return "layout/error";
