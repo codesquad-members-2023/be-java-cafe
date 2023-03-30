@@ -15,21 +15,19 @@ import javax.servlet.http.HttpSession;
 public class ReplyController {
 
     private final ReplyRepository repository;
-    private final SessionUtil sessionUtil;
 
     @Autowired
-    public ReplyController(ReplyRepository repository, SessionUtil sessionUtil) {
+    public ReplyController(ReplyRepository repository) {
         this.repository = repository;
-        this.sessionUtil = sessionUtil;
     }
 
 
-    @PostMapping("/qna/show/{articleId}")
+//    @PostMapping("/qna/show/{articleId}")
     public String addReply(@ModelAttribute Reply reply, HttpSession session) {
-        User user = sessionUtil.getSessionedUser(session);
+        User user = SessionUtil.getSessionedUser(session);
         reply.setUserId(user.getUserId());
 
-        repository.save(reply);
+//        repository.save(reply);
         return "redirect:/qna/show/" + reply.getArticleId();
     }
 
@@ -38,7 +36,7 @@ public class ReplyController {
         Reply reply = repository.findReplyByReplyId(replyId)
                 .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 댓글입니다."));
 
-        User user = sessionUtil.getSessionedUser(session);
+        User user = SessionUtil.getSessionedUser(session);
         if (user.getUserId().equals(reply.getUserId())) {
             repository.delete(replyId);
             return "redirect:/qna/show/" + reply.getArticleId();

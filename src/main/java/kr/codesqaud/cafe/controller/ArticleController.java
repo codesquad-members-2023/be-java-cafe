@@ -26,15 +26,13 @@ public class ArticleController {
     private final ReplyRepository replyRepository;
     private final ArticleNewFormValidator articleNewFormValidator;
     private final ArticleUpdateValidator articleUpdateValidator;
-    private final SessionUtil sessionUtil;
 
     @Autowired
-    public ArticleController(ArticleRepository articleRepository, ReplyRepository replyRepository, ArticleNewFormValidator articleNewFormValidator, ArticleUpdateValidator articleUpdateValidator, SessionUtil sessionUtil) {
+    public ArticleController(ArticleRepository articleRepository, ReplyRepository replyRepository, ArticleNewFormValidator articleNewFormValidator, ArticleUpdateValidator articleUpdateValidator) {
         this.articleRepository = articleRepository;
         this.replyRepository = replyRepository;
         this.articleNewFormValidator = articleNewFormValidator;
         this.articleUpdateValidator = articleUpdateValidator;
-        this.sessionUtil = sessionUtil;
     }
 
     @GetMapping("/")
@@ -63,7 +61,7 @@ public class ArticleController {
             model.addAttribute("userId", article.getUserId());
             return "qna/qna_form";
         }
-        User user = sessionUtil.getSessionedUser(session);
+        User user = SessionUtil.getSessionedUser(session);
         article.setUserId(user.getUserId());
         articleRepository.save(article);
 
@@ -90,7 +88,7 @@ public class ArticleController {
     public String updateArticleForm(@PathVariable int articleId, Model model, HttpSession session) {
         Article article = articleRepository.findArticleById(articleId)
                 .orElseThrow(() -> new IllegalArgumentException("없는 질문글입니다."));
-        User user = sessionUtil.getSessionedUser(session);
+        User user = SessionUtil.getSessionedUser(session);
         if (user.getUserId().equals(article.getUserId())) {
             model.addAttribute("article", article);
             model.addAttribute("user", user);
@@ -127,7 +125,7 @@ public class ArticleController {
     }
 
     private boolean canDelete(HttpSession session, String articleUserId, int articleId) {
-        User user = sessionUtil.getSessionedUser(session);
+        User user = SessionUtil.getSessionedUser(session);
 
         if (user.getUserId().equals(articleUserId)) {
             checkArticleReply(articleId, user.getUserId());
