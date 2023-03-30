@@ -1,5 +1,7 @@
 <!DOCTYPE html>
+
 <html xmlns:th="http://www.thymeleaf.org">
+
 
 <head th:replace="header.html::head"></head>
 
@@ -35,7 +37,7 @@
                     <div class="article-util">
                         <ul class="article-util-list">
                             <li>
-                                <a class="link-modify-article"
+                                <a id="link-modify-article" class="link-modify-article"
                                    th:href="@{/qna/updateForm/{articleId}(articleId=${article.articleId})}">수정</a>
                             </li>
                             <li>
@@ -58,93 +60,42 @@
                         <p class="qna-comment-count"><strong>2</strong>개의 의견</p>
                         <div class="qna-comment-slipp-articles">
 
+                            <article id="qna-comment-box" class="article"></article>
 
-                            <article th:each="reply : ${replies}" class="article" th:id="${reply.getReplyId()}">
-                                <div class="article-header">
-                                    <div class="article-header-thumb">
-                                        <img src="https://graph.facebook.com/v2.3/1324855987/picture"
-                                             class="article-author-thumb" alt="">
-                                    </div>
-                                    <div class="article-header-text">
-                                        <a th:href="@{/user/profile/{userId}(userId=${article.writer})}" class="article-author-name" th:text="${reply.getWriter()}">댓글 작성자</a>
-                                        <a href="#answer-1434" class="article-header-time" title="퍼머링크" th:text="${reply.getFormattedTime()}">
-                                            댓글 작성 날짜
-                                        </a>
-                                    </div>
-                                </div>
-                                <div class="article-doc comment-doc">
-                                    <p th:text="${reply.getContent()}">댓글 내용</p>
-                                </div>
-                                <div class="article-util">
-                                    <ul class="article-util-list">
-                                        <li>
-                                            <a class="link-modify-article"
-                                               href="/questions/413/answers/1405/form">수정</a>
-                                        </li>
-                                        <li>
-                                            <form class="delete-answer-form" th:action="@{/reply/delete/{replyId}(replyId=${reply.getReplyId()})}"
-                                                  method="POST">
-                                                <input type="hidden" name="_method" value="DELETE">
-                                                <button type="submit" class="delete-answer-button">삭제</button>
-                                            </form>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </article>
-
-
-                            <form name="question" class="submit-write" method="post" th:action="@{/reply/create/{articleId}(articleId=${article.articleId})}">
+                            <form id="question" name="question" class="submit-write">
                                 <div class="form-group" style="padding:14px;">
-                                    <textarea name="content" class="form-control" placeholder="Update your status"  ></textarea>
+                                    <textarea name="content" class="form-control" placeholder="Update your status"></textarea>
                                 </div>
-                                <button class="btn btn-success pull-right" type="submit">답변하기</button>
+                                <button class="btn btn-success pull-right" type="submit" >답변하기</button>
                                 <div class="clearfix"/>
                             </form>
                         </div>
                     </div>
                 </div>
-
-
             </div>
         </div>
     </div>
 </div>
 
 
-<script type="text/template" id="answerTemplate">
-    <article class="article">
-        <div class="article-header">
-            <div class="article-header-thumb">
-                <img src="https://graph.facebook.com/v2.3/1324855987/picture" class="article-author-thumb" alt="">
-            </div>
-            <div class="article-header-text">
-                <a href="#" class="article-author-name">{0}</a>
-                <div class="article-header-time">{1}</div>
-            </div>
-        </div>
-        <div class="article-doc comment-doc">
-            {2}
-        </div>
-        <div class="article-util">
-            <ul class="article-util-list">
-                <li>
-                    <a class="link-modify-article" href="/api/qna/updateAnswer/{3}">수정</a>
-                </li>
-                <li>
-                    <form class="delete-answer-form" action="/api/questions/{3}/answers/{4}" method="POST">
-                        <input type="hidden" name="_method" value="DELETE">
-                        <button type="submit" class="delete-answer-button">삭제</button>
-                    </form>
-                </li>
-            </ul>
-        </div>
-    </article>
-</script>
-
 </body>
 
 <footer>
     <div th:replace="footer.html::js"></div>
 </footer>
+<script src="/js/restAPI.js"></script>
+
+<script>
+    const form = document.getElementById("question");
+    form.addEventListener('submit', ev => {test(ev)})
+    const test = function (ev) {
+        ev.preventDefault();
+        const updateFormURL = document.getElementById("link-modify-article").href;
+        const index = updateFormURL.lastIndexOf("/");
+        const requestId = updateFormURL.substring(index + 1);
+        requestReply(requestId)
+        form.querySelector("textarea").value = "";
+    }
+</script>
 
 </html>
