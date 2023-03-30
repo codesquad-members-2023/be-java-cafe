@@ -3,6 +3,7 @@ package kr.codesqaud.cafe.service;
 import kr.codesqaud.cafe.domain.Article;
 import kr.codesqaud.cafe.domain.User;
 import kr.codesqaud.cafe.repository.JdbcTemplateArticleRepository;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -42,18 +43,19 @@ public class ArticleService {
      */
     public Article articleCheck(long id, User sessionUser) {
         return articleRepository.findById(id)
-                .filter(article -> article.getWriter().equals(sessionUser.getUserId()))
+                .filter(article -> article.getWriter().equals(sessionUser.getName()))
                 .orElseThrow(null);
     }
 
     public boolean sessionCheck(long id, User sessionUser) {
         Article checkId = articleCheck(id, sessionUser);
-        return checkId != null && checkId.getWriter().equals(sessionUser.getUserId());
+        return checkId != null && checkId.getWriter().equals(sessionUser.getName());
     }
 
     /**
      * 게시글 삭제
      */
+    @Transactional(readOnly = true)
     public boolean delete(long id) {
         return articleRepository.deleteArticle(id);
     }

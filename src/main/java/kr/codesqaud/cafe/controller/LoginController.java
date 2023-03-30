@@ -1,7 +1,6 @@
 package kr.codesqaud.cafe.controller;
 
 import kr.codesqaud.cafe.domain.User;
-import kr.codesqaud.cafe.service.SessionUtil;
 import kr.codesqaud.cafe.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -12,16 +11,16 @@ import org.springframework.web.bind.annotation.PostMapping;
 
 import javax.servlet.http.HttpSession;
 
+import static kr.codesqaud.cafe.service.SessionUtil.setUserInfo;
+
 @Controller
 public class LoginController {
     private final Logger log = LoggerFactory.getLogger(UserController.class);
     private final UserService userService;
-    private final SessionUtil sessionUtil;
 
     @Autowired
-    public LoginController(UserService userService, SessionUtil sessionUtil) {
+    public LoginController(UserService userService) {
         this.userService = userService;
-        this.sessionUtil = sessionUtil;
     }
 
     // 로그인 기능
@@ -35,7 +34,7 @@ public class LoginController {
 
         log.debug("로그인 성공!!!");
         // 세션에 로그인 회원 정보 보관
-        sessionUtil.setUserInfo(session, loginUser);
+        setUserInfo(session, loginUser);
 
         return "redirect:/";
     }

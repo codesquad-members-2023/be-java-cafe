@@ -1,14 +1,14 @@
 INSERT INTO CAFE_USER(USERID, PASSWORD, NAME, EMAIL)
-VALUES ('test', '1234', 'tester', 'test01@naver.com');
+VALUES ('test', '1234', '텟슷텃', 'test01@naver.com');
 
 INSERT INTO CAFE_USER(USERID, PASSWORD, NAME, EMAIL)
 VALUES ('jhc1426', '1111', 'ManJu', '11111@gmail.com');
 
-INSERT INTO CAFE_ARTICLE(WRITER, TITLE, CONTENTS)
-VALUES ('jhc1426', '테스트01', '테스트용 글 입니돵');
+INSERT INTO CAFE_ARTICLE(WRITER, TITLE, CONTENTS, cafeUserId)
+VALUES ('ManJu', '테스트01', '테스트용 글 입니돵', 2);
 
-INSERT INTO CAFE_ARTICLE(WRITER, TITLE, CONTENTS)
-VALUES ('test', '테스트02', 'test가 작성한 test');
+INSERT INTO CAFE_ARTICLE(WRITER, TITLE, CONTENTS, cafeUserId)
+VALUES ('텟슷텃', '테스트02', 'test가 작성한 test', 1);
 
 INSERT INTO CAFE_REPLY(WRITER, CONTENTS, ARTICLEID)
-VALUES ('test', '테스트용 댓글 일지도?!?!?!?', 1);
+VALUES ('텟슷텃', '테스트용 댓글 일지도?!?!?!?', 1);
