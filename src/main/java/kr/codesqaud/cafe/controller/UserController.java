@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
 import java.util.List;
+import java.util.Optional;
 
 @Controller
 @RequestMapping("/users")
@@ -34,13 +35,15 @@ public class UserController {
     public String validateUser(@RequestParam String userId, @RequestParam String password, HttpSession session) {
 
         log.info("userId, password [{}][{}]", userId, password);
-        User dbUser = userRepository.findUserWithMatchedPassword(userId, password);
+        Optional<User> dbUser = userRepository.findUserWithMatchedPassword(userId, password);
 
-        if (!dbUser.getUserId().equals(userId) || !dbUser.getPassword().equals(password)) {
+        if (dbUser.isEmpty()) {
             return "users/login_failed";
         }
 
-        session.setAttribute(SessionConst.LOGIN_USERID, dbUser.getId());
+        User user = dbUser.get();
+
+        session.setAttribute(SessionConst.LOGIN_USERID, user.getId());
         return "redirect:/qna/list";
     }
 
