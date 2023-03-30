@@ -55,7 +55,7 @@ public class MemberController {
 	}
 
 	@GetMapping("/profile/{userSequence}")
-	public String userProfile(HttpSession session, @PathVariable Long userSequence, Model model) throws SQLException {
+	public String getProfile(HttpSession session, @PathVariable Long userSequence, Model model) throws SQLException {
 		if (session.getAttribute(SESSIONED_USER) == null) {
 			return "user/login";
 		}
