@@ -13,9 +13,8 @@ public class MemoryMemberRepository implements MemberRepository {
     }
 
     @Override
-    public Member saveMember(Member member) {
+    public void saveMember(Member member) {
         repository.put(member.getEmail(), member);
-        return member;
     }
 
     @Override

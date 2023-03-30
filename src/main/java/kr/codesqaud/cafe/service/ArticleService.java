@@ -30,4 +30,8 @@ public class ArticleService {
     public int getTotalNumberOfArticles() {
         return articleRepository.getSize();
     }
+
+    public void updateArticle(Article article) {
+        articleRepository.updateArticle(article);
+    }
 }

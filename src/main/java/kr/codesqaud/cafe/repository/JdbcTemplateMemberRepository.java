@@ -23,7 +23,7 @@ public class JdbcTemplateMemberRepository implements MemberRepository {
     }
 
     @Override
-    public Member saveMember(Member member) {
+    public void saveMember(Member member) {
         SimpleJdbcInsert jdbcInsert = new SimpleJdbcInsert(jdbcTemplate);
         jdbcInsert.withTableName("member").usingGeneratedKeyColumns("id");
 
@@ -34,7 +34,6 @@ public class JdbcTemplateMemberRepository implements MemberRepository {
         parameters.put("signUpDate", Timestamp.valueOf(member.getSignUpDate().format(DateTimeFormatter.ofPattern("yyy-MM-dd")) + " 00:00:00"));
 
         jdbcInsert.execute(new MapSqlParameterSource(parameters));
-        return member;
     }
 
     @Override
@@ -61,7 +60,6 @@ public class JdbcTemplateMemberRepository implements MemberRepository {
     @Override
     public void editeMember(Member member) {
         jdbcTemplate.update("UPDATE member SET nickName = ? WHERE email = ?", member.getNickName(), member.getEmail());
-
     }
 
     private RowMapper<Member> memberRowMapper() {

@@ -14,6 +14,8 @@ create table article (
     writer varchar(255),
     title varchar(255),
     contents varchar(255),
-    registrationDate DateTime default now()
+    registrationDate DateTime default now(),
+    userId bigint,
+    FOREIGN KEY (userId) references member (id)
 );
 

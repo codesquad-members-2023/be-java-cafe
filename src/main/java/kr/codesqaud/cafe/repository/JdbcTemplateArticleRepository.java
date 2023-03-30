@@ -37,7 +37,6 @@ public class JdbcTemplateArticleRepository implements ArticleRepository {
 
     @Override
     public Optional<Article> findOneArticleById(int id) {
-        System.out.println(id);
         return Optional.ofNullable(jdbcTemplate.queryForObject("select * from article where articleId = ?", articleRowMapper(), id));
     }
 
@@ -54,6 +53,11 @@ public class JdbcTemplateArticleRepository implements ArticleRepository {
     @Override
     public int getSize() {
         return jdbcTemplate.queryForObject("select count(*) from article", Integer.class);
+    }
+
+    @Override
+    public void updateArticle(Article article) {
+
     }
 
     private RowMapper<Article> articleRowMapper() {

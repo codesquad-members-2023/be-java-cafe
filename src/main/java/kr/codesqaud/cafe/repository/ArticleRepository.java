@@ -12,4 +12,5 @@ public interface ArticleRepository {
     List<Article> getArticles();
     void deleteArticle(Member member);
     int getSize();
+    void updateArticle(Article article);
 }

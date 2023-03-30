@@ -34,6 +34,12 @@ public class ArticleController {
         return "redirect:/";
     }
 
+//    @PostMapping("/qna/update")
+//    public String updateArticle(Article artice) {
+//        articleService.
+//        return "redirect:/";
+//    }
+
     @GetMapping("/")
     public String printArticleList(Model model) {
         model.addAttribute("article", articleService.findArticles());
@@ -49,5 +55,14 @@ public class ArticleController {
         Article article = articleService.findOneArticleById(articleId).get();
         model.addAttribute("article", article);
         return "qna/show";
+    }
+
+    @GetMapping("/article/{nickName}/edite")
+    public String editeArticle(@PathVariable String nickName, HttpSession httpSession) {
+        Member member = (Member) httpSession.getAttribute("sessionedUser");
+        if (member.getNickName().equals(nickName)) {
+            return "qna/updateForm";
+        }
+        return "qna/edite_fail";
     }
 }

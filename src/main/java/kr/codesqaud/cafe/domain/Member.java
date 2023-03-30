@@ -7,7 +7,7 @@ import java.util.Date;
 
 public class Member {
 
-    private long id;
+    private long userId;
     private String email;
     private String nickName;
     private String password;
@@ -26,7 +26,7 @@ public class Member {
     }
 
     public long getId() {
-        return id;
+        return userId;
     }
 
     public String getEmail() {
@@ -63,5 +63,9 @@ public class Member {
 
     public String getFormattedSignUpDate() {
         return formattedSignUpDate;
+    }
+
+    public void setUserId(long userId) {
+        this.userId = userId;
     }
 }
