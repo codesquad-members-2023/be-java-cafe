@@ -26,7 +26,7 @@ public class ReplyController {
 
     @PostMapping("/articles/{index}/replies")
     @ResponseBody
-    public ReplyWithUser apiTest(@PathVariable int index, @RequestParam String contents, HttpSession session) {
+    public ReplyWithUser reply(@PathVariable int index, @RequestParam String contents, HttpSession session) {
         Reply reply = new Reply(contents, (int) session.getAttribute(SessionConstant.LOGIN_USER_ID), index);
 
         int replyId = replyRepository.save(reply);
