@@ -1,6 +1,6 @@
 package kr.codesqaud.cafe.cafeservice.config;
 
-import kr.codesqaud.cafe.cafeservice.Interceptor.CustomInterceptor;
+import kr.codesqaud.cafe.cafeservice.Interceptor.LoginInterceptor;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.Ordered;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
@@ -21,11 +21,10 @@ public class MvcConfig implements WebMvcConfigurer {
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
-        int interceptorExecutionOrder = 1;
-        registry.addInterceptor(new CustomInterceptor())
-                .order(interceptorExecutionOrder)
-                .addPathPatterns("/**")
-                .excludePathPatterns("/","/login","/logout"
+        registry.addInterceptor(new LoginInterceptor())
+                .order(Ordered.HIGHEST_PRECEDENCE)
+                .addPathPatterns("/users/**", "/articles/**", "/questions/**")
+                .excludePathPatterns("/", "/login", "/logout"
                         , "/fonts/**", "/js/**", "/images/**", "/css/**", "/*.ico", "/error");
     }
 }
