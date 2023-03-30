@@ -37,10 +37,7 @@ public class ArticleController {
 	}
 
 	@GetMapping("/qna/questions/form")
-	public String writeForm(HttpSession session) {
-		if (session.getAttribute(SESSIONED_USER) == null) {
-			return "user/login";
-		}
+	public String writeForm() {
 		return "qna/form";
 	}
 
@@ -63,10 +60,7 @@ public class ArticleController {
 	}
 
 	@GetMapping("/articles/{articleSequence}")
-	public String articleShow(HttpSession session, @PathVariable Long articleSequence, Model model) throws SQLException {
-		if (session.getAttribute(SESSIONED_USER) == null) {
-			return "user/login";
-		}
+	public String articleShow(@PathVariable Long articleSequence, Model model) throws SQLException {
 		ArticleWithWriterDto findArticle = articleRepository.findByArticleSequence(articleSequence);
 		model.addAttribute("article", findArticle);
 		return "qna/show";
@@ -74,11 +68,6 @@ public class ArticleController {
 
 	@GetMapping("/articles/{articleSequence}/edit")
 	public String articleEditForm(HttpSession session, @PathVariable Long articleSequence, Model model) {
-		if (session.getAttribute(SESSIONED_USER) == null) {
-			log.info("비어있는 세션 !!");
-			return "user/login";
-		}
-
 		ArticleWithWriterDto findArticle = articleRepository.findByArticleSequence(articleSequence);
 		if (findArticle.getUserSequence() != session.getAttribute(SESSIONED_USER)) {
 			log.info("다른 유저의 글 !!");
