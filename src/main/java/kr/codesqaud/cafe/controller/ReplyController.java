@@ -33,7 +33,7 @@ public class ReplyController {
     @DeleteMapping("/delete/{replyId}")
     public String delete(@PathVariable int replyId,
                          HttpSession session) {
-        User user = (User)session.getAttribute(ConstantConfig.SESSION_ID);
+        String userId = (String)session.getAttribute(ConstantConfig.SESSION_ID);
 
         // TODO : 코드가 길어지는 감이 있다. 개선할 필요성이 느껴진다.
         // 원하는 로직은 댓글을 삭제하는 것이고, 이미 삭제되어 있는데, 굳이 에러메세지를 보내줄 필요성이 있을까?
@@ -43,7 +43,7 @@ public class ReplyController {
         Reply reply = replyOptional.get();
 
         // TODO : 객체지향적이지 않는 코드인 것 같다. 검증하는 부분을 공부 후, 개선해보자
-        if (user.getUserId().equals(reply.getWriter())) {
+        if (userId.equals(reply.getWriter())) {
             replyRepository.delete(reply);
         }
         return "redirect:/qna/show/" + reply.getArticleId();
