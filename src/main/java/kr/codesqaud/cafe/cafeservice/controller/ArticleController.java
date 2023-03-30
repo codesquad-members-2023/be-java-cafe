@@ -14,8 +14,9 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
 import java.util.List;
-import java.util.NoSuchElementException;
 import java.util.Optional;
+
+import static kr.codesqaud.cafe.cafeservice.session.LoginSessionUtils.*;
 
 @Controller
 public class ArticleController {
@@ -45,7 +46,8 @@ public class ArticleController {
     @GetMapping("/articles/{id}")
     public String showArticle(@PathVariable Long id, Model model) {
         Optional<Article> findArticle = repository.findById(id);
-        model.addAttribute("article", findArticle.orElseThrow());
+        Article article = findArticle.orElseThrow(() -> new ArticleNotFoundException("글을 찾을 수 없습니다."));
+        model.addAttribute("article", article);
         return "qna/show";
 
     }
@@ -53,18 +55,18 @@ public class ArticleController {
     @DeleteMapping("/questions/{id}delete")
     public String deleteArticle(@PathVariable Long id, HttpSession session) {
         LoginSessionUtils sessionUtils = (LoginSessionUtils) session.getAttribute(SessionConst.LOGIN_MEMBER);
-        LoginSessionUtils.sessionCheckId(id, sessionUtils);
+        sessionCheckId(id, sessionUtils);
         repository.delete(id);
         return "redirect:/";
     }
 
     @GetMapping("/articles/{id}/update")
     public String updateArticleForm(@PathVariable Long id, Model model, HttpSession session) {
-        Object attribute = session.getAttribute(SessionConst.LOGIN_MEMBER);
-        LoginSessionUtils sessionUtils = (LoginSessionUtils) attribute;
-        LoginSessionUtils.sessionCheckId(id, sessionUtils);
+        LoginSessionUtils sessionUtils = (LoginSessionUtils) session.getAttribute(SessionConst.LOGIN_MEMBER);
+        sessionCheckId(id, sessionUtils);
         Optional<Article> findArticle = repository.findById(id);
-        model.addAttribute("article", findArticle.orElseThrow());
+        Article article = findArticle.orElseThrow(() -> new ArticleNotFoundException("글을 찾을 수 없습니다."));
+        model.addAttribute("article", article);
         return "qna/updateForm";
     }
 
@@ -73,7 +75,7 @@ public class ArticleController {
                                 @PathVariable Long id) {
         //TODO 자기가 작성한 글이 아니면 수정 할 수 없다.
         Optional<Article> findArticle = repository.findById(id);
-        Article article = findArticle.orElseThrow(() -> new ArticleNotFoundException("에러"));
+        Article article = findArticle.orElseThrow(() -> new ArticleNotFoundException("수정할 수 없습니다"));
         repository.update(article, title, content);
         return "redirect:/";
     }
