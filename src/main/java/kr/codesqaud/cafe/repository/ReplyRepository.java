@@ -12,7 +12,7 @@ public interface ReplyRepository {
 
     public void deleteReply(long articleId, long replyId);
 
-    public boolean validateDelete(long articleId, String userId);
+    public boolean canDeleteById(long articleId, String userId);
 
     public ReplyDto findById(long replyId, long articleId) throws ArticleInfoException;
 }

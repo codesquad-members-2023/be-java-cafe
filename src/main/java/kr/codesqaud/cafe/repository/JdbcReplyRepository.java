@@ -61,11 +61,11 @@ public class JdbcReplyRepository implements ReplyRepository {
     }
 
     @Override
-    public boolean validateDelete(long articleId, String userId) {
+    public boolean canDeleteById(long articleId, String userId) {
         final String countRepliesByOthers = "select count(id) from replies where articleId=? and writer<>? and deleted=false order by id";
         //삭제안되어있는 상태의 내 아이디가 아닌 글을 고른다.
-        int numberOfRepliesWrittenByOthers = jdbcTemplate.query(countRepliesByOthers, replyRowMapper(), articleId,
-                userId).size();
-        return numberOfRepliesWrittenByOthers == 0;
+        int repliesByOthers = jdbcTemplate.queryForObject(countRepliesByOthers, Integer.class, replyRowMapper(),
+                articleId, userId);
+        return repliesByOthers == 0;
     }
 }
