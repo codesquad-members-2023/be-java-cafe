@@ -48,15 +48,14 @@ public class ArticleController {
         Article article = validFindById(id, "글을 찾을 수 없습니다.");
         model.addAttribute("article", article);
         return "qna/show";
-
     }
 
     @DeleteMapping("/questions/{id}delete")
     public String deleteArticle(@PathVariable Long id, HttpSession session) {
         //Todo 세션아이디(로그인아이디)  Article의 FK키 와 비교
-        Article article = validFindById(id, "글을 찾을 수 없습니다.");
         LoginSessionUtils sessionUtils = (LoginSessionUtils) session.getAttribute(SessionConst.LOGIN_MEMBER);
-        sessionCheckId(id, sessionUtils);
+        Article article = validFindById(id, "글을 찾을 수 없습니다.");
+        sessionCheckId(article.getUserId(), sessionUtils);
         repository.delete(id);
         return "redirect:/";
     }
