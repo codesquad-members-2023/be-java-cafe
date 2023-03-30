@@ -25,7 +25,7 @@ public class NamedJdbcTemplateArticleRepository {
 		template.update("insert into article(article_title, article_contents, member_number) values (:title, :contents, :userSequence)", sqlParameterSource);
 	}
 
-	public List<ArticleWithWriterDto> showAllArticles() {
+	public List<ArticleWithWriterDto> findAllArticlesWithWriter() {
 		String sql = "select a.article_number, a.article_title, a.article_contents, a.article_writtentime, a.member_number, m.member_id as writer, " +
 			"from article a join member m on a.member_number=m.member_number";
 		return template.query(sql, articleWithWriterDtoRowMapper());
