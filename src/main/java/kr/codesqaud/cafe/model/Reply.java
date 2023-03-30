@@ -2,10 +2,12 @@ package kr.codesqaud.cafe.model;
 
 import java.time.LocalDateTime;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 public class Reply {
-    private long id;
     private String userId;
     private String contents;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd hh:mm:ss")
     private LocalDateTime creationTime;
     private long articleId;
 
@@ -14,10 +16,6 @@ public class Reply {
         this.contents = contents;
         this.creationTime = creationTime;
         this.articleId = articleId;
-    }
-
-    public long getId() {
-        return id;
     }
 
     public String getUserId() {

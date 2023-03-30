@@ -1,7 +1,6 @@
 package kr.codesqaud.cafe.model;
 
 public class ArticleDto {
-
     private long id;
     private String writer;
     private String title;

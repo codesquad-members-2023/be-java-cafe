@@ -14,32 +14,28 @@ public class LoggerInterceptor implements HandlerInterceptor {
     private Logger logger = LoggerFactory.getLogger(LoggerInterceptor.class);
 
     @Override
-    public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws
-            Exception {
+    public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) {
 
         if (logger.isDebugEnabled()) {
-            logger.debug("실행 - Request URI : {} 실행 메서드 명 : {}",request.getRequestURI(), request.getMethod());
+            logger.debug("실행 - Request URI : {} 실행 메서드 명 : {}", request.getRequestURI(), request.getMethod());
         }
 
-        //return HandlerInterceptor.super.preHandle(request, response, handler);
         return true;
     }
 
     @Override
     public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler,
             ModelAndView modelAndView) throws Exception {
-        //HandlerInterceptor.super.postHandle(request, response, handler, modelAndView);
         if (logger.isDebugEnabled()) {
-            logger.debug("실행 완료 - Request URI : {} 실행 메서드 명 : {}",request.getRequestURI(), request.getMethod());
+            logger.debug("실행 완료 - Request URI : {} 실행 메서드 명 : {}", request.getRequestURI(), request.getMethod());
         }
     }
 
     @Override
     public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler,
-            Exception ex) throws Exception {
-        //HandlerInterceptor.super.afterCompletion(request, response, handler, ex);
+            Exception ex) {
         if (logger.isDebugEnabled()) {
-            logger.debug("Completion - Request URI : {} 실행 메서드 명 : {}",request.getRequestURI(), request.getMethod());
+            logger.debug("Completion - Request URI : {} 실행 메서드 명 : {}", request.getRequestURI(), request.getMethod());
         }
     }
 }

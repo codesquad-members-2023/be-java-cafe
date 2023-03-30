@@ -103,19 +103,6 @@ public class ArticleController {
         return "redirect:/";
     }
 
-    @PostMapping(value = "/qna/{articleId}/reply")
-    public String replyForm(@PathVariable long articleId, @RequestParam String replyContents,
-            RedirectAttributes redirectAttributes, HttpSession httpSession)
-            throws ArticleInfoException, UserInfoException {
-        String userId = getSessionId(httpSession);
-        Reply reply = new Reply(userId, replyContents, LocalDateTime.now(), articleId);
-        replyRepository.addReply(reply);
-
-        redirectAttributes.addFlashAttribute("articleId", articleId);
-
-        return "redirect:/qna/{articleId}";
-    }
-
     @DeleteMapping(value = "/qna/{articleId}/reply/{replyId}")
     public String deleteReply(@PathVariable long articleId, @PathVariable long replyId, HttpSession httpSession)
             throws ArticleInfoException {
