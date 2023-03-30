@@ -36,7 +36,7 @@ public class ArticleController {
 		return "index";
 	}
 
-	@GetMapping("/qna/questions")
+	@GetMapping("/qna/questions/form")
 	public String writeForm(HttpSession session) {
 		if (session.getAttribute(SESSIONED_USER) == null) {
 			return "user/login";
@@ -44,7 +44,7 @@ public class ArticleController {
 		return "qna/form";
 	}
 
-	@PostMapping("/qna/questions")
+	@PostMapping("/qna/questions/form")
 	public String saveQuestion(@RequestParam String title, @RequestParam String contents, HttpSession session) throws SQLException {
 		Article article = new Article((Long) session.getAttribute(SESSIONED_USER), title, contents);
 		articleRepository.write(article);
