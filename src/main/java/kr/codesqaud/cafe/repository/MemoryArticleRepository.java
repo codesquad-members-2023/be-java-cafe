@@ -32,8 +32,8 @@ public class MemoryArticleRepository implements ArticleRepository {
     }
 
     @Override
-    public Article findById(long index) {
-        return articles.get((int) index - 1);
+    public Article findById(String index) {
+        return articles.get(Integer.parseInt(index)- 1);
     }
 
 }

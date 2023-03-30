@@ -39,7 +39,7 @@ public class JdbcArticleRepository implements ArticleRepository {
     }
 
     @Override
-    public Article findById(long id) {
+    public Article findById(String id) {
         return jdbcTemplate.queryForObject("select * from article where article_id = ?", articleRowMapper(), id);
     }
 

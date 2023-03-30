@@ -39,14 +39,14 @@ public class ArticleController {
     }
 
     @GetMapping("/articles/{id}")
-    public String articleShow(Model model, @PathVariable int id) {
+    public String articleShow(Model model, @PathVariable String id) {
         model.addAttribute("article", articleRepository.findById(id));
         return "qna/show";
     }
 
     @GetMapping("/articles/{articleId}/form")
     public String articleCorrection(Model model, @PathVariable String articleId, HttpSession session) {
-        Article article = articleRepository.findById(Long.parseLong(articleId));
+        Article article = articleRepository.findById(articleId);
         //TODO: db에서 오류 EmptyResultDataAccessException
         //수정하려는 id와 세션 id 일치할 때
         if (UserSession.isEqualSessionIdTo(article.getWriter(), session)) {
@@ -58,7 +58,7 @@ public class ArticleController {
 
     @PutMapping("/articles/{articleId}/form")
     public String articleUpdate(ArticleForm articleForm, @PathVariable String articleId) {
-        Article article = articleRepository.findById(Long.parseLong(articleId));
+        Article article = articleRepository.findById(articleId);
 
         articleRepository.update(articleForm.getTitle(), articleForm.getContent(), Long.toString(article.getId()));
         return "redirect:/";
