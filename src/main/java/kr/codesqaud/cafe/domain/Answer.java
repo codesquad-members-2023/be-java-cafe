@@ -2,14 +2,12 @@ package kr.codesqaud.cafe.domain;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.List;
 
-public class Article {
+public class Answer {
     private Long id;
+    private long articleId;
     private Member writer;
-    private String title;
     private String contents;
-    private List<Answer> answerList;
     private LocalDateTime createdDate;
     private LocalDateTime updatedDate;
 
@@ -21,28 +19,20 @@ public class Article {
         this.id = id;
     }
 
+    public void setArticleId(long articleId) {
+        this.articleId = articleId;
+    }
+
+    public long getArticleId() {
+        return articleId;
+    }
+
     public Member getWriter() {
         return writer;
     }
 
     public void setWriter(Member writer) {
         this.writer = writer;
-    }
-
-    public Long getWriterId() {
-        return writer.getId();
-    }
-
-    public String getWriterNickName() {
-        return writer.getNickname();
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
     }
 
     public String getContents() {
@@ -77,25 +67,17 @@ public class Article {
         this.updatedDate = updatedDate;
     }
 
-    public List<Answer> getAnswerList() {
-        return answerList;
+    public Answer() {}
+
+    public boolean equals(long answerId) {
+        return this.id == answerId;
     }
 
-    public void setAnswerList(List<Answer> answerList) {
-        this.answerList = answerList;
+    public long getWriterId() {
+       return writer.getId();
     }
 
-    public Article() {
+    public String getWriterNickname() {
+        return writer.getNickname();
     }
-
-    public Article(Member writer, String title, String contents) {
-        this.writer = writer;
-        this.title = title;
-        this.contents = contents;
-    }
-
-    public boolean equals(Long articleId) {
-        return this.id.equals(articleId);
-    }
-
 }

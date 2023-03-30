@@ -38,7 +38,7 @@ public class H2ArticleRepository implements ArticleRepository {
     }
 
     @Override
-    public Article findById(Long id) {
+    public Article findById(long id) {
         String sql = "SELECT article.ID as article_id, article.TITLE, article.CONTENTS, article.CREATED_AT as article_createddate, article.UPDATED_AT as article_updateddate, " +
                 "member.ID as member_id, member.USERID, member.NICKNAME " +
                 "FROM ARTICLE article " +

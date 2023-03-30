@@ -14,6 +14,16 @@ public class Member {
     private LocalDateTime createdDate;
     private LocalDateTime updatedDate;
 
+    public Member(Long id, String userId, String nickname, String email, String password, LocalDateTime createdDate, LocalDateTime updatedDate) {
+        this.id = id;
+        this.userId = userId;
+        this.nickname = nickname;
+        this.email = email;
+        this.password = password;
+        this.createdDate = createdDate;
+        this.updatedDate = updatedDate;
+    }
+
     public Long getId() {
         return id;
     }

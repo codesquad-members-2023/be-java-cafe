@@ -81,7 +81,7 @@
                           {{/answers}}
                           <form class="submit-write" action="/articles/{{id}}/answers" method="post">
                               <div class="form-group" style="padding:14px;">
-                                  <textarea class="form-control" name="contents" placeholder="Update your answer!"></textarea>
+                                  <textarea class="form-control" name="contents" placeholder="Update your answer!">{{content}}</textarea>
                               </div>
                               <button class="btn btn-success pull-right" type="submit">답변하기</button>
                               <div class="clearfix" />

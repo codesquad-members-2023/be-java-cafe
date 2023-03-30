@@ -3,8 +3,11 @@ package kr.codesqaud.cafe.controller;
 import kr.codesqaud.cafe.domain.Article;
 import kr.codesqaud.cafe.domain.Member;
 import kr.codesqaud.cafe.dto.SessionUser;
+import kr.codesqaud.cafe.dto.answer.AnswerResponseDto;
 import kr.codesqaud.cafe.exception.ExceptionStatus;
 import kr.codesqaud.cafe.exception.InvalidAuthorityException;
+import kr.codesqaud.cafe.repository.AnswerRepository;
+
 import kr.codesqaud.cafe.repository.ArticleRepository;
 import kr.codesqaud.cafe.repository.MemberRepository;
 import org.springframework.stereotype.Controller;
@@ -13,6 +16,9 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpSession;
+import java.util.List;
+import java.util.stream.Collectors;
+
 
 import static kr.codesqaud.cafe.constant.ConstUrl.REDIRECT_INDEX;
 
@@ -21,10 +27,12 @@ public class ArticleController {
 
     private final ArticleRepository articleRepository;
     private final MemberRepository memberRepository;
+    private final AnswerRepository answerRepository;
 
-    public ArticleController(ArticleRepository articleRepository, MemberRepository memberRepository) {
+    public ArticleController(ArticleRepository articleRepository, MemberRepository memberRepository, AnswerRepository answerRepository) {
         this.articleRepository = articleRepository;
         this.memberRepository = memberRepository;
+        this.answerRepository = answerRepository;
     }
 
     @PostMapping("/questions")
@@ -79,6 +87,10 @@ public class ArticleController {
     @GetMapping("/articles/{id}")
     public String showArticle(@PathVariable Long id, Model model) {
         model.addAttribute("article", articleRepository.findById(id));
+
+        List<AnswerResponseDto> collect = answerRepository.findAll(id).stream().map(AnswerResponseDto::toDto).collect(Collectors.toList());
+        model.addAttribute("answers", collect);
+        model.addAttribute("answerSize", collect.size());
         return "qna/show";
     }
 
