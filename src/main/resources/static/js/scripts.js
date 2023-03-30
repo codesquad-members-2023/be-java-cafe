@@ -17,6 +17,7 @@ function save() {
     var url = window.location.pathname + '/replies';
     var articleIndex = window.location.pathname.split('articles/')[1];
 
+
     $.ajax({
         type: 'POST',
         url: url,
