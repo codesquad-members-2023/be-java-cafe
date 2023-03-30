@@ -39,7 +39,7 @@ public class ArticleRepositoryTest {
 	@Test
 	@DisplayName("게시판 글 조회 테스트")
 	void showAllArticles() {
-		List<ArticleWithWriterDto> allArticles = repository.showAllArticles();
+		List<ArticleWithWriterDto> allArticles = repository.findAllArticlesWithWriter();
 		for (ArticleWithWriterDto allArticle : allArticles) {
 			logger.info("writer:{}, title:{}, contents:{}, writtenTime:{}", allArticle.getWriter(), allArticle.getTitle(), allArticle.getContents(), allArticle.getWrittenTime());
 		}
