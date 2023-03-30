@@ -1,0 +1,39 @@
+CREATE TABLE member (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    userId VARCHAR(64),
+    password VARCHAR(64),
+    name VARCHAR(64),
+    email VARCHAR(64),
+    createdAt DATETIME DEFAULT CURRENT_TIMESTAMP,
+    updatedAt DATETIME DEFAULT NULL,
+    deletedAt DATETIME DEFAULT NULL
+);
+
+ALTER TABLE member ADD CONSTRAINT unique_userId UNIQUE (userId);
+ALTER TABLE member ADD CONSTRAINT unique_email UNIQUE (email);
+
+
+CREATE TABLE article (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    writer INT,
+    title VARCHAR(64),
+    contents VARCHAR(65536),
+    createdAt DATETIME DEFAULT CURRENT_TIMESTAMP,
+    updatedAt DATETIME DEFAULT NULL,
+    deletedAt DATETIME DEFAULT NULL
+);
+
+ALTER TABLE article ADD CONSTRAINT fk_writer FOREIGN KEY (writer) REFERENCES member(id);
+
+CREATE TABLE comment (
+    commentId INT PRIMARY KEY AUTO_INCREMENT,
+    articleId INT,
+    writer INT,
+    contents VARCHAR(256),
+    createdAt DATETIME DEFAULT CURRENT_TIMESTAMP,
+    updatedAt DATETIME DEFAULT NULL,
+    deletedAt DATETIME DEFAULT NULL
+);
+
+ALTER TABLE comment ADD CONSTRAINT fk_articleId FOREIGN KEY (articleId) REFERENCES article (id) ON DELETE CASCADE;
+ALTER TABLE comment ADD CONSTRAINT fk_writer FOREIGN KEY (writer) REFERENCES member (id) ON DELETE CASCADE;

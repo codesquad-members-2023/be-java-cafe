@@ -3,12 +3,17 @@ package kr.codesqaud.cafe.repository.users;
 import kr.codesqaud.cafe.domain.User;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface UserRepository {
 
-    public void save(User user);
+    void save(User user);
 
-    public List<User> findAllUsers();
+    List<User> findAllUsers();
 
-    public User findUserById(long id);
+    User findUserById(long id);
+
+    Optional<User> findUserWithMatchedPassword(String userId, String password);
+
+    void update(User user, long id);
 }

@@ -29,5 +29,4 @@ public class MemoryArticleRepository implements ArticleRepository {
         Article article = store.get(id);
         return article;
     }
-
 }

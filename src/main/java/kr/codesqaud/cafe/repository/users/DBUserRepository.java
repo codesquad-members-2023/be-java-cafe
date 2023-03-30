@@ -1,20 +1,24 @@
 package kr.codesqaud.cafe.repository.users;
 
 import kr.codesqaud.cafe.domain.User;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Primary;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
-import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 @Primary
 @Repository
 public class DBUserRepository implements UserRepository {
 
+    private Logger log = LoggerFactory.getLogger(getClass());
     private final JdbcTemplate jdbcTemplate;
 
     @Autowired
@@ -23,11 +27,36 @@ public class DBUserRepository implements UserRepository {
     }
 
     @Override
+    public Optional<User> findUserWithMatchedPassword(String userId, String password) {
+        String existUserQuery = "select id, userId, password from member where userId = ?";
+
+        log.debug("Repository userId password [{}][{}]", userId, password);
+
+        User loginUser = null;
+
+        try {
+            loginUser = jdbcTemplate.queryForObject(existUserQuery, new BeanPropertyRowMapper<>(User.class), userId);
+        } catch (EmptyResultDataAccessException e) {
+
+        }
+
+        return Optional.ofNullable(loginUser);
+    }
+
+    @Override
+    public void update(User user, long id) {
+        String sql = "update member set password = ?, name = ?, email = ? where id = ?";
+
+        log.info("update");
+
+//        jdbcTemplate.update(sql, user.getPassword(), user.getName(), user.getEmail(), id);
+    }
+
+    @Override
     public void save(User user) {
         String sql = "insert into member (userId, password, name, email) values(?, ?, ?, ?)";
 
         jdbcTemplate.update(sql, user.getUserId(), user.getPassword(), user.getName(), user.getEmail());
-
     }
 
     @Override
