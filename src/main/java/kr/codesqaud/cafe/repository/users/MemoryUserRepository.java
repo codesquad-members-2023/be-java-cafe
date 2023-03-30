@@ -20,17 +20,19 @@ public class MemoryUserRepository implements UserRepository {
 
     @Override
     public User findUserById(long id) {
-        return null;
+        return store.get(id);
     }
 
     @Override
     public Optional<User> findUserWithMatchedPassword(String userId, String password) {
-        return Optional.of(new User());
+        User user = store.get(userId);
+
+        return Optional.ofNullable(user);
     }
 
     @Override
     public void update(User user, long id) {
-
+        store.put(user.getUserId(), user);
     }
 
     public User findUserById(String userId) {
