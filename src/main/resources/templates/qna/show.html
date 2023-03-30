@@ -88,11 +88,23 @@
 <script>
     const form = document.getElementById("question");
     form.addEventListener('submit', ev => {test(ev)})
+    const updateFormURL = document.getElementById("link-modify-article").href;
+    const index = updateFormURL.lastIndexOf("/");
+    const requestId = updateFormURL.substring(index + 1);
+
+    fetch(`/reply/${requestId}`)
+        .then(response => response.json())
+        .then(replies => {
+            let contexts = '';
+            for (let i = 0; i < replies.length; i++) {
+                contexts += makeReply(replies[i]);
+            }
+            console.log(contexts);
+            document.querySelector("#qna-comment-box").innerHTML = contexts;
+        })
+
     const test = function (ev) {
         ev.preventDefault();
-        const updateFormURL = document.getElementById("link-modify-article").href;
-        const index = updateFormURL.lastIndexOf("/");
-        const requestId = updateFormURL.substring(index + 1);
         requestReply(requestId)
         form.querySelector("textarea").value = "";
     }
