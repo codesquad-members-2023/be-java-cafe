@@ -6,6 +6,7 @@ import java.util.List;
 import javax.sql.DataSource;
 
 import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.transaction.annotation.Transactional;
@@ -47,7 +48,7 @@ public class JdbcArticleRepository implements ArticleRepository {
 
     @Override
     public List<ArticleReplyCountsDto> getArticleList() {
-        String getArticles = "select articles.writer,title,articles.contents,articles.id,articles.creationTime,count(replies.id) from articles left join replies on (articles.id=replies.articleId and replies.deleted=false)  where articles.deleted=false group by articles.id order by id desc";
+        String getArticles = "select articles.id, articles.writer, title, articles.creationTime, count(replies.id) from articles left join replies on (articles.id=replies.articleId and replies.deleted=false)  where articles.deleted=false group by articles.id order by id desc";
         return jdbcTemplate.query(getArticles, articleReplyCountsDtoRowMapper());
     }
 
@@ -73,7 +74,7 @@ public class JdbcArticleRepository implements ArticleRepository {
     private RowMapper<ArticleReplyCountsDto> articleReplyCountsDtoRowMapper() {
         return (rs, rowNum) ->
                 new ArticleReplyCountsDto(rs.getLong("id"), rs.getString("writer"),
-                        rs.getString("title"), rs.getString("contents"),
+                        rs.getString("title"),
                         rs.getTimestamp("creationTime").toLocalDateTime()
                                 .format(DateTimeFormatter.ofPattern("yyyy-MM-dd hh:mm:ss")),
                         rs.getInt("count(replies.id)"));

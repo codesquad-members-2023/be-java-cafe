@@ -97,7 +97,7 @@ public class ArticleController {
         validateAuthorization(getSessionId(httpSession).equals(writer), UNAUTHORIZED_MODIFICATION_MESSAGE,
                 WRITER_NOT_MATCHING_CODE);
         //댓글이 존재하는 경우 삭제 불가
-        validateAuthorization(replyRepository.validateDelete(articleId, writer), REQUIRE_ON_COMMENT_DELETE_MESSAGE,
+        validateAuthorization(replyRepository.canDeleteById(articleId, writer), REQUIRE_ON_COMMENT_DELETE_MESSAGE,
                 REQUIRE_ON_COMMENT_DELETE_CODE);
         articleRepository.deleteArticle(articleId);
         return "redirect:/";
