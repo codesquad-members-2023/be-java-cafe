@@ -1,5 +1,6 @@
 drop table if exists article;
 drop table if exists member;
+drop table if exists reply;
 
 
 create table member
@@ -21,4 +22,10 @@ create table article
     foreign key (member_number) references member (member_number)
 );
 
-
+create table reply
+(
+    reply_contents    varchar(500) not null,
+    reply_writer      bigint primary key,
+    reply_writtentime timestamp     not null default current_timestamp(),
+    foreign key (reply_writer) references member (member_number)
+);
