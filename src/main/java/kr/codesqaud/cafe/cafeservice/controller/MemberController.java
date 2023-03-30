@@ -1,8 +1,8 @@
 package kr.codesqaud.cafe.cafeservice.controller;
 
 import kr.codesqaud.cafe.cafeservice.domain.Member;
-import kr.codesqaud.cafe.cafeservice.exhandler.exception.MemberNotFoundException;
 import kr.codesqaud.cafe.cafeservice.repository.member.MemberRepository;
+import kr.codesqaud.cafe.cafeservice.service.MemberService;
 import kr.codesqaud.cafe.cafeservice.session.LoginSessionUtils;
 import kr.codesqaud.cafe.cafeservice.session.SessionConst;
 import org.slf4j.Logger;
@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
 import java.util.List;
-import java.util.Optional;
 
 import static kr.codesqaud.cafe.cafeservice.session.LoginSessionUtils.*;
 
@@ -22,12 +21,15 @@ import static kr.codesqaud.cafe.cafeservice.session.LoginSessionUtils.*;
 public class MemberController {
 
     private final MemberRepository repository;
+    private final MemberService service;
     private final Logger log = LoggerFactory.getLogger(MemberController.class);
 
     @Autowired
-    public MemberController(MemberRepository repository) {
+    public MemberController(MemberRepository repository, MemberService service) {
         this.repository = repository;
+        this.service = service;
     }
+
 
     @PostMapping("/users")
     public String addMember(@ModelAttribute Member member) {
@@ -60,8 +62,7 @@ public class MemberController {
 
     @GetMapping("/users/{userId}")
     public String findByProfile(@PathVariable Long userId, Model model) {
-        Optional<Member> findMember = repository.findById(userId);
-        Member member = findMember.orElseThrow(() -> new MemberNotFoundException("사용자를 찾을 수 없습니다."));
+        Member member = service.findById(userId);
         model.addAttribute("profile", member);
         return "user/profile";
     }
@@ -70,8 +71,8 @@ public class MemberController {
     public String showUpdateForm(@PathVariable Long id, Model model, HttpSession session) {
         LoginSessionUtils sessionUtils = (LoginSessionUtils) session.getAttribute(SessionConst.LOGIN_MEMBER);
         sessionCheckId(id, sessionUtils);
-        Optional<Member> byId = repository.findById(id);
-        model.addAttribute("user", byId.orElseThrow());
+        Member member = service.findById(id);
+        model.addAttribute("user", member);
         return "user/updateForm";
     }
 
