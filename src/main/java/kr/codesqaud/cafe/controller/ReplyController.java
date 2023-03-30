@@ -25,8 +25,8 @@ public class ReplyController {
     public String create(@PathVariable int articleId,
                          @RequestParam String content,
                          HttpSession session) {
-        User User = (User)session.getAttribute(ConstantConfig.SESSION_ID);
-        replyRepository.save(new Reply(articleId, User.getUserId(), content));
+        String UserId = (String)session.getAttribute(ConstantConfig.SESSION_ID);
+        replyRepository.save(new Reply(articleId, UserId, content));
         return "redirect:/qna/show/" + articleId;
     }
 
