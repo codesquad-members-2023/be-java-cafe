@@ -43,7 +43,7 @@ public class ArticleController {
 
 	@PostMapping("/qna/questions/form")
 	public String saveQuestion(@RequestParam String title, @RequestParam String contents, HttpSession session) throws SQLException {
-		Article article = new Article((Long) session.getAttribute(SESSIONED_USER), title, contents);
+		Article article = new Article((Long) getAttributeFromSession(session), title, contents);
 		articleRepository.write(article);
 		return "redirect:/";
 	}
@@ -69,7 +69,7 @@ public class ArticleController {
 	@GetMapping("/articles/{articleSequence}/edit")
 	public String articleEditForm(HttpSession session, @PathVariable Long articleSequence, Model model) {
 		ArticleWithWriterDto findArticle = articleRepository.findByArticleSequence(articleSequence);
-		if (findArticle.getUserSequence() != session.getAttribute(SESSIONED_USER)) {
+		if (findArticle.getUserSequence() != getAttributeFromSession(session)) {
 			log.info("다른 유저의 글 !!");
 			return "redirect:/articles/{articleSequence}";
 		}
@@ -82,13 +82,17 @@ public class ArticleController {
 	@DeleteMapping("/articles/{articleSequence}/delete")
 	public String articleDelete(HttpSession session, @PathVariable Long articleSequence) {
 		ArticleWithWriterDto article = articleRepository.findByArticleSequence(articleSequence);
-		if (session.getAttribute(SESSIONED_USER) != article.getUserSequence()) {
+		if (getAttributeFromSession(session) != article.getUserSequence()) {
 			log.info("다른 유저의 글은 삭제 불가능 !!");
 			return "redirect:/articles/{articleSequence}";
 		}
 		articleRepository.delete(articleRepository.findByArticleSequence(articleSequence));
 		log.info("삭제 완료 !! 삭제 후 게시글 수: {}", articleRepository.findAllArticlesWithoutContents().size());
 		return "redirect:/";
+	}
+
+	private Object getAttributeFromSession(HttpSession session) {
+		return session.getAttribute(SESSIONED_USER);
 	}
 
 }
