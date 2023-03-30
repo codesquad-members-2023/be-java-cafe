@@ -29,6 +29,14 @@ public class MemoryArticleRepository implements ArticleRepository {
         return new ArrayList<>(Collections.unmodifiableList(store));
     }
 
+    @Override
+    public void delete(Long id) {
+    }
+
+    @Override
+    public void update(Article article, String title, String content) {
+    }
+
     public Article findOne(Long id) {
         return findById(id).orElseThrow();
     }

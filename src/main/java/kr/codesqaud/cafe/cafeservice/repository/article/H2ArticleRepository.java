@@ -76,7 +76,7 @@ public class H2ArticleRepository {
         }
     }
 
-    public void findAll() throws SQLException {
+    public List<Article> findAll() throws SQLException {
         String sql = "select * from article";
         Connection con = null;
         PreparedStatement pstmt = null;
@@ -99,6 +99,7 @@ public class H2ArticleRepository {
         } finally {
             close(con, pstmt, rs);
         }
+        return null;
     }
 
     private void close(Connection con, Statement stmt, ResultSet rs) {

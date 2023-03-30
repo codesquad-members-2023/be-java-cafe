@@ -3,8 +3,6 @@ package kr.codesqaud.cafe.cafeservice.repository.article;
 import kr.codesqaud.cafe.cafeservice.domain.Article;
 import org.springframework.stereotype.Repository;
 
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -16,4 +14,8 @@ public interface ArticleRepository {
     Optional<Article> findById(Long id);
 
     List<Article> findAll();
+
+    void delete(Long id);
+
+    void update(Article article, String title, String content);
 }

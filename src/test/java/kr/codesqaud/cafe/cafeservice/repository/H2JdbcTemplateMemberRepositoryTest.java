@@ -1,37 +1,27 @@
 package kr.codesqaud.cafe.cafeservice.repository;
 
-import kr.codesqaud.cafe.cafeservice.domain.Article;
 import kr.codesqaud.cafe.cafeservice.domain.Member;
-import kr.codesqaud.cafe.cafeservice.repository.article.H2JdbcTemplateArticleRepository;
+import kr.codesqaud.cafe.cafeservice.repository.article.ArticleRepository;
+import kr.codesqaud.cafe.cafeservice.repository.member.H2JdbcTemplateMemberRepository;
+import kr.codesqaud.cafe.cafeservice.repository.member.MemberRepository;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.runner.RunWith;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.autoconfigure.jdbc.JdbcTest;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.test.context.junit4.SpringRunner;
-import org.springframework.test.jdbc.JdbcTestUtils;
-import org.springframework.transaction.annotation.Transactional;
 
 import javax.sql.DataSource;
 
 import java.util.List;
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.*;
-
-@RunWith(SpringRunner.class)
-@SpringBootTest
-@Transactional
+@JdbcTest
 class H2JdbcTemplateMemberRepositoryTest {
-
 
     @Autowired
     private DataSource dataSource;
-    H2JdbcTemplateMemberRepository repository;
+    MemberRepository repository;
     private JdbcTemplate jdbcTemplate;
 
     @BeforeEach
