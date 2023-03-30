@@ -65,8 +65,10 @@ public class ArticleController {
     }
 
     @DeleteMapping("/articles/{articleId}")
-    public String articleDelete(@PathVariable String articleId, HttpSession session) {
-        if (UserSession.isEqualSessionIdTo(articleId, session)) {
+    public String articleDelete(@PathVariable String articleId, @RequestParam String writer, HttpSession session) {
+        //해당 글 작성자와 세션 id가 일치할 때
+        System.out.println(writer);
+        if (UserSession.isEqualSessionIdTo(writer, session)) {
             articleRepository.delete(articleId);
             return "redirect:/";
         }
