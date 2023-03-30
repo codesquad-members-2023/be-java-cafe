@@ -2,6 +2,7 @@ package kr.codesqaud.cafe.cafeservice.exhandler.advice;
 
 import kr.codesqaud.cafe.cafeservice.controller.MemberController;
 import kr.codesqaud.cafe.cafeservice.exhandler.exception.ArticleNotFoundException;
+import kr.codesqaud.cafe.cafeservice.exhandler.exception.LoginNotFoundException;
 import kr.codesqaud.cafe.cafeservice.exhandler.exception.MemberNotFoundException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,9 +24,16 @@ public class GlobalExceptionHandler {
         return "layout/error";
     }
 
-    @ResponseStatus(HttpStatus.FORBIDDEN)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(MemberNotFoundException.class)
     public String memberNotFountException(MemberNotFoundException e, Model model) {
+        model.addAttribute("errorMessage", e.getMessage());
+        return "layout/error";
+    }
+
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(MemberNotFoundException.class)
+    public String loginException(LoginNotFoundException e, Model model) {
         model.addAttribute("errorMessage", e.getMessage());
         return "layout/error";
     }
