@@ -1,6 +1,7 @@
 package kr.codesqaud.cafe.repository;
 
 import kr.codesqaud.cafe.domain.Member;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
@@ -12,6 +13,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 public class JdbcTemplateMemberRepository implements MemberRepository {
     private final JdbcTemplate jdbcTemplate;
@@ -31,18 +33,19 @@ public class JdbcTemplateMemberRepository implements MemberRepository {
         parameters.put("password", member.getPassword());
         parameters.put("signUpDate", Timestamp.valueOf(member.getSignUpDate().format(DateTimeFormatter.ofPattern("yyy-MM-dd")) + " 00:00:00"));
 
-        Number key = jdbcInsert.executeAndReturnKey(new MapSqlParameterSource(parameters));
-        member.setEmail(key.toString());
+        jdbcInsert.execute(new MapSqlParameterSource(parameters));
         return member;
     }
 
     @Override
-    public Member findOneMemberbyEmail(String email) {
-        return jdbcTemplate.queryForObject("select * from member where email = ?", memberRowMapper(), email);
+    public Optional<Member> findOneMemberbyEmail(String email) {
+        String sql = "select * from member where email = ?";
+        return jdbcTemplate.query(sql, memberRowMapper(), email).stream().findAny();
     }
+
     @Override
-    public Member findOneMemberbyNickName(String nickName) {
-        return jdbcTemplate.queryForObject("select * from member where nickName = ?", memberRowMapper(), nickName);
+    public Optional<Member> findOneMemberbyNickName(String nickName) {
+        return Optional.ofNullable(jdbcTemplate.queryForObject("select * from member where nickName = ?", memberRowMapper(), nickName));
     }
 
     @Override

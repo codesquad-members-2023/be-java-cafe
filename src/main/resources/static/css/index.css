@@ -12,6 +12,10 @@
     justify-content: center;
 }
 
+#welcome {
+    width: 200px;
+}
+
 .active {
     display: flex;
     flex-direction: column;

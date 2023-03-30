@@ -34,7 +34,7 @@ class MemberServiceTest {
         memberService.join(member);
         String memberEmail = member.getEmail();
 
-        Assertions.assertThat(memberEmail).isEqualTo(memberService.findOneMemberByNickname("core").getEmail());
+        Assertions.assertThat(memberEmail).isEqualTo(memberService.findOneMemberByNickname("core").get().getEmail());
     }
 
     @Test

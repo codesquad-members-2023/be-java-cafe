@@ -9,3 +9,32 @@
     <!--[if lt IE 9]>
     <script src="//html5shim.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
+    <link href="/css/index.css" rel="stylesheet">
+</head>
+<body>
+<div class="background">
+    <nav class="navbar navbar-fixed-top header">
+        <div class="col-md-12">
+            <div class="navbar-header">
+                <a href="/" class="navbar-brand">
+                    <img src="/images/KakaoCI.png" />
+                </a>
+
+            </div>
+            {{^sessionedUser}}
+            <ul class="nav navbar-nav navbar-right">
+                <li class="active"><a href="/user/list">멤버 리스트</a></li>
+                <li><a class="black-component" href="/user/login" role="button">로그인</a></li>
+                <li><a class="black-component" href="/user/form" role="button">회원가입</a></li>
+            </ul>
+            {{/sessionedUser}}
+            {{#sessionedUser}}
+            <ul class="nav navbar-nav navbar-right">
+                <li id="welcome" class="active"><a href="/user/list">안녕하세요,{{nickName}}님 반갑습니다.</a></li>
+                <li class="active"><a href="/user/list">멤버 리스트</a></li>
+                <li><a class="black-component" href="/users/{{email}}/updateForm" role="button">회원정보수정</a></li>
+                <li><a class="black-component" href="/user/logout" role="button">로그아웃</a></li>
+            </ul>
+            {{/sessionedUser}}
+        </div>
+    </nav>

@@ -7,9 +7,14 @@ import java.util.Optional;
 
 public interface MemberRepository {
     Member saveMember(Member member);
-    Member findOneMemberbyEmail(String email);
-    Member findOneMemberbyNickName(String nickName);
+
+    Optional<Member> findOneMemberbyEmail(String email);
+
+    Optional<Member> findOneMemberbyNickName(String nickName);
+
     List<Member> findAll();
+
     int getSize();
+
     void editeMember(Member member);
 }

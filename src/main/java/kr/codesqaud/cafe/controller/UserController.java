@@ -9,6 +9,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpSession;
+
 @Controller
 public class UserController {
     private MemberService memberService;
@@ -34,7 +36,7 @@ public class UserController {
     @GetMapping("/profile/{nickName}")
     public String showProfile(@PathVariable String nickName, Model model) {
         model.addAttribute("nickName", nickName);
-        String email = memberService.findOneMemberByNickname(nickName).getEmail();
+        String email = memberService.findOneMemberByNickname(nickName).orElse(null).getEmail();
         model.addAttribute("email", email);
         return "user/profile";
     }
@@ -49,5 +51,11 @@ public class UserController {
     public String updateUser(@ModelAttribute Member member) {
         memberService.editeMember(member);
         return "redirect:/user/list";
+    }
+
+    @GetMapping("/user/logout")
+    public String logoutUser(HttpSession httpSession) {
+        httpSession.invalidate();
+        return "redirect:/";
     }
 }
