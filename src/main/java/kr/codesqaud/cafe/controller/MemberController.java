@@ -44,7 +44,7 @@ public class MemberController {
 	}
 
 	@GetMapping("/list")
-	public String users(HttpSession session, Model model) throws SQLException {
+	public String users(Model model) throws SQLException {
 		List<Member> members = namedJdbcTemplateMemberRepository.showAllUsers();
 		model.addAttribute("users", members);
 		log.trace("사용자 수: {}", members.size());
@@ -52,7 +52,7 @@ public class MemberController {
 	}
 
 	@GetMapping("/profile/{userSequence}")
-	public String getProfile(HttpSession session, @PathVariable Long userSequence, Model model) throws SQLException {
+	public String getProfile(@PathVariable Long userSequence, Model model) throws SQLException {
 		Optional<Member> findUser = namedJdbcTemplateMemberRepository.findByNumber(userSequence);
 		model.addAttribute("user", findUser.orElseThrow());
 		return "user/profile";
@@ -60,7 +60,7 @@ public class MemberController {
 
 	@GetMapping("/update/{userSequence}")
 	public String editUserForm(HttpSession session, @PathVariable Long userSequence, Model model) throws SQLException {
-		Long loginUserSequence = (Long) session.getAttribute(SESSIONED_USER);
+		Long loginUserSequence = (Long) getAttributeFromSession(session);
 		if (loginUserSequence != userSequence) {
 			return "redirect:/";
 		}
@@ -75,6 +75,10 @@ public class MemberController {
 	public String edit(@ModelAttribute Member user) throws SQLException {
 		namedJdbcTemplateMemberRepository.update(user);
 		return "redirect:/users/list";
+	}
+
+	private Object getAttributeFromSession(HttpSession session) {
+		return session.getAttribute(SESSIONED_USER);
 	}
 
 }
