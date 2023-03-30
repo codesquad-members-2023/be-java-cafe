@@ -42,7 +42,10 @@ public class ArticleController {
     }
 
     @GetMapping("/qna/{articleId}")
-    public String printDetailArticle(@PathVariable int articleId, Model model) {
+    public String printDetailArticle(@PathVariable int articleId, HttpSession httpSession, Model model) {
+        if (httpSession.getAttribute("sessionedUser") == null) {
+            return "redirect:/user/login";
+        };
         Article article = articleService.findOneArticleById(articleId).get();
         model.addAttribute("article", article);
         return "qna/show";
