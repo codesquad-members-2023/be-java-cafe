@@ -21,15 +21,6 @@ public class ArticleWithWriterDto {
 		this.contents = contents;
 	}
 
-	public ArticleWithWriterDto(Long articleSequence, String title, String contents, LocalDateTime writtenTime, String writer, Long userSequence) {
-		this.articleSequence = articleSequence;
-		this.title = title;
-		this.contents = contents;
-		this.writtenTime = writtenTime;
-		this.writer = writer;
-		this.userSequence = userSequence;
-	}
-
 	public String getWriter() {
 		return writer;
 	}
