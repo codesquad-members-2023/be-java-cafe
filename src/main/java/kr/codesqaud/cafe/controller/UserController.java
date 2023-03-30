@@ -34,7 +34,7 @@ public class UserController {
     public String validateUser(@RequestParam String userId, @RequestParam String password, HttpSession session) {
 
         log.info("userId, password [{}][{}]", userId, password);
-        User dbUser = userRepository.findDBUser(userId, password);
+        User dbUser = userRepository.findUserWithMatchedPassword(userId, password);
 
         if (!dbUser.getUserId().equals(userId) || !dbUser.getPassword().equals(password)) {
             return "users/login_failed";

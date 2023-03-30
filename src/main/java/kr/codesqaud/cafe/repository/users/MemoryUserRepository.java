@@ -3,10 +3,7 @@ package kr.codesqaud.cafe.repository.users;
 import kr.codesqaud.cafe.domain.User;
 import org.springframework.stereotype.Repository;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Repository
 public class MemoryUserRepository implements UserRepository {
@@ -27,8 +24,8 @@ public class MemoryUserRepository implements UserRepository {
     }
 
     @Override
-    public User findDBUser(String userId, String password) {
-        return new User();
+    public Optional<User> findUserWithMatchedPassword(String userId, String password) {
+        return Optional.of(new User());
     }
 
     @Override
