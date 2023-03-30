@@ -1,10 +1,13 @@
 package kr.codesqaud.cafe.controller;
 
 import kr.codesqaud.cafe.domain.Article;
+import kr.codesqaud.cafe.domain.Member;
 import kr.codesqaud.cafe.service.ArticleService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+
+import javax.servlet.http.HttpSession;
 
 @Controller
 public class ArticleController {
@@ -14,6 +17,15 @@ public class ArticleController {
 
     public ArticleController(ArticleService articleService) {
         this.articleService = articleService;
+    }
+
+    @GetMapping("/qna/article")
+    public String askQuestion(HttpSession httpSession) {
+        Member member = (Member) httpSession.getAttribute("sessionedUser");
+        if (member == null) {
+            return "redirect:/user/login";
+        }
+        return "qna/form";
     }
 
     @PostMapping("/qna/ask")
