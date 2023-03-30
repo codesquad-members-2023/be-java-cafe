@@ -2,6 +2,7 @@ package kr.codesqaud.cafe.repository;
 
 import kr.codesqaud.cafe.domain.article.Article;
 import kr.codesqaud.cafe.dto.ArticleWithWriterDto;
+import kr.codesqaud.cafe.dto.ArticleWithoutContentsDto;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
@@ -25,10 +26,10 @@ public class NamedJdbcTemplateArticleRepository {
 		template.update("insert into article(article_title, article_contents, member_number) values (:title, :contents, :userSequence)", sqlParameterSource);
 	}
 
-	public List<ArticleWithWriterDto> findAllArticlesWithWriter() {
-		String sql = "select a.article_number, a.article_title, a.article_contents, a.article_writtentime, a.member_number, m.member_id as writer, " +
+	public List<ArticleWithoutContentsDto> findAllArticlesWithoutContents() {
+		String sql = "select a.article_number, a.article_title, a.article_writtentime, a.member_number, m.member_id as writer, " +
 			"from article a join member m on a.member_number=m.member_number";
-		return template.query(sql, articleWithWriterDtoRowMapper());
+		return template.query(sql, articleWithoutContentsDtoRowMapper());
 	}
 
 	public ArticleWithWriterDto findByArticleSequence(Long articleSequence) {
@@ -71,6 +72,18 @@ public class NamedJdbcTemplateArticleRepository {
 			articleWithWriterDto.setUserSequence(rs.getLong("member_number"));
 			articleWithWriterDto.setWriter(rs.getString("member_id"));
 			return articleWithWriterDto;
+		};
+	}
+
+	private RowMapper<ArticleWithoutContentsDto> articleWithoutContentsDtoRowMapper() {
+		return (rs, rowNum) -> {
+			ArticleWithoutContentsDto articleWithoutContentsDto = new ArticleWithoutContentsDto();
+			articleWithoutContentsDto.setArticleSequence(rs.getLong("article_number"));
+			articleWithoutContentsDto.setTitle(rs.getString("article_title"));
+			articleWithoutContentsDto.setWrittenTime(rs.getTimestamp("article_writtentime").toLocalDateTime());
+			articleWithoutContentsDto.setUserSequence(rs.getLong("member_number"));
+			articleWithoutContentsDto.setWriter(rs.getString("member_id"));
+			return articleWithoutContentsDto;
 		};
 	}
 }
