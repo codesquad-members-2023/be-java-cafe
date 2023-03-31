@@ -10,7 +10,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.util.Arrays;
 import java.util.List;
 
-import static kr.codesqaud.cafe.Constants.SESSIONED_USER;
+import static kr.codesqaud.cafe.utility.Constants.SESSIONED_USER;
 
 @Component
 public class LoginInterceptor implements HandlerInterceptor {
