@@ -1,7 +1,6 @@
+drop table if exists reply;
 drop table if exists article;
 drop table if exists member;
-drop table if exists reply;
-
 
 create table member
 (
