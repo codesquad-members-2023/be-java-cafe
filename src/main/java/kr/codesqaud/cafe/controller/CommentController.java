@@ -1,6 +1,5 @@
 package kr.codesqaud.cafe.controller;
 
-import kr.codesqaud.cafe.domain.Article;
 import kr.codesqaud.cafe.domain.Comment;
 import kr.codesqaud.cafe.repository.comment.CommentRepository;
 import kr.codesqaud.cafe.util.SessionConst;
