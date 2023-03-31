@@ -87,7 +87,7 @@ public class ArticleController {
     public String showArticle(@PathVariable Long id, Model model) {
         model.addAttribute("article", articleRepository.findById(id));
 
-        List<AnswerResponseDto> collect = answerRepository.findAll(id).stream().map(AnswerResponseDto::toDto).collect(Collectors.toList());
+        List<AnswerResponseDto> collect = answerRepository.findAllByArticleId(id).stream().map(AnswerResponseDto::toDto).collect(Collectors.toList());
         model.addAttribute("answers", collect);
         model.addAttribute("answerSize", collect.size());
         return "qna/show";

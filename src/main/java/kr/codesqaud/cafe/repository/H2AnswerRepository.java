@@ -37,7 +37,7 @@ public class H2AnswerRepository implements AnswerRepository{
     }
 
     @Override
-    public List<Answer> findAll(long articleId) {
+    public List<Answer> findAllByArticleId(long articleId) {
         String sql = "SELECT A.ID, A.CONTENTS, A.USER_ID, A.ARTICLE_ID, A.CREATED_AT as created_date, A.UPDATED_AT as updated_date, " +
                 "M.ID as writer_index, M.USERID, M.NICKNAME, M.EMAIL, M.PASSWORD, M.CREATED_AT as member_created_at, M.UPDATED_AT as member_updated_at FROM ANSWER A LEFT JOIN MEMBER M on M.ID = A.USER_ID WHERE ARTICLE_ID = :articleId";
         MapSqlParameterSource param = new MapSqlParameterSource("articleId", articleId);

@@ -39,15 +39,15 @@ class H2AnswerRepositoryTest {
     @Test
     @DisplayName("모든 댓글을 조회할 수 있다.")
     void findAll() {
-        assertThat(repository.findAll(0L)).isEmpty();
+        assertThat(repository.findAllByArticleId(0L)).isEmpty();
     }
 
     @Test
     @DisplayName("댓글을 1개 저장하면 리스트 크기가 1 늘어나야한다.")
     void save() {
-        int before = repository.findAll(1L).size();
+        int before = repository.findAllByArticleId(1L).size();
         repository.save(answer);
-        assertThat(repository.findAll(1L)).hasSize(before + 1);
+        assertThat(repository.findAllByArticleId(1L)).hasSize(before + 1);
     }
 
     @Test
@@ -60,7 +60,7 @@ class H2AnswerRepositoryTest {
     @Test
     @DisplayName("댓글 저장 후 작성자의 이름을 확인할 수 있다.")
     void saveCheckDataWriter() {
-        int before = repository.findAll(1L).size();
+        int before = repository.findAllByArticleId(1L).size();
         repository.save(answer);
         assertThat(repository.findById(1L).getWriterNickname()).isEqualTo("자바지기");
     }
@@ -90,9 +90,9 @@ class H2AnswerRepositoryTest {
     @DisplayName("댓글을 1 삭제하면 총 댓글 개수가 1 줄어야 한다.")
     void delete() {
         repository.save(answer);
-        int size = repository.findAll(1L).size();
+        int size = repository.findAllByArticleId(1L).size();
         repository.delete(1L);
-        assertThat(repository.findAll(1L)).hasSize(size-1);
+        assertThat(repository.findAllByArticleId(1L)).hasSize(size-1);
     }
 
 }

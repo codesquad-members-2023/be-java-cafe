@@ -6,7 +6,7 @@ import java.util.List;
 
 public interface AnswerRepository {
     void save(Answer answer);
-    List<Answer> findAll(long articleId);
+    List<Answer> findAllByArticleId(long articleId);
     Answer findById(long id);
     void update(Answer exAnswer, Answer newAnswer);
     void delete(long id);
