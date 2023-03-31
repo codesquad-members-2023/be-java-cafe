@@ -1,5 +1,8 @@
 package kr.codesqaud.cafe.domain.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import org.springframework.format.annotation.DateTimeFormat;
+
 import java.time.LocalDateTime;
 
 public class ReplyWithUser {
@@ -8,6 +11,7 @@ public class ReplyWithUser {
     private int userId;
     private String userName;
     private String contents;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd", timezone = "Asia/Seoul")
     private LocalDateTime createDate;
 
     public ReplyWithUser() {

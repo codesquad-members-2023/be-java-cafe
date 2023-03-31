@@ -1,29 +1,25 @@
 package kr.codesqaud.cafe.domain.dto;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDateTime;
 
-public class ArticleWithWriter {
+public class SimpleArticleWithWriter {
 
     private int id;
     private String title;
-    private String contents;
-
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDateTime createDate;
     private int userId;
     private String writer;
     private int replyCount;
 
-    public ArticleWithWriter() {
+    public SimpleArticleWithWriter() {
     }
 
-    public ArticleWithWriter(int id, String title, String contents, LocalDateTime createDate, int userId, String writer, int replyCount) {
+    public SimpleArticleWithWriter(int id, String title, LocalDateTime createDate, int userId, String writer, int replyCount) {
         this.id = id;
         this.title = title;
-        this.contents = contents;
         this.createDate = createDate;
         this.userId = userId;
         this.writer = writer;
@@ -44,14 +40,6 @@ public class ArticleWithWriter {
 
     public void setTitle(String title) {
         this.title = title;
-    }
-
-    public String getContents() {
-        return contents;
-    }
-
-    public void setContents(String contents) {
-        this.contents = contents;
     }
 
     public LocalDateTime getCreateDate() {

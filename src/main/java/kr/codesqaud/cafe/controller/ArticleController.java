@@ -4,8 +4,9 @@ import kr.codesqaud.cafe.SessionConstant;
 import kr.codesqaud.cafe.domain.Article;
 import kr.codesqaud.cafe.domain.dto.ArticleWithWriter;
 import kr.codesqaud.cafe.domain.dto.ReplyWithUser;
+import kr.codesqaud.cafe.domain.dto.SimpleArticleWithWriter;
 import kr.codesqaud.cafe.repository.ArticleRepository;
-import kr.codesqaud.cafe.repository.H2DBReplyRepository;
+import kr.codesqaud.cafe.repository.MySQLReplyRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,18 +24,18 @@ public class ArticleController {
     private static final String UPDATE = "수정";
 
     private final ArticleRepository articleRepository;
-    private final H2DBReplyRepository replyRepository;
+    private final MySQLReplyRepository replyRepository;
     private final Logger log = LoggerFactory.getLogger(getClass());
 
     @Autowired
-    public ArticleController(ArticleRepository articleRepository, H2DBReplyRepository replyRepository) {
+    public ArticleController(ArticleRepository articleRepository, MySQLReplyRepository replyRepository) {
         this.articleRepository = articleRepository;
         this.replyRepository = replyRepository;
     }
 
     @GetMapping("/")
     public String showArticles(Model model) {
-        List<ArticleWithWriter> articles = articleRepository.findAll();
+        List<SimpleArticleWithWriter> articles = articleRepository.findAll();
         model.addAttribute("articles", articles);
 
         return "index";

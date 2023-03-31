@@ -4,36 +4,34 @@ import kr.codesqaud.cafe.domain.Article;
 import kr.codesqaud.cafe.domain.Reply;
 import kr.codesqaud.cafe.domain.User;
 import kr.codesqaud.cafe.domain.dto.ReplyWithUser;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.jdbc.JdbcTest;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 
 import javax.sql.DataSource;
-
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
 
-@SpringBootTest
-class H2DBReplyRepositoryTest {
+@JdbcTest
+class MySQLReplyRepositoryTest {
 
+    @Autowired
     private DataSource dataSource;
-    private H2DBUserRepository userRepository;
+    private MySQLUserRepository userRepository;
     private H2DBArticleRepository articleRepository;
-    private H2DBReplyRepository replyRepository;
+    private MySQLReplyRepository replyRepository;
 
     @BeforeEach
     void init() {
-        dataSource = new DriverManagerDataSource("jdbc:h2:mem:test", "sa", "");
-        userRepository = new H2DBUserRepository(dataSource);
+        userRepository = new MySQLUserRepository(dataSource);
         articleRepository = new H2DBArticleRepository(dataSource);
-        replyRepository = new H2DBReplyRepository(dataSource);
+        replyRepository = new MySQLReplyRepository(dataSource);
 
         userRepository.save(new User("Hyun", "1234", "황현", "ghkdgus29@naver.com"));
         userRepository.save(new User("Yoon", "1234", "황윤", "ghkddbs28@naver.com"));

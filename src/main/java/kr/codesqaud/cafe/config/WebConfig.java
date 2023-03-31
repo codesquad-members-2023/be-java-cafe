@@ -18,7 +18,7 @@ public class WebConfig implements WebMvcConfigurer {
                 .excludePathPatterns("/users/form", "/css/**", "/*.ico", "/fonts/**", "/images/**", "/js/**");
 
         registry.addInterceptor(new CacheInvalidateInterceptor())
-                .addPathPatterns("/**")
+                .addPathPatterns("/articles/*")
                 .excludePathPatterns("/css/**", "/*.ico", "/fonts/**", "/images/**", "/js/**");
     }
 }

@@ -1,3 +1,4 @@
+drop table if exists users;
 create table users
 (
     id       int         primary key auto_increment ,
@@ -7,6 +8,7 @@ create table users
     email    varchar(30) not null
 );
 
+drop table if exists article;
 create table article
 (
     id         int         primary key auto_increment,
@@ -18,13 +20,19 @@ create table article
     foreign key (user_id) references users (id)
 );
 
+drop table if exists reply;
 create table reply
 (
     id         int         primary key auto_increment,
     contents   varchar(50) not null,
     createDate timestamp,
+    deleted    boolean,
     user_id    int,
     article_id int,
     foreign key (user_id) references users (id),
     foreign key (article_id) references article (id)
 );
+
+
+
+

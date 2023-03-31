@@ -5,7 +5,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Primary;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
-import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
@@ -16,13 +15,12 @@ import java.util.List;
 import java.util.Map;
 
 @Repository
-@Primary
-public class H2DBUserRepository implements UserRepository{
+public class MySQLUserRepository implements UserRepository{
 
     private final NamedParameterJdbcTemplate template;
 
     @Autowired
-    public H2DBUserRepository(DataSource dataSource) {
+    public MySQLUserRepository(DataSource dataSource) {
         this.template = new NamedParameterJdbcTemplate(dataSource);
     }
 

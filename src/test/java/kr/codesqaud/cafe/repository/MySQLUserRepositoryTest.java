@@ -5,6 +5,8 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.jdbc.JdbcTest;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
@@ -15,16 +17,16 @@ import java.util.List;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
-@SpringBootTest
-class H2DBUserRepositoryTest {
+@JdbcTest
+class MySQLUserRepositoryTest {
 
+    @Autowired
     private DataSource dataSource;
-    private H2DBUserRepository repository;
+    private MySQLUserRepository repository;
 
     @BeforeEach
     void init() {
-        dataSource = new DriverManagerDataSource("jdbc:h2:mem:test", "sa", "");
-        repository = new H2DBUserRepository(dataSource);
+        repository = new MySQLUserRepository(dataSource);
     }
 
     @AfterEach

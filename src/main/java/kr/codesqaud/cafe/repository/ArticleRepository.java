@@ -2,6 +2,7 @@ package kr.codesqaud.cafe.repository;
 
 import kr.codesqaud.cafe.domain.Article;
 import kr.codesqaud.cafe.domain.dto.ArticleWithWriter;
+import kr.codesqaud.cafe.domain.dto.SimpleArticleWithWriter;
 
 import java.util.List;
 
@@ -11,7 +12,7 @@ public interface ArticleRepository {
 
     ArticleWithWriter findById(int id);
 
-    List<ArticleWithWriter> findAll();
+    List<SimpleArticleWithWriter> findAll();
 
     void delete(int id);
 
