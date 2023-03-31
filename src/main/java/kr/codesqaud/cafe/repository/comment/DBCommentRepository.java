@@ -60,5 +60,6 @@ public class DBCommentRepository implements CommentRepository {
         String sql = "update comment set deletedAt = ? where commentId = ?";
 
         jdbcTemplate.update(sql, now, commentId);
+
     }
 }

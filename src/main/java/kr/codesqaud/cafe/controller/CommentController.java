@@ -1,5 +1,6 @@
 package kr.codesqaud.cafe.controller;
 
+<<<<<<< HEAD
 import kr.codesqaud.cafe.domain.Comment;
 import kr.codesqaud.cafe.repository.comment.CommentRepository;
 import kr.codesqaud.cafe.util.SessionConst;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.HttpSession;
 import java.time.LocalDateTime;
+import org.springframework.stereotype.Controller;
 
 @Controller
 public class CommentController {
@@ -67,4 +69,5 @@ public class CommentController {
 
         return targetComment.getWriter() == (long) httpSession.getAttribute(SessionConst.LOGIN_USERID);
     }
+
 }
