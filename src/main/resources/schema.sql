@@ -15,6 +15,7 @@ create table article (
     title varchar(64) not null,
     contents varchar(300) not null,
     timestamp timestamp not null,
+    deleted boolean not null,
     foreign key (userid) references member(userid)
 );
 

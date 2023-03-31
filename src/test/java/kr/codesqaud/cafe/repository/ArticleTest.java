@@ -8,6 +8,7 @@ import kr.codesqaud.cafe.repository.article.H2JDBCArticleRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.jdbc.JdbcTest;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.transaction.annotation.Transactional;
@@ -18,8 +19,7 @@ import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.*;
 
-@SpringBootTest
-@Transactional
+@JdbcTest
 class ArticleTest {
 
     private final ArticleRepository articleRepository;

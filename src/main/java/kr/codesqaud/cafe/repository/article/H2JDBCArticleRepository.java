@@ -28,21 +28,21 @@ public class H2JDBCArticleRepository implements ArticleRepository {
 
     @Override
     public void save(ArticleFormDTO article) {
-        String sql = "insert into article (userid, title, contents, timestamp) values(?, ?, ?, ?)";
+        String sql = "insert into article (userid, title, contents, timestamp, deleted) values(?, ?, ?, ?, ?)";
 
-        template.update(sql, article.getUserId(), article.getTitle(), article.getContents(), Timestamp.valueOf(LocalDateTime.now()));
+        template.update(sql, article.getUserId(), article.getTitle(), article.getContents(), Timestamp.valueOf(LocalDateTime.now()), false);
     }
 
     @Override
     public Optional<Article> findArticleById(int id) {
-        String sql = "select * from article where id=?";
+        String sql = "select * from article where id=? and deleted = false";
 
         return Optional.ofNullable(template.queryForObject(sql, new BeanPropertyRowMapper<>(Article.class), id));
     }
 
     @Override
     public List<Article> findAllArticle() {
-        String sql = "select * from article order by timestamp desc";
+        String sql = "select * from article where deleted = false order by timestamp desc";
 
         return template.query(sql, new BeanPropertyRowMapper<>(Article.class));
     }
@@ -56,7 +56,7 @@ public class H2JDBCArticleRepository implements ArticleRepository {
 
     @Override
     public void deleteArticle(int articleId) {
-        String sql = "delete from article where id=?";
+        String sql = "update article set deleted = true where id=?";
 
         template.update(sql, articleId);
     }

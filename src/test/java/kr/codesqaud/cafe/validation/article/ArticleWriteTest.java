@@ -14,14 +14,9 @@ import static org.assertj.core.api.Assertions.*;
 @SpringBootTest
 class ArticleWriteTest {
 
-    private final ArticleNewFormValidator articleValidator;
+    private final ArticleNewFormValidator articleValidator = new ArticleNewFormValidator();
     private ArticleErrorConstant articleError = new ArticleErrorConstant();
     private ArticleInformationConstant articleInformation = new ArticleInformationConstant();
-
-    @Autowired
-    public ArticleWriteTest(ArticleNewFormValidator articleValidator) {
-        this.articleValidator = articleValidator;
-    }
 
     @Test
     @DisplayName("새로운 글 작성 시, 제목이 비어있으면 에러 발생")

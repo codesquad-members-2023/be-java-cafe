@@ -8,7 +8,7 @@ import javax.servlet.http.HttpSession;
 @Component
 public class SessionUtil {
 
-    public User getSessionedUser(HttpSession session) {
+    public static User getSessionedUser(HttpSession session) {
         return (User) session.getAttribute("user");
     }
 

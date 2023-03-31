@@ -26,20 +26,22 @@ public class ArticleController {
     private final ReplyRepository replyRepository;
     private final ArticleNewFormValidator articleNewFormValidator;
     private final ArticleUpdateValidator articleUpdateValidator;
-    private final SessionUtil sessionUtil;
 
     @Autowired
-    public ArticleController(ArticleRepository articleRepository, ReplyRepository replyRepository, ArticleNewFormValidator articleNewFormValidator, ArticleUpdateValidator articleUpdateValidator, SessionUtil sessionUtil) {
+    public ArticleController(ArticleRepository articleRepository, ReplyRepository replyRepository, ArticleNewFormValidator articleNewFormValidator, ArticleUpdateValidator articleUpdateValidator) {
         this.articleRepository = articleRepository;
         this.replyRepository = replyRepository;
         this.articleNewFormValidator = articleNewFormValidator;
         this.articleUpdateValidator = articleUpdateValidator;
-        this.sessionUtil = sessionUtil;
     }
 
     @GetMapping("/")
     public String welcomePage(Model model) {
         List<Article> allArticle = articleRepository.findAllArticle();
+        for (Article article : allArticle) {
+            List<Reply> replies = replyRepository.findAllReplyByArticleId(article.getId());
+            article.setReplyList(replies);
+        }
         model.addAttribute(allArticle);
 
         return "welcome/index";
@@ -59,7 +61,7 @@ public class ArticleController {
             model.addAttribute("userId", article.getUserId());
             return "qna/qna_form";
         }
-        User user = sessionUtil.getSessionedUser(session);
+        User user = SessionUtil.getSessionedUser(session);
         article.setUserId(user.getUserId());
         articleRepository.save(article);
 
@@ -86,7 +88,7 @@ public class ArticleController {
     public String updateArticleForm(@PathVariable int articleId, Model model, HttpSession session) {
         Article article = articleRepository.findArticleById(articleId)
                 .orElseThrow(() -> new IllegalArgumentException("없는 질문글입니다."));
-        User user = sessionUtil.getSessionedUser(session);
+        User user = SessionUtil.getSessionedUser(session);
         if (user.getUserId().equals(article.getUserId())) {
             model.addAttribute("article", article);
             model.addAttribute("user", user);
@@ -113,13 +115,45 @@ public class ArticleController {
     public String deleteArticle(@PathVariable int articleId, HttpSession session) {
         Article findArticle = articleRepository.findArticleById(articleId)
                 .orElseThrow(() -> new IllegalArgumentException("없는 질문글입니다."));
-        User user = sessionUtil.getSessionedUser(session);
 
-        if (user.getUserId().equals(findArticle.getUserId())) {
-            articleRepository.deleteArticle(articleId);
+        String articleUserId = findArticle.getUserId();
+        if (canDelete(session, articleUserId, articleId)) {
             return "redirect:/";
         }
 
         throw new IllegalArgumentException("글 작성자만 삭제할 수 있습니다");
+    }
+
+    private boolean canDelete(HttpSession session, String articleUserId, int articleId) {
+        User user = SessionUtil.getSessionedUser(session);
+
+        if (user.getUserId().equals(articleUserId)) {
+            checkArticleReply(articleId, user.getUserId());
+            articleRepository.deleteArticle(articleId);
+            removeAllReply(articleId);
+            return true;
+        }
+        return false;
+    }
+
+    // 자신의 질문글에 다른 사람의 댓글이 있을 시 예외 처리
+    private void checkArticleReply(int articleId, String userId) {
+        List<Reply> allReplyByArticleId = replyRepository.findAllReplyByArticleId(articleId);
+
+        long count = allReplyByArticleId.stream()
+                .filter(replyId -> !replyId.getUserId().equals(userId))
+                .count();
+
+        if (count > 0) {
+            throw new IllegalArgumentException("다른 사람의 댓글이 있을 경우 삭제할 수 없습니다.");
+        }
+    }
+
+    private void removeAllReply(int articleId) {
+        List<Reply> allReplyByArticleId = replyRepository.findAllReplyByArticleId(articleId);
+
+        for (Reply reply : allReplyByArticleId) {
+            replyRepository.delete(reply.getId());
+        }
     }
 }
