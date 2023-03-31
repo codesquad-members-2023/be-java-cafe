@@ -19,7 +19,7 @@ public class ArticleService {
         articleRepository.saveArticle(article);
     }
 
-    public Optional<Article> findOneArticleById(int id) {
+    public Optional<Article> findOneArticleById(long id) {
         return articleRepository.findOneArticleById(id);
     }
 
@@ -29,5 +29,13 @@ public class ArticleService {
 
     public int getTotalNumberOfArticles() {
         return articleRepository.getSize();
+    }
+
+    public void updateArticle(Article article) {
+        articleRepository.updateArticle(article);
+    }
+
+    public void deleteArticle(long articleId) {
+        articleRepository.deleteArticle(articleId);
     }
 }

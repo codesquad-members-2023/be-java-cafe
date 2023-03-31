@@ -36,7 +36,6 @@ public class CafeConfig implements WebMvcConfigurer {
         registry.addViewController("/user/login").setViewName("user/login");
         registry.addViewController("/user/form").setViewName("user/form");
         registry.addViewController("/qna/show").setViewName("qna/show");
-        registry.addViewController("/qna/article").setViewName("qna/form");
         registry.addViewController("/login_fail").setViewName("user/login_fail");
     }
 }

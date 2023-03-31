@@ -22,7 +22,7 @@ public class MemoryArticleRepository implements ArticleRepository {
     }
 
     @Override
-    public Optional<Article> findOneArticleById(int id) {
+    public Optional<Article> findOneArticleById(long id) {
         return articlesRepository.stream()
                 .filter(article -> article.getId() == id)
                 .findAny();
@@ -39,7 +39,12 @@ public class MemoryArticleRepository implements ArticleRepository {
     }
 
     @Override
-    public void deleteArticle(Member member) {
+    public void updateArticle(Article article) {
+
+    }
+
+    @Override
+    public void deleteArticle(long articleId) {
 
     }
 

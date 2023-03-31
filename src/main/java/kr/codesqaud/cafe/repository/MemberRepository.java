@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Optional;
 
 public interface MemberRepository {
-    Member saveMember(Member member);
+    void saveMember(Member member);
 
     Optional<Member> findOneMemberbyEmail(String email);
 

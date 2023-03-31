@@ -5,6 +5,7 @@ import kr.codesqaud.cafe.repository.MemoryMemberRepository;
 import kr.codesqaud.cafe.service.MemberService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -36,7 +37,7 @@ public class UserController {
     @GetMapping("/profile/{nickName}")
     public String showProfile(@PathVariable String nickName, Model model) {
         model.addAttribute("nickName", nickName);
-        String email = memberService.findOneMemberByNickname(nickName).orElse(null).getEmail();
+        String email = memberService.findOneMemberByNickname(nickName).orElseThrow(() -> new EmptyResultDataAccessException(1)).getEmail();
         model.addAttribute("email", email);
         return "user/profile";
     }

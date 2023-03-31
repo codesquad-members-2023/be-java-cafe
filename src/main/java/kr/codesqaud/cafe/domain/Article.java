@@ -33,7 +33,7 @@ public class Article {
         this.writer = author;
     }
 
-    public void setArticleId(int id) {
+    public void setArticleId(long id) {
         articleId = id;
     }
 

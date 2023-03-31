@@ -1,7 +1,6 @@
 package kr.codesqaud.cafe.repository;
 
 import kr.codesqaud.cafe.domain.Article;
-import kr.codesqaud.cafe.domain.Member;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
@@ -36,8 +35,7 @@ public class JdbcTemplateArticleRepository implements ArticleRepository {
     }
 
     @Override
-    public Optional<Article> findOneArticleById(int id) {
-        System.out.println(id);
+    public Optional<Article> findOneArticleById(long id) {
         return Optional.ofNullable(jdbcTemplate.queryForObject("select * from article where articleId = ?", articleRowMapper(), id));
     }
 
@@ -47,13 +45,20 @@ public class JdbcTemplateArticleRepository implements ArticleRepository {
     }
 
     @Override
-    public void deleteArticle(Member member) {
-
+    public void deleteArticle(long articleId) {
+        String sql = "delete from article where articleId = ?";
+        jdbcTemplate.update(sql, articleId);
     }
 
     @Override
     public int getSize() {
         return jdbcTemplate.queryForObject("select count(*) from article", Integer.class);
+    }
+
+    @Override
+    public void updateArticle(Article article) {
+        String sql = "update article set title = ?, contents = ? where articleId = ?";
+        jdbcTemplate.update(sql, article.getTitle(), article.getContents(), article.getId());
     }
 
     private RowMapper<Article> articleRowMapper() {
