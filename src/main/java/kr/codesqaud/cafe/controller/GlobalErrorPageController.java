@@ -11,7 +11,6 @@ public class GlobalErrorPageController {
 
     @GetMapping("/api/error")
     public String globalErrorPage(HttpServletRequest request, Model model) {
-        System.out.println("나는 바보다");
         String errMessage = (String)request.getAttribute("error");
         model.addAttribute("error", errMessage);
 

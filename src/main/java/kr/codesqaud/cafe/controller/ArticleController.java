@@ -41,8 +41,7 @@ public class ArticleController {
     }
 
     @PostMapping("/qna/create")
-    public String articlePost(@RequestParam String title, @RequestParam String contents, HttpSession httpSession)
-            throws UserInfoException, ArticleInfoException {
+    public String articlePost(@RequestParam String title, @RequestParam String contents, HttpSession httpSession) {
         articleRepository.addArticle(
                 new Article(getSessionId(httpSession), title, contents, LocalDateTime.now()));
 
@@ -103,6 +102,7 @@ public class ArticleController {
         return "redirect:/";
     }
 
+    /*
     @DeleteMapping(value = "/qna/{articleId}/reply/{replyId}")
     public String deleteReply(@PathVariable long articleId, @PathVariable long replyId, HttpSession httpSession)
             throws ArticleInfoException {
@@ -113,6 +113,6 @@ public class ArticleController {
 
         replyRepository.deleteReply(articleId, replyId);
         return "redirect:/qna/{articleId}";
-    }
+    }*/
 
 }

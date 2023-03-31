@@ -60,16 +60,16 @@ public class AutoAppConfig implements WebMvcConfigurer {
     public void addInterceptors(InterceptorRegistry registry) {
         final int midPrecedence = 0;
         final String[] validAddressPattern = {"/", "/users/**", "/qna/**", "/css/**", "/*.ico", "/js/**", "/images/**",
-                "/fonts/**", "/api/error"};
+                "/fonts/**", "/api/error", "/qna/**/reply", "/qna/**/reply/**"};
         final String[] openAddressPattern = {"/users/login_failed", "/users/form",
                 "/users/login", "/users/create", "/api/error"};
         final String[] staticsPattern = {"/css/**", "/*.ico", "/js/**", "/images/**", "/fonts/**"};
         final String[] closeAddressPattern = {"/users/**", "/qna/**"};
 
-        registry.addInterceptor(new InvalidAddressInterceptor())
+        /*registry.addInterceptor(new InvalidAddressInterceptor())
                 .order(Ordered.HIGHEST_PRECEDENCE)
                 .addPathPatterns("/**")//모든 URL에 대해서, 404를 발생.
-                .excludePathPatterns(validAddressPattern);
+                .excludePathPatterns(validAddressPattern);*/
 
         registry.addInterceptor(new LoginInterceptor())
                 .order(midPrecedence)

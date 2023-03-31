@@ -32,9 +32,9 @@
                                 <a class="link-modify-article" href="/qna/{{&id}}/form">수정</a>
                             </li>
                             <li>
-                                <form class="form-delete" action="/qna/{{&id}}" method="POST">
+                                <form class="form-delete" action="/qna/{{&id}}">
                                     <input type="hidden" name="_method" value="DELETE">
-                                    <button class="link-delete-article" type="submit">삭제</button>
+                                    <button class="link-delete-article">삭제</button>
                                 </form>
                             </li>
                             <li>
@@ -74,10 +74,10 @@
                                             </a>
                                         </li>
                                         <li>
-                                            <form class="form-delete" action="/qna/{{&articleId}}/reply/{{&id}}"
-                                                  method="POST">
-                                                <input type="hidden" name="_method" value="DELETE">
-                                                <button type="submit" class="delete-answer-button">삭제</button>
+                                            <form class="form-delete">
+                                                <button type="button" class="delete-answer-button" data-url="/qna/{{&articleId}}/reply/{{&id}}">삭제</button>
+                                                <script src="http://code.jquery.com/jquery-latest.js"></script>
+
                                             </form>
                                         </li>
                                     </ul>
@@ -94,9 +94,6 @@
                             </div>
                             <button class="btn btn-success pull-right">답변하기</button>
                             <script src="http://code.jquery.com/jquery-latest.js"></script>
-                            <script src="/js/reply.js">
-
-                            </script>
                             <div class="clearfix"/>
                         </form>
                     </div>
