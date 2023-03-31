@@ -84,6 +84,9 @@ function sendDeleteReply(e) {
         success : function (data, status) {
             if (data.valid) {
                 deleteBtn.closest("article").remove();
+                var string = '개의 의견';
+                $(".qna-comment-st1").text(parseInt($(".qna-comment-st1").text()) - 1);
+                $(".qna-comment-st2").text(string);
             } else {
                 alert(data.message);
             }
