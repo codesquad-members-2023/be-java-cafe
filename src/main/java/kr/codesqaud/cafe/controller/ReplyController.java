@@ -35,19 +35,6 @@ public class ReplyController {
                 contents, reply.getCreateDate());
     }
 
-//    @DeleteMapping("/articles/{articleId}/replies/{replyId}")
-//    public String delete(@PathVariable int articleId, @PathVariable int replyId, HttpSession session) {
-//        Reply reply = replyRepository.findById(replyId);
-//        int userId = (int) session.getAttribute(SessionConstant.LOGIN_USER_ID);
-//
-//        if (userId != reply.getUserId()) {
-//            throw new IllegalArgumentException("[ERROR] 자신이 작성하지 않은 댓글은 삭제할 수 없습니다.");
-//        }
-//
-//        replyRepository.delete(replyId);
-//        return "redirect:/articles/{articleId}";
-//    }
-
     @DeleteMapping("/articles/{articleId}/replies/{replyId}")
     public Result delete(@PathVariable int articleId, @PathVariable int replyId, HttpSession session) {
         Reply reply = replyRepository.findById(replyId);
