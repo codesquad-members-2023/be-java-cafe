@@ -10,11 +10,11 @@ public class User {
 
     }
 
-    public User(UserDTO userDTO) {
-        this.userId = userDTO.getUserId();
-        this.password = userDTO.getPassword();
-        this.name = userDTO.getName();
-        this.email = userDTO.getEmail();
+    public User(User user) {
+        this.userId = user.getUserId();
+        this.password = user.getPassword();
+        this.name = user.getName();
+        this.email = user.getEmail();
     }
 
     public String getUserId() {

@@ -36,3 +36,6 @@ out/
 ### VS Code ###
 .vscode/
 src/main/resources/static/show.html
+src/main/resources/static/showOri.html
+src/main/resources/static/showV2.html
+src/main/resources/static/js/test.js

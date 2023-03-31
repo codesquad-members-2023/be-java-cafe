@@ -14,7 +14,7 @@
             <h2 th:text="|${user.userId} 사용자 정보 변경하기|"> 소제목 : 사용자 정보 변경하기</h2>
             <br>
             <div class="alert alert-danger" role="alert" th:if="${exception != null}" th:text="${exception}">에러 메세지</div>
-            <form name="question" method="post" th:action="@{/user/update/{userId}(userId=${user.userId})}">
+            <form name="question" method="post" action="/user/update">
                 <input type="hidden" name="_method" value="PUT">
 
                 <div class="form-group">

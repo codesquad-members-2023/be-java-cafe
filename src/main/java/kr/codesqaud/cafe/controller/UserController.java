@@ -1,7 +1,6 @@
 package kr.codesqaud.cafe.controller;
 
 import kr.codesqaud.cafe.basic.User;
-import kr.codesqaud.cafe.basic.UserDTO;
 import kr.codesqaud.cafe.config.ConstantConfig;
 import kr.codesqaud.cafe.exception.gobalExeption.NotFoundException;
 import kr.codesqaud.cafe.exception.userException.*;
@@ -35,9 +34,9 @@ public class UserController {
     }
 
     @PostMapping("/create")
-    public String create(@ModelAttribute UserDTO userDTO,
+    public String create(@ModelAttribute User user,
                          Model model) {
-        userRepository.join(userDTO);
+        userRepository.join(user);
 
         return "redirect:/user/list";
     }
@@ -49,9 +48,10 @@ public class UserController {
         return "user/list";
     }
 
-    @GetMapping("/profile/{userId}")
-    public String profile(@PathVariable String userId,
+    @GetMapping("/profile")
+    public String profile(HttpSession session,
                           Model model) {
+        String userId = (String) session.getAttribute(ConstantConfig.SESSION_ID);
         Optional<User> optionalUser = userRepository.findUserById(userId);
         if (optionalUser.isEmpty()) throw new NotFoundException("유저의 정보를 불러오는데 실패했습니다.");
 
@@ -63,22 +63,23 @@ public class UserController {
     @GetMapping("/update")
     public String updateForm(HttpSession session,
                              Model model) {
-        User user = (User) session.getAttribute(ConstantConfig.SESSION_ID);
-        if (user == null) throw new UserSessionExpireException();
+        String userId = (String) session.getAttribute(ConstantConfig.SESSION_ID);
+        Optional<User> userOptional = userRepository.findUserById(userId);
+        if (userOptional.isEmpty()) throw new UserSessionExpireException();
 
-        model.addAttribute("user", user);
+        model.addAttribute("user", userOptional.get());
         return "user/update";
     }
 
-    @PutMapping("/update/{userId}")
-    public String update(@ModelAttribute UserDTO userDTO,
-                         @PathVariable String userId,
+    @PutMapping("/update")
+    public String update(@ModelAttribute User user,
                          @RequestParam String curPassword,
                          HttpSession session) {
-        User user = (User) session.getAttribute(ConstantConfig.SESSION_ID);
-        if (user == null) throw new UserSessionExpireException();
-        if (!user.isSamePassword(curPassword)) throw new UserUpdateException("잘못된 비밀번호 입니다.");
-        if (!userService.update(userDTO)) throw new UserUpdateException("업데이트에 실패했습니다.");
+        String userId = (String) session.getAttribute(ConstantConfig.SESSION_ID);
+        Optional<User> userOptional = userRepository.findUserById(userId);
+        if (userOptional.isEmpty()) throw new UserSessionExpireException();
+        if (!userOptional.get().isSamePassword(curPassword)) throw new UserUpdateException("잘못된 비밀번호 입니다.");
+        if (!userService.update(userId, user)) throw new UserUpdateException("업데이트에 실패했습니다.");
 
         return "redirect:/user/list";
     }
@@ -89,14 +90,13 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    public String login(@ModelAttribute UserDTO userDTO,
+    public String login(@ModelAttribute User user,
                         @RequestParam(defaultValue = "/") String requestURL,
                         HttpSession session) {
-        Optional<User> optionalUser = userService.login(userDTO);
+        Optional<User> optionalUser = userService.login(user);
         if (optionalUser.isEmpty()) throw new UserLoginException();
 
-        session.setAttribute(ConstantConfig.SESSION_ID, optionalUser.get());
-        session.setAttribute(ConstantConfig.SESSION_LOGIN, true);
+        session.setAttribute(ConstantConfig.SESSION_ID, optionalUser.get().getUserId());
         return "redirect:" + requestURL;
     }
 

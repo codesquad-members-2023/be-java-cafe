@@ -55,7 +55,7 @@ public class Reply {
         return createAt;
     }
 
-    public String getFormattedTime() {
+    public String getFormattedLocalDateTime() {
         return createAt.toLocalDateTime().format(DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss"));
     }
 
