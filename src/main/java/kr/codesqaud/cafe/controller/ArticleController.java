@@ -1,10 +1,12 @@
 package kr.codesqaud.cafe.controller;
 
 import kr.codesqaud.cafe.domain.Article;
+import kr.codesqaud.cafe.domain.Comment;
 import kr.codesqaud.cafe.repository.article.ArticleRepository;
 
-import kr.codesqaud.cafe.util.SessionConst;
-import kr.codesqaud.cafe.util.ValidateConst;
+import kr.codesqaud.cafe.repository.comment.CommentRepository;
+import kr.codesqaud.cafe.util.SessionConstant;
+import kr.codesqaud.cafe.util.ValidateConstant;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,10 +22,12 @@ public class ArticleController {
 
     private final Logger log = LoggerFactory.getLogger(getClass());
     private final ArticleRepository articleRepository;
+    private final CommentRepository commentRepository;
 
     @Autowired
-    public ArticleController(ArticleRepository articleRepository) {
+    public ArticleController(ArticleRepository articleRepository, CommentRepository commentRepository) {
         this.articleRepository = articleRepository;
+        this.commentRepository = commentRepository;
     }
 
     @PostMapping("/qna")
@@ -31,12 +35,12 @@ public class ArticleController {
                              @RequestParam String contents,
                              Model model, HttpSession httpSession) {
 
-        if (httpSession.getAttribute(SessionConst.LOGIN_USERID) == null) {
-            model.addAttribute("errorMessage", ValidateConst.UNKNOWN_USER);
+        if (httpSession.getAttribute(SessionConstant.LOGIN_USERID) == null) {
+            model.addAttribute("errorMessage", ValidateConstant.UNKNOWN_USER);
             return "util/error";
         }
 
-        long writer = (long) httpSession.getAttribute(SessionConst.LOGIN_USERID);
+        long writer = (long) httpSession.getAttribute(SessionConstant.LOGIN_USERID);
         articleRepository.save(new Article(writer, title, contents));
 
         return "redirect:/qna/list";
@@ -45,9 +49,7 @@ public class ArticleController {
     @GetMapping("/qna/form")
     public String orderQnaForm(HttpSession httpSession, Model model) {
 
-        log.info("orderQnaForm, httpSession={}", httpSession.getAttribute("loggedInId"));
-
-        if (httpSession.getAttribute("loggedInId") == null) {
+        if (httpSession.getAttribute(SessionConstant.LOGIN_USERID) == null) {
             return "redirect:/users/login";
         }
 
@@ -65,13 +67,19 @@ public class ArticleController {
     @GetMapping("/qna/{id}")
     public String findArticle(@PathVariable int id, Model model, HttpSession httpSession) {
 
-        if (httpSession.getAttribute("loggedInId") == null) {
-            model.addAttribute("errorMessage", ValidateConst.UNKNOWN_USER);
+        if (httpSession.getAttribute(SessionConstant.LOGIN_USERID) == null) {
+            model.addAttribute("errorMessage", ValidateConstant.UNKNOWN_USER);
             return "util/error";
         }
 
         Article article = articleRepository.findByArticleId(id);
         model.addAttribute("article", article);
+
+        List<Comment> commentList = commentRepository.findAllCommentsByArticleId(id);
+        model.addAttribute("comments", commentList);
+
+        int numOfComments = commentRepository.findNumOfCommentsByArticleId(id);
+        model.addAttribute("numOfComments", numOfComments);
 
         return "qna/show";
     }
@@ -82,7 +90,7 @@ public class ArticleController {
         log.info("articleId = {}", articleId);
 
         if (!validateIdentity(articleId, httpSession)) {
-            model.addAttribute("errorMessage", ValidateConst.NOT_YOURS);
+            model.addAttribute("errorMessage", ValidateConstant.NOT_YOURS);
             return "util/error";
         }
 
@@ -100,11 +108,13 @@ public class ArticleController {
                                 HttpSession httpSession, Model model) {
 
         if (!validateIdentity(articleId, httpSession)) {
-            model.addAttribute("errorMessage", ValidateConst.NOT_YOURS);
+            model.addAttribute("errorMessage", ValidateConstant.NOT_YOURS);
             return "util/error";
         }
 
-        articleRepository.updateArticle(articleId, title, contents);
+        long writer = (long) httpSession.getAttribute(SessionConstant.LOGIN_USERID);
+
+        articleRepository.updateArticle(new Article(writer, title, contents));
 
         return "redirect:/qna/list";
     }
@@ -113,7 +123,7 @@ public class ArticleController {
     public String deleteArticle(@PathVariable long articleId, HttpSession httpSession, Model model) {
 
         if (!validateIdentity(articleId, httpSession)) {
-            model.addAttribute("errorMessage", ValidateConst.NOT_YOURS);
+            model.addAttribute("errorMessage", ValidateConstant.NOT_YOURS);
             return "util/error";
         }
 
@@ -126,6 +136,6 @@ public class ArticleController {
 
         Article targetArticle = articleRepository.findByArticleId(articleId);
 
-        return targetArticle.getWriter() == (long) httpSession.getAttribute(SessionConst.LOGIN_USERID);
+        return targetArticle.getWriter() == (long) httpSession.getAttribute(SessionConstant.LOGIN_USERID);
     }
 }

@@ -2,7 +2,7 @@ package kr.codesqaud.cafe.controller;
 
 import kr.codesqaud.cafe.domain.User;
 import kr.codesqaud.cafe.repository.users.UserRepository;
-import kr.codesqaud.cafe.util.SessionConst;
+import kr.codesqaud.cafe.util.SessionConstant;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,7 +32,7 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    public String validateUser(@RequestParam String userId, @RequestParam String password, HttpSession session) {
+    public String validateAndLogin(@RequestParam String userId, @RequestParam String password, HttpSession session) {
 
         log.info("userId, password [{}][{}]", userId, password);
         Optional<User> dbUser = userRepository.findUserWithMatchedPassword(userId, password);
@@ -43,13 +43,13 @@ public class UserController {
 
         User user = dbUser.get();
 
-        session.setAttribute(SessionConst.LOGIN_USERID, user.getId());
+        session.setAttribute(SessionConstant.LOGIN_USERID, user.getId());
         return "redirect:/qna/list";
     }
 
     @GetMapping("/logout")
     public String orderLogout(HttpSession httpSession) {
-        if (httpSession.getAttribute("loggedInId") != null) {
+        if (httpSession.getAttribute(SessionConstant.LOGIN_USERID) != null) {
             httpSession.invalidate();
         }
         return "redirect:/qna/list";
@@ -84,7 +84,7 @@ public class UserController {
     @GetMapping("/{loggedInId}/edit")
     public String findUser(HttpSession httpSession, Model model) {
 
-        long loggedInUserId = (long) httpSession.getAttribute("loggedInId");
+        long loggedInUserId = (long) httpSession.getAttribute(SessionConstant.LOGIN_USERID);
         User user = userRepository.findUserById(loggedInUserId);
         model.addAttribute(user);
         log.debug("debug log={}", user.getName());
@@ -95,7 +95,7 @@ public class UserController {
     @PutMapping("/{loggedInId}/edit")
     public String editUser(HttpSession httpSession, @ModelAttribute User user) {
 
-        long loggedInUserId = (long) httpSession.getAttribute("loggedInId");
+        long loggedInUserId = (long) httpSession.getAttribute(SessionConstant.LOGIN_USERID);
         User dbUser = userRepository.findUserById(loggedInUserId);
 
         if (!dbUser.getPassword().equals(user.getPassword())) {

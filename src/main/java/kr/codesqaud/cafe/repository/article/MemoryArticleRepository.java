@@ -31,12 +31,12 @@ public class MemoryArticleRepository implements ArticleRepository {
     }
 
     @Override
-    public void updateArticle(long articleId, String title, String contents) {
-
+    public void updateArticle(Article article) {
+        store.put(article.getId(), article);
     }
 
     @Override
     public void deleteArticle(long id) {
-
+        store.remove(id);
     }
 }

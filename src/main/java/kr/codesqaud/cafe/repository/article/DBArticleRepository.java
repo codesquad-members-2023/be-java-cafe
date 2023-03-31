@@ -34,7 +34,7 @@ public class DBArticleRepository implements ArticleRepository {
 
     @Override
     public List<Article> findAllArticles() {
-        String sql = "select id, writer, title, contents, createdAt from article";
+        String sql = "select id, writer, title, createdAt from article";
 
         return jdbcTemplate.query(sql, new BeanPropertyRowMapper<>(Article.class));
     }
@@ -47,10 +47,10 @@ public class DBArticleRepository implements ArticleRepository {
     }
 
     @Override
-    public void updateArticle(long articleId, String title, String contents) {
+    public void updateArticle(Article article) {
         String sql = "update article set title = ?, contents = ? where id = ?";
 
-        jdbcTemplate.update(sql, title, contents, articleId);
+        jdbcTemplate.update(sql, article.getTitle(), article.getContents(), article.getId());
     }
 
 

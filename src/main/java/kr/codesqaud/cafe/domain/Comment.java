@@ -1,38 +1,42 @@
 package kr.codesqaud.cafe.domain;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
-public class Article {
+public class Comment {
 
-    private Logger log = LoggerFactory.getLogger(getClass());
-
-    private long id;
+    private long commentId;
+    private long articleId;
     private long writer;
-    private String title;
     private String contents;
-
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
     private LocalDateTime deletedAt;
-    public Article() {
+
+    public Comment() {
+
     }
 
-    public Article(long writer, String title, String contents) {
+    public Comment(long articleId, long writer, String contents) {
+        this.articleId = articleId;
         this.writer = writer;
-        this.title = title;
         this.contents = contents;
     }
 
-    public long getId() {
-        return id;
+    public long getCommentId() {
+        return commentId;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public void setCommentId(long commentId) {
+        this.commentId = commentId;
+    }
+
+    public long getArticleId() {
+        return articleId;
+    }
+
+    public void setArticleId(long articleId) {
+        this.articleId = articleId;
     }
 
     public long getWriter() {
@@ -41,14 +45,6 @@ public class Article {
 
     public void setWriter(long writer) {
         this.writer = writer;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
     }
 
     public String getContents() {
@@ -66,6 +62,10 @@ public class Article {
         return formatted;
     }
 
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
     public void setCreatedAt(LocalDateTime createdAt) {
         this.createdAt = createdAt;
     }
@@ -74,8 +74,15 @@ public class Article {
         return updatedAt;
     }
 
+    public void setUpdatedAt(LocalDateTime updatedAt) {
+        this.updatedAt = updatedAt;
+    }
+
     public LocalDateTime getDeletedAt() {
         return deletedAt;
     }
 
+    public void setDeletedAt(LocalDateTime deletedAt) {
+        this.deletedAt = deletedAt;
+    }
 }
