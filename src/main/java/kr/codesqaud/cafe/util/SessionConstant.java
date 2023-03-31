@@ -1,5 +1,5 @@
 package kr.codesqaud.cafe.util;
 
-public class SessionConst {
+public class SessionConstant {
     public static final String LOGIN_USERID = "loggedInId";
 }

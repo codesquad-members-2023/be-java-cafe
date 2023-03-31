@@ -2,7 +2,7 @@ package kr.codesqaud.cafe.controller;
 
 import kr.codesqaud.cafe.domain.User;
 import kr.codesqaud.cafe.repository.users.UserRepository;
-import kr.codesqaud.cafe.util.SessionConst;
+import kr.codesqaud.cafe.util.SessionConstant;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,7 +32,7 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    public String validateUser(@RequestParam String userId, @RequestParam String password, HttpSession session) {
+    public String validateAndLogin(@RequestParam String userId, @RequestParam String password, HttpSession session) {
 
         log.info("userId, password [{}][{}]", userId, password);
         Optional<User> dbUser = userRepository.findUserWithMatchedPassword(userId, password);
@@ -43,7 +43,7 @@ public class UserController {
 
         User user = dbUser.get();
 
-        session.setAttribute(SessionConst.LOGIN_USERID, user.getId());
+        session.setAttribute(SessionConstant.LOGIN_USERID, user.getId());
         return "redirect:/qna/list";
     }
 

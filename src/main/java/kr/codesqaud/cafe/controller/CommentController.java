@@ -2,8 +2,8 @@ package kr.codesqaud.cafe.controller;
 
 import kr.codesqaud.cafe.domain.Comment;
 import kr.codesqaud.cafe.repository.comment.CommentRepository;
-import kr.codesqaud.cafe.util.SessionConst;
-import kr.codesqaud.cafe.util.ValidateConst;
+import kr.codesqaud.cafe.util.SessionConstant;
+import kr.codesqaud.cafe.util.ValidateConstant;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,7 +35,7 @@ public class CommentController {
                              Model model) {
 
         if (httpSession.getAttribute("loggedInId") == null) {
-            model.addAttribute("errorMessage", ValidateConst.UNKNOWN_USER);
+            model.addAttribute("errorMessage", ValidateConstant.UNKNOWN_USER);
             return "util/error";
         }
 
@@ -52,7 +52,7 @@ public class CommentController {
                                 Model model) {
 
         if (!validateIdentity(commentId, httpSession)) {
-            model.addAttribute("errorMessage", ValidateConst.NOT_YOURS);
+            model.addAttribute("errorMessage", ValidateConstant.NOT_YOURS);
             return "util/error";
         }
 
@@ -65,6 +65,6 @@ public class CommentController {
     private boolean validateIdentity(long commentId, HttpSession httpSession) {
         Comment targetComment = commentRepository.findByCommentId(commentId);
 
-        return targetComment.getWriter() == (long) httpSession.getAttribute(SessionConst.LOGIN_USERID);
+        return targetComment.getWriter() == (long) httpSession.getAttribute(SessionConstant.LOGIN_USERID);
     }
 }
