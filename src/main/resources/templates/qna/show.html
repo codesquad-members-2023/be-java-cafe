@@ -49,7 +49,7 @@
                         <p class="qna-comment-count"><strong>{{replyCount}}</strong>개의 의견</p>
                         <div class="qna-comment-slipp-articles">
                             {{#reply}}
-                            <article class="article" id="answer-1406">
+                            <article class="article">
                                 <div class="article-header">
                                     <div class="article-header-thumb">
                                         <img src="https://graph.facebook.com/v2.3/1324855987/picture"
@@ -75,6 +75,7 @@
                                         </li>
                                         <li>
                                             <form class="form-delete">
+                                                <input type="hidden" name="_method" value="DELETE">
                                                 <button type="button" class="delete-answer-button" data-url="/qna/{{&articleId}}/reply/{{&id}}">삭제</button>
                                                 <script src="http://code.jquery.com/jquery-latest.js"></script>
 
@@ -121,14 +122,18 @@
         <div class="article-util">
             <ul class="article-util-list">
                 <li>
-                    <a class="link-modify-article" href="/api/qna/updateAnswer/{3}">수정</a>
+                    <a class="link-modify-article" href="/api/qna/{3}/reply/{4}">수정</a>
                 </li>
+
                 <li>
-                    <form class="delete-answer-form" action="/api/questions/{3}/answers/{4}" method="POST">
+                    <form class="form-delete">
                         <input type="hidden" name="_method" value="DELETE">
-                        <button type="submit" class="delete-answer-button">삭제</button>
+                        <button type="button" class="delete-answer-button" data-url="/qna/{3}/reply/{4}">삭제</button>
+                        <script src="http://code.jquery.com/jquery-latest.js"></script>
                     </form>
                 </li>
+
+
             </ul>
         </div>
     </article>

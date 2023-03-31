@@ -10,6 +10,7 @@ import javax.sql.DataSource;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.transaction.annotation.Transactional;
 
 import kr.codesqaud.cafe.exceptions.ArticleInfoException;
 import kr.codesqaud.cafe.model.Reply;
@@ -23,10 +24,15 @@ public class JdbcReplyRepository implements ReplyRepository {
     }
 
     @Override
-    public void addReply(Reply reply) {
+    @Transactional
+    public long addReply(Reply reply) {
         final String insertReply = "insert into replies(writer, contents, creationTime, articleId) values(?, ?, ?, ?)";
         jdbcTemplate.update(insertReply, reply.getUserId(), reply.getContents(), reply.getCreationTime(),
                 reply.getArticleId());
+        //AutoIncrement로 생성된 Reply ID를 다시 조회한다.
+        final String selectRepliesInArticle = "select max(id) from replies where articleId=? and deleted=false and writer=?";
+        long id = jdbcTemplate.queryForObject(selectRepliesInArticle, Long.class, reply.getArticleId(), reply.getUserId());
+        return id;
     }
 
     @Override

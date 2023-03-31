@@ -17,6 +17,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import kr.codesqaud.cafe.exceptions.ArticleInfoException;
 import kr.codesqaud.cafe.model.Reply;
+import kr.codesqaud.cafe.model.ReplyAjaxDto;
+import kr.codesqaud.cafe.model.ReplyDto;
 import kr.codesqaud.cafe.model.Result;
 import kr.codesqaud.cafe.repository.ArticleRepository;
 import kr.codesqaud.cafe.repository.ReplyRepository;
@@ -31,17 +33,16 @@ public class ReplyAjaxController {
     private ReplyRepository replyRepository;
 
     @PostMapping("/qna/{articleId}/reply")
-    public Reply create(@PathVariable Long articleId, @RequestParam String replyContents, HttpSession session) {
-
+    public ReplyAjaxDto create(@PathVariable Long articleId, @RequestParam String replyContents, HttpSession session) {
         String userId = SessionUtils.getSessionId(session);
         //TODO: 인터셉터 되는지 확인
-        System.out.println(replyContents);
-
 
         Reply reply = new Reply(userId, replyContents, LocalDateTime.now(), articleId);
-        replyRepository.addReply(reply);
+        long replyId = replyRepository.addReply(reply);
+        System.out.println("완료");
+        ReplyAjaxDto replyAjaxDto = new ReplyAjaxDto(replyId, userId, replyContents, LocalDateTime.now(), articleId);
 
-        return reply;
+        return replyAjaxDto;
     }
 
     @DeleteMapping("/qna/{articleId}/reply/{replyId}")

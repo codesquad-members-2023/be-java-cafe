@@ -4,19 +4,24 @@ import java.time.LocalDateTime;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
-public class Reply {
-    private long id;
+public class ReplyAjaxDto {
+    private long replyId;
     private String userId;
     private String contents;
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd hh:mm:ss")
     private LocalDateTime creationTime;
     private long articleId;
 
-    public Reply(String userId, String contents, LocalDateTime creationTime, long articleId) {
+    public ReplyAjaxDto(long replyId, String userId, String contents, LocalDateTime creationTime, long articleId) {
+        this.replyId = replyId;
         this.userId = userId;
         this.contents = contents;
         this.creationTime = creationTime;
         this.articleId = articleId;
+    }
+
+    public long getReplyId() {
+        return replyId;
     }
 
     public String getUserId() {
@@ -33,9 +38,5 @@ public class Reply {
 
     public long getArticleId() {
         return articleId;
-    }
-
-    public long getId() {
-        return id;
     }
 }

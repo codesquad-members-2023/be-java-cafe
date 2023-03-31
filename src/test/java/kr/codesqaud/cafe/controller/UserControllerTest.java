@@ -25,7 +25,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import java.util.Collections;
 
-@ContextConfiguration(classes = TestConfig.class)
 @WebMvcTest(UserController.class)
 class UserControllerTest {
 

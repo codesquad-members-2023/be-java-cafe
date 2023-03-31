@@ -21,11 +21,12 @@ function addAnswer(e) {
     var onSuccess = function (data, status) {
         console.log(data);
         var answerTemplate = $("#answerTemplate").html();
-        var template = answerTemplate.format(data.userId, data.creationTime, data.contents);
+        var template = answerTemplate.format(data.userId, data.creationTime, data.contents, data.articleId, data.replyId);
                     $(".qna-comment-slipp-articles").append(template);
                     $("textarea[name=replyContents]").val("");
         var numberOfArticles = $(".qna-comment-slipp-articles > article").length;
         $(".qna-comment-count strong").text(numberOfArticles);
+        $('.delete-answer-button').last().on("click", deleteAnswer);
     }
     console.log("url : " + url);
     console.log("query : "+ queryString);
@@ -55,9 +56,9 @@ function deleteAnswer(e) {
                 deleteBtn.closest("article").remove();
                 var numberOfArticles = $(".qna-comment-slipp-articles > article").length;
                 var qnaCommentCounter = $(".qna-comment-count strong").text(numberOfArticles);
-        }).fail((data) => {
-            console.log(data);
-            console.log(data.errorMessage);
+        }).fail((err) => {
+            alert(err);
+            console.log(JSON.stringify(err));
         });
 }
 
