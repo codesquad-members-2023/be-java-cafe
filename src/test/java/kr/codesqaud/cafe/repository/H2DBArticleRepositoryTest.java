@@ -8,10 +8,9 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.jdbc.JdbcTest;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.datasource.DriverManagerDataSource;
-import org.springframework.transaction.annotation.Transactional;
 
 import javax.sql.DataSource;
 import java.util.List;
@@ -19,16 +18,16 @@ import java.util.List;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
-@SpringBootTest
+@JdbcTest
 class H2DBArticleRepositoryTest {
 
+    @Autowired
     private DataSource dataSource;
     private MySQLUserRepository userRepository;
     private H2DBArticleRepository articleRepository;
 
     @BeforeEach
     void init() {
-        dataSource = new DriverManagerDataSource("jdbc:h2:mem:test", "sa", "");
         userRepository = new MySQLUserRepository(dataSource);
         articleRepository = new H2DBArticleRepository(dataSource);
 
@@ -49,23 +48,37 @@ class H2DBArticleRepositoryTest {
     }
 
     @Test
-    @Transactional
+    @DisplayName("article 객체를 인자로 받아와 DB에 저장한다.")
+    void save() {
+        //given
+        Article article = new Article(1, "테스트해볼까나", "테스트내용");
+
+        //when
+        articleRepository.save(article);
+
+        //then
+        List<SimpleArticleWithWriter> articles = articleRepository.findAll();
+        assertThat(articles.size()).isEqualTo(1);
+    }
+
+    @Test
     @DisplayName("게시글 번호로 DB에서 단 건 조회가 가능")
     void findById() {
+        //given
         Article article1 = new Article(1, "실화냐?", "미안하다. 이거보여줄려고 어그로끌었다.");
         Article article2 = new Article(2, "진짜 실화냐?", "미안하다. 이거보여줄려고 또 어그로끌었다.");
-
         articleRepository.save(article1);
         articleRepository.save(article2);
 
+        //when
         ArticleWithWriter article = articleRepository.findById(1);
 
+        //then
         assertThat(article.getUserId()).isEqualTo(1);
         assertThat(article.getContents()).isEqualTo("미안하다. 이거보여줄려고 어그로끌었다.");
     }
 
     @Test
-    @Transactional
     @DisplayName("게시글을 DB 에서 모두 조회 가능")
     void findAll() {
         Article article1 = new Article(1, "실화냐?", "미안하다. 이거보여줄려고 어그로끌었다.");
@@ -79,7 +92,6 @@ class H2DBArticleRepositoryTest {
     }
 
     @Test
-    @Transactional
     @DisplayName("저장소에 존재하지 않는 Article 검색 시 예외 발생")
     void validateArticleExist() {
         Article article1 = new Article(1, "실화냐?", "미안하다. 이거보여줄려고 어그로끌었다.");

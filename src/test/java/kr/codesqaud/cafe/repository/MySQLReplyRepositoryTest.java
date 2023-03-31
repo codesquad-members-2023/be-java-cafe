@@ -8,19 +8,20 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.jdbc.JdbcTest;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 
 import javax.sql.DataSource;
-
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@SpringBootTest
+@JdbcTest
 class MySQLReplyRepositoryTest {
 
+    @Autowired
     private DataSource dataSource;
     private MySQLUserRepository userRepository;
     private H2DBArticleRepository articleRepository;
@@ -28,7 +29,6 @@ class MySQLReplyRepositoryTest {
 
     @BeforeEach
     void init() {
-        dataSource = new DriverManagerDataSource("jdbc:h2:mem:test", "sa", "");
         userRepository = new MySQLUserRepository(dataSource);
         articleRepository = new H2DBArticleRepository(dataSource);
         replyRepository = new MySQLReplyRepository(dataSource);

@@ -7,6 +7,8 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.jdbc.JdbcTest;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
@@ -16,16 +18,16 @@ import javax.sql.DataSource;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
-@SpringBootTest
+@JdbcTest
 class LoginServiceTest {
 
+    @Autowired
     private DataSource dataSource;
     private UserRepository repository;
     private LoginService loginService;
 
     @BeforeEach
     void init() {
-        dataSource = new DriverManagerDataSource("jdbc:h2:mem:test", "sa", "");
         repository = new MySQLUserRepository(dataSource);
         loginService = new LoginService(repository);
     }
