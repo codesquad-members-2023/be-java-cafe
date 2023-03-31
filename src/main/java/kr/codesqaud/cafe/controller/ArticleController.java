@@ -113,9 +113,10 @@ public class ArticleController {
             model.addAttribute("errorMessage", ValidateConstant.NOT_YOURS);
             return "util/error";
         }
-        articleRepository.updateArticle(articleId, title, contents);
 
-        articleRepository.updateArticle(articleId, title, contents);
+        long writer = (long) httpSession.getAttribute(SessionConstant.LOGIN_USERID);
+
+        articleRepository.updateArticle(new Article(writer, title, contents));
 
         return "redirect:/qna/list";
     }

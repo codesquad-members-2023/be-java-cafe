@@ -47,10 +47,10 @@ public class DBArticleRepository implements ArticleRepository {
     }
 
     @Override
-    public void updateArticle(long articleId, String title, String contents) {
+    public void updateArticle(Article article) {
         String sql = "update article set title = ?, contents = ? where id = ?";
 
-        jdbcTemplate.update(sql, title, contents, articleId);
+        jdbcTemplate.update(sql, article.getTitle(), article.getContents(), article.getId());
     }
 
 
