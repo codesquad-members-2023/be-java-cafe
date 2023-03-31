@@ -1,5 +1,6 @@
 package kr.codesqaud.cafe.controller;
 
+import kr.codesqaud.cafe.domain.Article;
 import kr.codesqaud.cafe.domain.Comment;
 import kr.codesqaud.cafe.repository.comment.CommentRepository;
 import kr.codesqaud.cafe.util.SessionConst;
@@ -63,9 +64,9 @@ public class CommentController {
     }
 
     private boolean validateIdentity(long commentId, HttpSession httpSession) {
+
         Comment targetComment = commentRepository.findByCommentId(commentId);
 
         return targetComment.getWriter() == (long) httpSession.getAttribute(SessionConst.LOGIN_USERID);
     }
-
 }
