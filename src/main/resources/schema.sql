@@ -24,8 +24,12 @@ create table article
 
 create table reply
 (
-    reply_contents    varchar(500) not null,
-    reply_writer      bigint primary key,
-    reply_writtentime timestamp     not null default current_timestamp(),
-    foreign key (reply_writer) references member (member_number)
+    reply_contents       varchar(500) not null,
+    reply_writer         varchar(64),
+    reply_member_number  bigint,
+    reply_article_number bigint,
+    reply_writtentime    timestamp    not null default current_timestamp(),
+    foreign key (reply_writer) references member (member_id),
+    foreign key (reply_member_number) references member (member_number),
+    foreign key (reply_article_number) references article (article_number)
 );
