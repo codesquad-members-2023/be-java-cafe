@@ -34,11 +34,13 @@ public class ArticleController {
         return "redirect:/";
     }
 
-//    @PostMapping("/qna/update")
-//    public String updateArticle(Article artice) {
-//        articleService.
-//        return "redirect:/";
-//    }
+    @PostMapping("/qna/{articleId}/update")
+    public String updateArticle(@PathVariable long articleId, Article article) {
+        article.setArticleId(articleId);
+        System.out.println(article);
+        articleService.updateArticle(article);
+        return "redirect:/";
+    }
 
     @GetMapping("/")
     public String printArticleList(Model model) {
@@ -62,8 +64,7 @@ public class ArticleController {
         Article writedArticle = articleService.findOneArticleById(articleId).orElseThrow(() -> new NullPointerException("해당하는 게시글이 없습니다."));
         Member loginMember = (Member) httpSession.getAttribute("sessionedUser");
         if (loginMember.getNickName().equals(writedArticle.getWriter())) {
-            model.addAttribute("title", writedArticle.getTitle());
-            model.addAttribute("content", writedArticle.getContents());
+            model.addAttribute("article", writedArticle);
             return "qna/updateForm";
         }
         return "qna/edite_fail";

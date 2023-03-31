@@ -33,7 +33,7 @@ public class Article {
         this.writer = author;
     }
 
-    public void setArticleId(int id) {
+    public void setArticleId(long id) {
         articleId = id;
     }
 
@@ -68,5 +68,17 @@ public class Article {
 
     public String getFormattedRegistrationDate() {
         return formattedRegistrationDate;
+    }
+
+    @Override
+    public String toString() {
+        return "Article{" +
+                "articleId=" + articleId +
+                ", writer='" + writer + '\'' +
+                ", title='" + title + '\'' +
+                ", contents='" + contents + '\'' +
+                ", registrationDate=" + registrationDate +
+                ", formattedRegistrationDate='" + formattedRegistrationDate + '\'' +
+                '}';
     }
 }
