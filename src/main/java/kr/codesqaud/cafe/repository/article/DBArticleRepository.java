@@ -34,7 +34,7 @@ public class DBArticleRepository implements ArticleRepository {
 
     @Override
     public List<Article> findAllArticles() {
-        String sql = "select id, writer, title, contents, createdAt from article";
+        String sql = "select id, writer, title, createdAt from article";
 
         return jdbcTemplate.query(sql, new BeanPropertyRowMapper<>(Article.class));
     }
