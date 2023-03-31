@@ -49,9 +49,7 @@ public class ArticleController {
     @GetMapping("/qna/form")
     public String orderQnaForm(HttpSession httpSession, Model model) {
 
-        log.info("orderQnaForm, httpSession={}", httpSession.getAttribute("loggedInId"));
-
-        if (httpSession.getAttribute("loggedInId") == null) {
+        if (httpSession.getAttribute(SessionConstant.LOGIN_USERID) == null) {
             return "redirect:/users/login";
         }
 
@@ -69,7 +67,7 @@ public class ArticleController {
     @GetMapping("/qna/{id}")
     public String findArticle(@PathVariable int id, Model model, HttpSession httpSession) {
 
-        if (httpSession.getAttribute("loggedInId") == null) {
+        if (httpSession.getAttribute(SessionConstant.LOGIN_USERID) == null) {
             model.addAttribute("errorMessage", ValidateConstant.UNKNOWN_USER);
             return "util/error";
         }

@@ -49,7 +49,7 @@ public class UserController {
 
     @GetMapping("/logout")
     public String orderLogout(HttpSession httpSession) {
-        if (httpSession.getAttribute("loggedInId") != null) {
+        if (httpSession.getAttribute(SessionConstant.LOGIN_USERID) != null) {
             httpSession.invalidate();
         }
         return "redirect:/qna/list";
@@ -84,7 +84,7 @@ public class UserController {
     @GetMapping("/{loggedInId}/edit")
     public String findUser(HttpSession httpSession, Model model) {
 
-        long loggedInUserId = (long) httpSession.getAttribute("loggedInId");
+        long loggedInUserId = (long) httpSession.getAttribute(SessionConstant.LOGIN_USERID);
         User user = userRepository.findUserById(loggedInUserId);
         model.addAttribute(user);
         log.debug("debug log={}", user.getName());
@@ -95,7 +95,7 @@ public class UserController {
     @PutMapping("/{loggedInId}/edit")
     public String editUser(HttpSession httpSession, @ModelAttribute User user) {
 
-        long loggedInUserId = (long) httpSession.getAttribute("loggedInId");
+        long loggedInUserId = (long) httpSession.getAttribute(SessionConstant.LOGIN_USERID);
         User dbUser = userRepository.findUserById(loggedInUserId);
 
         if (!dbUser.getPassword().equals(user.getPassword())) {

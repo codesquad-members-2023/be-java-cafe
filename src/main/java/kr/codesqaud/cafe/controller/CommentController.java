@@ -34,12 +34,12 @@ public class CommentController {
                              HttpSession httpSession,
                              Model model) {
 
-        if (httpSession.getAttribute("loggedInId") == null) {
+        if (httpSession.getAttribute(SessionConstant.LOGIN_USERID) == null) {
             model.addAttribute("errorMessage", ValidateConstant.UNKNOWN_USER);
             return "util/error";
         }
 
-        long writer = (long) httpSession.getAttribute("loggedInId");
+        long writer = (long) httpSession.getAttribute(SessionConstant.LOGIN_USERID);
         commentRepository.save(new Comment(articleId, writer, contents));
 
         return "redirect:/qna/{articleId}";
