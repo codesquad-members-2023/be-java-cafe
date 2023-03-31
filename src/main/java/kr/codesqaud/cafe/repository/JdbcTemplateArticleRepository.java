@@ -1,8 +1,6 @@
 package kr.codesqaud.cafe.repository;
 
 import kr.codesqaud.cafe.domain.Article;
-import kr.codesqaud.cafe.domain.Member;
-import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
@@ -47,8 +45,9 @@ public class JdbcTemplateArticleRepository implements ArticleRepository {
     }
 
     @Override
-    public void deleteArticle(Member member) {
-
+    public void deleteArticle(long articleId) {
+        String sql = "delete from article where articleId = ?";
+        jdbcTemplate.update(sql, articleId);
     }
 
     @Override

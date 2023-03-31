@@ -10,7 +10,7 @@ public interface ArticleRepository {
     void saveArticle(Article article);
     Optional<Article> findOneArticleById(long id);
     List<Article> getArticles();
-    void deleteArticle(Member member);
+    void deleteArticle(long articleId);
     int getSize();
     void updateArticle(Article article);
 }

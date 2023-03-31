@@ -34,4 +34,8 @@ public class ArticleService {
     public void updateArticle(Article article) {
         articleRepository.updateArticle(article);
     }
+
+    public void deleteArticle(long articleId) {
+        articleRepository.deleteArticle(articleId);
+    }
 }

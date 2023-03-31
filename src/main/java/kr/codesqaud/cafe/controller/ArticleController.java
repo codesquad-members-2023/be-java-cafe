@@ -70,4 +70,15 @@ public class ArticleController {
         }
         return "qna/edite_fail";
     }
+
+    @DeleteMapping("/article/{articleId}/delete")
+    public String deleteArticle(@PathVariable long articleId, HttpSession httpSession) {
+        Article writedArticle = articleService.findOneArticleById(articleId).orElseThrow(() -> new NullPointerException("해당하는 게시글이 없습니다"));
+        Member loginMember = (Member) httpSession.getAttribute("sessionedUser");
+        if (loginMember.getNickName().equals(writedArticle.getWriter())) {
+            articleService.deleteArticle(articleId);
+            return "redirect:/";
+        }
+        return "qna/delete_fail";
+    }
 }

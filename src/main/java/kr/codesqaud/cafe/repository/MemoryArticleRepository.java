@@ -44,7 +44,7 @@ public class MemoryArticleRepository implements ArticleRepository {
     }
 
     @Override
-    public void deleteArticle(Member member) {
+    public void deleteArticle(long articleId) {
 
     }
 
