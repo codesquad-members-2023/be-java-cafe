@@ -10,10 +10,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
-<<<<<<< HEAD
 import java.time.LocalDateTime;
-=======
->>>>>>> 309194a (articleId에 따라 댓글 가져오기)
 import java.util.List;
 
 @Primary
@@ -28,7 +25,6 @@ public class DBCommentRepository implements CommentRepository {
         this.jdbcTemplate = new JdbcTemplate(dataSource);
     }
 
-<<<<<<< HEAD
 
     @Override
     public void save(Comment comment) {
@@ -64,14 +60,5 @@ public class DBCommentRepository implements CommentRepository {
         String sql = "update comment set deletedAt = ? where commentId = ?";
 
         jdbcTemplate.update(sql, now, commentId);
-
-=======
-    @Override
-    public List<Comment> findAllCommentsByArticleId(long articleId) {
-        String sql = "select writer, contents, createdAt from comment where articleId = ?";
-
-        log.info("댓글 목록 가져오기 실행");
-        return jdbcTemplate.query(sql, new BeanPropertyRowMapper<>(Comment.class), articleId);
->>>>>>> 309194a (articleId에 따라 댓글 가져오기)
     }
 }
