@@ -113,7 +113,6 @@ public class ArticleController {
             model.addAttribute("errorMessage", ValidateConst.NOT_YOURS);
             return "util/error";
         }
-
         articleRepository.updateArticle(articleId, title, contents);
 
         return "redirect:/qna/list";
