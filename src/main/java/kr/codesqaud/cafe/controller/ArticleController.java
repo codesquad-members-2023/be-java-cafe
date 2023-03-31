@@ -29,7 +29,9 @@ public class ArticleController {
     }
 
     @PostMapping("/qna/ask")
-    public String registerArticle(Article article) {
+    public String registerArticle(Article article, HttpSession httpSession) {
+        Member loginMember = (Member) httpSession.getAttribute("sessionedUser");
+        article.setWriter(loginMember.getNickName());
         articleService.writeArticle(article);
         return "redirect:/";
     }
@@ -37,7 +39,6 @@ public class ArticleController {
     @PostMapping("/qna/{articleId}/update")
     public String updateArticle(@PathVariable long articleId, Article article) {
         article.setArticleId(articleId);
-        System.out.println(article);
         articleService.updateArticle(article);
         return "redirect:/";
     }
