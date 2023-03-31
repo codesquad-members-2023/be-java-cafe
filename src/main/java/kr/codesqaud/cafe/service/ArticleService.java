@@ -19,7 +19,7 @@ public class ArticleService {
         articleRepository.saveArticle(article);
     }
 
-    public Optional<Article> findOneArticleById(int id) {
+    public Optional<Article> findOneArticleById(long id) {
         return articleRepository.findOneArticleById(id);
     }
 

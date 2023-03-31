@@ -57,10 +57,13 @@ public class ArticleController {
         return "qna/show";
     }
 
-    @GetMapping("/article/{nickName}/edite")
-    public String editeArticle(@PathVariable String nickName, HttpSession httpSession) {
-        Member member = (Member) httpSession.getAttribute("sessionedUser");
-        if (member.getNickName().equals(nickName)) {
+    @GetMapping("/article/{articleId}/edite")
+    public String editeArticle(@PathVariable long articleId, HttpSession httpSession, Model model) {
+        Article writedArticle = articleService.findOneArticleById(articleId).orElseThrow(() -> new NullPointerException("해당하는 게시글이 없습니다."));
+        Member loginMember = (Member) httpSession.getAttribute("sessionedUser");
+        if (loginMember.getNickName().equals(writedArticle.getWriter())) {
+            model.addAttribute("title", writedArticle.getTitle());
+            model.addAttribute("content", writedArticle.getContents());
             return "qna/updateForm";
         }
         return "qna/edite_fail";
