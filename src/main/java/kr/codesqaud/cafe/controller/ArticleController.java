@@ -3,6 +3,7 @@ package kr.codesqaud.cafe.controller;
 import kr.codesqaud.cafe.domain.Article;
 import kr.codesqaud.cafe.domain.Member;
 import kr.codesqaud.cafe.service.ArticleService;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -62,7 +63,7 @@ public class ArticleController {
 
     @GetMapping("/article/{articleId}/edite")
     public String editeArticle(@PathVariable long articleId, HttpSession httpSession, Model model) {
-        Article writedArticle = articleService.findOneArticleById(articleId).orElseThrow(() -> new NullPointerException("해당하는 게시글이 없습니다."));
+        Article writedArticle = articleService.findOneArticleById(articleId).orElseThrow(() -> new EmptyResultDataAccessException(1));
         Member loginMember = (Member) httpSession.getAttribute("sessionedUser");
         if (loginMember.getNickName().equals(writedArticle.getWriter())) {
             model.addAttribute("article", writedArticle);
@@ -73,7 +74,7 @@ public class ArticleController {
 
     @DeleteMapping("/article/{articleId}/delete")
     public String deleteArticle(@PathVariable long articleId, HttpSession httpSession) {
-        Article writedArticle = articleService.findOneArticleById(articleId).orElseThrow(() -> new NullPointerException("해당하는 게시글이 없습니다"));
+        Article writedArticle = articleService.findOneArticleById(articleId).orElseThrow(() -> new EmptyResultDataAccessException(1));
         Member loginMember = (Member) httpSession.getAttribute("sessionedUser");
         if (loginMember.getNickName().equals(writedArticle.getWriter())) {
             articleService.deleteArticle(articleId);
