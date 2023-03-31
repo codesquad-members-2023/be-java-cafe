@@ -10,7 +10,6 @@ import org.springframework.dao.DuplicateKeyException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.test.context.jdbc.Sql;
 
-import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -18,8 +17,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 @JdbcTest
-@Sql("classpath:db/init.sql")
-@Sql("classpath:db/initData.sql")
+@Sql("classpath:db/schema.sql")
+@Sql("classpath:db/data.sql")
 class H2MemberRepositoryTest {
 
     @Autowired

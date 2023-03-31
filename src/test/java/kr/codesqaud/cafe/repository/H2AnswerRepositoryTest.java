@@ -13,8 +13,8 @@ import org.springframework.test.context.jdbc.Sql;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @JdbcTest
-@Sql("classpath:db/init.sql")
-@Sql("classpath:db/initData.sql")
+@Sql("classpath:db/schema.sql")
+@Sql("classpath:db/data.sql")
 class H2AnswerRepositoryTest {
     @Autowired
     JdbcTemplate jdbcTemplate;
@@ -87,7 +87,7 @@ class H2AnswerRepositoryTest {
     }
 
     @Test
-    @DisplayName("댓글을 삭제하면 총 댓글 개수가 줄어야 한다.")
+    @DisplayName("댓글을 1 삭제하면 총 댓글 개수가 1 줄어야 한다.")
     void delete() {
         repository.save(answer);
         int size = repository.findAll(1L).size();

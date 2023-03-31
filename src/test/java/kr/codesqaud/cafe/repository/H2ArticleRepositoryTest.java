@@ -19,8 +19,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 @JdbcTest
-@Sql("classpath:db/init.sql")
-@Sql("classpath:db/initData.sql")
+@Sql("classpath:db/schema.sql")
+@Sql("classpath:db/data.sql")
 class H2ArticleRepositoryTest {
     @Autowired
     JdbcTemplate jdbcTemplate;
