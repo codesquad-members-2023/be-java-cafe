@@ -8,6 +8,9 @@ public class Reply {
 	private String contents;
 	private LocalDateTime writtenTime;
 	private Long userSequence;
+	private Long articleSequence;
+	private String writer;
+
 
 	public Reply() {
 
@@ -35,5 +38,21 @@ public class Reply {
 
 	public void setUserSequence(Long userSequence) {
 		this.userSequence = userSequence;
+	}
+
+	public Long getArticleSequence() {
+		return articleSequence;
+	}
+
+	public void setArticleSequence(Long articleSequence) {
+		this.articleSequence = articleSequence;
+	}
+
+	public String getWriter() {
+		return writer;
+	}
+
+	public void setWriter(String writer) {
+		this.writer = writer;
 	}
 }
