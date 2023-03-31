@@ -53,6 +53,7 @@ public class CommentController {
 
         if (!validateIdentity(commentId, httpSession)) {
             model.addAttribute("errorMessage", ValidateConstant.NOT_YOURS);
+
             return "util/error";
         }
 
@@ -66,5 +67,6 @@ public class CommentController {
         Comment targetComment = commentRepository.findByCommentId(commentId);
 
         return targetComment.getWriter() == (long) httpSession.getAttribute(SessionConstant.LOGIN_USERID);
+
     }
 }
