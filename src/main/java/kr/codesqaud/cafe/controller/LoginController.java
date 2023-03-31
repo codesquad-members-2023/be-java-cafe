@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 
 import javax.servlet.http.HttpSession;
 
-import static kr.codesqaud.cafe.Constants.SESSIONED_USER;
+import static kr.codesqaud.cafe.utility.Constants.SESSIONED_USER;
 
 @Controller
 public class LoginController {
