@@ -115,6 +115,8 @@ public class ArticleController {
         }
         articleRepository.updateArticle(articleId, title, contents);
 
+        articleRepository.updateArticle(articleId, title, contents);
+
         return "redirect:/qna/list";
     }
 
