@@ -66,10 +66,10 @@ public class AutoAppConfig implements WebMvcConfigurer {
         final String[] staticsPattern = {"/css/**", "/*.ico", "/js/**", "/images/**", "/fonts/**"};
         final String[] closeAddressPattern = {"/users/**", "/qna/**"};
 
-        /*registry.addInterceptor(new InvalidAddressInterceptor())
+        registry.addInterceptor(new InvalidAddressInterceptor())
                 .order(Ordered.HIGHEST_PRECEDENCE)
                 .addPathPatterns("/**")//모든 URL에 대해서, 404를 발생.
-                .excludePathPatterns(validAddressPattern);*/
+                .excludePathPatterns(validAddressPattern);
 
         registry.addInterceptor(new LoginInterceptor())
                 .order(midPrecedence)

@@ -28,8 +28,6 @@ function addAnswer(e) {
         $(".qna-comment-count strong").text(numberOfArticles);
         $('.delete-answer-button').last().on("click", deleteAnswer);
     }
-    console.log("url : " + url);
-    console.log("query : "+ queryString);
     $.ajax({
             type : 'post',
             url : url,
@@ -56,9 +54,8 @@ function deleteAnswer(e) {
                 deleteBtn.closest("article").remove();
                 var numberOfArticles = $(".qna-comment-slipp-articles > article").length;
                 var qnaCommentCounter = $(".qna-comment-count strong").text(numberOfArticles);
-        }).fail((err) => {
-            alert(err);
-            console.log(JSON.stringify(err));
+        }).fail((data, status) => {
+            alert(data.responseJSON.errorMessage);
         });
 }
 

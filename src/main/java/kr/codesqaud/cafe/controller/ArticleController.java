@@ -102,17 +102,4 @@ public class ArticleController {
         return "redirect:/";
     }
 
-    /*
-    @DeleteMapping(value = "/qna/{articleId}/reply/{replyId}")
-    public String deleteReply(@PathVariable long articleId, @PathVariable long replyId, HttpSession httpSession)
-            throws ArticleInfoException {
-        String replyWriter = replyRepository.findById(replyId, articleId).getWriter();
-        //Session의 사용자와 댓글 작성자가 동일해야한다.
-        validateAuthorization(getSessionId(httpSession).equals(replyWriter), UNAUTHORIZED_DELETE_MESSAGE,
-                WRITER_NOT_MATCHING_CODE);
-
-        replyRepository.deleteReply(articleId, replyId);
-        return "redirect:/qna/{articleId}";
-    }*/
-
 }

@@ -1,8 +1,11 @@
 package kr.codesqaud.cafe.validator;
 
+import org.springframework.stereotype.Controller;
+
 import kr.codesqaud.cafe.exceptions.ArticleInfoException;
 import kr.codesqaud.cafe.exceptions.UserInfoException;
 
+@Controller
 public class AuthorValidator {
     public static void validateAuthorization(boolean isValid, String errorMessage,
             int errorCode) throws ArticleInfoException {
