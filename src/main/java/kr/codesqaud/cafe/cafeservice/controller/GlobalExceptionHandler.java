@@ -1,6 +1,5 @@
-package kr.codesqaud.cafe.cafeservice.exhandler.advice;
+package kr.codesqaud.cafe.cafeservice.controller;
 
-import kr.codesqaud.cafe.cafeservice.controller.MemberController;
 import kr.codesqaud.cafe.cafeservice.exhandler.exception.ArticleNotFoundException;
 import kr.codesqaud.cafe.cafeservice.exhandler.exception.LoginNotFoundException;
 import kr.codesqaud.cafe.cafeservice.exhandler.exception.MemberNotFoundException;
@@ -20,19 +19,19 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(ArticleNotFoundException.class)
     public String articleNotFoundException(ArticleNotFoundException e, Model model) {
         model.addAttribute("errorMessage", e.getMessage());
-        return "layout/error";
+        return "error";
     }
 
     @ExceptionHandler(MemberNotFoundException.class)
     public String memberNotFountException(MemberNotFoundException e, Model model) {
         model.addAttribute("errorMessage", e.getMessage());
-        return "layout/error";
+        return "error";
     }
 
     @ExceptionHandler(LoginNotFoundException.class)
     public String loginException(LoginNotFoundException e, Model model) {
         model.addAttribute("errorMessage", e.getMessage());
-        return "layout/error";
+        return "error";
     }
 
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
