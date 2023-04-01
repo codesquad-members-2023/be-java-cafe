@@ -59,7 +59,7 @@
 
                 <div class="qna-comment">
                     <div class="qna-comment-slipp">
-                        <p class="qna-comment-count"><strong th:text="${replies.size()}">2</strong>개의 의견</p>
+                        <p class="qna-comment-count"><strong th:text="${replies.size()}">댓글 수</strong>개의 의견</p>
                         <div class="qna-comment-slipp-articles">
 
                             <article class="article" id="answer-1405" th:each="reply:${replies}">
@@ -97,7 +97,7 @@
                                 </div>
                             </article>
                             <form class="submit-write" method="post"
-                                  th:action="@{/articles/{articleSequence}/reply/write(articleSequence=${articleSequence})}">
+                                  th:action="@{/articles/{articleSequence}/reply/write/(articleSequence=${articleSequence})}">
                                 <div class="form-group" style="padding:14px;">
                                     <textarea class="form-control" th:name="contents" th:id=contents placeholder="Update your status"></textarea>
                                 </div>
