@@ -37,6 +37,11 @@ public class MemoryArticleRepository implements ArticleRepository {
     public void update(Article article, String title, String content) {
     }
 
+    @Override
+    public void findReplyList() {
+
+    }
+
     public Article findOne(Long id) {
         return findById(id).orElseThrow();
     }
