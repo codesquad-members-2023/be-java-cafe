@@ -15,14 +15,10 @@ public class MemberValidator implements Validator {
 
     @Override
     public void validate(Object target, Errors errors) {
-        if (target == null) {
-            errors.rejectValue("member", "required.member");
-            return;
-        }
         Member member = (Member) target;
         ValidationUtils.rejectIfEmptyOrWhitespace(errors, "member", "required");
         if (member.getUserName() == null) {
-            errors.rejectValue("userName", "required.title");
+            errors.rejectValue("userName", "required.userName");
         }
         if (member.getEmail() == null) {
             errors.rejectValue("email", "required.email");
