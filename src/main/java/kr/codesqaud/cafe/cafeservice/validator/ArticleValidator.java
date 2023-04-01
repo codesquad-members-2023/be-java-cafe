@@ -1,6 +1,7 @@
 package kr.codesqaud.cafe.cafeservice.validator;
 
 import kr.codesqaud.cafe.cafeservice.domain.Article;
+import kr.codesqaud.cafe.cafeservice.dto.ArticleDTO;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
 import org.springframework.validation.ValidationUtils;
@@ -15,17 +16,7 @@ public class ArticleValidator implements Validator {
 
     @Override
     public void validate(Object target, Errors errors) {
-        if (target == null) {
-            errors.rejectValue("article", "required.article");
-            return;
-        }
-        Article article = (Article) target;
-        ValidationUtils.rejectIfEmptyOrWhitespace(errors, "article", "required");
-        if (article.getTitle() == null) {
-            errors.rejectValue("title", "required.title");
-        }
-        if (article.getContent() == null) {
-            errors.rejectValue("content", "required.content");
-        }
+        ValidationUtils.rejectIfEmptyOrWhitespace(errors, "title", "title.required", "title is required.");
+        ValidationUtils.rejectIfEmptyOrWhitespace(errors, "content", "content.required", "content is required.");
     }
 }
