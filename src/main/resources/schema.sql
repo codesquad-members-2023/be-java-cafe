@@ -23,6 +23,7 @@ create table article
 
 create table reply
 (
+    reply_sequence       bigint auto_increment primary key,
     reply_contents       varchar(500) not null,
     reply_writer         varchar(64),
     reply_member_number  bigint,
