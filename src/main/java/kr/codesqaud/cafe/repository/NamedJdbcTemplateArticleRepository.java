@@ -27,8 +27,8 @@ public class NamedJdbcTemplateArticleRepository {
 	}
 
 	public List<ArticleWithoutContentsDto> findAllArticlesWithoutContents() {
-		String sql = "select a.article_number, a.article_title, a.article_writtentime, a.member_number, m.member_id as writer, " +
-			"from article a join member m on a.member_number=m.member_number";
+		String sql = "select a.article_number, a.article_title, a.article_writtentime, a.member_number, m.member_id, count(r.reply_sequence) as reply_count from article a" +
+			" join member m on a.member_number=m.member_number left join reply r on a.article_number=r.reply_article_number group by a.article_number";
 		return template.query(sql, articleWithoutContentsDtoRowMapper());
 	}
 
@@ -80,6 +80,7 @@ public class NamedJdbcTemplateArticleRepository {
 			ArticleWithoutContentsDto articleWithoutContentsDto = new ArticleWithoutContentsDto();
 			articleWithoutContentsDto.setArticleSequence(rs.getLong("article_number"));
 			articleWithoutContentsDto.setTitle(rs.getString("article_title"));
+			articleWithoutContentsDto.setRepliesCount(rs.getLong("reply_count"));
 			articleWithoutContentsDto.setWrittenTime(rs.getTimestamp("article_writtentime").toLocalDateTime());
 			articleWithoutContentsDto.setUserSequence(rs.getLong("member_number"));
 			articleWithoutContentsDto.setWriter(rs.getString("member_id"));
