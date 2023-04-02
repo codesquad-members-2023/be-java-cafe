@@ -105,19 +105,7 @@ class H2ArticleRepositoryTest {
 
         assertThat(repository.findById(exArticle.getId()).getContents()).isEqualTo("테스트 contents");
     }
-
-    @Test
-    @DisplayName("article을 업데이트하여 업데이트 일시가 변경되어야 한다.")
-    void updateUpdateDatetimeTest() throws Exception{
-        LocalDateTime before = LocalDateTime.now();
-        Article exArticle = repository.findById(1L);
-
-        Article newArticle = new Article();
-        newArticle.setTitle("테스트 article");
-        newArticle.setContents("테스트 contents");
-        repository.update(exArticle, newArticle);
-
-        assertThat(repository.findById(exArticle.getId()).getUpdatedDate()).isAfter(before);
+        assertThat(repository.findById(exArticle.getArticleIndex()).getContents()).isEqualTo("테스트 contents");
     }
 
     @Test

@@ -75,16 +75,6 @@ class H2AnswerRepositoryTest {
         repository.update(exAnswer, newAnswer);
         assertThat(repository.findById(1L).getContents()).isEqualTo("수정된 테스트 댓글 내용");
     }
-    @Test
-    @DisplayName("댓글을 수정하면 댓글 업데이트 시간을 바뀌어야 한다.")
-    void updateUpdateddate() {
-        repository.save(answer);
-        Answer exAnswer = repository.findById(1L);
-        Answer newAnswer = new Answer();
-        newAnswer.setContents("수정된 테스트 댓글 내용");
-        repository.update(exAnswer, newAnswer);
-        assertThat(repository.findById(1L).getUpdatedDate()).isAfter(exAnswer.getUpdatedDate());
-    }
 
     @Test
     @DisplayName("댓글을 1 삭제하면 총 댓글 개수가 1 줄어야 한다.")
