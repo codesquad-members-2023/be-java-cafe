@@ -31,6 +31,7 @@ create table answer (
                         article_id long not null,
                         created_at  timestamp,
                         updated_at  timestamp,
+                        is_deleted boolean default false,
                         constraint ANSWER_MEMBER_ID_FK
                             foreign key (user_id) references member (id),
                         constraint ANSWER_ARTICLE_ID_FK
