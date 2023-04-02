@@ -29,7 +29,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(value = EmptyResultDataAccessException.class)
     public String handleInvalidAuthorityException(EmptyResultDataAccessException e, Model model) {
         model.addAttribute(MESSAGE, e.getMessage());
-        return LOGIN_FAILED_PAGE;
+        return DEFAULT_ERROR_PAGE;
     }
 
     @ResponseStatus(HttpStatus.FORBIDDEN)
@@ -51,6 +51,7 @@ public class GlobalExceptionHandler {
         switch (e.getMessage()) {
             case LOGIN_FAILED:
             case DUPLICATE_MEMBER_INFO:
+                model.addAttribute(MESSAGE, e.getMessage());
                 return LOGIN_FAILED_PAGE;
             case UPDATE_FAILED_WRONG_PASSWORD:
                 long id = ((SessionUser) httpSession.getAttribute(SESSION_USER)).getId();
