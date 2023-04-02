@@ -75,15 +75,15 @@ public class ArticleController {
     @GetMapping("/articles/{id}")
     public String showArticle(@PathVariable Long id, Model model) {
         Article article = service.findById(id);
-        System.out.println("Article" + article);
+
         List<Reply> reply = replyService.findReplyList(article.getId());
-        System.out.println(reply);
 
         if (article == null) {
             return "qna/show_filed";
         }
 
         model.addAttribute("article", article);
+        model.addAttribute("articleSize", reply.size());
         model.addAttribute("reply", reply);
         return "qna/show";
     }
