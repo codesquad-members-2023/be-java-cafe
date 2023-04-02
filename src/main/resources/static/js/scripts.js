@@ -27,7 +27,6 @@ function requestReplyAll() {
             var answerTemplate = $("#answerTemplate").html();
             for (var i = 0; i < data.length; i++) {
                 var template = answerTemplate.format(data[i].userId, data[i].time, data[i].contents, data[i].replyId, data[i].articleId);
-                $("#userIdNew").val(data[i].userId);
                 $(".qna-comment-slipp-articles").prepend(template);
             }
             $("textarea[name=contents]").val("");
@@ -59,7 +58,6 @@ function sendNewReply(e) {
             var answerTemplate = $("#answerTemplate").html();
             var template = answerTemplate.format(data.userId, data.time, data.contents, data.replyId, data.articleId);
             $(".qna-comment-slipp-articles").prepend(template);
-            $("textarea[name=contents]").val("");
             var string = '개의 의견';
             $(".qna-comment-st1").text(parseInt($(".qna-comment-st1").text()) + 1);
             $(".qna-comment-st2").text(string);
@@ -78,10 +76,10 @@ function sendDeleteReply(e) {
         type : 'DELETE',
         url : url,
         dataType : 'json',
-        error : function (xhr, status) {
+        error : function () {
             console.log("error");
         },
-        success : function (data, status) {
+        success : function (data) {
             if (data.valid) {
                 deleteBtn.closest("article").remove();
                 var string = '개의 의견';
