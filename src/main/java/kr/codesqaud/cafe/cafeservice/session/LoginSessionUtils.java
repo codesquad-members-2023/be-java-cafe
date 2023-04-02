@@ -1,5 +1,7 @@
 package kr.codesqaud.cafe.cafeservice.session;
 
+import kr.codesqaud.cafe.cafeservice.exhandler.exception.LoginNotFoundException;
+
 public class LoginSessionUtils {
     private Long id;
     private String password;
@@ -18,9 +20,17 @@ public class LoginSessionUtils {
     }
 
     public static void sessionCheckId(Long id, LoginSessionUtils sessionUtils) {
-        if (sessionUtils.getId() != id) {
-            throw new NullPointerException();
+
+        if (sessionUtils.getId() != id || sessionUtils == null) {
+            throw new LoginNotFoundException("일치하는 아이디가 아니다");
         }
+    }
+
+    public boolean isValidPassword(String password) {
+        if (this.getPassword().equals(password)) {
+            return true;
+        }
+        return false;
     }
 
     @Override
