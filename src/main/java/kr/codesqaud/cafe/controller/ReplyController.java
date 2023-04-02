@@ -36,7 +36,7 @@ public class ReplyController {
     }
 
     @DeleteMapping("/articles/{articleId}/replies/{replyId}")
-    public Result delete(@PathVariable int articleId, @PathVariable int replyId, HttpSession session) {
+    public Result delete(@PathVariable int replyId, HttpSession session) {
         Reply reply = replyRepository.findById(replyId);
         int userId = (int) session.getAttribute(SessionConstant.LOGIN_USER_ID);
 
