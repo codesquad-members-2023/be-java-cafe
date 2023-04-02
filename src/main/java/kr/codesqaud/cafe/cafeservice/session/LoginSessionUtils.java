@@ -5,10 +5,12 @@ import kr.codesqaud.cafe.cafeservice.exhandler.exception.LoginNotFoundException;
 public class LoginSessionUtils {
     private Long id;
     private String password;
+    private String nickName;
 
-    public LoginSessionUtils(Long id, String password) {
+    public LoginSessionUtils(Long id, String password, String nickName) {
         this.id = id;
         this.password = password;
+        this.nickName = nickName;
     }
 
     public Long getId() {
@@ -39,5 +41,9 @@ public class LoginSessionUtils {
                 "id=" + id +
                 ", password='" + password + '\'' +
                 '}';
+    }
+
+    public String getNickName() {
+        return nickName;
     }
 }
