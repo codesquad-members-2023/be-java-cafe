@@ -1,7 +1,9 @@
 package kr.codesqaud.cafe.repository;
 
-import kr.codesqaud.cafe.domain.Answer;
-import kr.codesqaud.cafe.dto.answer.AnswerResponseDto;
+import kr.codesqaud.cafe.domain.Member;
+import kr.codesqaud.cafe.domain.article.Reply;
+import kr.codesqaud.cafe.domain.article.Writer;
+import kr.codesqaud.cafe.dto.ReplyResponse;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -20,7 +22,7 @@ class H2AnswerRepositoryTest {
     JdbcTemplate jdbcTemplate;
     ArticleRepository repository;
     MemberRepository memberRepository;
-    Answer answer;
+    Reply answer;
 
     static final String TEST_CONTENTS = "test 댓글";
 
@@ -29,10 +31,12 @@ class H2AnswerRepositoryTest {
         repository = new H2ArticleRepository(jdbcTemplate.getDataSource());
         memberRepository = new H2MemberRepository(jdbcTemplate.getDataSource());
 
-        answer = new Answer();
+        answer = new Reply();
         answer.setArticleId(1L);
         answer.setContents(TEST_CONTENTS);
-        answer.setWriter(memberRepository.findById(1L));
+
+        Member member = memberRepository.findById(1L);
+        answer.setWriter(new Writer(member.getId(), member.getNickname()));
     }
 
     @Test
@@ -68,8 +72,8 @@ class H2AnswerRepositoryTest {
     @DisplayName("댓글을 수정하면 댓글 contents가 바뀌어야 한다.")
     void update() {
         repository.saveReply(answer);
-        AnswerResponseDto exAnswer = repository.findReplyById(1L);
-        Answer newAnswer = new Answer();
+        ReplyResponse exAnswer = repository.findReplyById(1L);
+        Reply newAnswer = new Reply();
         newAnswer.setContents("수정된 테스트 댓글 내용");
         repository.updateReply(exAnswer.getAnswerIndex(), newAnswer.getContents());
         assertThat(repository.findReplyById(1L).getContents()).isEqualTo("수정된 테스트 댓글 내용");

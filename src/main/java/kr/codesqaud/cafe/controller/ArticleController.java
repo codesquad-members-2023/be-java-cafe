@@ -4,10 +4,9 @@ import kr.codesqaud.cafe.domain.article.Reply;
 import kr.codesqaud.cafe.domain.article.Article;
 import kr.codesqaud.cafe.domain.Member;
 import kr.codesqaud.cafe.domain.article.Writer;
-import kr.codesqaud.cafe.dto.article.ArticleResponse;
+import kr.codesqaud.cafe.dto.ArticleResponse;
 import kr.codesqaud.cafe.util.SessionUser;
-import kr.codesqaud.cafe.dto.answer.AnswerResponseDto;
-import kr.codesqaud.cafe.exception.InvalidAuthorityException;
+import kr.codesqaud.cafe.dto.ReplyResponse;
 import kr.codesqaud.cafe.exception.ManageArticleException;
 
 import kr.codesqaud.cafe.repository.ArticleRepository;
@@ -25,7 +24,6 @@ import java.util.List;
 
 
 import static kr.codesqaud.cafe.constant.ConstUrl.REDIRECT_INDEX;
-import static kr.codesqaud.cafe.exception.InvalidAuthorityException.NO_SESSION_USER;
 import static kr.codesqaud.cafe.exception.ManageArticleException.INVALID_WRITER;
 import static kr.codesqaud.cafe.exception.ManageArticleException.NOT_POSSIBLE_DELETE;
 
@@ -43,7 +41,7 @@ public class ArticleController {
     }
 
     @PostMapping("/articles/{articleId}/answers")
-    public String saveAnswer(@PathVariable long articleId, Reply answer, HttpSession httpSession, RedirectAttributes redirectAttributes) {
+    public String saveReply(@PathVariable long articleId, Reply answer, HttpSession httpSession, RedirectAttributes redirectAttributes) {
         SessionUser sessionUser = SessionUser.getSessionUser(httpSession);
 
         answer.setWriter(new Writer(sessionUser.getId(), sessionUser.getNickName()));
@@ -56,9 +54,9 @@ public class ArticleController {
 
     // TODO 모르고 댓글 수정을 만들었다.... 하지만 뷰가 없다....
     @PutMapping("/articles/{articleId}/answers/{answerId}")
-    public String updateAnswer(@PathVariable long articleId, @PathVariable long answerId, Reply answer, HttpSession httpSession, RedirectAttributes redirectAttributes) throws ManageArticleException {
+    public String updateReply(@PathVariable long articleId, @PathVariable long answerId, Reply answer, HttpSession httpSession, RedirectAttributes redirectAttributes) throws ManageArticleException {
         SessionUser sessionUser = SessionUser.getSessionUser(httpSession);
-        AnswerResponseDto exAnswer = articleRepository.findReplyById(answerId);
+        ReplyResponse exAnswer = articleRepository.findReplyById(answerId);
 
         checkWriter(sessionUser, exAnswer.getWriterId());
 
@@ -68,9 +66,9 @@ public class ArticleController {
     }
 
     @DeleteMapping("/articles/{articleId}/answers/{answerId}")
-    public String deleteAnswer(@PathVariable long articleId, @PathVariable long answerId, HttpSession httpSession, RedirectAttributes redirectAttributes) throws ManageArticleException {
+    public String deleteReply(@PathVariable long articleId, @PathVariable long answerId, HttpSession httpSession, RedirectAttributes redirectAttributes) throws ManageArticleException {
         SessionUser sessionUser = SessionUser.getSessionUser(httpSession);
-        AnswerResponseDto exAnswer = articleRepository.findReplyById(answerId);
+        ReplyResponse exAnswer = articleRepository.findReplyById(answerId);
 
         checkWriter(sessionUser, exAnswer.getWriterId());
 
@@ -80,7 +78,7 @@ public class ArticleController {
     }
 
     @PostMapping("/questions")
-    public String postQuestions(HttpSession httpSession, String title, String contents) {
+    public String saveArticle(HttpSession httpSession, String title, String contents) {
         SessionUser sessionUser = SessionUser.getSessionUser(httpSession);
         Member member = memberRepository.findById(sessionUser.getId());
 
@@ -90,9 +88,9 @@ public class ArticleController {
 
     @Transactional(rollbackFor = {DataAccessException.class, SQLException.class})
     @DeleteMapping("/articles/{id}")
-    public String deleteArticle(@PathVariable Long id, HttpSession httpSession) throws InvalidAuthorityException, ManageArticleException, SQLException {
+    public String deleteArticle(@PathVariable Long id, HttpSession httpSession) throws ManageArticleException, SQLException {
         ArticleResponse exArticle = articleRepository.findById(id);
-        List<AnswerResponseDto> answerList = articleRepository.findReplyByArticleId(id);
+        List<ReplyResponse> answerList = articleRepository.findReplyByArticleId(id);
         SessionUser sessionUser = SessionUser.getSessionUser(httpSession);
 
         checkWriter(sessionUser, exArticle.getWriterIndex());
@@ -123,8 +121,10 @@ public class ArticleController {
         return "qna/updateForm";
     }
 
+
+
     @PutMapping("/articles/{id}/update")
-    public String updateArticle(Article newArticle, @PathVariable Long id, RedirectAttributes redirectAttributes, HttpSession httpSession) throws InvalidAuthorityException {
+    public String updateArticle(Article newArticle, @PathVariable Long id, RedirectAttributes redirectAttributes, HttpSession httpSession) throws ManageArticleException {
         ArticleResponse exArticle = articleRepository.findById(id);
         SessionUser sessionUser = SessionUser.getSessionUser(httpSession);
 
@@ -132,13 +132,13 @@ public class ArticleController {
 
         articleRepository.update(exArticle.getArticleIndex(), newArticle);
         redirectAttributes.addFlashAttribute("id", id);
-        return "redirect:/articles/{id}";
+        return REDIRECT_ARTICLE;
     }
 
     @GetMapping("/articles/{id}")
     public String showArticle(@PathVariable Long id, Model model) {
         model.addAttribute("article", articleRepository.findById(id));
-        List<AnswerResponseDto> collect = articleRepository.findReplyByArticleId(id);
+        List<ReplyResponse> collect = articleRepository.findReplyByArticleId(id);
         model.addAttribute("answers", collect);
         model.addAttribute("answerSize", collect.size());
         return "qna/show";

@@ -1,11 +1,11 @@
-package kr.codesqaud.cafe.dto.answer;
+package kr.codesqaud.cafe.dto;
 
-import kr.codesqaud.cafe.domain.Answer;
+import kr.codesqaud.cafe.domain.article.Reply;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
-public class AnswerResponseDto {
+public class ReplyResponse {
     private long answerIndex;
     private long writerIndex;
     private String nickname;
@@ -56,8 +56,8 @@ public class AnswerResponseDto {
         return this.createdDate.format(DateTimeFormatter.ofPattern("yyyy-MM-dd hh:mm"));
     }
 
-    public static AnswerResponseDto toDto(Answer answer) {
-        AnswerResponseDto answerDBDto = new AnswerResponseDto();
+    public static ReplyResponse toDto(Reply answer) {
+        ReplyResponse answerDBDto = new ReplyResponse();
         answerDBDto.setAnswerIndex(answer.getId());
         answerDBDto.setContents(answer.getContents());
         answerDBDto.setWriterIndex(answer.getWriterId());

@@ -1,9 +1,10 @@
 package kr.codesqaud.cafe.repository;
 
-import kr.codesqaud.cafe.domain.Article;
+import kr.codesqaud.cafe.domain.article.Article;
 import kr.codesqaud.cafe.domain.Member;
-import kr.codesqaud.cafe.dto.article.ArticleListResponse;
-import kr.codesqaud.cafe.dto.article.ArticleResponse;
+import kr.codesqaud.cafe.domain.article.Writer;
+import kr.codesqaud.cafe.dto.ArticleListResponse;
+import kr.codesqaud.cafe.dto.ArticleResponse;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -39,7 +40,7 @@ class H2ArticleRepositoryTest {
         member = memberRepository.findById(1L);
 
         article = new Article();
-        article.setWriter(member);
+        article.setWriter(new Writer(member.getId(), member.getNickname()));
         article.setTitle("테스트를 해보자");
         article.setContents("통과를 해보자🔥");
     }

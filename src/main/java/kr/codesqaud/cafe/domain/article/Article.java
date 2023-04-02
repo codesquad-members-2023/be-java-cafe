@@ -11,7 +11,7 @@ public class Article {
     private Writer writer;
     private String title;
     private String contents;
-    private List<Answer> answerList;
+    private List<Reply> answerList;
     private LocalDateTime createdDate;
     private LocalDateTime updatedDate;
 
@@ -83,18 +83,18 @@ public class Article {
         this.updatedDate = updatedDate;
     }
 
-    public List<Answer> getAnswerList() {
+    public List<Reply> getAnswerList() {
         return answerList;
     }
 
-    public void setAnswerList(List<Answer> answerList) {
+    public void setAnswerList(List<Reply> answerList) {
         this.answerList = answerList;
     }
 
     public Article() {
     }
 
-    public Article(Member writer, String title, String contents) {
+    public Article(Writer writer, String title, String contents) {
         this.writer = writer;
         this.title = title;
         this.contents = contents;

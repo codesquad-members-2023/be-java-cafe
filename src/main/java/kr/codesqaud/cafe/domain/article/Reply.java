@@ -1,11 +1,9 @@
 package kr.codesqaud.cafe.domain.article;
 
-import kr.codesqaud.cafe.domain.Member;
-
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
-public class Answer {
+public class Reply {
     private Long id;
     private long articleId;
     private Writer writer;
@@ -69,7 +67,7 @@ public class Answer {
         this.updatedDate = updatedDate;
     }
 
-    public Answer() {}
+    public Reply() {}
 
     public boolean equals(long answerId) {
         return this.id == answerId;

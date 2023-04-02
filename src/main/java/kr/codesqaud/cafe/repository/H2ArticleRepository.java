@@ -1,11 +1,11 @@
 package kr.codesqaud.cafe.repository;
 
-import kr.codesqaud.cafe.domain.Answer;
+import kr.codesqaud.cafe.domain.article.Reply;
 import kr.codesqaud.cafe.domain.article.Article;
 import kr.codesqaud.cafe.domain.article.Writer;
-import kr.codesqaud.cafe.dto.answer.AnswerResponseDto;
-import kr.codesqaud.cafe.dto.article.ArticleListResponse;
-import kr.codesqaud.cafe.dto.article.ArticleResponse;
+import kr.codesqaud.cafe.dto.ReplyResponse;
+import kr.codesqaud.cafe.dto.ArticleListResponse;
+import kr.codesqaud.cafe.dto.ArticleResponse;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
@@ -84,7 +84,7 @@ public class H2ArticleRepository implements ArticleRepository {
     }
 
     @Override
-    public void saveReply(Answer answer) {
+    public void saveReply(Reply answer) {
         String sql = "INSERT INTO answer (contents, user_id, article_id, created_at, UPDATED_AT)" +
                 "VALUES (:contents, :user_id, :article_id, :created, :updated)";
         MapSqlParameterSource params = new MapSqlParameterSource();
@@ -97,24 +97,24 @@ public class H2ArticleRepository implements ArticleRepository {
     }
 
     @Override
-    public List<AnswerResponseDto> findReplyByArticleId(long articleId) {
+    public List<ReplyResponse> findReplyByArticleId(long articleId) {
         String sql = "SELECT answer.ID as answer_index, answer.CONTENTS, answer.CREATED_AT as created_date, " +
                 "member.ID as writer_index, member.NICKNAME " +
                 "FROM ANSWER answer LEFT JOIN MEMBER member on member.ID = answer.USER_ID " +
                 "WHERE ARTICLE_ID = :articleId AND answer.IS_DELETED = false " +
                 "ORDER BY answer.ID ";
         MapSqlParameterSource param = new MapSqlParameterSource("articleId", articleId);
-        return namedParameterJdbcTemplate.query(sql, param, new BeanPropertyRowMapper<>(AnswerResponseDto.class));
+        return namedParameterJdbcTemplate.query(sql, param, new BeanPropertyRowMapper<>(ReplyResponse.class));
     }
 
     @Override
-    public AnswerResponseDto findReplyById(long id) {
+    public ReplyResponse findReplyById(long id) {
         String sql = "SELECT A.ID as answer_index, A.CONTENTS, A.CREATED_AT as created_date, " +
                 "M.ID as writer_index, M.NICKNAME " +
                 "FROM ANSWER A LEFT JOIN MEMBER M on M.ID = A.USER_ID " +
                 "WHERE A.ID = :id AND A.IS_DELETED = false";
         MapSqlParameterSource param = new MapSqlParameterSource("id", id);
-        return namedParameterJdbcTemplate.queryForObject(sql, param, new BeanPropertyRowMapper<>(AnswerResponseDto.class));
+        return namedParameterJdbcTemplate.queryForObject(sql, param, new BeanPropertyRowMapper<>(ReplyResponse.class));
     }
 
     @Override
