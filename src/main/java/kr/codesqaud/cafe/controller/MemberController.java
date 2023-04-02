@@ -67,11 +67,8 @@ public class MemberController {
         }
 
         if (bindingResult.hasErrors()) {
-            Map<String, String> errors = bindingResult.getFieldErrors()
-                    .stream().collect(Collectors.toMap(
-                            FieldError::getField,
-                            FieldError::getDefaultMessage
-                    ));
+            Map<String, String> errors = bindingResult.getFieldErrors().stream()
+                    .collect(Collectors.toMap(FieldError::getField, FieldError::getDefaultMessage));
             if (!errors.isEmpty()) {
                 model.addAttribute("validationErrors", errors);
             }
