@@ -16,15 +16,14 @@ public class MvcConfig implements WebMvcConfigurer {
 
         registry.addViewController("/users/form").setViewName("user/form");
         registry.addViewController("/users/login").setViewName("user/login");
-        registry.addViewController("/questions/form").setViewName("qna/form");
+        registry.addViewController("/articles/form").setViewName("qna/form");
     }
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(new LoginInterceptor())
-                .order(Ordered.HIGHEST_PRECEDENCE)
-                .addPathPatterns("/users/**", "/articles/**", "/questions/**")
-                .excludePathPatterns("/", "/login", "/logout"
-                        , "/fonts/**", "/js/**", "/images/**", "/css/**", "/*.ico", "/error");
+                .addPathPatterns("/users/**", "/articles/**", "/articles/**")
+                .excludePathPatterns("/", "/login", "/users/form", "/users/create","/users/login","/articles/form",
+                        "/users/list", "/fonts/**", "/js/**", "/images/**", "/css/**", "/*.ico", "error");
     }
 }
