@@ -16,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
@@ -53,13 +54,19 @@ public class ArticleController {
         return "index";
     }
 
-    @PostMapping("/questions")
-    public String questions(@ModelAttribute Article article, BindingResult bindingResult) {
-        articleValidator.validate(article, bindingResult);
+    @PostMapping("/articles")
+    public String questions(@Validated @ModelAttribute ArticleDTO articleDTO, BindingResult bindingResult, HttpSession session) {
+
         if (bindingResult.hasErrors()) {
             log.debug("errors = {}", bindingResult);
             return "redirect:/";
         }
+
+        LoginSessionUtils sessionUtils = (LoginSessionUtils) session.getAttribute(SessionConst.LOGIN_MEMBER);
+        System.out.println("sessionUtils = " + sessionUtils);
+        //TODO 로그인한 사용자의 nickName이 게시글의 Writer
+        ArticleDTO article = new ArticleDTO(sessionUtils.getId(), articleDTO.getWriter(), articleDTO.getTitle(), articleDTO.getContent());
+
         log.debug("article{}=", article);
         repository.save(article);
         return "redirect:/";
