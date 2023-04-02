@@ -23,12 +23,13 @@ import static kr.codesqaud.cafe.util.SessionUser.SESSION_USER;
 public class GlobalExceptionHandler {
     private static final String MESSAGE = "message";
     private static final String DEFAULT_ERROR_PAGE = "error";
+    private static final String LOGIN_FAILED_PAGE = "user/login_failed";
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(value = EmptyResultDataAccessException.class)
     public String handleInvalidAuthorityException(EmptyResultDataAccessException e, Model model) {
         model.addAttribute(MESSAGE, e.getMessage());
-        return "user/login_failed";
+        return LOGIN_FAILED_PAGE;
     }
 
     @ResponseStatus(HttpStatus.FORBIDDEN)
@@ -38,7 +39,7 @@ public class GlobalExceptionHandler {
 
         switch (e.getMessage()) {
             case NO_SESSION_USER:
-                return "user/login_failed";
+                return LOGIN_FAILED_PAGE;
             case INVALID_MEMBER:
             default: return DEFAULT_ERROR_PAGE;
         }
@@ -50,7 +51,7 @@ public class GlobalExceptionHandler {
         switch (e.getMessage()) {
             case LOGIN_FAILED:
             case DUPLICATE_MEMBER_INFO:
-                return "user/login_failed";
+                return LOGIN_FAILED_PAGE;
             case UPDATE_FAILED_WRONG_PASSWORD:
                 long id = ((SessionUser) httpSession.getAttribute(SESSION_USER)).getId();
                 redirectAttributes.addAttribute(MESSAGE, e.getMessage());
@@ -71,7 +72,6 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(value = Exception.class)
     private String exception(Exception e, Model model) {
         e.printStackTrace();
-        model.addAttribute(MESSAGE, "에러가 발생했습니다.");
 
         if (e.getMessage()!=null) {
             model.addAttribute(MESSAGE, e.getMessage());
