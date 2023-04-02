@@ -1,7 +1,7 @@
 package kr.codesqaud.cafe.repository;
 
 import kr.codesqaud.cafe.domain.Answer;
-import kr.codesqaud.cafe.domain.Article;
+import kr.codesqaud.cafe.dto.answer.AnswerResponseDto;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -20,7 +20,6 @@ class H2AnswerRepositoryTest {
     JdbcTemplate jdbcTemplate;
     AnswerRepository repository;
     MemberRepository memberRepository;
-    Article article;
     Answer answer;
 
     static final String TEST_CONTENTS = "test 댓글";
@@ -62,17 +61,17 @@ class H2AnswerRepositoryTest {
     void saveCheckDataWriter() {
         int before = repository.findAllByArticleId(1L).size();
         repository.save(answer);
-        assertThat(repository.findById(1L).getWriterNickname()).isEqualTo("자바지기");
+        assertThat(repository.findById(1L).getNickname()).isEqualTo("자바지기");
     }
 
     @Test
     @DisplayName("댓글을 수정하면 댓글 contents가 바뀌어야 한다.")
     void update() {
         repository.save(answer);
-        Answer exAnswer = repository.findById(1L);
+        AnswerResponseDto exAnswer = repository.findById(1L);
         Answer newAnswer = new Answer();
         newAnswer.setContents("수정된 테스트 댓글 내용");
-        repository.update(exAnswer, newAnswer);
+        repository.update(exAnswer.getAnswerIndex(), newAnswer.getContents());
         assertThat(repository.findById(1L).getContents()).isEqualTo("수정된 테스트 댓글 내용");
     }
 
