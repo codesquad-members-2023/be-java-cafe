@@ -58,6 +58,7 @@ function sendNewReply(e) {
             var answerTemplate = $("#answerTemplate").html();
             var template = answerTemplate.format(data.userId, data.time, data.contents, data.replyId, data.articleId);
             $(".qna-comment-slipp-articles").prepend(template);
+            $("textarea[name=contents]").val("");
             var string = '개의 의견';
             $(".qna-comment-st1").text(parseInt($(".qna-comment-st1").text()) + 1);
             $(".qna-comment-st2").text(string);
