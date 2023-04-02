@@ -31,6 +31,10 @@ public class Article {
         this.writer = writer;
     }
 
+    public void setWriter(Member writer) {
+        this.writer = new Writer(writer.getId(), writer.getNickname());
+    }
+
     public Long getWriterId() {
         return writer.getId();
     }
