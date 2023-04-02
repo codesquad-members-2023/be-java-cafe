@@ -19,21 +19,22 @@ import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.junit.jupiter.api.Assertions.*;
 
 @JdbcTest
-class H2DBArticleRepositoryTest {
+class MySQLArticleRepositoryTest {
 
     @Autowired
     private DataSource dataSource;
 
     private MySQLUserRepository userRepository;
-    private H2DBArticleRepository articleRepository;
+    private MySQLArticleRepository articleRepository;
     private MySQLReplyRepository replyRepository;
 
     @BeforeEach
     void init() {
         userRepository = new MySQLUserRepository(dataSource);
-        articleRepository = new H2DBArticleRepository(dataSource);
+        articleRepository = new MySQLArticleRepository(dataSource);
         replyRepository = new MySQLReplyRepository(dataSource);
 
         userRepository.save(new User("Hyun", "1234", "황현", "ghkdgus29@naver.com"));
