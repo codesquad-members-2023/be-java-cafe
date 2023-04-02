@@ -60,9 +60,7 @@ public class ArticleController {
         SessionUser sessionUser = SessionUser.getSessionUser(httpSession);
         AnswerResponseDto exAnswer = articleRepository.findReplyById(answerId);
 
-        if (!sessionUser.equals(exAnswer.getWriterId())) {
-            throw new ManageArticleException(INVALID_WRITER);
-        }
+        checkWriter(sessionUser, exAnswer.getWriterId());
 
         articleRepository.updateReply(answerId, answer.getContents());
         redirectAttributes.addFlashAttribute("articleId", articleId);
@@ -74,9 +72,7 @@ public class ArticleController {
         SessionUser sessionUser = SessionUser.getSessionUser(httpSession);
         AnswerResponseDto exAnswer = articleRepository.findReplyById(answerId);
 
-        if (!sessionUser.equals(exAnswer.getWriterId())) {
-            throw new ManageArticleException(INVALID_WRITER);
-        }
+        checkWriter(sessionUser, exAnswer.getWriterId());
 
         articleRepository.deleteAReply(answerId);
         redirectAttributes.addFlashAttribute("articleId", articleId);
@@ -99,9 +95,7 @@ public class ArticleController {
         List<AnswerResponseDto> answerList = articleRepository.findReplyByArticleId(id);
         SessionUser sessionUser = SessionUser.getSessionUser(httpSession);
 
-        if (!sessionUser.equals(exArticle.getWriterIndex())) {
-            throw new ManageArticleException(INVALID_WRITER);
-        }
+        checkWriter(sessionUser, exArticle.getWriterIndex());
 
         if (answerList.stream().anyMatch(e -> e.getWriterId()!=sessionUser.getId())) {
             throw new ManageArticleException(NOT_POSSIBLE_DELETE);
@@ -123,9 +117,7 @@ public class ArticleController {
         ArticleResponse article = articleRepository.findById(id);
         SessionUser sessionUser = SessionUser.getSessionUser(httpSession);
 
-        if (!sessionUser.equals(article.getWriterIndex())) {
-            throw new ManageArticleException(INVALID_WRITER);
-        }
+        checkWriter(sessionUser, article.getWriterIndex());
 
         model.addAttribute("article", article);
         return "qna/updateForm";
@@ -136,9 +128,7 @@ public class ArticleController {
         ArticleResponse exArticle = articleRepository.findById(id);
         SessionUser sessionUser = SessionUser.getSessionUser(httpSession);
 
-        if (!sessionUser.equals(exArticle.getWriterIndex())) {
-            throw new InvalidAuthorityException(NO_SESSION_USER);
-        }
+        checkWriter(sessionUser, exArticle.getWriterIndex());
 
         articleRepository.update(exArticle.getArticleIndex(), newArticle);
         redirectAttributes.addFlashAttribute("id", id);
@@ -158,5 +148,11 @@ public class ArticleController {
     public String index(Model model) {
         model.addAttribute("list", articleRepository.findAll());
         return "index";
+    }
+
+    private void checkWriter(SessionUser sessionUser, Long writerId) throws ManageArticleException {
+        if (!sessionUser.equals(writerId)) {
+            throw new ManageArticleException(INVALID_WRITER);
+        }
     }
 }
