@@ -40,7 +40,7 @@ public class JdbcArticleRepository implements ArticleRepository {
     @Override
     public Optional<Article> findById(Long id) {
         try{
-            String sql = "select id, title, contents, author_id, write_date from article where id = :id";
+            String sql = "select id, title, contents, author_id, write_date from article where id = :id AND deleted = false";
             SqlParameterSource param = new MapSqlParameterSource("id", id);
             return Optional.of(template.queryForObject(sql, param, rowMapperArticle()));
         } catch (EmptyResultDataAccessException e) {
@@ -51,7 +51,7 @@ public class JdbcArticleRepository implements ArticleRepository {
 
     @Override
     public List<Article> findAll() {
-        String sql = "select id, author_id, title, contents, write_date from article order by id desc";
+        String sql = "select id, author_id, title, write_date,contents from article where deleted = false order by id desc";
         return template.query(sql, rowMapperArticle());
     }
 
@@ -64,7 +64,8 @@ public class JdbcArticleRepository implements ArticleRepository {
 
     @Override
     public void delete(Long id) {
-        String sql = "delete from article where id = :id";
+        // String sql = "delete from article where id = :id";
+        String sql = "update article set deleted = true where id = :id";
         SqlParameterSource param = new MapSqlParameterSource("id", id); // 하나만 찾으면되니까 map(객체 단위로 쓸 수 없으니까)
         template.update(sql,param);
     }
