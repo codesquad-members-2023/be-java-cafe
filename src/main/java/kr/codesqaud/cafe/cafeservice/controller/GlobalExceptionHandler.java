@@ -36,8 +36,9 @@ public class GlobalExceptionHandler {
 
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     @ExceptionHandler
-    public String exHandle(Exception e) {
+    public String exHandle(Exception e, Model model) {
         log.error("[exceptionHandle] ex", e);
-        return "layout/error";
+        model.addAttribute("errorMessage", e.getMessage());
+        return "error";
     }
 }
