@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpSession;
+import java.net.BindException;
 import java.util.NoSuchElementException;
 
 import static kr.codesqaud.cafe.exception.InvalidAuthorityException.INVALID_MEMBER;
@@ -24,6 +25,13 @@ public class GlobalExceptionHandler {
     private static final String MESSAGE = "message";
     private static final String DEFAULT_ERROR_PAGE = "error";
     private static final String LOGIN_FAILED_PAGE = "user/login_failed";
+
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(value = BindException.class)
+    public String handleBindException(BindException e, RedirectAttributes redirectAttributes) {
+        redirectAttributes.addAttribute(MESSAGE, e.getMessage());
+        return "redirect:/users/form";
+    }
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(value = EmptyResultDataAccessException.class)
