@@ -1,6 +1,7 @@
 package kr.codesqaud.cafe.cafeservice.controller;
 
 import kr.codesqaud.cafe.cafeservice.domain.Member;
+import kr.codesqaud.cafe.cafeservice.exhandler.exception.MemberNotFoundException;
 import kr.codesqaud.cafe.cafeservice.repository.member.MemberRepository;
 import kr.codesqaud.cafe.cafeservice.service.MemberService;
 import kr.codesqaud.cafe.cafeservice.session.LoginSessionUtils;
@@ -48,7 +49,6 @@ public class MemberController {
 
     @PostMapping("/create")
     public String addMember(@Validated @ModelAttribute Member member, BindingResult bindingResult) {
-        System.out.println("member = " + member);
         if (bindingResult.hasErrors()) {
             log.debug("errors = {}", bindingResult);
             return "users/form";
@@ -78,12 +78,9 @@ public class MemberController {
 
     @GetMapping("/{id}/updateForm")
     public String showUpdateForm(@PathVariable Long id, Model model, HttpSession session) {
-        System.out.println("id = " + id);
         LoginSessionUtils sessionUtils = (LoginSessionUtils) session.getAttribute(SessionConst.LOGIN_MEMBER);
-        System.out.println("sessionUtils = " + sessionUtils);
         sessionCheckId(id, sessionUtils);
         Member member = service.findById(id);
-        System.out.println("member = " + member);
         model.addAttribute("user", member);
         return "user/updateForm";
     }
@@ -91,6 +88,7 @@ public class MemberController {
 
     @PutMapping("/{id}/updateForm")
     public String memberUpdateForm(@Validated @PathVariable Long id, @ModelAttribute Member member,
+                                   @RequestParam String exPassword,
                                    BindingResult bindingResult, HttpSession session) {
 
         if (bindingResult.hasErrors()) {
@@ -100,8 +98,13 @@ public class MemberController {
 
         LoginSessionUtils sessionUtils = (LoginSessionUtils) session.getAttribute(SessionConst.LOGIN_MEMBER);
         sessionCheckId(id, sessionUtils);
+
+        if (!sessionUtils.isValidPassword(exPassword)) {
+            throw new MemberNotFoundException("비밀번호 불일치");
+        }
+
         repository.update(id, member);
-        return "redirect:/users";
+        return "redirect:/";
     }
 }
 
