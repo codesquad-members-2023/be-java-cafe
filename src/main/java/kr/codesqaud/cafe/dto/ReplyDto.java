@@ -10,6 +10,7 @@ public class ReplyDto {
 	private LocalDateTime writtenTime;
 	private String contents;
 	private Long articleSequence;
+	private Long replySequence;
 
 	public ReplyDto() {
 
@@ -53,5 +54,13 @@ public class ReplyDto {
 
 	public void setArticleSequence(Long articleSequence) {
 		this.articleSequence = articleSequence;
+	}
+
+	public Long getReplySequence() {
+		return replySequence;
+	}
+
+	public void setReplySequence(Long replySequence) {
+		this.replySequence = replySequence;
 	}
 }
