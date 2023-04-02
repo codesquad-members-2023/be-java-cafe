@@ -1,17 +1,15 @@
 package kr.codesqaud.cafe.controller;
 
 
-import kr.codesqaud.cafe.domain.Article;
 import kr.codesqaud.cafe.domain.Member;
 import kr.codesqaud.cafe.repository.member.JdbcMemberRepository;
+import kr.codesqaud.cafe.util.MemberSessionUser;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 import java.util.List;
 import java.util.Optional;
 
