@@ -8,7 +8,6 @@ import kr.codesqaud.cafe.util.SessionUser;
 import kr.codesqaud.cafe.dto.answer.AnswerResponseDto;
 import kr.codesqaud.cafe.exception.InvalidAuthorityException;
 import kr.codesqaud.cafe.exception.ManageArticleException;
-import kr.codesqaud.cafe.repository.AnswerRepository;
 
 import kr.codesqaud.cafe.repository.ArticleRepository;
 import kr.codesqaud.cafe.repository.MemberRepository;
@@ -36,12 +35,10 @@ public class ArticleController {
 
     private final ArticleRepository articleRepository;
     private final MemberRepository memberRepository;
-    private final AnswerRepository answerRepository;
 
-    public ArticleController(ArticleRepository articleRepository, MemberRepository memberRepository, AnswerRepository answerRepository) {
+    public ArticleController(ArticleRepository articleRepository, MemberRepository memberRepository) {
         this.articleRepository = articleRepository;
         this.memberRepository = memberRepository;
-        this.answerRepository = answerRepository;
     }
 
     @PostMapping("/articles/{articleId}/answers")
@@ -50,7 +47,7 @@ public class ArticleController {
 
         answer.setWriter(new Member(sessionUser.getId(), sessionUser.getNickName()));
         answer.setArticleId(articleId);
-        answerRepository.save(answer);
+        articleRepository.saveReply(answer);
 
         redirectAttributes.addFlashAttribute("articleId", articleId);
         return REDIRECT_ARTICLE;
@@ -60,13 +57,13 @@ public class ArticleController {
     @PutMapping("/articles/{articleId}/answers/{answerId}")
     public String updateAnswer(@PathVariable long articleId, @PathVariable long answerId, Answer answer, HttpSession httpSession, RedirectAttributes redirectAttributes) throws ManageArticleException {
         SessionUser sessionUser = SessionUser.getSessionUser(httpSession);
-        AnswerResponseDto exAnswer = answerRepository.findById(answerId);
+        AnswerResponseDto exAnswer = articleRepository.findReplyById(answerId);
 
         if (!sessionUser.equals(exAnswer.getWriterId())) {
             throw new ManageArticleException(INVALID_WRITER);
         }
 
-        answerRepository.update(answerId, answer.getContents());
+        articleRepository.updateReply(answerId, answer.getContents());
         redirectAttributes.addFlashAttribute("articleId", articleId);
         return REDIRECT_ARTICLE;
     }
@@ -74,13 +71,13 @@ public class ArticleController {
     @DeleteMapping("/articles/{articleId}/answers/{answerId}")
     public String deleteAnswer(@PathVariable long articleId, @PathVariable long answerId, HttpSession httpSession, RedirectAttributes redirectAttributes) throws ManageArticleException {
         SessionUser sessionUser = SessionUser.getSessionUser(httpSession);
-        AnswerResponseDto exAnswer = answerRepository.findById(answerId);
+        AnswerResponseDto exAnswer = articleRepository.findReplyById(answerId);
 
         if (!sessionUser.equals(exAnswer.getWriterId())) {
             throw new ManageArticleException(INVALID_WRITER);
         }
 
-        answerRepository.delete(answerId);
+        articleRepository.deleteAReply(answerId);
         redirectAttributes.addFlashAttribute("articleId", articleId);
         return REDIRECT_ARTICLE;
     }
@@ -98,7 +95,7 @@ public class ArticleController {
     @DeleteMapping("/articles/{id}")
     public String deleteArticle(@PathVariable Long id, HttpSession httpSession) throws InvalidAuthorityException, ManageArticleException, SQLException {
         ArticleResponse exArticle = articleRepository.findById(id);
-        List<AnswerResponseDto> answerList = answerRepository.findAllByArticleId(id);
+        List<AnswerResponseDto> answerList = articleRepository.findReplyByArticleId(id);
         SessionUser sessionUser = SessionUser.getSessionUser(httpSession);
 
         if (!sessionUser.equals(exArticle.getWriterIndex())) {
@@ -109,7 +106,7 @@ public class ArticleController {
             throw new ManageArticleException(NOT_POSSIBLE_DELETE);
         }
 
-        answerRepository.deleteAll(id);
+        articleRepository.deleteAllReply(id);
         int deleteCount = articleRepository.delete(id);
 
         if (deleteCount!=1) {
@@ -150,7 +147,7 @@ public class ArticleController {
     @GetMapping("/articles/{id}")
     public String showArticle(@PathVariable Long id, Model model) {
         model.addAttribute("article", articleRepository.findById(id));
-        List<AnswerResponseDto> collect = answerRepository.findAllByArticleId(id);
+        List<AnswerResponseDto> collect = articleRepository.findReplyByArticleId(id);
         model.addAttribute("answers", collect);
         model.addAttribute("answerSize", collect.size());
         return "qna/show";
