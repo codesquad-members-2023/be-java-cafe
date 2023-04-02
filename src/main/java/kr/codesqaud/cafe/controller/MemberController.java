@@ -83,9 +83,11 @@ public class MemberController {
                                 @PathVariable Long id,
                                 @RequestParam String exPassword) {
         Member exMember = memberRepository.findById(id);
+
         if (!exMember.isValidPassword(exPassword)) {
             throw new ManageMemberException(UPDATE_FAILED_WRONG_PASSWORD);
         }
+
         memberRepository.update(exMember, member);
         return "redirect:/users";
     }
