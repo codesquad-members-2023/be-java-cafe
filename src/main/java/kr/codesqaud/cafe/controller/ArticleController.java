@@ -94,7 +94,7 @@ public class ArticleController {
         return REDIRECT_INDEX;
     }
 
-    @Transactional(rollbackFor = Exception.class)
+    @Transactional(rollbackFor = {DataAccessException.class, SQLException.class})
     @DeleteMapping("/articles/{id}")
     public String deleteArticle(@PathVariable Long id, HttpSession httpSession) throws InvalidAuthorityException, ManageArticleException, SQLException {
         ArticleResponse exArticle = articleRepository.findById(id);
@@ -111,9 +111,11 @@ public class ArticleController {
 
         answerRepository.deleteAll(id);
         int deleteCount = articleRepository.delete(id);
+
         if (deleteCount!=1) {
             throw new SQLException("잘못된 삭제 요청입니다.");
         }
+
         return REDIRECT_INDEX;
     }
 

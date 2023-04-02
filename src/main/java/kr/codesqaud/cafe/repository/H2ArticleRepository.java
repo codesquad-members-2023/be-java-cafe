@@ -75,10 +75,10 @@ public class H2ArticleRepository implements ArticleRepository {
     }
 
     @Override
-    public void delete(long id) {
+    public int delete(long id) {
         String sql = "DELETE FROM ARTICLE WHERE id = :id";
         MapSqlParameterSource param = new MapSqlParameterSource("id", id);
-        namedParameterJdbcTemplate.update(sql, param);
+        return namedParameterJdbcTemplate.update(sql, param);
     }
 
     private static class ArticleRowMapper implements RowMapper<Article> {
