@@ -24,6 +24,11 @@ public class Member {
         this.updatedDate = updatedDate;
     }
 
+    public Member(long id, String nickName) {
+        this.id = id;
+        this.nickname = nickName;
+    }
+
     public Long getId() {
         return id;
     }
