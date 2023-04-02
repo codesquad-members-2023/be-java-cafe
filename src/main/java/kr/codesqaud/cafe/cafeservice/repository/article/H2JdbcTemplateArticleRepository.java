@@ -1,6 +1,7 @@
 package kr.codesqaud.cafe.cafeservice.repository.article;
 
 import kr.codesqaud.cafe.cafeservice.domain.Article;
+import kr.codesqaud.cafe.cafeservice.dto.ArticleDTO;
 import org.springframework.context.annotation.Primary;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.RowMapper;
@@ -24,20 +25,20 @@ public class H2JdbcTemplateArticleRepository implements ArticleRepository {
     }
 
     @Override
-    public void save(Article article) {
-        String sql = "INSERT INTO article (writer, title, content) VALUES ( ?, ?, ?)";
-        template.update(sql, article.getWriter(), article.getTitle(), article.getContent());
+    public void save(ArticleDTO articleDTO) {
+        String sql = "INSERT INTO article (member_id,writer, title, content) VALUES ( ?,?, ?, ?)";
+        template.update(sql, articleDTO.getId(), articleDTO.getWriter(), articleDTO.getTitle(), articleDTO.getContent());
     }
 
     @Override
     public List<Article> findAll() {
-        String sql = "SELECT id,writer, title, content,created_date,reply_count  FROM article";
+        String sql = "SELECT id,writer, title, content,created_date,reply_count ,member_id FROM article ORDER BY id DESC;";
         return template.query(sql, new ArticleRowMapper());
     }
 
     @Override
     public void delete(Long id) {
-        String sql = "DELETE FROM article WHERE id = ?;";
+        String sql = "DELETE FROM article WHERE member_id = ?;";
         template.update(sql, id);
     }
 
@@ -49,8 +50,12 @@ public class H2JdbcTemplateArticleRepository implements ArticleRepository {
     }
 
     @Override
+    public void findReplyList() {
+    }
+
+    @Override
     public Optional<Article> findById(Long id) {
-        String sql = "SELECT id,writer, title, content,created_date,reply_count FROM article WHERE id = ?";
+        String sql = "SELECT id,writer, title, content,created_date,reply_count,member_id FROM article WHERE id = ?";
         try {
             return template.query(sql, new ArticleRowMapper(), id).stream().findAny();
         } catch (EmptyResultDataAccessException e) {
@@ -66,6 +71,7 @@ public class H2JdbcTemplateArticleRepository implements ArticleRepository {
             article.setWriter(rs.getString("writer"));
             article.setTitle(rs.getString("title"));
             article.setContent(rs.getString("content"));
+            article.setUserId(rs.getLong("member_id"));
             article.setCreatedDate(rs.getTimestamp("created_date").toLocalDateTime());
             article.setReplyCount(rs.getInt("reply_count"));
             return article;
