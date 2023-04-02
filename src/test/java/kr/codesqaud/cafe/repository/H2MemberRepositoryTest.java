@@ -64,7 +64,7 @@ class H2MemberRepositoryTest {
     @Test
     @DisplayName("memberID으로 회원 정보를 조회할 수 있다.")
     void findBymemberId() throws Exception{
-        Member byId = repository.findByMemberId("sanjigi");
+        Member byId = repository.findByMemberId("sanjigi").orElseThrow();
         assertThat(byId.getNickname()).isEqualTo("산지기");
     }
 
