@@ -1,6 +1,7 @@
 package kr.codesqaud.cafe.controller;
 
 import kr.codesqaud.cafe.SessionConstant;
+import kr.codesqaud.cafe.domain.Article;
 import kr.codesqaud.cafe.domain.dto.ArticleWithWriter;
 import kr.codesqaud.cafe.domain.dto.ReplyWithUser;
 import kr.codesqaud.cafe.domain.dto.SimpleArticleWithWriter;
@@ -10,7 +11,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.BDDMockito;
-import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -107,11 +107,47 @@ class ArticleControllerTest {
     }
 
     @Test
+    @DisplayName("게시글 수정 버튼을 누르면 작성된 게시글을 내용을 바탕으로 수정할 수 있다.")
     void showArticleUpdateForm() throws Exception {
+        ArticleWithWriter mockArticle = new ArticleWithWriter(1, "제목", "내용텟", LocalDateTime.now(), 1, "hyun", 3);
 
+        BDDMockito.given(articleRepository.findById(1)).willReturn(mockArticle);
+
+        mvc.perform(MockMvcRequestBuilders.get("/articles/1/form").session(mockHttpSession))
+                .andExpect(MockMvcResultMatchers.model().attributeExists("article"))
+                .andExpect(MockMvcResultMatchers.model().attribute("article", mockArticle))
+                .andExpect(MockMvcResultMatchers.view().name("qna/updateForm"))
+                .andExpect(MockMvcResultMatchers.status().isOk());
     }
 
     @Test
-    void updateArticle() {
+    @DisplayName("게시글 작성자가 게시글 수정 폼을 제출하면 수정이 완료된다.")
+    void updateArticleSuccess() throws Exception {
+        ArticleWithWriter mockArticle = new ArticleWithWriter(1, "제목", "내용텟", LocalDateTime.now(), 1, "hyun", 3);
+
+        MultiValueMap<String, String> paramMap = new LinkedMultiValueMap<>();
+        paramMap.add("title", "수정한 제목");
+        paramMap.add("contents", "수정한 내용");
+
+        BDDMockito.given(articleRepository.findById(1)).willReturn(mockArticle);
+        BDDMockito.doNothing().when(articleRepository).update(1, new Article(1, paramMap.getFirst("title"), paramMap.getFirst("contents")));
+
+        mvc.perform(MockMvcRequestBuilders.put("/articles/1").params(paramMap).session(mockHttpSession))
+                .andExpect(MockMvcResultMatchers.view().name("redirect:/articles/{index}"))
+                .andExpect(MockMvcResultMatchers.status().is3xxRedirection());
+    }
+
+    @Test
+    @DisplayName("게시글 작성자가 아니면 게시글을 수정할 수 없다.")
+    void updateArticleFail() throws Exception {
+        ArticleWithWriter mockArticle = new ArticleWithWriter(1, "제목", "내용텟", LocalDateTime.now(), 2, "yoon", 3);
+
+        BDDMockito.given(articleRepository.findById(1)).willReturn(mockArticle);
+
+        mvc.perform(MockMvcRequestBuilders.get("/articles/1/form").session(mockHttpSession))
+                .andExpect(MockMvcResultMatchers.model().attributeExists("errorMessage"))
+                .andExpect(MockMvcResultMatchers.model().attribute("errorMessage", "[ERROR] 자신이 작성하지 않은 게시물은 수정할 수 없습니다."))
+                .andExpect(MockMvcResultMatchers.view().name("error"))
+                .andExpect(MockMvcResultMatchers.status().is4xxClientError());
     }
 }
