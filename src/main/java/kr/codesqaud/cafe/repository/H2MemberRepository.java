@@ -48,10 +48,10 @@ public class H2MemberRepository implements MemberRepository {
     }
 
     @Override
-    public Member findByMemberId(String userId) throws EmptyResultDataAccessException {
+    public Optional<Member> findByMemberId(String userId) throws EmptyResultDataAccessException {
         String sql = "SELECT ID, USERID, NICKNAME, EMAIL, PASSWORD, CREATED_AT, UPDATED_AT FROM MEMBER WHERE USERID = :userId";
         MapSqlParameterSource param = new MapSqlParameterSource("userId", userId);
-        return namedParameterJdbcTemplate.queryForObject(sql, param, new MemberRowMapper());
+        return namedParameterJdbcTemplate.query(sql, param, new MemberRowMapper()).stream().findAny();
     }
 
     @Override
