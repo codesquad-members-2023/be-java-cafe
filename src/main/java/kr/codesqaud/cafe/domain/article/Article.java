@@ -1,4 +1,6 @@
-package kr.codesqaud.cafe.domain;
+package kr.codesqaud.cafe.domain.article;
+
+import kr.codesqaud.cafe.domain.Member;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -6,7 +8,7 @@ import java.util.List;
 
 public class Article {
     private Long id;
-    private Member writer;
+    private Writer writer;
     private String title;
     private String contents;
     private List<Answer> answerList;
@@ -21,11 +23,11 @@ public class Article {
         this.id = id;
     }
 
-    public Member getWriter() {
+    public Writer getWriter() {
         return writer;
     }
 
-    public void setWriter(Member writer) {
+    public void setWriter(Writer writer) {
         this.writer = writer;
     }
 

@@ -1,8 +1,8 @@
 package kr.codesqaud.cafe.repository;
 
 import kr.codesqaud.cafe.domain.Answer;
-import kr.codesqaud.cafe.domain.Article;
-import kr.codesqaud.cafe.domain.Member;
+import kr.codesqaud.cafe.domain.article.Article;
+import kr.codesqaud.cafe.domain.article.Writer;
 import kr.codesqaud.cafe.dto.answer.AnswerResponseDto;
 import kr.codesqaud.cafe.dto.article.ArticleListResponse;
 import kr.codesqaud.cafe.dto.article.ArticleResponse;
@@ -145,7 +145,7 @@ public class H2ArticleRepository implements ArticleRepository {
         @Override
         public Article mapRow(ResultSet rs, int rowNum) throws SQLException {
            Article article = new BeanPropertyRowMapper<>(Article.class).mapRow(rs, rowNum);
-           Member writer = new BeanPropertyRowMapper<>(Member.class).mapRow(rs, rowNum);
+           Writer writer = new BeanPropertyRowMapper<>(Writer.class).mapRow(rs, rowNum);
 
            article.setId(rs.getLong("article_id"));
            article.setCreatedDate(rs.getTimestamp("article_createddate").toLocalDateTime());

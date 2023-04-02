@@ -1,8 +1,9 @@
 package kr.codesqaud.cafe.controller;
 
-import kr.codesqaud.cafe.domain.Answer;
-import kr.codesqaud.cafe.domain.Article;
+import kr.codesqaud.cafe.domain.article.Reply;
+import kr.codesqaud.cafe.domain.article.Article;
 import kr.codesqaud.cafe.domain.Member;
+import kr.codesqaud.cafe.domain.article.Writer;
 import kr.codesqaud.cafe.dto.article.ArticleResponse;
 import kr.codesqaud.cafe.util.SessionUser;
 import kr.codesqaud.cafe.dto.answer.AnswerResponseDto;
@@ -42,10 +43,10 @@ public class ArticleController {
     }
 
     @PostMapping("/articles/{articleId}/answers")
-    public String saveAnswer(@PathVariable long articleId, Answer answer, HttpSession httpSession, RedirectAttributes redirectAttributes) {
+    public String saveAnswer(@PathVariable long articleId, Reply answer, HttpSession httpSession, RedirectAttributes redirectAttributes) {
         SessionUser sessionUser = SessionUser.getSessionUser(httpSession);
 
-        answer.setWriter(new Member(sessionUser.getId(), sessionUser.getNickName()));
+        answer.setWriter(new Writer(sessionUser.getId(), sessionUser.getNickName()));
         answer.setArticleId(articleId);
         articleRepository.saveReply(answer);
 
@@ -55,7 +56,7 @@ public class ArticleController {
 
     // TODO 모르고 댓글 수정을 만들었다.... 하지만 뷰가 없다....
     @PutMapping("/articles/{articleId}/answers/{answerId}")
-    public String updateAnswer(@PathVariable long articleId, @PathVariable long answerId, Answer answer, HttpSession httpSession, RedirectAttributes redirectAttributes) throws ManageArticleException {
+    public String updateAnswer(@PathVariable long articleId, @PathVariable long answerId, Reply answer, HttpSession httpSession, RedirectAttributes redirectAttributes) throws ManageArticleException {
         SessionUser sessionUser = SessionUser.getSessionUser(httpSession);
         AnswerResponseDto exAnswer = articleRepository.findReplyById(answerId);
 
@@ -86,8 +87,8 @@ public class ArticleController {
     public String postQuestions(HttpSession httpSession, String title, String contents) {
         SessionUser sessionUser = SessionUser.getSessionUser(httpSession);
         Member member = memberRepository.findById(sessionUser.getId());
-        Article article = new Article(member, title, contents);
-        articleRepository.save(article);
+
+        articleRepository.save(new Article(new Writer(member.getId(), member.getNickname()), title, contents));
         return REDIRECT_INDEX;
     }
 
