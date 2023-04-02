@@ -16,5 +16,7 @@ public interface ReplyRepository {
 
     void update(Reply reply);
 
-    void delete(Long id);
+    void delete(Long replyId);
+
+    void deletedAll(Long articleId);
 }
