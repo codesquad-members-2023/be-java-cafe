@@ -1,16 +1,13 @@
 package kr.codesqaud.cafe.repository;
 
 import kr.codesqaud.cafe.domain.Answer;
-import kr.codesqaud.cafe.dto.answer.AnswerDbDto;
+import kr.codesqaud.cafe.dto.answer.AnswerResponseDto;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
-import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -37,38 +34,33 @@ public class H2AnswerRepository implements AnswerRepository{
     }
 
     @Override
-    public List<Answer> findAllByArticleId(long articleId) {
-        String sql = "SELECT A.ID, A.CONTENTS, A.USER_ID, A.ARTICLE_ID, A.CREATED_AT as created_date, A.UPDATED_AT as updated_date, " +
-                "M.ID as writer_index, M.USERID, M.NICKNAME, M.EMAIL, M.PASSWORD, M.CREATED_AT as member_created_at, M.UPDATED_AT as member_updated_at FROM ANSWER A LEFT JOIN MEMBER M on M.ID = A.USER_ID WHERE ARTICLE_ID = :articleId";
+    public List<AnswerResponseDto> findAllByArticleId(long articleId) {
+        String sql = "SELECT answer.ID as answer_index, answer.CONTENTS, answer.CREATED_AT as created_date, " +
+                "member.ID as writer_index, member.NICKNAME " +
+                "FROM ANSWER answer LEFT JOIN MEMBER member on member.ID = answer.USER_ID " +
+                "WHERE ARTICLE_ID = :articleId AND answer.IS_DELETED = false " +
+                "ORDER BY answer.ID ";
         MapSqlParameterSource param = new MapSqlParameterSource("articleId", articleId);
-        return namedParameterJdbcTemplate.query(sql, param, new AnswerRowMapper());
+        return namedParameterJdbcTemplate.query(sql, param, new BeanPropertyRowMapper<>(AnswerResponseDto.class));
     }
 
     @Override
-    public Answer findById(long id) {
-        String sql = "SELECT A.ID, A.CONTENTS, A.USER_ID, A.ARTICLE_ID, A.CREATED_AT, A.UPDATED_AT, " +
-                "M.ID as writer_index, M.USERID, M.NICKNAME, M.EMAIL, M.PASSWORD, M.CREATED_AT as MEMBER_CREATED_AT, M.UPDATED_AT as member_updated_at FROM ANSWER A LEFT JOIN MEMBER M on M.ID = A.USER_ID WHERE A.ID = :id";
+    public AnswerResponseDto findById(long id) {
+        String sql = "SELECT A.ID as answer_index, A.CONTENTS, A.CREATED_AT as created_date, " +
+                "M.ID as writer_index, M.NICKNAME " +
+                "FROM ANSWER A LEFT JOIN MEMBER M on M.ID = A.USER_ID " +
+                "WHERE A.ID = :id AND A.IS_DELETED = false";
         MapSqlParameterSource param = new MapSqlParameterSource("id", id);
-        return namedParameterJdbcTemplate.queryForObject(sql, param, new AnswerRowMapper());
+        return namedParameterJdbcTemplate.queryForObject(sql, param, new BeanPropertyRowMapper<>(AnswerResponseDto.class));
     }
 
     @Override
-    public void update(Answer exAnswer, Answer newAnswer) {
+    public void update(long exAnswerId, String newContents) {
         String sql = "UPDATE ANSWER SET CONTENTS = :contents, UPDATED_AT = :updated WHERE ID = :id";
         MapSqlParameterSource params = new MapSqlParameterSource();
-        params.addValue("id", exAnswer.getId())
-            .addValue("contents", newAnswer.getContents())
+        params.addValue("id", exAnswerId)
+            .addValue("contents", newContents)
             .addValue("updated", LocalDateTime.now());
-        namedParameterJdbcTemplate.update(sql, params);
-    }
-
-    @Override
-    public void update(Answer answer, long answerId) {
-        String sql = "UPDATE ANSWER SET CONTENTS = :contents, UPDATED_AT = :updated WHERE ID = :id";
-        MapSqlParameterSource params = new MapSqlParameterSource();
-        params.addValue("id", answerId)
-                .addValue("contents", answer.getContents())
-                .addValue("updated", LocalDateTime.now());
         namedParameterJdbcTemplate.update(sql, params);
     }
 
@@ -79,15 +71,11 @@ public class H2AnswerRepository implements AnswerRepository{
         namedParameterJdbcTemplate.update(sql, param);
     }
 
-    private static class AnswerRowMapper implements RowMapper<Answer> {
-        @Override
-        public Answer mapRow(ResultSet rs, int rowNum) throws SQLException {
-            AnswerDbDto answerDBDto = new BeanPropertyRowMapper<>(AnswerDbDto.class).mapRow(rs, rowNum);
-            answerDBDto.setCreatedDate(rs.getTimestamp("CREATED_AT").toLocalDateTime());
-            answerDBDto.setUpdatedDate(rs.getTimestamp("UPDATED_AT").toLocalDateTime());
-            answerDBDto.setMemberCreatedAt(rs.getTimestamp("MEMBER_CREATED_AT").toLocalDateTime());
-            answerDBDto.setMemberUpdatedAt(rs.getTimestamp("MEMBER_UPDATED_AT").toLocalDateTime());
-            return answerDBDto.toDomain();
-        }
+    @Override
+    public void deleteAll(Long articleId) {
+        String sql = "DELETE FROM ANSWER WHERE ARTICLE_ID = :articleId";
+        MapSqlParameterSource param = new MapSqlParameterSource("articleId", articleId);
+        namedParameterJdbcTemplate.update(sql, param);
     }
+
 }

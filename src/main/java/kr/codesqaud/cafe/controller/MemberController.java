@@ -1,7 +1,7 @@
 package kr.codesqaud.cafe.controller;
 
 import kr.codesqaud.cafe.domain.Member;
-import kr.codesqaud.cafe.dto.SessionUser;
+import kr.codesqaud.cafe.util.SessionUser;
 import kr.codesqaud.cafe.exception.*;
 import kr.codesqaud.cafe.repository.MemberRepository;
 import org.slf4j.Logger;
@@ -14,8 +14,8 @@ import javax.servlet.http.HttpSession;
 import java.util.List;
 
 import static kr.codesqaud.cafe.constant.ConstUrl.REDIRECT_INDEX;
-import static kr.codesqaud.cafe.dto.SessionUser.SESSION_USER;
-import static kr.codesqaud.cafe.exception.ExceptionStatus.*;
+import static kr.codesqaud.cafe.exception.ManageMemberException.*;
+import static kr.codesqaud.cafe.util.SessionUser.SESSION_USER;
 
 @Controller
 public class MemberController {

@@ -1,6 +1,7 @@
 package kr.codesqaud.cafe.repository;
 
 import kr.codesqaud.cafe.domain.Member;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
@@ -47,7 +48,7 @@ public class H2MemberRepository implements MemberRepository {
     }
 
     @Override
-    public Member findByMemberId(String userId) {
+    public Member findByMemberId(String userId) throws EmptyResultDataAccessException {
         String sql = "SELECT ID, USERID, NICKNAME, EMAIL, PASSWORD, CREATED_AT, UPDATED_AT FROM MEMBER WHERE USERID = :userId";
         MapSqlParameterSource param = new MapSqlParameterSource("userId", userId);
         return namedParameterJdbcTemplate.queryForObject(sql, param, new MemberRowMapper());

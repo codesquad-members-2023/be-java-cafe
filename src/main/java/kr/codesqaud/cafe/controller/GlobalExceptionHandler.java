@@ -1,8 +1,9 @@
 package kr.codesqaud.cafe.controller;
 
-import kr.codesqaud.cafe.dto.SessionUser;
+import kr.codesqaud.cafe.util.SessionUser;
 import kr.codesqaud.cafe.exception.InvalidAuthorityException;
 import kr.codesqaud.cafe.exception.ManageMemberException;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -13,19 +14,29 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import javax.servlet.http.HttpSession;
 import java.util.NoSuchElementException;
 
-import static kr.codesqaud.cafe.dto.SessionUser.SESSION_USER;
+import static kr.codesqaud.cafe.exception.InvalidAuthorityException.INVALID_MEMBER;
+import static kr.codesqaud.cafe.exception.InvalidAuthorityException.NO_SESSION_USER;
+import static kr.codesqaud.cafe.exception.ManageMemberException.*;
+import static kr.codesqaud.cafe.util.SessionUser.SESSION_USER;
 
 @ControllerAdvice
 public class GlobalExceptionHandler {
     private static final String MESSAGE = "message";
     private static final String DEFAULT_ERROR_PAGE = "error";
 
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(value = EmptyResultDataAccessException.class)
+    public String handleInvalidAuthorityException(EmptyResultDataAccessException e, Model model) {
+        model.addAttribute(MESSAGE, e.getMessage());
+        return "user/login_failed";
+    }
+
     @ResponseStatus(HttpStatus.FORBIDDEN)
     @ExceptionHandler(value = InvalidAuthorityException.class)
     public String handleInvalidAuthorityException(InvalidAuthorityException e, Model model, RedirectAttributes redirectAttributes) {
         model.addAttribute(MESSAGE, e.getMessage());
 
-        switch (e.getStatus()) {
+        switch (e.getMessage()) {
             case NO_SESSION_USER:
                 return "user/login_failed";
             case INVALID_MEMBER:
@@ -36,15 +47,13 @@ public class GlobalExceptionHandler {
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(value = ManageMemberException.class)
     public String handleFailToManageMemberException(ManageMemberException e, Model model, RedirectAttributes redirectAttributes, HttpSession httpSession) {
-        model.addAttribute(MESSAGE, e.getMessage());
-
-        switch (e.getStatus()) {
+        switch (e.getMessage()) {
             case LOGIN_FAILED:
             case DUPLICATE_MEMBER_INFO:
                 return "user/login_failed";
             case UPDATE_FAILED_WRONG_PASSWORD:
-                redirectAttributes.addAttribute(MESSAGE, e.getMessage());
                 long id = ((SessionUser) httpSession.getAttribute(SESSION_USER)).getId();
+                redirectAttributes.addAttribute(MESSAGE, e.getMessage());
                 redirectAttributes.addFlashAttribute(id);
                 return "redirect:/users/{id}/update";
             default: return DEFAULT_ERROR_PAGE;
@@ -67,6 +76,7 @@ public class GlobalExceptionHandler {
         if (e.getMessage()!=null) {
             model.addAttribute(MESSAGE, e.getMessage());
         }
+
         return DEFAULT_ERROR_PAGE;
     }
 }

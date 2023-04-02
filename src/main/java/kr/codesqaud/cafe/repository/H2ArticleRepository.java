@@ -2,6 +2,8 @@ package kr.codesqaud.cafe.repository;
 
 import kr.codesqaud.cafe.domain.Article;
 import kr.codesqaud.cafe.domain.Member;
+import kr.codesqaud.cafe.dto.article.ArticleListResponse;
+import kr.codesqaud.cafe.dto.article.ArticleResponse;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
@@ -38,35 +40,35 @@ public class H2ArticleRepository implements ArticleRepository {
     }
 
     @Override
-    public Article findById(long id) {
-        String sql = "SELECT article.ID as article_id, article.TITLE, article.CONTENTS, article.CREATED_AT as article_createddate, article.UPDATED_AT as article_updateddate, " +
-                "member.ID as member_id, member.USERID, member.NICKNAME " +
+    public ArticleResponse findById(long id) {
+        String sql = "SELECT article.ID as article_index, article.TITLE, article.CONTENTS, article.CREATED_AT as article_created_date, " +
+                "member.ID as writer_index, member.NICKNAME " +
                 "FROM ARTICLE article " +
                 "LEFT JOIN MEMBER member on article.USER_ID = member.ID " +
-                " WHERE article.ID = :id";
+                " WHERE article.ID = :id AND article.IS_DELETED = false";
         MapSqlParameterSource params = new MapSqlParameterSource("id", id);
-        return namedParameterJdbcTemplate.queryForObject(sql, params, new ArticleRowMapper());
+        return namedParameterJdbcTemplate.queryForObject(sql, params, new BeanPropertyRowMapper<>(ArticleResponse.class));
     }
 
     @Override
-    public List<Article> findAll() {
-        String sql = "SELECT article.ID as article_id, article.TITLE, article.CONTENTS, article.CREATED_AT as article_createddate, article.UPDATED_AT as article_updateddate, " +
-                "member.ID as member_id, member.USERID, member.NICKNAME " +
+    public List<ArticleListResponse> findAll() {
+        String sql = "SELECT article.ID as article_id, article.TITLE, article.CREATED_AT , " +
+                "member.ID as writer_id, member.NICKNAME as writer_nickname, " +
+                "(SELECT COUNT(*) FROM ANSWER ANSWER WHERE ANSWER.ARTICLE_ID = article.ID AND ANSWER.IS_DELETED = false) as answer_count " +
                 "FROM ARTICLE article " +
                 "LEFT JOIN MEMBER member on article.USER_ID = member.ID " +
-                "ORDER BY article.ID DESC;";
-        return jdbcTemplate.query(sql, new ArticleRowMapper());
+                "WHERE article.IS_DELETED = false " +
+                "ORDER BY article.ID DESC ;";
+        return jdbcTemplate.query(sql, new BeanPropertyRowMapper<>(ArticleListResponse.class));
     }
 
     @Override
-    public void update(Article exArticle, Article newArticle) {
-        String sql = "UPDATE ARTICLE SET TITLE = :title, CONTENTS = :contents, CREATED_AT = :created, UPDATED_AT = :updated WHERE USER_ID = :user_id AND ID = :id";
+    public void update(long index, Article newArticle) {
+        String sql = "UPDATE ARTICLE SET TITLE = :title, CONTENTS = :contents, UPDATED_AT = :updated WHERE ID = :id";
         MapSqlParameterSource params = new MapSqlParameterSource();
         params.addValue("title", newArticle.getTitle())
             .addValue("contents", newArticle.getContents())
-            .addValue("id", exArticle.getId())
-            .addValue("user_id", exArticle.getWriterId())
-            .addValue("created", exArticle.getCreatedDate())
+            .addValue("id", index)
             .addValue("updated", Timestamp.valueOf(LocalDateTime.now()));
 
         namedParameterJdbcTemplate.update(sql, params);
