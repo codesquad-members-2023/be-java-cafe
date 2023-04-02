@@ -7,21 +7,21 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 public class JoinRequest {
-    @NotNull
-    @Size(min = 8, max = 100)
+    @NotNull(message = "아이디를 입력해주세요.")
+    @Size(min = 8, max = 80, message = "회원 아이디는 8~80자까지 가능합니다.")
     private String userId;
 
-    @NotNull
-    @Size(min = 8, max = 200)
+    @NotNull(message = "비밀번호를 입력해주세요.")
+    @Size(min = 8, max = 200, message = "비밀번호는 8~200자까지 가능합니다.")
     private String password;
 
-    @NotNull
-    @Size(min = 2, max = 50)
+    @NotNull(message = "닉네임을 입력해주세요.")
+    @Size(min = 2, max = 50, message = "닉네임은 2~50자까지 가능합니다.")
     private String nickname;
 
-    @NotNull
-    @Email
-    @Size(min = 5, max = 300)
+    @NotNull(message = "이메일을 입력해주세요.")
+    @Email(message = "이메일 형식에 맞게 해주세요.")
+    @Size(min = 5, max = 300, message = "이메일은 5~300자까지 가능합니다.")
     private String email;
 
     public Member toEntity() {
