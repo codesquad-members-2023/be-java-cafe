@@ -16,9 +16,9 @@
                                  class="article-author-thumb" alt="">
                         </div>
                         <div class="article-header-text">
-                            <a href="/users/92/kimmunsu" class="article-author-name">{{writer}}</a>
+                            <a href="/users/{{id}}" class="article-author-name">{{writer}}</a>
                             <a href="/questions/413" class="article-header-time" title="퍼머링크">
-                                2015-12-30 01:47
+                                {{getCreatedDate}}
                                 <i class="icon-link"></i>
                             </a>
                         </div>
@@ -29,10 +29,10 @@
                     <div class="article-util">
                         <ul class="article-util-list">
                             <li>
-                                <a class="link-modify-article" href="/articles/{{&id}}/update">수정</a>
+                                <a class="link-modify-article" href="/articles/{{id}}/update">수정</a>
                             </li>
                             <li>
-                                <form class="form-delete" action="/articles/1/delete" method="POST">
+                                <form class="form-delete" action="/articles/{{id}}/delete" method="POST">
                                     <input type="hidden" name="_method" value="DELETE">
                                     <button class="link-delete-article" type="submit">삭제</button>
                                 </form>
@@ -45,9 +45,9 @@
                 </article>
                 <div class="qna-comment">
                     <div class="qna-comment-slipp">
-                        if(
+
+                        <p class="qna-comment-count"><strong>{{articleSize}}</strong>개의 의견</p>
                         {{#reply}}
-                        <p class="qna-comment-count"><strong>2</strong>개의 의견</p>
                         <div class="qna-comment-slipp-articles">
                             <article class="article" id="answer-1406">
                                 <div class="article-header">
@@ -56,9 +56,9 @@
                                              class="article-author-thumb" alt="">
                                     </div>
                                     <div class="article-header-text">
-                                        <a href="/users/{{&writer}}" class="article-author-name">{{writer}}</a>
+                                        <a href="/users/{{&writer}}" class="article-author-name">{{nickName}}</a>
                                         <a href="#answer-1434" class="article-header-time" title="퍼머링크">
-                                            날짜</a>
+                                            </a>
                                     </div>
                                 </div>
                                 <div class="article-doc comment-doc">
