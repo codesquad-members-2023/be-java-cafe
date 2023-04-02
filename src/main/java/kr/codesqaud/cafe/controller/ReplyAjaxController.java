@@ -35,7 +35,6 @@ public class ReplyAjaxController {
     @PostMapping("/qna/{articleId}/reply")
     public ReplyAjaxDto create(@PathVariable Long articleId, @RequestParam String replyContents, HttpSession session) {
         String userId = SessionUtils.getSessionId(session);
-        //TODO: 인터셉터 되는지 확인
 
         Reply reply = new Reply(userId, replyContents, LocalDateTime.now(), articleId);
         long replyId = replyRepository.addReply(reply);
