@@ -15,7 +15,7 @@ public interface ArticleRepository {
     void update(long index, Article newArticle);
     int delete(long id);
 
-    void saveReply(Reply answer);
+    long saveReply(Reply answer);
     List<ReplyResponse> findReplyByArticleId(long articleId);
     ReplyResponse findReplyById(long id);
     void updateReply(long exAnswerId, String newContents);

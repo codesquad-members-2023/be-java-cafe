@@ -11,6 +11,8 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
@@ -84,7 +86,8 @@ public class H2ArticleRepository implements ArticleRepository {
     }
 
     @Override
-    public void saveReply(Reply answer) {
+    public long saveReply(Reply answer) {
+        KeyHolder keyHolder = new GeneratedKeyHolder();
         String sql = "INSERT INTO answer (contents, user_id, article_id, created_at, UPDATED_AT)" +
                 "VALUES (:contents, :user_id, :article_id, :created, :updated)";
         MapSqlParameterSource params = new MapSqlParameterSource();
@@ -93,7 +96,8 @@ public class H2ArticleRepository implements ArticleRepository {
                 .addValue("article_id", answer.getArticleId())
                 .addValue("created", LocalDateTime.now())
                 .addValue("updated", LocalDateTime.now());
-        namedParameterJdbcTemplate.update(sql, params);
+        namedParameterJdbcTemplate.update(sql, params, keyHolder);
+        return keyHolder.getKey().longValue();
     }
 
     @Override
