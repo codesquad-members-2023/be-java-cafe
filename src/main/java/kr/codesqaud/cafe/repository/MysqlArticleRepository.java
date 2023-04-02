@@ -1,11 +1,11 @@
 package kr.codesqaud.cafe.repository;
 
-import kr.codesqaud.cafe.domain.article.Reply;
 import kr.codesqaud.cafe.domain.article.Article;
+import kr.codesqaud.cafe.domain.article.Reply;
 import kr.codesqaud.cafe.domain.article.Writer;
-import kr.codesqaud.cafe.dto.ReplyResponse;
 import kr.codesqaud.cafe.dto.ArticleListResponse;
 import kr.codesqaud.cafe.dto.ArticleResponse;
+import kr.codesqaud.cafe.dto.ReplyResponse;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
@@ -20,21 +20,22 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
-import java.util.*;
+import java.util.List;
 
-public class H2ArticleRepository implements ArticleRepository {
+@Repository
+public class MysqlArticleRepository implements ArticleRepository {
 
     JdbcTemplate jdbcTemplate;
     NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
-    public H2ArticleRepository(DataSource dataSource) {
+    public MysqlArticleRepository(DataSource dataSource) {
         this.jdbcTemplate = new JdbcTemplate(dataSource);
         this.namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(dataSource);
     }
 
     @Override
     public void save(Article article) {
-        String sql = "INSERT INTO ARTICLE (TITLE, CONTENTS, user_id) VALUES (:title, :body, :user_id)";
+        String sql = "INSERT INTO ARTICLE (TITLE, CONTENTS, USER_ID) VALUES (:title, :body, :user_id)";
         MapSqlParameterSource params = new MapSqlParameterSource();
         params.addValue("title", article.getTitle())
                 .addValue("body", article.getContents())
@@ -87,7 +88,7 @@ public class H2ArticleRepository implements ArticleRepository {
     @Override
     public long saveReply(Reply answer) {
         KeyHolder keyHolder = new GeneratedKeyHolder();
-        String sql = "INSERT INTO answer (contents, user_id, article_id, created_at, UPDATED_AT)" +
+        String sql = "INSERT INTO ANSWER (contents, user_id, article_id, created_at, UPDATED_AT)" +
                 "VALUES (:contents, :user_id, :article_id, :created, :updated)";
         MapSqlParameterSource params = new MapSqlParameterSource();
         params.addValue("contents", answer.getContents())
@@ -96,7 +97,7 @@ public class H2ArticleRepository implements ArticleRepository {
                 .addValue("created", LocalDateTime.now())
                 .addValue("updated", LocalDateTime.now());
         namedParameterJdbcTemplate.update(sql, params, keyHolder);
-        return (long) keyHolder.getKeyList().get(0).get("ID");
+        return Long.parseLong(String.valueOf(keyHolder.getKeyList().get(0).get("GENERATED_KEY")));
     }
 
     @Override

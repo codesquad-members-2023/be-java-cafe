@@ -19,8 +19,8 @@ import javax.sql.DataSource;
 public class ApiAnswerController {
     private ArticleRepository articleRepository;
 
-    public ApiAnswerController(DataSource dataSource) {
-        this.articleRepository = new H2ArticleRepository(dataSource);
+    public ApiAnswerController(ArticleRepository articleRepository) {
+        this.articleRepository = articleRepository;
     }
 
     @PostMapping("")
