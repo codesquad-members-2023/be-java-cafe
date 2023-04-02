@@ -1,6 +1,7 @@
 package kr.codesqaud.cafe.controller;
 
 import kr.codesqaud.cafe.domain.Member;
+import kr.codesqaud.cafe.dto.JoinRequest;
 import kr.codesqaud.cafe.util.SessionUser;
 import kr.codesqaud.cafe.exception.*;
 import kr.codesqaud.cafe.repository.MemberRepository;
@@ -11,6 +12,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
+import javax.validation.Valid;
 import java.util.List;
 
 import static kr.codesqaud.cafe.constant.ConstUrl.REDIRECT_INDEX;
@@ -53,10 +55,10 @@ public class MemberController {
     }
 
     @PostMapping("/users/join")
-    public String addUser(String userId, String email, String nickname, String password) {
-        Member member = new Member(userId, nickname, email, password);
+    public String addUser(@Valid JoinRequest joinForm) {
+        Member member = joinForm.toEntity();
 
-        if (!memberRepository.validMemberId(userId)) {
+        if (!memberRepository.validMemberId(member.getUserId())) {
             throw new ManageMemberException(DUPLICATE_MEMBER_INFO);
         }
 
