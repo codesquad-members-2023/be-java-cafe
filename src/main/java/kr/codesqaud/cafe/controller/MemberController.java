@@ -9,11 +9,15 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 import static kr.codesqaud.cafe.constant.ConstUrl.REDIRECT_INDEX;
 import static kr.codesqaud.cafe.exception.InvalidAuthorityException.INVALID_MEMBER;
@@ -55,16 +59,29 @@ public class MemberController {
     }
 
     @PostMapping("/users/join")
-    public String addUser(@Valid JoinRequest joinForm) {
+    public String addUser(@Valid JoinRequest joinForm, BindingResult bindingResult, Model model) {
         Member member = joinForm.toEntity();
 
         if (!memberRepository.validMemberId(member.getUserId())) {
             throw new ManageMemberException(DUPLICATE_MEMBER_INFO);
         }
 
+        if (bindingResult.hasErrors()) {
+            Map<String, String> errors = bindingResult.getFieldErrors()
+                    .stream().collect(Collectors.toMap(
+                            FieldError::getField,
+                            FieldError::getDefaultMessage
+                    ));
+            if (!errors.isEmpty()) {
+                model.addAttribute("validationErrors", errors);
+            }
+            return "user/form";
+        }
+
         memberRepository.save(member);
         return REDIRECT_INDEX;
     }
+
 
     @GetMapping("/users")
     public String list(HttpSession httpSession, Model model) {
