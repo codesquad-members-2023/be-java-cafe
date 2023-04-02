@@ -6,27 +6,18 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 public class AnswerResponseDto {
-    private long answerId;
-    private String contents;
+    private long answerIndex;
     private long writerIndex;
-    private String userId;
     private String nickname;
+    private String contents;
     private LocalDateTime createdDate;
 
-    public long getAnswerId() {
-        return answerId;
+    public long getAnswerIndex() {
+        return answerIndex;
     }
 
-    public void setAnswerId(long answerId) {
-        this.answerId = answerId;
-    }
-
-    public String getContents() {
-        return contents;
-    }
-
-    public void setContents(String contents) {
-        this.contents = contents;
+    public void setAnswerIndex(long answerIndex) {
+        this.answerIndex = answerIndex;
     }
 
     public long getWriterIndex() {
@@ -37,12 +28,12 @@ public class AnswerResponseDto {
         this.writerIndex = writerIndex;
     }
 
-    public String getUserId() {
-        return userId;
+    public String getContents() {
+        return contents;
     }
 
-    public void setUserId(String userId) {
-        this.userId = userId;
+    public void setContents(String contents) {
+        this.contents = contents;
     }
 
     public String getNickname() {
@@ -67,11 +58,15 @@ public class AnswerResponseDto {
 
     public static AnswerResponseDto toDto(Answer answer) {
         AnswerResponseDto answerDBDto = new AnswerResponseDto();
-        answerDBDto.setAnswerId(answer.getId());
+        answerDBDto.setAnswerIndex(answer.getId());
         answerDBDto.setContents(answer.getContents());
         answerDBDto.setWriterIndex(answer.getWriterId());
         answerDBDto.setNickname(answer.getWriterNickname());
         answerDBDto.setCreatedDate(answer.getCreatedDate());
         return answerDBDto;
+    }
+
+    public long getWriterId() {
+        return writerIndex;
     }
 }
