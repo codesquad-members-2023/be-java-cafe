@@ -6,11 +6,3 @@ insert into article (writer,title,content,member_id) values ('감자', '자바�
 insert into article (writer,title,content,member_id) values ('고구마', '고구마입니다', 'test2',2);
 insert into article (writer,title,content,member_id) values ('셀러드', '셀러드입니다', 'test3',3);
 
-INSERT INTO reply (member_id, article_id, content, reply_date, deleted)
-VALUES (1, 1, '자바지기입니다!',now(),false);
-
-INSERT INTO reply (member_id, article_id, content, reply_date, deleted)
-VALUES (2, 1, '고구마입니다.',now(),false);
-
-INSERT INTO reply (member_id, article_id, content,reply_date,deleted)
-VALUES (3, 2, '셀러드입니다.',now(),false);
