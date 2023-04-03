@@ -2,16 +2,21 @@ package kr.codesqaud.cafe.controller;
 
 import kr.codesqaud.cafe.SessionConstant;
 import kr.codesqaud.cafe.domain.Article;
+import kr.codesqaud.cafe.domain.dto.ArticleForm;
 import kr.codesqaud.cafe.domain.dto.ArticleWithWriter;
 import kr.codesqaud.cafe.domain.dto.ReplyWithUser;
 import kr.codesqaud.cafe.domain.dto.SimpleArticleWithWriter;
 import kr.codesqaud.cafe.repository.ArticleRepository;
 import kr.codesqaud.cafe.repository.MySQLReplyRepository;
+import kr.codesqaud.cafe.validator.ArticleWritingValidator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
@@ -25,12 +30,14 @@ public class ArticleController {
 
     private final ArticleRepository articleRepository;
     private final MySQLReplyRepository replyRepository;
+    private final ArticleWritingValidator articleWritingValidator;
     private final Logger log = LoggerFactory.getLogger(getClass());
 
     @Autowired
-    public ArticleController(ArticleRepository articleRepository, MySQLReplyRepository replyRepository) {
+    public ArticleController(ArticleRepository articleRepository, MySQLReplyRepository replyRepository, ArticleWritingValidator articleWritingValidator) {
         this.articleRepository = articleRepository;
         this.replyRepository = replyRepository;
+        this.articleWritingValidator = articleWritingValidator;
     }
 
     @GetMapping("/")
@@ -42,13 +49,19 @@ public class ArticleController {
     }
 
     @GetMapping("/questions/form")
-    public String showQuestionForm() {
+    public String showQuestionForm(Model model) {
+        model.addAttribute("articleForm", new ArticleForm());
         return "qna/form";
     }
 
     @PostMapping("/questions")
-    public String question(@RequestParam String title, @RequestParam String contents, HttpSession session) {
-        Article article = new Article((int) session.getAttribute(SessionConstant.LOGIN_USER_ID), title, contents);
+    public String question(@ModelAttribute ArticleForm articleForm, BindingResult bindingResult, HttpSession session) {
+        articleWritingValidator.validate(articleForm, bindingResult);
+        if (bindingResult.hasErrors()) {
+            return "qna/form";
+        }
+
+        Article article = new Article((int) session.getAttribute(SessionConstant.LOGIN_USER_ID), articleForm.getTitle(), articleForm.getContents());
         articleRepository.save(article);
 
         return "redirect:/";
@@ -77,17 +90,24 @@ public class ArticleController {
         validateUserEqualsWriter(index, session, UPDATE);
 
         ArticleWithWriter article = articleRepository.findById(index);
-        model.addAttribute("article", article);
+        model.addAttribute("articleId", article.getId());
+        model.addAttribute("articleForm", new ArticleForm(article.getTitle(), article.getContents()));
 
         return "qna/updateForm";
     }
 
     @PutMapping("/articles/{index}")
-    public String updateArticle(@PathVariable int index, @RequestParam String title, @RequestParam String contents, HttpSession session) {
+    public String updateArticle(@PathVariable int index, @ModelAttribute ArticleForm articleForm, BindingResult bindingResult,
+                                HttpSession session, Model model) {
         validateUserEqualsWriter(index, session, UPDATE);
-        Article updateArticle = new Article(0, title, contents);
 
-        articleRepository.update(index, updateArticle);
+        articleWritingValidator.validate(articleForm, bindingResult);
+        if (bindingResult.hasErrors()) {
+            model.addAttribute("articleId", index);
+            return "qna/updateForm";
+        }
+
+        articleRepository.update(index, articleForm);
 
         return "redirect:/articles/{index}";
     }

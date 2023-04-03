@@ -1,6 +1,7 @@
 package kr.codesqaud.cafe.repository;
 
 import kr.codesqaud.cafe.domain.Article;
+import kr.codesqaud.cafe.domain.dto.ArticleForm;
 import kr.codesqaud.cafe.domain.dto.ArticleWithWriter;
 import kr.codesqaud.cafe.domain.dto.SimpleArticleWithWriter;
 
@@ -16,5 +17,5 @@ public interface ArticleRepository {
 
     void delete(int id);
 
-    void update(int id, Article updateArticle);
+    void update(int id, ArticleForm articleForm);
 }

@@ -1,6 +1,7 @@
 package kr.codesqaud.cafe.repository;
 
 import kr.codesqaud.cafe.domain.Article;
+import kr.codesqaud.cafe.domain.dto.ArticleForm;
 import kr.codesqaud.cafe.domain.dto.ArticleWithWriter;
 import kr.codesqaud.cafe.domain.dto.SimpleArticleWithWriter;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -72,10 +73,10 @@ public class H2DBArticleRepository implements ArticleRepository {
     }
 
     @Override
-    public void update(int id, Article updateArticle) {
+    public void update(int id, ArticleForm articleForm) {
         String sql = "update article set title=:title, contents=:contents where id=:id";
 
-        Map<String, Object> param = Map.of("id", id, "title", updateArticle.getTitle(), "contents", updateArticle.getContents());
+        Map<String, Object> param = Map.of("id", id, "title", articleForm.getTitle(), "contents", articleForm.getContents());
 
         template.update(sql, param);
     }

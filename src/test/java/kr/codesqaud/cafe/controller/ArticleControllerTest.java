@@ -2,11 +2,13 @@ package kr.codesqaud.cafe.controller;
 
 import kr.codesqaud.cafe.SessionConstant;
 import kr.codesqaud.cafe.domain.Article;
+import kr.codesqaud.cafe.domain.dto.ArticleForm;
 import kr.codesqaud.cafe.domain.dto.ArticleWithWriter;
 import kr.codesqaud.cafe.domain.dto.ReplyWithUser;
 import kr.codesqaud.cafe.domain.dto.SimpleArticleWithWriter;
 import kr.codesqaud.cafe.repository.ArticleRepository;
 import kr.codesqaud.cafe.repository.MySQLReplyRepository;
+import kr.codesqaud.cafe.validator.ArticleWritingValidator;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -37,6 +39,9 @@ class ArticleControllerTest {
     @MockBean
     private MySQLReplyRepository replyRepository;
 
+    @MockBean
+    private ArticleWritingValidator articleWritingValidator;
+
     private MockHttpSession mockHttpSession;
 
     @BeforeEach
@@ -62,11 +67,9 @@ class ArticleControllerTest {
     @Test
     @DisplayName("게시글 작성버튼을 누르면 게시글제목과 게시글내용을 파라미터로 보낸다.")
     void question() throws Exception {
-        MultiValueMap<String, String> paramMap = new LinkedMultiValueMap<>();
-        paramMap.add("title", "실화냐?");
-        paramMap.add("contents", "미안하다 이거 보여주려고 어그로 끌었다.");
+        ArticleForm articleForm = new ArticleForm("실화냐?", "미안하다 이거 보여주려고 어그로 끌었다.");
 
-        mvc.perform(MockMvcRequestBuilders.post("/questions").params(paramMap).session(mockHttpSession))
+        mvc.perform(MockMvcRequestBuilders.post("/questions").sessionAttr("articleForm", articleForm).session(mockHttpSession))
                 .andExpect(MockMvcResultMatchers.status().is3xxRedirection())
                 .andExpect(MockMvcResultMatchers.view().name("redirect:/"));
     }
