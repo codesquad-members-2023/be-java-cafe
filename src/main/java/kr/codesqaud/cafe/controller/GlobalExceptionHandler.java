@@ -18,11 +18,4 @@ public class GlobalExceptionHandler {
         model.addAttribute("errorMessage", e.getMessage());
         return "error";
     }
-
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    @ExceptionHandler(SQLIntegrityConstraintViolationException.class)
-    public String duplicateUserIdHandler(SQLIntegrityConstraintViolationException e, Model model) {
-        model.addAttribute("errorMessage", "[ERROR] 아이디가 중복되었습니다.");
-        return "error";
-    }
 }
