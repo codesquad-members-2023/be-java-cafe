@@ -1,94 +1,144 @@
 package kr.codesqaud.cafe.controller;
 
-import kr.codesqaud.cafe.domain.Article;
+import kr.codesqaud.cafe.domain.article.Reply;
+import kr.codesqaud.cafe.domain.article.Article;
 import kr.codesqaud.cafe.domain.Member;
-import kr.codesqaud.cafe.dto.SessionUser;
-import kr.codesqaud.cafe.dto.answer.AnswerResponseDto;
-import kr.codesqaud.cafe.exception.ExceptionStatus;
-import kr.codesqaud.cafe.exception.InvalidAuthorityException;
-import kr.codesqaud.cafe.repository.AnswerRepository;
+import kr.codesqaud.cafe.domain.article.Writer;
+import kr.codesqaud.cafe.dto.ArticleResponse;
+import kr.codesqaud.cafe.util.SessionUser;
+import kr.codesqaud.cafe.dto.ReplyResponse;
+import kr.codesqaud.cafe.exception.ManageArticleException;
 
 import kr.codesqaud.cafe.repository.ArticleRepository;
 import kr.codesqaud.cafe.repository.MemberRepository;
+import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpSession;
+import java.sql.SQLException;
 import java.util.List;
-import java.util.stream.Collectors;
 
 
 import static kr.codesqaud.cafe.constant.ConstUrl.REDIRECT_INDEX;
+import static kr.codesqaud.cafe.exception.ManageArticleException.INVALID_WRITER;
+import static kr.codesqaud.cafe.exception.ManageArticleException.NOT_POSSIBLE_DELETE;
 
 @Controller
 public class ArticleController {
 
+    private static final String REDIRECT_ARTICLE = "redirect:/articles/{articleId}";
+
     private final ArticleRepository articleRepository;
     private final MemberRepository memberRepository;
-    private final AnswerRepository answerRepository;
 
-    public ArticleController(ArticleRepository articleRepository, MemberRepository memberRepository, AnswerRepository answerRepository) {
+    public ArticleController(ArticleRepository articleRepository, MemberRepository memberRepository) {
         this.articleRepository = articleRepository;
         this.memberRepository = memberRepository;
-        this.answerRepository = answerRepository;
+    }
+
+    @PostMapping("/articles/{articleId}/answers")
+    public String saveReply(@PathVariable long articleId, Reply answer, HttpSession httpSession, RedirectAttributes redirectAttributes) {
+        SessionUser sessionUser = SessionUser.getSessionUser(httpSession);
+
+        answer.setWriter(new Writer(sessionUser.getId(), sessionUser.getNickName()));
+        answer.setArticleId(articleId);
+        articleRepository.saveReply(answer);
+
+        redirectAttributes.addFlashAttribute("articleId", articleId);
+        return REDIRECT_ARTICLE;
+    }
+
+    // TODO 모르고 댓글 수정을 만들었다.... 하지만 뷰가 없다....
+    @PutMapping("/articles/{articleId}/answers/{answerId}")
+    public String updateReply(@PathVariable long articleId, @PathVariable long answerId, Reply answer, HttpSession httpSession, RedirectAttributes redirectAttributes) throws ManageArticleException {
+        SessionUser sessionUser = SessionUser.getSessionUser(httpSession);
+        ReplyResponse exAnswer = articleRepository.findReplyById(answerId);
+
+        checkWriter(sessionUser, exAnswer.getWriterId());
+
+        articleRepository.updateReply(answerId, answer.getContents());
+        redirectAttributes.addFlashAttribute("articleId", articleId);
+        return REDIRECT_ARTICLE;
+    }
+
+    @DeleteMapping("/articles/{articleId}/answers/{answerId}")
+    public String deleteReply(@PathVariable long articleId, @PathVariable long answerId, HttpSession httpSession, RedirectAttributes redirectAttributes) throws ManageArticleException {
+        SessionUser sessionUser = SessionUser.getSessionUser(httpSession);
+        ReplyResponse exAnswer = articleRepository.findReplyById(answerId);
+
+        checkWriter(sessionUser, exAnswer.getWriterId());
+
+        articleRepository.deleteAReply(answerId);
+        redirectAttributes.addFlashAttribute("articleId", articleId);
+        return REDIRECT_ARTICLE;
     }
 
     @PostMapping("/questions")
-    public String postQuestions(HttpSession httpSession, String title, String contents) {
+    public String saveArticle(HttpSession httpSession, String title, String contents) {
         SessionUser sessionUser = SessionUser.getSessionUser(httpSession);
         Member member = memberRepository.findById(sessionUser.getId());
-        Article article = new Article(member, title, contents);
-        articleRepository.save(article);
+
+        articleRepository.save(new Article(new Writer(member.getId(), member.getNickname()), title, contents));
         return REDIRECT_INDEX;
     }
 
-    @DeleteMapping("/articles/{id}/delete")
-    public String deleteArticle(@PathVariable Long id, HttpSession httpSession) throws InvalidAuthorityException {
-        Article exArticle = articleRepository.findById(id);
+    @Transactional(rollbackFor = {DataAccessException.class, SQLException.class})
+    @DeleteMapping("/articles/{id}")
+    public String deleteArticle(@PathVariable Long id, HttpSession httpSession) throws ManageArticleException, SQLException {
+        ArticleResponse exArticle = articleRepository.findById(id);
+        List<ReplyResponse> answerList = articleRepository.findReplyByArticleId(id);
         SessionUser sessionUser = SessionUser.getSessionUser(httpSession);
 
-        if (!sessionUser.equals(exArticle.getWriterId())) {
-            throw new InvalidAuthorityException(ExceptionStatus.NO_SESSION_USER);
+        checkWriter(sessionUser, exArticle.getWriterIndex());
+
+        if (answerList.stream().anyMatch(e -> e.getWriterId()!=sessionUser.getId())) {
+            throw new ManageArticleException(NOT_POSSIBLE_DELETE);
         }
 
-        articleRepository.delete(id);
+        articleRepository.deleteAllReply(id);
+        int deleteCount = articleRepository.delete(id);
+
+        if (deleteCount!=1) {
+            throw new SQLException("잘못된 삭제 요청입니다.");
+        }
+
         return REDIRECT_INDEX;
     }
 
     @GetMapping("/articles/{id}/update")
-    public String updateArticleForm(@PathVariable long id, Model model, HttpSession httpSession) throws InvalidAuthorityException {
-        Article article = articleRepository.findById(id);
+    public String updateArticleForm(@PathVariable long id, Model model, HttpSession httpSession) throws ManageArticleException {
+
+        ArticleResponse article = articleRepository.findById(id);
         SessionUser sessionUser = SessionUser.getSessionUser(httpSession);
 
-        if (!sessionUser.equals(article.getWriterId())) {
-            throw new InvalidAuthorityException(ExceptionStatus.NO_SESSION_USER);
-        }
+        checkWriter(sessionUser, article.getWriterIndex());
 
         model.addAttribute("article", article);
         return "qna/updateForm";
     }
 
+
+
     @PutMapping("/articles/{id}/update")
-    public String updateArticle(Article newArticle, @PathVariable Long id, RedirectAttributes redirectAttributes, HttpSession httpSession) throws InvalidAuthorityException {
-        Article exArticle = articleRepository.findById(id);
+    public String updateArticle(Article newArticle, @PathVariable Long id, RedirectAttributes redirectAttributes, HttpSession httpSession) throws ManageArticleException {
+        ArticleResponse exArticle = articleRepository.findById(id);
         SessionUser sessionUser = SessionUser.getSessionUser(httpSession);
 
-        if (!sessionUser.equals(exArticle.getWriterId())) {
-            throw new InvalidAuthorityException(ExceptionStatus.NO_SESSION_USER);
-        }
+        checkWriter(sessionUser, exArticle.getWriterIndex());
 
-        articleRepository.update(exArticle, newArticle);
+        articleRepository.update(exArticle.getArticleIndex(), newArticle);
         redirectAttributes.addFlashAttribute("id", id);
-        return "redirect:/articles/{id}";
+        return REDIRECT_ARTICLE;
     }
 
     @GetMapping("/articles/{id}")
     public String showArticle(@PathVariable Long id, Model model) {
         model.addAttribute("article", articleRepository.findById(id));
-
-        List<AnswerResponseDto> collect = answerRepository.findAll(id).stream().map(AnswerResponseDto::toDto).collect(Collectors.toList());
+        List<ReplyResponse> collect = articleRepository.findReplyByArticleId(id);
         model.addAttribute("answers", collect);
         model.addAttribute("answerSize", collect.size());
         return "qna/show";
@@ -98,5 +148,11 @@ public class ArticleController {
     public String index(Model model) {
         model.addAttribute("list", articleRepository.findAll());
         return "index";
+    }
+
+    private void checkWriter(SessionUser sessionUser, Long writerId) throws ManageArticleException {
+        if (!sessionUser.equals(writerId)) {
+            throw new ManageArticleException(INVALID_WRITER);
+        }
     }
 }

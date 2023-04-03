@@ -1,13 +1,24 @@
 package kr.codesqaud.cafe.repository;
 
-import kr.codesqaud.cafe.domain.Article;
+import kr.codesqaud.cafe.domain.article.Reply;
+import kr.codesqaud.cafe.domain.article.Article;
+import kr.codesqaud.cafe.dto.ReplyResponse;
+import kr.codesqaud.cafe.dto.ArticleListResponse;
+import kr.codesqaud.cafe.dto.ArticleResponse;
 
 import java.util.List;
 
 public interface ArticleRepository {
     void save(Article article);
-    Article findById(long id);
-    List<Article> findAll();
-    void update(Article exArticle, Article newArticle);
-    void delete(long id);
+    ArticleResponse findById(long id);
+    List<ArticleListResponse> findAll();
+    void update(long index, Article newArticle);
+    int delete(long id);
+
+    void saveReply(Reply answer);
+    List<ReplyResponse> findReplyByArticleId(long articleId);
+    ReplyResponse findReplyById(long id);
+    void updateReply(long exAnswerId, String newContents);
+    void deleteAReply(long id);
+    void deleteAllReply(Long articleId);
 }

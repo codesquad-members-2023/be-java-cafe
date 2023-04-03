@@ -1,12 +1,12 @@
-package kr.codesqaud.cafe.domain;
+package kr.codesqaud.cafe.domain.article;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
-public class Answer {
+public class Reply {
     private Long id;
     private long articleId;
-    private Member writer;
+    private Writer writer;
     private String contents;
     private LocalDateTime createdDate;
     private LocalDateTime updatedDate;
@@ -27,11 +27,11 @@ public class Answer {
         return articleId;
     }
 
-    public Member getWriter() {
+    public Writer getWriter() {
         return writer;
     }
 
-    public void setWriter(Member writer) {
+    public void setWriter(Writer writer) {
         this.writer = writer;
     }
 
@@ -67,7 +67,7 @@ public class Answer {
         this.updatedDate = updatedDate;
     }
 
-    public Answer() {}
+    public Reply() {}
 
     public boolean equals(long answerId) {
         return this.id == answerId;

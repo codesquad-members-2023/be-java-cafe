@@ -1,21 +1,28 @@
 package kr.codesqaud.cafe.controller;
 
 import kr.codesqaud.cafe.domain.Member;
-import kr.codesqaud.cafe.dto.SessionUser;
+import kr.codesqaud.cafe.dto.JoinRequest;
+import kr.codesqaud.cafe.util.SessionUser;
 import kr.codesqaud.cafe.exception.*;
 import kr.codesqaud.cafe.repository.MemberRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
+import javax.validation.Valid;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 import static kr.codesqaud.cafe.constant.ConstUrl.REDIRECT_INDEX;
-import static kr.codesqaud.cafe.dto.SessionUser.SESSION_USER;
-import static kr.codesqaud.cafe.exception.ExceptionStatus.*;
+import static kr.codesqaud.cafe.exception.InvalidAuthorityException.INVALID_MEMBER;
+import static kr.codesqaud.cafe.exception.ManageMemberException.*;
+import static kr.codesqaud.cafe.util.SessionUser.SESSION_USER;
 
 @Controller
 public class MemberController {
@@ -41,7 +48,7 @@ public class MemberController {
 
     @PostMapping("/login")
     public String loginUser(String userId, String password, HttpSession httpSession) {
-        Member member = memberRepository.findByMemberId(userId);
+        Member member = memberRepository.findByMemberId(userId).orElseThrow(() -> new ManageMemberException(LOGIN_FAILED));
 
         if (!member.isValidPassword(password)) {
             throw new ManageMemberException(LOGIN_FAILED);
@@ -52,16 +59,29 @@ public class MemberController {
     }
 
     @PostMapping("/users/join")
-    public String addUser(String userId, String email, String nickname, String password) {
-        Member member = new Member(userId, nickname, email, password);
+    public String addUser(@Valid JoinRequest joinForm, BindingResult bindingResult, Model model) {
+        Member member = joinForm.toEntity();
 
-        if (!memberRepository.validMemberId(userId)) {
+        if (!memberRepository.validMemberId(member.getUserId())) {
             throw new ManageMemberException(DUPLICATE_MEMBER_INFO);
+        }
+
+        if (bindingResult.hasErrors()) {
+            Map<String, String> errors = bindingResult.getFieldErrors()
+                    .stream().collect(Collectors.toMap(
+                            FieldError::getField,
+                            FieldError::getDefaultMessage
+                    ));
+            if (!errors.isEmpty()) {
+                model.addAttribute("validationErrors", errors);
+            }
+            return "user/form";
         }
 
         memberRepository.save(member);
         return REDIRECT_INDEX;
     }
+
 
     @GetMapping("/users")
     public String list(HttpSession httpSession, Model model) {
@@ -93,6 +113,7 @@ public class MemberController {
         if (!exMember.isValidPassword(exPassword)) {
             throw new ManageMemberException(UPDATE_FAILED_WRONG_PASSWORD);
         }
+
         memberRepository.update(exMember, member);
         return "redirect:/users";
     }

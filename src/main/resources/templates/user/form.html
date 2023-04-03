@@ -8,18 +8,38 @@
               <div class="form-group">
                   <label for="userId">사용자 아이디</label>
                   <input class="form-control" id="userId" name="userId" placeholder="User ID">
+                  {{#validationErrors}}
+                      {{#userId}}
+                      <span>error: {{userId}}</span>
+                      {{/userId}}
+                  {{/validationErrors}}
               </div>
               <div class="form-group">
                   <label for="password">비밀번호</label>
                   <input type="password" class="form-control" id="password" name="password" placeholder="Password">
+                  {{#validationErrors}}
+                  {{#password}}
+                  <span>error: {{password}}</span>
+                  {{/password}}
+                  {{/validationErrors}}
               </div>
               <div class="form-group">
                   <label for="nickname">이름</label>
                   <input class="form-control" id="nickname" name="nickname" placeholder="Name">
+                  {{#validationErrors}}
+                  {{#nickname}}
+                  <span>error: {{nickname}}</span>
+                  {{/nickname}}
+                  {{/validationErrors}}
               </div>
               <div class="form-group">
                   <label for="email">이메일</label>
                   <input type="email" class="form-control" id="email" name="email" placeholder="Email">
+                  {{#validationErrors}}
+                  {{#email}}
+                  <span>error: {{email}}</span>
+                  {{/email}}
+                  {{/validationErrors}}
               </div>
               <button type="submit" class="btn btn-success clearfix pull-right">회원가입</button>
               <div class="clearfix" />

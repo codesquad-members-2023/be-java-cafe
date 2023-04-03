@@ -1,13 +1,14 @@
-package kr.codesqaud.cafe.dto;
+package kr.codesqaud.cafe.util;
 
 import javax.servlet.http.HttpSession;
+import java.util.Objects;
 
 public class SessionUser {
     public static final String SESSION_USER = "sessionedUser";
-    private long id;
+    private Long id;
     private String nickName;
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
@@ -36,8 +37,13 @@ public class SessionUser {
         }
     }
 
-    public boolean equals(long id) {
-        return this.id == id;
+    public boolean equals(Long id) {
+        return Objects.equals(this.id, id);
+    }
+
+    @Override
+    public int hashCode() {
+        return super.hashCode();
     }
 
     @Override
