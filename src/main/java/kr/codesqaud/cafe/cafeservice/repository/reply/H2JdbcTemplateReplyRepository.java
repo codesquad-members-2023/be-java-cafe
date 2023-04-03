@@ -47,7 +47,7 @@ public class H2JdbcTemplateReplyRepository implements ReplyRepository {
 
     @Override
     public void delete(Long id) {
-        String sql = "update reply set deleted = true where article_id = ?";
+        String sql = "update reply set deleted = true where id = ?";
         template.update(sql, id);
     }
 
