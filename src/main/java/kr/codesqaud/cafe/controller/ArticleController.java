@@ -1,6 +1,8 @@
 package kr.codesqaud.cafe.controller;
 
 import static kr.codesqaud.cafe.exceptions.ArticleInfoException.*;
+import static kr.codesqaud.cafe.utils.SessionUtils.*;
+import static kr.codesqaud.cafe.validator.AuthorValidator.*;
 
 import java.time.LocalDateTime;
 
@@ -39,12 +41,9 @@ public class ArticleController {
     }
 
     @PostMapping("/qna/create")
-    public String articlePost(@RequestParam String title, @RequestParam String contents, HttpSession httpSession)
-            throws UserInfoException, ArticleInfoException {
-        String userId = (String)httpSession.getAttribute("sessionedUser");
-
+    public String articlePost(@RequestParam String title, @RequestParam String contents, HttpSession httpSession) {
         articleRepository.addArticle(
-                new Article(userRepository.findById(userId), title, contents, LocalDateTime.now()));
+                new Article(getSessionId(httpSession), title, contents, LocalDateTime.now()));
 
         return "redirect:/";
     }
@@ -60,6 +59,7 @@ public class ArticleController {
     public String articleDetails(@PathVariable long id, Model model) throws ArticleInfoException {
         model.addAttribute("article", articleRepository.findById(id));
         model.addAttribute("reply", replyRepository.getReplyList(id));
+        model.addAttribute("replyCount", replyRepository.getReplyList(id).size());
 
         return "qna/show";
     }
@@ -68,10 +68,9 @@ public class ArticleController {
     public String articleModificationForm(@PathVariable long id, Model model, HttpSession httpSession)
             throws ArticleInfoException {
         String writer = articleRepository.findById(id).getWriter();
-        if (!httpSession.getAttribute("sessionedUser").equals(writer)) {
-            throw new ArticleInfoException(UNAUTHORIZED_MODIFICATION_MESSAGE,
-                    WRITER_NOT_MATCHING_CODE);
-        }
+        //Session의 사용자와 글 작성자가 동일해야한다.
+        validateAuthorization(getSessionId(httpSession).equals(writer), UNAUTHORIZED_MODIFICATION_MESSAGE,
+                WRITER_NOT_MATCHING_CODE);
         model.addAttribute("id", id);
 
         return "qna/modification_form";
@@ -81,58 +80,26 @@ public class ArticleController {
     public String articleModify(@PathVariable long id, @RequestParam String title, @RequestParam String contents,
             HttpSession httpSession) throws ArticleInfoException {
         String writer = articleRepository.findById(id).getWriter();
-        if (!httpSession.getAttribute("sessionedUser").equals(writer)) {
-            throw new ArticleInfoException(UNAUTHORIZED_MODIFICATION_MESSAGE,
-                    WRITER_NOT_MATCHING_CODE);
-        }
+        //SessionID와 글의 글쓴이가 같아야한다.
+        validateAuthorization(getSessionId(httpSession).equals(writer), UNAUTHORIZED_MODIFICATION_MESSAGE,
+                WRITER_NOT_MATCHING_CODE);
         articleRepository.modifyArticle(id, title, contents);
 
         return "redirect:/";
     }
 
-    @DeleteMapping(value = "/qna/{articleId}/form")
+    @DeleteMapping(value = "/qna/{articleId}")
     public String articleDelete(@PathVariable long articleId, HttpSession httpSession)
             throws ArticleInfoException {
         String writer = articleRepository.findById(articleId).getWriter();
-        if (!httpSession.getAttribute("sessionedUser").equals(writer)) {
-            throw new ArticleInfoException(UNAUTHORIZED_MODIFICATION_MESSAGE,
-                    WRITER_NOT_MATCHING_CODE);
-        }
+        //Session의 사용자와 댓글 작성자가 동일해야한다.
+        validateAuthorization(getSessionId(httpSession).equals(writer), UNAUTHORIZED_MODIFICATION_MESSAGE,
+                WRITER_NOT_MATCHING_CODE);
         //댓글이 존재하는 경우 삭제 불가
-        if (!replyRepository.validateDelete(articleId, writer)) {
-            throw new ArticleInfoException(REQUIRE_ON_COMMENT_DELETE_MESSAGE,REQUIRE_ON_COMMENT_DELETE_CODE);
-        }
+        validateAuthorization(replyRepository.canDeleteById(articleId, writer), REQUIRE_ON_COMMENT_DELETE_MESSAGE,
+                REQUIRE_ON_COMMENT_DELETE_CODE);
         articleRepository.deleteArticle(articleId);
         return "redirect:/";
-    }
-
-    @PostMapping(value = "/qna/{articleId}/reply")
-    public String replyForm(@PathVariable long articleId, @RequestParam String replyContents,
-            RedirectAttributes redirectAttributes, HttpSession httpSession)
-            throws ArticleInfoException, UserInfoException {
-        String userId = (String)httpSession.getAttribute("sessionedUser");
-
-        replyRepository.addReply(
-                new Reply(userRepository.findById(userId), replyContents, LocalDateTime.now(),
-                        articleId));
-
-        redirectAttributes.addFlashAttribute("articleId", articleId);
-
-        return "redirect:/qna/{articleId}";
-    }
-
-    @DeleteMapping(value = "/qna/{articleId}/reply/{replyId}")
-    public String replyDelete(@PathVariable long articleId, @PathVariable long replyId, HttpSession httpSession)
-            throws ArticleInfoException {
-        String writer = articleRepository.findById(articleId).getWriter();
-        if (!httpSession.getAttribute("sessionedUser").equals(writer)) {
-            throw new ArticleInfoException(UNAUTHORIZED_MODIFICATION_MESSAGE,
-                    WRITER_NOT_MATCHING_CODE);
-        }
-
-        replyRepository.deleteReply(articleId, replyId);
-
-        return "redirect:/qna/{articleId}";
     }
 
 }

@@ -1,6 +1,5 @@
 package kr.codesqaud.cafe.model;
 
-import java.time.LocalDateTime;
 
 public class ReplyDto {
     private long id;

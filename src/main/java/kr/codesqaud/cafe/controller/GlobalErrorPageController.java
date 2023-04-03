@@ -12,7 +12,7 @@ public class GlobalErrorPageController {
     @GetMapping("/api/error")
     public String globalErrorPage(HttpServletRequest request, Model model) {
         String errMessage = (String)request.getAttribute("error");
-        model.addAttribute("error",errMessage);
+        model.addAttribute("error", errMessage);
 
         return "exception/error";
     }

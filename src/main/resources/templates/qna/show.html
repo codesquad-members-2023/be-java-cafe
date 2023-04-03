@@ -5,126 +5,137 @@
     {{#article}}
     <div class="col-md-12 col-sm-12 col-lg-12">
         <div class="panel panel-default">
-          <header class="qna-header">
-              <h2 class="qna-title">{{title}}</h2>
-          </header>
-          <div class="content-main">
-              <article class="article">
-                  <div class="article-header">
-                      <div class="article-header-thumb">
-                          <img src="https://graph.facebook.com/v2.3/100000059371774/picture" class="article-author-thumb" alt="">
-                      </div>
-                      <div class="article-header-text">
-                          <a href="/users/92/kimmunsu" class="article-author-name">{{writer}}</a>
-                          <a href="/questions/413" class="article-header-time" title="퍼머링크">
-                              2015-12-30 01:47
-                              <i class="icon-link"></i>
-                          </a>
-                      </div>
-                  </div>
-                  <div class="article-doc">
-                      {{contents}}
-                  </div>
-                  <div class="article-util">
-                      <ul class="article-util-list">
-                          <li>
-                              <a class="link-modify-article" href="/qna/{{&id}}/form">수정</a>
-                          </li>
-                          <li>
-                              <form class="form-delete" action="/qna/{{&id}}/form" method="POST">
-                                  <input type="hidden" name="_method" value="DELETE">
-                                  <button class="link-delete-article" type="submit">삭제</button>
-                              </form>
-                          </li>
-                          <li>
-                              <a class="link-modify-article" href="/index.html">목록</a>
-                          </li>
-                      </ul>
-                  </div>
-              </article>
+            <header class="qna-header">
+                <h2 class="qna-title">{{title}}</h2>
+            </header>
+            <div class="content-main">
+                <article class="article">
+                    <div class="article-header">
+                        <div class="article-header-thumb">
+                            <img src="https://graph.facebook.com/v2.3/100000059371774/picture"
+                                 class="article-author-thumb" alt="">
+                        </div>
+                        <div class="article-header-text">
+                            <a href="/users/92/kimmunsu" class="article-author-name">{{writer}}</a>
+                            <a href="/questions/413" class="article-header-time" title="퍼머링크">
+                                {{formattedCreationTime}}
+                                <i class="icon-link"></i>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="article-doc">
+                        {{contents}}
+                    </div>
+                    <div class="article-util">
+                        <ul class="article-util-list">
+                            <li>
+                                <a class="link-modify-article" href="/qna/{{&id}}/form">수정</a>
+                            </li>
+                            <li>
+                                <form class="form-delete" action="/qna/{{&id}}" method="POST">
+                                    <input type="hidden" name="_method" value="DELETE">
+                                    <button class="link-delete-article" type="submit">삭제</button>
+                                </form>
+                            </li>
+                            <li>
+                                <a class="link-modify-article" href="/index.html">목록</a>
+                            </li>
+                        </ul>
+                    </div>
+                </article>
 
-              <div class="qna-comment">
-                  <div class="qna-comment-slipp">
-                      <p class="qna-comment-count"><strong>2</strong>개의 의견</p>
-                      <div class="qna-comment-slipp-articles">
-                          {{#reply}}
-                          <article class="article" id="answer-1406">
-                              <div class="article-header">
-                                  <div class="article-header-thumb">
-                                      <img src="https://graph.facebook.com/v2.3/1324855987/picture" class="article-author-thumb" alt="">
-                                  </div>
-                                  <div class="article-header-text">
-                                      <a href="/users/{{&writer}}" class="article-author-name">{{writer}}</a>
-                                      <a href="#answer-1434" class="article-header-time" title="퍼머링크">
-                                          {{formattedCreationTime}}
-                                      </a>
-                                  </div>
-                              </div>
-                              <div class="article-doc comment-doc">
-                                  <p>{{contents}}</p>
-                              </div>
-                              <div class="article-util">
-                                  <ul class="article-util-list">
-                                      <li>
-                                          <a class="link-modify-article" href="/qna/{{&articleId}}/reply/{{&id}}">
-                                              <input type="hidden" name="_method" value="PUT">
-                                              수정
-                                          </a>
-                                      </li>
-                                      <li>
-                                          <form class="form-delete" action="/qna/{{&articleId}}/reply/{{&id}}" method="POST">
-                                              <input type="hidden" name="_method" value="DELETE">
-                                              <button type="submit" class="delete-answer-button">삭제</button>
-                                          </form>
-                                      </li>
-                                  </ul>
-                              </div>
-                          </article>
-                          {{/reply}}
+                <div class="qna-comment">
+                    <div class="qna-comment-slipp">
+                        <p class="qna-comment-count"><strong>{{replyCount}}</strong>개의 의견</p>
+                        <div class="qna-comment-slipp-articles">
+                            {{#reply}}
+                            <article class="article">
+                                <div class="article-header">
+                                    <div class="article-header-thumb">
+                                        <img src="https://graph.facebook.com/v2.3/1324855987/picture"
+                                             class="article-author-thumb" alt="">
+                                    </div>
+                                    <div class="article-header-text">
+                                        <a href="/users/{{&writer}}" class="article-author-name">{{writer}}</a>
+                                        <a href="#answer-1434" class="article-header-time" title="퍼머링크">
+                                            {{formattedCreationTime}}
+                                        </a>
+                                    </div>
+                                </div>
+                                <div class="article-doc comment-doc">
+                                    <p>{{contents}}</p>
+                                </div>
+                                <div class="article-util">
+                                    <ul class="article-util-list">
+                                        <li>
+                                            <a class="link-modify-article" href="/qna/{{&articleId}}/reply/{{&id}}">
+                                                <input type="hidden" name="_method" value="PUT">
+                                                수정
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <form class="form-delete">
+                                                <input type="hidden" name="_method" value="DELETE">
+                                                <button type="button" class="delete-answer-button" data-url="/qna/{{&articleId}}/reply/{{&id}}">삭제</button>
+                                                <script src="http://code.jquery.com/jquery-latest.js"></script>
 
-                          <form class="submit-write" action="/qna/{{&id}}/reply" method="POST">
-                              <div class="form-group" style="padding:14px;">
-                                  <textarea class="form-control" name="replyContents" placeholder="내용을 입력해보십시오."></textarea>
-                              </div>
-                              <button class="btn btn-success pull-right" type="submit">답변하기</button>
-                              <div class="clearfix" />
-                          </form>
-                      </div>
-                  </div>
-              </div>
-          </div>
+                                            </form>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </article>
+                            {{/reply}}
+
+
+                        </div>
+                        <form class="submit-write" action="/qna/{{&id}}/reply">
+                            <div class="form-group" style="padding:14px;">
+                                    <textarea class="form-control" name="replyContents"
+                                              placeholder="내용을 입력해보십시오."></textarea>
+                            </div>
+                            <button class="btn btn-success pull-right">답변하기</button>
+                            <script src="http://code.jquery.com/jquery-latest.js"></script>
+                            <div class="clearfix"/>
+                        </form>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
     {{/article}}
 </div>
 
 <script type="text/template" id="answerTemplate">
-	<article class="article">
-		<div class="article-header">
-			<div class="article-header-thumb">
-				<img src="https://graph.facebook.com/v2.3/1324855987/picture" class="article-author-thumb" alt="">
-			</div>
-			<div class="article-header-text">
-				<a href="#" class="article-author-name">{0}</a>
-				<div class="article-header-time">{1}</div>
-			</div>
-		</div>
-		<div class="article-doc comment-doc">
-			{2}
-		</div>
-		<div class="article-util">
-		<ul class="article-util-list">
-			<li>
-				<a class="link-modify-article" href="/api/qna/updateAnswer/{3}">수정</a>
-			</li>
-			<li>
-				<form class="delete-answer-form" action="/api/questions/{3}/answers/{4}" method="POST">
-					<input type="hidden" name="_method" value="DELETE">
-                     <button type="submit" class="delete-answer-button">삭제</button>
-				</form>
-			</li>
-		</ul>
-		</div>
-	</article>
+    <article class="article">
+        <div class="article-header">
+            <div class="article-header-thumb">
+                <img src="https://graph.facebook.com/v2.3/1324855987/picture" class="article-author-thumb" alt="">
+            </div>
+            <div class="article-header-text">
+                <a href="#" class="article-author-name">{0}</a>
+                <div class="article-header-time">{1}</div>
+            </div>
+        </div>
+        <div class="article-doc comment-doc">
+            {2}
+        </div>
+        <div class="article-util">
+            <ul class="article-util-list">
+                <li>
+                    <a class="link-modify-article" href="/api/qna/{3}/reply/{4}">수정</a>
+                </li>
+
+                <li>
+                    <form class="form-delete">
+                        <input type="hidden" name="_method" value="DELETE">
+                        <button type="button" class="delete-answer-button" data-url="/qna/{3}/reply/{4}">삭제</button>
+                        <script src="http://code.jquery.com/jquery-latest.js"></script>
+                    </form>
+                </li>
+
+
+            </ul>
+        </div>
+    </article>
 </script>
 {{>layout/footer}}
