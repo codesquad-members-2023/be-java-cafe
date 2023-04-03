@@ -37,7 +37,8 @@ public class ReplyController {
 
         LoginSessionUtils sessionUtils = (LoginSessionUtils) session.getAttribute(SessionConst.LOGIN_MEMBER);
         if (sessionUtils.getId() == reply.getMember_id()) {
-            repository.delete(articleId);
+            repository.delete(id);
+            System.out.println(" 삭제");
             return "redirect:/articles/{articleId}";
         }
         throw new IllegalArgumentException("작성자만 삭제 가능합니다.");
