@@ -17,6 +17,7 @@ public class Article {
         this.writer = writer;
         this.title = title;
         this.content = contents;
+        this.createdDate = LocalDateTime.now();
         this.replyCount = 0;
     }
 
@@ -79,6 +80,7 @@ public class Article {
         this.replyCount = replyCount;
     }
 
+
     @Override
     public String toString() {
         return "Article{" +
@@ -86,9 +88,9 @@ public class Article {
                 ", writer='" + writer + '\'' +
                 ", title='" + title + '\'' +
                 ", content='" + content + '\'' +
-                ", createDate=" + createdDate +
+                ", userId=" + userId +
+                ", createdDate=" + createdDate +
                 ", replyCount=" + replyCount +
                 '}';
     }
-
 }

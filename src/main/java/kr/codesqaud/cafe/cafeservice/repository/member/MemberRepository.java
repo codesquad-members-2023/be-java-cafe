@@ -17,4 +17,6 @@ public interface MemberRepository {
     void update(Long id, Member updateMember);
 
     Optional<Member> findByLoginId(String loginId);
+
+    String findUserName(String userName);
 }

@@ -46,9 +46,12 @@ public class MemoryMemberRepository implements MemberRepository {
     }
 
     @Override
-    public Optional<Member> findByLoginId(String loginId) {
-        return findAll().stream()
-                .filter(member -> member.getEmail().equals(loginId))
-                .findFirst();
+    public  Optional<Member> findByLoginId(String loginId) {
+        return null;
+    }
+
+    @Override
+    public String findUserName(String userName) {
+        return null;
     }
 }

@@ -1,16 +1,19 @@
 package kr.codesqaud.cafe.cafeservice.controller;
 
 import kr.codesqaud.cafe.cafeservice.domain.Member;
-import kr.codesqaud.cafe.cafeservice.domain.login.LoginService;
+import kr.codesqaud.cafe.cafeservice.dto.LoginDto;
+import kr.codesqaud.cafe.cafeservice.service.LoginService;
 import kr.codesqaud.cafe.cafeservice.session.LoginSessionUtils;
 import kr.codesqaud.cafe.cafeservice.session.SessionConst;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
+import javax.validation.Valid;
 
 @Controller
 public class LoginController {
@@ -24,18 +27,20 @@ public class LoginController {
     }
 
     @GetMapping("/login")
-    public String loginForm() {
-        return "user/login";
+    public String login() {
+        return "users/login";
     }
 
     @PostMapping("/login")
-    public String login(@RequestParam String userId, @RequestParam String password, HttpSession session) {
-        Member loginMember = loginService.login(userId, password);
-        if (loginMember == null) {
-            throw new NullPointerException();
-        }
+    public String login(@Valid @ModelAttribute LoginDto loginDto, BindingResult result, HttpSession session) {
 
-        session.setAttribute(SessionConst.LOGIN_MEMBER, new LoginSessionUtils(loginMember.getId(), loginMember.getPassword()));
+        //TODO 로그인 벨리터 만들기
+        try {
+            Member loginMember = loginService.login(loginDto.getUserId(), loginDto.getPassword());
+            session.setAttribute(SessionConst.LOGIN_MEMBER, new LoginSessionUtils(loginMember.getId(), loginMember.getPassword(), loginMember.getNickName()));
+        } catch (RuntimeException e) {
+            return "user/login_failed";
+        }
         return "redirect:/";
     }
 

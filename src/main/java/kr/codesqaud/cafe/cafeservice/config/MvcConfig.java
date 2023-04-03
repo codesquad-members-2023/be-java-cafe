@@ -1,6 +1,6 @@
 package kr.codesqaud.cafe.cafeservice.config;
 
-import kr.codesqaud.cafe.cafeservice.Interceptor.CustomInterceptor;
+import kr.codesqaud.cafe.cafeservice.Interceptor.LoginInterceptor;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.Ordered;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
@@ -16,16 +16,14 @@ public class MvcConfig implements WebMvcConfigurer {
 
         registry.addViewController("/users/form").setViewName("user/form");
         registry.addViewController("/users/login").setViewName("user/login");
-        registry.addViewController("/questions/form").setViewName("qna/form");
+        registry.addViewController("/articles/form").setViewName("qna/form");
     }
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
-        int interceptorExecutionOrder = 1;
-        registry.addInterceptor(new CustomInterceptor())
-                .order(interceptorExecutionOrder)
-                .addPathPatterns("/**")
-                .excludePathPatterns("/","/login","/logout"
-                        , "/fonts/**", "/js/**", "/images/**", "/css/**", "/*.ico", "/error");
+        registry.addInterceptor(new LoginInterceptor())
+                .addPathPatterns("/users/**", "/articles/**", "/articles/**")
+                .excludePathPatterns("/", "/login", "/users/form", "/users/create","/users/login","/articles/form",
+                        "/users/list", "/fonts/**", "/js/**", "/images/**", "/css/**", "/*.ico", "error");
     }
 }
