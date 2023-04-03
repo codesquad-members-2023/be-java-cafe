@@ -1,6 +1,7 @@
 package kr.codesqaud.cafe.service;
 
 import kr.codesqaud.cafe.domain.User;
+import kr.codesqaud.cafe.domain.dto.LoginForm;
 import kr.codesqaud.cafe.repository.MySQLUserRepository;
 import kr.codesqaud.cafe.repository.UserRepository;
 import org.junit.jupiter.api.AfterEach;
@@ -24,12 +25,10 @@ class LoginServiceTest {
     @Autowired
     private DataSource dataSource;
     private UserRepository repository;
-    private LoginService loginService;
 
     @BeforeEach
     void init() {
         repository = new MySQLUserRepository(dataSource);
-        loginService = new LoginService(repository);
     }
 
     @AfterEach
@@ -51,31 +50,12 @@ class LoginServiceTest {
         repository.save(user1);
         repository.save(user2);
 
-        String userId = "Hyun";
-        String password = "1234";
 
-        User loginUser = loginService.login(userId, password);
+        LoginForm loginForm = new LoginForm("Hyun", "1234");
+
+        User loginUser = repository.findByUserId(loginForm.getUserId());
 
         assertThat(loginUser.getName()).isEqualTo(user1.getName());
         assertThat(loginUser.getEmail()).isEqualTo(user1.getEmail());
-    }
-
-    @Test
-    @DisplayName("로그인 시 회원의 패스워드가 다르면 예외를 발생")
-    void wrongPassword() {
-        User user1 = new User("Hyun", "1234", "황현", "ghkdgus29@naver.com");
-        User user2 = new User("Yoon", "12345", "황윤", "ghkddbs28@naver.com");
-
-        repository.save(user1);
-        repository.save(user2);
-
-        String userId = "Hyun";
-        String password = "1111";
-
-        assertThatThrownBy(() -> {
-            loginService.login(userId, password);
-        })
-                .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("[ERROR] 비밀번호가 틀립니다.");
     }
 }
