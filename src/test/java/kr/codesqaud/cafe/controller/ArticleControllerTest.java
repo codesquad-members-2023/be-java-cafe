@@ -13,6 +13,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.BDDMockito;
+import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -117,8 +118,9 @@ class ArticleControllerTest {
         BDDMockito.given(articleRepository.findById(1)).willReturn(mockArticle);
 
         mvc.perform(MockMvcRequestBuilders.get("/articles/1/form").session(mockHttpSession))
-                .andExpect(MockMvcResultMatchers.model().attributeExists("article"))
-                .andExpect(MockMvcResultMatchers.model().attribute("article", mockArticle))
+                .andExpect(MockMvcResultMatchers.model().attributeExists("articleId"))
+                .andExpect(MockMvcResultMatchers.model().attribute("articleId", mockArticle.getId()))
+                .andExpect(MockMvcResultMatchers.model().attributeExists("articleForm"))
                 .andExpect(MockMvcResultMatchers.view().name("qna/updateForm"))
                 .andExpect(MockMvcResultMatchers.status().isOk());
     }
@@ -133,7 +135,7 @@ class ArticleControllerTest {
         paramMap.add("contents", "수정한 내용");
 
         BDDMockito.given(articleRepository.findById(1)).willReturn(mockArticle);
-        BDDMockito.doNothing().when(articleRepository).update(1, new Article(1, paramMap.getFirst("title"), paramMap.getFirst("contents")));
+        BDDMockito.doNothing().when(articleRepository).update(1, new ArticleForm(paramMap.getFirst("title"), paramMap.getFirst("contents")));
 
         mvc.perform(MockMvcRequestBuilders.put("/articles/1").params(paramMap).session(mockHttpSession))
                 .andExpect(MockMvcResultMatchers.view().name("redirect:/articles/{index}"))

@@ -3,6 +3,7 @@ package kr.codesqaud.cafe.repository;
 import kr.codesqaud.cafe.domain.Article;
 import kr.codesqaud.cafe.domain.Reply;
 import kr.codesqaud.cafe.domain.User;
+import kr.codesqaud.cafe.domain.dto.ArticleForm;
 import kr.codesqaud.cafe.domain.dto.ArticleWithWriter;
 import kr.codesqaud.cafe.domain.dto.ReplyWithUser;
 import kr.codesqaud.cafe.domain.dto.SimpleArticleWithWriter;
@@ -163,7 +164,7 @@ class MySQLArticleRepositoryTest {
         articleRepository.save(article2);
 
         Article updateArticle = new Article(2, "진짜 실화 아니었음", "미안");
-        articleRepository.update(2, updateArticle);
+        articleRepository.update(2, new ArticleForm(updateArticle.getTitle(), updateArticle.getContents()));
 
         ArticleWithWriter article = articleRepository.findById(2);
 
