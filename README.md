@@ -35,100 +35,101 @@
 ### 2.1 게시글
 1. 게시글 전체 목록
 
-![img_1.png](img_1.png)
+![img.png](img%2Fimg.png)
+![img_1.png](img%2Fimg_1.png)
 
 > 게시글의 목록과 해당 게시글의 댓글 수를 보여줍니다.
 
 2. 게시글 작성
 
-![img_2.png](img_2.png)
+![img_2.png](img%2Fimg_2.png)
 
 > 로그인한 사용자만 게시글을 작성할 수 있습니다.
 
-![img_3.png](img_3.png)
+![img_3.png](img%2Fimg_3.png)
 
-![img_4.png](img_4.png)
+![img_4.png](img%2Fimg_4.png)
 
 > 게시글을 작성하면 게시글 목록으로 리디렉션 됩니다.
 
-![img_11.png](img_11.png)
+![img_11.png](img%2Fimg_11.png)
 
-![img_12.png](img_12.png)
+![img_12.png](img%2Fimg_12.png)
 > 게시글의 내용이 없거나, 게시글의 최대 글자수를 넘으면 작성할 수 없습니다.
 
 3. 게시글 상세 보기
 
-![img_5.png](img_5.png)
+![img_5.png](img%2Fimg_5.png)
 > 자세한 게시글 내용을 조회할 수 있습니다.
 
-![img_6.png](img_6.png)
+![img_6.png](img%2Fimg_6.png)
 > - 댓글 조회, 추가, 삭제가 가능합니다.
 > - 댓글 삭제 방식은 soft-delete 입니다.
 > - 싱글페이지로 동작합니다.
 
-![img_14.png](img_14.png)
+![img_14.png](img%2Fimg_14.png)
 > - 댓글은 자신이 작성한 댓글만 삭제 가능합니다.
 
 4. 게시글 수정 하기
 
-![img_7.png](img_7.png)
-![img_8.png](img_8.png)
+![img_7.png](img%2Fimg_7.png)
+![img_8.png](img%2Fimg_8.png)
 
 > - 게시글 작성자는 게시글을 수정할 수 있습니다.
 > - 수정이 완료되면 게시글 목록으로 리디렉션 됩니다.
 
-![img_13.png](img_13.png)
+![img_13.png](img%2Fimg_13.png)
 
 > - 수정에서도 위와 같은 검증이 수행됩니다.
 
-![img_16.png](img_16.png)
+![img_16.png](img%2Fimg_16.png)
 > 자신이 작성하지 않은 게시글은 수정할 수 없습니다.
 
 5. 게시글 삭제 하기
 
-![img_9.png](img_9.png)
-![img_10.png](img_10.png)
+![img_9.png](img%2Fimg_9.png)
+![img_10.png](img%2Fimg_10.png)
 > - 게시글 작성자는 게시글을 삭제할 수 있습니다.
 > - soft-delete 로 처리됩니다.
 > - 삭제가 완료되면 게시글 목록으로 리디렉션 됩니다.
 
-![img_15.png](img_15.png)
+![img_15.png](img%2Fimg_15.png)
 > 자신이 작성하지 않은 게시글은 삭제할 수 없습니다.
 
 ### 2.2 회원
 1. 회원 가입 하기
 
-![img_17.png](img_17.png)
+![img_17.png](img%2Fimg_17.png)
 > 로그인하지 않은 사용자의 경우 `로그인`, `회원가입` 만 보입니다.
 
-![img_18.png](img_18.png)
+![img_18.png](img%2Fimg_18.png)
 > - 회원가입 폼을 작성하여 회원가입 할 수 있습니다.
 > - 회원가입은 정해진 양식을 준수해야 합니다.
 
-![img_19.png](img_19.png)
+![img_19.png](img%2Fimg_19.png)
 > 정해진 양식을 준수하였더라도, 중복 ID 인 경우 제출할 수 없습니다.
 
-![img_20.png](img_20.png)
+![img_20.png](img%2Fimg_20.png)
 > 성공적으로 회원가입을 성공하면 회원목록으로 리디렉션 됩니다.
 
-![img_21.png](img_21.png)
+![img_21.png](img%2Fimg_21.png)
 > 로그인을 할 수 있습니다.
 
-![img_22.png](img_22.png)
+![img_22.png](img%2Fimg_22.png)
 > 존재하는 아이디지만, 비밀번호가 틀린경우
 
-![img_23.png](img_23.png)
+![img_23.png](img%2Fimg_23.png)
 > 아이디가 존재하지 않는 경우
 
-![img_24.png](img_24.png)
+![img_24.png](img%2Fimg_24.png)
 > 로그인을 성공적으로 수행하면 `로그아웃`, `개인정보수정` 이 보입니다.
 
-![img_25.png](img_25.png)
-![img_26.png](img_26.png)
+![img_25.png](img%2Fimg_25.png)
+![img_26.png](img%2Fimg_26.png)
 > 개인정보 수정 시, 비밀번호를 입력해야 합니다.
 > 현재 비밀번호가 맞는 경우, 아이디를 제외한 모든 정보를 수정할 수 있습니다.
 
-![img_27.png](img_27.png)
+![img_27.png](img%2Fimg_27.png)
 > 현재 비밀번호가 틀린 경우, 에러페이지로 이동합니다.
 
 ## 3. 설계
