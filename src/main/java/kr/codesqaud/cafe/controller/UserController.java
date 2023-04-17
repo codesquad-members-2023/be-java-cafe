@@ -1,6 +1,7 @@
 package kr.codesqaud.cafe.controller;
 
 import kr.codesqaud.cafe.domain.User;
+import kr.codesqaud.cafe.domain.dto.UserUpdateForm;
 import kr.codesqaud.cafe.repository.UserRepository;
 import kr.codesqaud.cafe.validator.UserSignUpValidator;
 import org.slf4j.Logger;
@@ -29,8 +30,8 @@ public class UserController {
         this.userSignUpValidator = userSignUpValidator;
     }
 
-    @InitBinder
-    public void addValidator(WebDataBinder dataBinder) {
+    @InitBinder("user")
+    public void addUserValidator(WebDataBinder dataBinder) {
         dataBinder.addValidators(userSignUpValidator);
     }
 
@@ -69,14 +70,16 @@ public class UserController {
     @GetMapping("/users/{id}/form")
     public String showUpdateUserForm(@PathVariable int id, Model model) {
         User updateUser = userRepository.findById(id);
-        model.addAttribute("user", updateUser);
+        model.addAttribute("userUpdateForm", updateUser);
 
         return "user/updateForm";
     }
 
     @PutMapping("/users/{id}")
-    public String updateUser(@PathVariable int id, @ModelAttribute User updateUser, @RequestParam String oldPassword) {
-        userRepository.update(id, updateUser, oldPassword);
+    public String updateUser(@PathVariable int id, @ModelAttribute UserUpdateForm userUpdateForm) {
+
+        log.info("{}", userUpdateForm);
+        userRepository.update(id, userUpdateForm);
 
         return "redirect:/users";
     }

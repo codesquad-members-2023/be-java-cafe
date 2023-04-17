@@ -1,6 +1,7 @@
 package kr.codesqaud.cafe.repository;
 
 import kr.codesqaud.cafe.domain.User;
+import kr.codesqaud.cafe.domain.dto.UserUpdateForm;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -92,22 +93,22 @@ class MySQLUserRepositoryTest {
         repository.save(user1);
         repository.save(user2);
 
-        User updateUser = new User("hyun", "0429", "황현태", "ghkdgus29@gmail.com");
-
-        repository.update(1, updateUser, "1234");
+        UserUpdateForm userUpdateForm = new UserUpdateForm(user1.getPassword(), "0429", "황현태", "ghkdgus29@gmail.com");
+        repository.update(1, userUpdateForm);
     }
 
     @Test
     @DisplayName("회원의 비밀번호가 일치하지 않는 경우 수정이 불가능")
     void validatePasswordCheck() {
         User user = new User("Hyun", "1234", "황현", "ghkdgus29@naver.com");
-        User updateUser = new User("Yoon", "4321", "황윤", "ghkddbs28@naver.com");
+        UserUpdateForm userUpdateForm = new UserUpdateForm("4321", "1234!", "황윤", "ghkddbs28@naver.com");
+
 
         repository.save(user);
         int userId = repository.findById(1).getId();
 
         assertThatThrownBy(() -> {
-            repository.update(userId, updateUser, "3333");
+            repository.update(userId, userUpdateForm);
         })
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("[ERROR] 비밀번호가 틀립니다.");

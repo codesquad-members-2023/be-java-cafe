@@ -1,6 +1,7 @@
 package kr.codesqaud.cafe.repository;
 
 import kr.codesqaud.cafe.domain.User;
+import kr.codesqaud.cafe.domain.dto.UserUpdateForm;
 
 import java.util.List;
 
@@ -14,5 +15,5 @@ public interface UserRepository {
 
     List<User> findAll();
 
-    void update(int id, User updateUser, String newPassword);
+    void update(int id, UserUpdateForm userUpdateForm);
 }
