@@ -14,8 +14,8 @@ public class WebConfig implements WebMvcConfigurer {
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(new LoginInterceptor())
                 .order(Ordered.HIGHEST_PRECEDENCE)
-                .addPathPatterns("/questions/form", "/articles/*", "/users/*")
-                .excludePathPatterns("/users/form", "/css/**", "/*.ico", "/fonts/**", "/images/**", "/js/**");
+                .addPathPatterns("/questions/form", "/articles/*", "/users/**")
+                .excludePathPatterns("/users", "/users/form", "/css/**", "/*.ico", "/fonts/**", "/images/**", "/js/**");
 
         registry.addInterceptor(new CacheInvalidateInterceptor())
                 .addPathPatterns("/articles/*", "/")
