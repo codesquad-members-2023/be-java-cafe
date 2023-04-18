@@ -72,10 +72,6 @@ public class MySQLUserRepository implements UserRepository{
     public void update(int id, UserUpdateForm userUpdateForm) {
         User existUser = findById(id);
 
-        if (!existUser.getPassword().equals(userUpdateForm.getOldPassword())) {
-            throw new IllegalArgumentException("[ERROR] 비밀번호가 틀립니다.");
-        }
-
         existUser.setName(userUpdateForm.getName());
         existUser.setPassword(userUpdateForm.getNewPassword());
         existUser.setEmail(userUpdateForm.getEmail());

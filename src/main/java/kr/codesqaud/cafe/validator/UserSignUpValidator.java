@@ -1,7 +1,6 @@
 package kr.codesqaud.cafe.validator;
 
 import kr.codesqaud.cafe.domain.User;
-import kr.codesqaud.cafe.repository.ArticleRepository;
 import kr.codesqaud.cafe.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -40,7 +39,7 @@ public class UserSignUpValidator implements Validator {
             errors.rejectValue("name", "required.user.name", "이름을 입력해주세요.");
         }
         if (!StringUtils.hasText(user.getEmail())) {
-            errors.rejectValue("email", "required.user.email", "이메일을 입력해주세요");
+            errors.rejectValue("email", "required.user.email", "이메일을 입력해주세요.");
         }
 
         if (user.getUserId().length() >= MAX_LENGTH) {
@@ -62,10 +61,6 @@ public class UserSignUpValidator implements Validator {
         if (!user.getEmail().matches("[^@]+@[^@]+\\.[^@]+")) {
             errors.rejectValue("email", "invalid.user.email", "유효하지 않은 이메일입니다.");
         }
-
-        userRepository.findAll().stream()
-                .filter(u -> u.getUserId().equals(user.getUserId()))
-                .findAny();
 
         if (userRepository.findAll().stream().anyMatch(u -> u.getUserId().equals(user.getUserId()))) {
             errors.rejectValue("userId", "duplicate.user.userId", "중복 아이디 입니다.");
