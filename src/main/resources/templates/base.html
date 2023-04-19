@@ -71,7 +71,7 @@
             <ul class="nav navbar-nav navbar-right">
                 <li class="active"><a href="/">Posts</a></li>
 
-                <th:block th:if="${session.sessionedUserId == null}">
+                <th:block th:if="${session.sessionUser == null}">
                 <li><a href="/login" role="button">로그인</a></li>
                 <li><a href="/users/form" role="button">회원가입</a></li>
                 </th:block>
@@ -79,9 +79,9 @@
                 <li><a href="#loginModal" role="button" data-toggle="modal">로그인</a></li>
                 <li><a href="#registerModal" role="button" data-toggle="modal">회원가입</a></li>
                 -->
-                <th:block th:if="${session.sessionedUserId != null}">
+                <th:block th:if="${session.sessionUser != null}">
                 <li><a href="/logout" role="button">로그아웃</a></li>
-                <li><a href="#" th:href="@{/users/{id}/form(id=${session.sessionedUserId})}" role="button">개인정보수정</a></li>
+                <li><a href="#" th:href="@{/users/{id}/form(id=${session.sessionUser.id})}" role="button">개인정보수정</a></li>
                 </th:block>
             </ul>
         </div>

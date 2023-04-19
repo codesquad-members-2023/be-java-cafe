@@ -1,13 +1,14 @@
 package kr.codesqaud.cafe.controller;
 
-import kr.codesqaud.cafe.SessionConstant;
 import kr.codesqaud.cafe.domain.Article;
+import kr.codesqaud.cafe.domain.User;
 import kr.codesqaud.cafe.domain.dto.ArticleForm;
 import kr.codesqaud.cafe.domain.dto.ArticleWithWriter;
 import kr.codesqaud.cafe.domain.dto.ReplyWithUser;
 import kr.codesqaud.cafe.domain.dto.SimpleArticleWithWriter;
 import kr.codesqaud.cafe.repository.ArticleRepository;
 import kr.codesqaud.cafe.repository.MySQLReplyRepository;
+import kr.codesqaud.cafe.session.Login;
 import kr.codesqaud.cafe.validator.ArticleWritingValidator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,7 +18,6 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpSession;
 import java.util.List;
 
 @Controller
@@ -53,13 +53,13 @@ public class ArticleController {
     }
 
     @PostMapping("/questions")
-    public String question(@ModelAttribute ArticleForm articleForm, BindingResult bindingResult, HttpSession session) {
+    public String question(@ModelAttribute ArticleForm articleForm, BindingResult bindingResult, @Login User loginUser) {
         articleWritingValidator.validate(articleForm, bindingResult);
         if (bindingResult.hasErrors()) {
             return "qna/form";
         }
 
-        Article article = new Article((int) session.getAttribute(SessionConstant.LOGIN_USER_ID), articleForm.getTitle(), articleForm.getContents());
+        Article article = new Article(loginUser.getId(), articleForm.getTitle(), articleForm.getContents());
         articleRepository.save(article);
 
         return "redirect:/";
@@ -76,16 +76,16 @@ public class ArticleController {
     }
 
     @DeleteMapping("/articles/{index}")
-    public String deleteArticle(@PathVariable int index, HttpSession session) {
-        validateUserEqualsWriter(index, session, DELETE);
+    public String deleteArticle(@PathVariable int index, @Login User loginUser) {
+        validateUserEqualsWriter(index, loginUser, DELETE);
 
         articleRepository.delete(index);
         return "redirect:/";
     }
 
     @GetMapping("/articles/{index}/form")
-    public String showArticleUpdateForm(@PathVariable int index, HttpSession session, Model model) {
-        validateUserEqualsWriter(index, session, UPDATE);
+    public String showArticleUpdateForm(@PathVariable int index, @Login User loginUser, Model model) {
+        validateUserEqualsWriter(index, loginUser, UPDATE);
 
         ArticleWithWriter article = articleRepository.findById(index);
         model.addAttribute("articleId", article.getId());
@@ -96,8 +96,8 @@ public class ArticleController {
 
     @PutMapping("/articles/{index}")
     public String updateArticle(@PathVariable int index, @ModelAttribute ArticleForm articleForm, BindingResult bindingResult,
-                                HttpSession session, Model model) {
-        validateUserEqualsWriter(index, session, UPDATE);
+                                @Login User loginUser, Model model) {
+        validateUserEqualsWriter(index, loginUser, UPDATE);
 
         articleWritingValidator.validate(articleForm, bindingResult);
         if (bindingResult.hasErrors()) {
@@ -110,11 +110,10 @@ public class ArticleController {
         return "redirect:/articles/{index}";
     }
 
-    private void validateUserEqualsWriter(int articleIndex, HttpSession session, String action) {
-        String loginUserName = (String) session.getAttribute(SessionConstant.LOGIN_USER_NICKNAME);
+    private void validateUserEqualsWriter(int articleIndex, User loginUser, String action) {
         ArticleWithWriter article = articleRepository.findById(articleIndex);
 
-        if (!loginUserName.equals(article.getWriter())) {
+        if (!loginUser.getUserId().equals(article.getWriter())) {
             throw new IllegalArgumentException("[ERROR] 자신이 작성하지 않은 게시물은 " + action + "할 수 없습니다.");
         }
     }

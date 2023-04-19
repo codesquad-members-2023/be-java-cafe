@@ -3,6 +3,7 @@ package kr.codesqaud.cafe.controller;
 import kr.codesqaud.cafe.domain.User;
 import kr.codesqaud.cafe.domain.dto.UserUpdateForm;
 import kr.codesqaud.cafe.repository.UserRepository;
+import kr.codesqaud.cafe.session.Login;
 import kr.codesqaud.cafe.validator.UserSignUpValidator;
 import kr.codesqaud.cafe.validator.UserUpdateFormValidator;
 import org.slf4j.Logger;
@@ -76,10 +77,8 @@ public class UserController {
     }
 
     @GetMapping("/users/{id}/form")
-    public String showUpdateUserForm(@PathVariable int id, Model model) {
-        User updateUser = userRepository.findById(id);
-
-        UserUpdateForm userUpdateForm = new UserUpdateForm(id, updateUser.getUserId(), updateUser.getName(), updateUser.getEmail());
+    public String showUpdateUserForm(@Login User loginUser, Model model) {
+        UserUpdateForm userUpdateForm = new UserUpdateForm(loginUser.getId(), loginUser.getUserId(), loginUser.getName(), loginUser.getEmail());
         model.addAttribute("userUpdateForm", userUpdateForm);
 
         return "user/updateForm";
@@ -88,7 +87,6 @@ public class UserController {
     @PutMapping("/users/{id}")
     public String updateUser(@PathVariable int id, @Validated @ModelAttribute UserUpdateForm userUpdateForm, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
-            log.info("dhkdhfksdlfa 에러떳데용");
             return "user/updateForm";
         }
         userRepository.update(id, userUpdateForm);
