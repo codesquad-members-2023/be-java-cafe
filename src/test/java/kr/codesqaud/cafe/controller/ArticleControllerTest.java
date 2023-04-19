@@ -2,6 +2,7 @@ package kr.codesqaud.cafe.controller;
 
 import kr.codesqaud.cafe.SessionConstant;
 import kr.codesqaud.cafe.domain.Article;
+import kr.codesqaud.cafe.domain.User;
 import kr.codesqaud.cafe.domain.dto.ArticleForm;
 import kr.codesqaud.cafe.domain.dto.ArticleWithWriter;
 import kr.codesqaud.cafe.domain.dto.ReplyWithUser;
@@ -48,8 +49,7 @@ class ArticleControllerTest {
     @BeforeEach
     private void setup() {
         mockHttpSession = new MockHttpSession();
-        mockHttpSession.setAttribute(SessionConstant.LOGIN_USER_ID, 1);
-        mockHttpSession.setAttribute(SessionConstant.LOGIN_USER_NICKNAME, "hyun");
+        mockHttpSession.setAttribute(SessionConstant.LOGIN_USER, new User(1, "hyun", "1234" , "황현", "ghkdgus29@naver.com"));
     }
 
     @Test
