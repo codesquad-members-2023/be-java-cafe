@@ -4,6 +4,7 @@ import kr.codesqaud.cafe.domain.Article;
 import kr.codesqaud.cafe.domain.dto.ArticleForm;
 import kr.codesqaud.cafe.domain.dto.ArticleWithWriter;
 import kr.codesqaud.cafe.domain.dto.SimpleArticleWithWriter;
+import kr.codesqaud.cafe.utils.Paging;
 
 import java.util.List;
 
@@ -13,7 +14,9 @@ public interface ArticleRepository {
 
     ArticleWithWriter findById(int id);
 
-    List<SimpleArticleWithWriter> findAll();
+    List<SimpleArticleWithWriter> findAll(Paging paging);
+
+    int count();
 
     void delete(int id);
 

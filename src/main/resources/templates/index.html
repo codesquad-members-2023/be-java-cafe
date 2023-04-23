@@ -33,17 +33,15 @@
                     </div>
                 </li>
             </ul>
-            <div class="row">
+            <div class="row" th:object="${paging}">
                 <div class="col-md-3"></div>
                 <div class="col-md-6 text-center">
                     <ul class="pagination center-block" style="display:inline-block;">
-                        <li><a href="#">«</a></li>
-                        <li><a href="#">1</a></li>
-                        <li><a href="#">2</a></li>
-                        <li><a href="#">3</a></li>
-                        <li><a href="#">4</a></li>
-                        <li><a href="#">5</a></li>
-                        <li><a href="#">»</a></li>
+                        <li th:if="*{startPage != 1}"><a th:href="@{/(nowPage=*{startPage} - 1)}">«</a></li>
+                        <th:block th:each="p : ${#numbers.sequence(paging.startPage, paging.endPage)}">
+                            <li th:class="${paging.nowPage == p} ? active"><a th:href="@{/(nowPage=${p})}" th:text="${p}"></a></li>
+                        </th:block>
+                        <li th:if="*{endPage != lastPage}"><a th:href="@{/(nowPage=*{endPage} + 1)}">»</a></li>
                     </ul>
                 </div>
                 <div class="col-md-3 qna-write">

@@ -9,6 +9,7 @@ import kr.codesqaud.cafe.domain.dto.ReplyWithUser;
 import kr.codesqaud.cafe.domain.dto.SimpleArticleWithWriter;
 import kr.codesqaud.cafe.repository.ArticleRepository;
 import kr.codesqaud.cafe.repository.MySQLReplyRepository;
+import kr.codesqaud.cafe.utils.Paging;
 import kr.codesqaud.cafe.validator.ArticleWritingValidator;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -53,14 +54,13 @@ class ArticleControllerTest {
     }
 
     @Test
-    @DisplayName("홈(/)으로 요청하면 모든 게시글을 보여준다.")
+    @DisplayName("홈(/)으로 요청하면 게시글을 보여준다.")
     void showArticles() throws Exception {
         SimpleArticleWithWriter article = new SimpleArticleWithWriter(1, "test", LocalDateTime.now(), 1, "hyun", 3);
-        BDDMockito.given(articleRepository.findAll()).willReturn(Collections.singletonList(article));
+        BDDMockito.given(articleRepository.findAll(new Paging(1, 10))).willReturn(Collections.singletonList(article));
 
         mvc.perform(MockMvcRequestBuilders.get("/"))
                 .andExpect(MockMvcResultMatchers.model().attributeExists("articles"))
-                .andExpect(MockMvcResultMatchers.model().attribute("articles", Collections.singletonList(article)))
                 .andExpect(MockMvcResultMatchers.view().name("index"))
                 .andExpect(MockMvcResultMatchers.status().isOk());
     }

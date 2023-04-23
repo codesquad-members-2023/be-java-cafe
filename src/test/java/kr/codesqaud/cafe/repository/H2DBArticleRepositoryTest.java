@@ -7,6 +7,7 @@ import kr.codesqaud.cafe.domain.dto.ArticleForm;
 import kr.codesqaud.cafe.domain.dto.ArticleWithWriter;
 import kr.codesqaud.cafe.domain.dto.ReplyWithUser;
 import kr.codesqaud.cafe.domain.dto.SimpleArticleWithWriter;
+import kr.codesqaud.cafe.utils.Paging;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -65,7 +66,7 @@ class H2DBArticleRepositoryTest {
         articleRepository.save(article);
 
         //then
-        List<SimpleArticleWithWriter> articles = articleRepository.findAll();
+        List<SimpleArticleWithWriter> articles = articleRepository.findAll(new Paging(1, 10));
         assertThat(articles.size()).isEqualTo(1);
     }
 
@@ -95,7 +96,7 @@ class H2DBArticleRepositoryTest {
         articleRepository.save(article1);
         articleRepository.save(article2);
 
-        List<SimpleArticleWithWriter> articles = articleRepository.findAll();
+        List<SimpleArticleWithWriter> articles = articleRepository.findAll(new Paging(1, 10));
         assertThat(articles.size()).isEqualTo(2);
     }
 
@@ -126,7 +127,7 @@ class H2DBArticleRepositoryTest {
 
         articleRepository.delete(1);
 
-        List<SimpleArticleWithWriter> articles = articleRepository.findAll();
+        List<SimpleArticleWithWriter> articles = articleRepository.findAll(new Paging(1, 10));
 
         assertThat(articles.size()).isEqualTo(1);
 

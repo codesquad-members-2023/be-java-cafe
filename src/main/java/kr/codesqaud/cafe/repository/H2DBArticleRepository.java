@@ -4,6 +4,7 @@ import kr.codesqaud.cafe.domain.Article;
 import kr.codesqaud.cafe.domain.dto.ArticleForm;
 import kr.codesqaud.cafe.domain.dto.ArticleWithWriter;
 import kr.codesqaud.cafe.domain.dto.SimpleArticleWithWriter;
+import kr.codesqaud.cafe.utils.Paging;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
@@ -51,13 +52,20 @@ public class H2DBArticleRepository implements ArticleRepository {
     }
 
     @Override
-    public List<SimpleArticleWithWriter> findAll() {
+    public List<SimpleArticleWithWriter> findAll(Paging paging) {
         String sql = "select a.id, a.title, a.createDate, a.user_id, u.user_id as writer, " +
                 "(select count(*) from reply r where a.id=r.article_id and r.deleted=false) as replyCount " +
                 "from article a join users u on a.user_id=u.id " +
                 "where a.deleted=false order by a.id desc";
 
         return template.query(sql, BeanPropertyRowMapper.newInstance(SimpleArticleWithWriter.class));
+    }
+
+    @Override
+    public int count() {
+        String sql = "select count(*) from article where deleted=:flag";
+
+        return template.queryForObject(sql, Map.of("flag", false), Integer.class);
     }
 
     @Override

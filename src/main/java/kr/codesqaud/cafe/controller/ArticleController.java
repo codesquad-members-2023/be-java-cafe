@@ -9,6 +9,7 @@ import kr.codesqaud.cafe.domain.dto.SimpleArticleWithWriter;
 import kr.codesqaud.cafe.repository.ArticleRepository;
 import kr.codesqaud.cafe.repository.MySQLReplyRepository;
 import kr.codesqaud.cafe.session.Login;
+import kr.codesqaud.cafe.utils.Paging;
 import kr.codesqaud.cafe.validator.ArticleWritingValidator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -39,9 +40,19 @@ public class ArticleController {
     }
 
     @GetMapping("/")
-    public String showArticles(Model model) {
-        List<SimpleArticleWithWriter> articles = articleRepository.findAll();
+    public String showArticles(@ModelAttribute Paging paging,
+                               @RequestParam(value = "nowPage", required = false) Integer nowPage,
+                               Model model) {
+        int total = articleRepository.count();
+        if (nowPage == null) {
+            nowPage = 1;
+        }
+
+        paging = new Paging(nowPage, total);
+        List<SimpleArticleWithWriter> articles = articleRepository.findAll(paging);
+
         model.addAttribute("articles", articles);
+        model.addAttribute("paging", paging);
 
         return "index";
     }
