@@ -1,6 +1,7 @@
 package kr.codesqaud.cafe.repository;
 
 import kr.codesqaud.cafe.domain.User;
+import kr.codesqaud.cafe.domain.dto.UserUpdateForm;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Primary;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -68,16 +69,12 @@ public class MySQLUserRepository implements UserRepository{
     }
 
     @Override
-    public void update(int id, User updateUser, String oldPassword) {
+    public void update(int id, UserUpdateForm userUpdateForm) {
         User existUser = findById(id);
 
-        if (!existUser.getPassword().equals(oldPassword)) {
-            throw new IllegalArgumentException("[ERROR] 비밀번호가 틀립니다.");
-        }
-
-        existUser.setName(updateUser.getName());
-        existUser.setPassword(updateUser.getPassword());
-        existUser.setEmail(updateUser.getEmail());
+        existUser.setName(userUpdateForm.getName());
+        existUser.setPassword(userUpdateForm.getNewPassword());
+        existUser.setEmail(userUpdateForm.getEmail());
 
         String sql = "update users " +
                 "set user_id=:userId, password=:password, name=:name, email=:email " +
