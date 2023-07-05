@@ -59,7 +59,7 @@ public class MemberController {
     }
 
     @PostMapping("/users/join")
-    public String addUser(@Valid JoinRequest joinForm, BindingResult bindingResult, Model model) {
+    public String addUser(@Valid @ModelAttribute JoinRequest joinForm, BindingResult bindingResult, Model model) {
         Member member = joinForm.toEntity();
 
         if (!memberRepository.validMemberId(member.getUserId())) {
@@ -67,11 +67,9 @@ public class MemberController {
         }
 
         if (bindingResult.hasErrors()) {
-            Map<String, String> errors = bindingResult.getFieldErrors()
-                    .stream().collect(Collectors.toMap(
-                            FieldError::getField,
-                            FieldError::getDefaultMessage
-                    ));
+            LOG.info(String.valueOf(bindingResult.hasErrors()));
+            Map<String, String> errors = bindingResult.getFieldErrors().stream()
+                    .collect(Collectors.toMap(FieldError::getField, FieldError::getDefaultMessage));
             if (!errors.isEmpty()) {
                 model.addAttribute("validationErrors", errors);
             }

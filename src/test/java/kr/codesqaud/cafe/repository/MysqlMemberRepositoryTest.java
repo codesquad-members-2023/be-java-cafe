@@ -17,9 +17,9 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 @JdbcTest
-@Sql("classpath:db/h2/schema.sql")
-@Sql("classpath:db/h2/data.sql")
-class H2MemberRepositoryTest {
+@Sql("classpath:db/mysql/schema.sql")
+@Sql("classpath:db/mysql/data.sql")
+class MysqlMemberRepositoryTest {
 
     @Autowired
     JdbcTemplate jdbcTemplate;

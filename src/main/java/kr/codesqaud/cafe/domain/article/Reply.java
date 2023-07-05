@@ -69,6 +69,14 @@ public class Reply {
 
     public Reply() {}
 
+    public Reply(long articleId, Writer writer, String contents) {
+        this.articleId = articleId;
+        this.writer = writer;
+        this.contents = contents;
+        this.createdDate = LocalDateTime.now();
+        this.updatedDate = LocalDateTime.now();
+    }
+
     public boolean equals(long answerId) {
         return this.id == answerId;
     }

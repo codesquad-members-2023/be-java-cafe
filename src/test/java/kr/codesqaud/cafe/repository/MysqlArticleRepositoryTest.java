@@ -1,7 +1,7 @@
 package kr.codesqaud.cafe.repository;
 
-import kr.codesqaud.cafe.domain.article.Article;
 import kr.codesqaud.cafe.domain.Member;
+import kr.codesqaud.cafe.domain.article.Article;
 import kr.codesqaud.cafe.domain.article.Writer;
 import kr.codesqaud.cafe.dto.ArticleListResponse;
 import kr.codesqaud.cafe.dto.ArticleResponse;
@@ -22,9 +22,9 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 @JdbcTest
-@Sql("classpath:db/h2/schema.sql")
-@Sql("classpath:db/h2/data.sql")
-class H2ArticleRepositoryTest {
+@Sql("classpath:db/mysql/schema.sql")
+@Sql("classpath:db/mysql/data.sql")
+class MysqlArticleRepositoryTest {
     @Autowired
     JdbcTemplate jdbcTemplate;
     ArticleRepository repository;

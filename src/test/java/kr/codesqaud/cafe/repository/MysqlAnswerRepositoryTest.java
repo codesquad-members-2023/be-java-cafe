@@ -15,9 +15,9 @@ import org.springframework.test.context.jdbc.Sql;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @JdbcTest
-@Sql("classpath:db/h2/schema.sql")
-@Sql("classpath:db/h2/data.sql")
-class H2AnswerRepositoryTest {
+@Sql("classpath:db/mysql/schema.sql")
+@Sql("classpath:db/mysql/data.sql")
+class MysqlAnswerRepositoryTest {
     @Autowired
     JdbcTemplate jdbcTemplate;
     ArticleRepository repository;

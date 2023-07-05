@@ -79,7 +79,7 @@
                               </div>
                           </article>
                           {{/answers}}
-                          <form class="submit-write" action="/articles/{{id}}/answers" method="post">
+                          <form class="submit-write" action="/api/articles/{{id}}/answers" method="post">
                               <div class="form-group" style="padding:14px;">
                                   <textarea class="form-control" name="contents" placeholder="Update your answer!"></textarea>
                               </div>
@@ -124,4 +124,36 @@
 		</div>
 	</article>
 </script>
+
+<script>
+    $(".submit-write button[type=submit]").click(addAnswer);
+
+    function addAnswer(e) {
+        e.preventDefault(); //submit 이 자동으로 동작하는 것을 막는다.
+
+        var queryString = $(".submit-write").serialize(); //form data들을 자동으로 묶어준다.
+        // console.log("query : "+ queryString);
+
+        var url = $(".submit-write").attr("action");
+        // console.log("url : " + url);
+
+        $.ajax({
+            type : 'post',
+            url : url,
+            data : queryString,
+            dataType : 'json',
+            error: function () {
+                console.log('failure');
+            },
+            success : function (data, status) {
+                console.log(data);
+                var answerTemplate = $("#answerTemplate").html();
+                var template = answerTemplate.format(data.nickname, data.formattedCreatedDate, data.contents, data.articleId, data.answerIndex);
+                $(".qna-comment-slipp-articles").prepend(template);
+                $("textarea[name=contents]").val("");
+            }
+        });
+    }
+</script>
+
 {{>layout/footer}}
