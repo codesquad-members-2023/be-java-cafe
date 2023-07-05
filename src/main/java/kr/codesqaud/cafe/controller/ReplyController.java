@@ -3,6 +3,7 @@ package kr.codesqaud.cafe.controller;
 import kr.codesqaud.cafe.domain.Member;
 import kr.codesqaud.cafe.domain.Reply;
 import kr.codesqaud.cafe.repository.reply.JdbcReplyRepository;
+import kr.codesqaud.cafe.util.MemberSessionUser;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;

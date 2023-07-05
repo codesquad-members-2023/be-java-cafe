@@ -1,6 +1,6 @@
 package kr.codesqaud.cafe.interceptor;
 
-import kr.codesqaud.cafe.controller.MemberSessionUser;
+import kr.codesqaud.cafe.util.MemberSessionUser;
 import org.springframework.web.servlet.HandlerInterceptor;
 
 import javax.servlet.http.HttpServletRequest;

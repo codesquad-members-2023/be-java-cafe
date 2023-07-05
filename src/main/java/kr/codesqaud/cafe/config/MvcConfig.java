@@ -10,7 +10,6 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @Configuration
 public class MvcConfig implements WebMvcConfigurer {
 
-    static final int FIRST = 1;
     @Override
     public void addViewControllers(ViewControllerRegistry registry) {
         registry.setOrder(Ordered.HIGHEST_PRECEDENCE);
@@ -21,8 +20,8 @@ public class MvcConfig implements WebMvcConfigurer {
     @Override // 명시적으로 오버라이드
     public void addInterceptors(InterceptorRegistry registry) { // 인터셉터 등록
         registry.addInterceptor(new LoginCheckInterceptor())
-                .order(FIRST)
-                .addPathPatterns("/**")
+                .order(Ordered.HIGHEST_PRECEDENCE)
+                .addPathPatterns("/users/**","/articles/**")
                 .excludePathPatterns("/", "/login", "/css/**", "/images/**", "/error","/fonts/**", "/logout","/form","/users","/articles");
     }
 }

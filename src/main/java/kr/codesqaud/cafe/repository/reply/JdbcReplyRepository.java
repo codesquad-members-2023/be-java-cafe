@@ -29,10 +29,10 @@ public class JdbcReplyRepository implements ReplyRepository {
     }
 
     @Override
-    public Optional<Reply> findOne(Long id) {
+    public Optional<Reply> findOne(Long replyId) {
         try {
-            String sql = "select reply_id,article_id,writer,contents,write_time from reply where reply_id = :replyId";
-            SqlParameterSource param = new MapSqlParameterSource("replyId", id);
+            String sql = "select reply_id,article_id,writer,contents,write_time from reply where reply_id = :replyId AND deleted = false";
+            SqlParameterSource param = new MapSqlParameterSource("replyId", replyId);
             return Optional.of(template.queryForObject(sql, param, rowMapperReply()));
         } catch (EmptyResultDataAccessException e) {
             return Optional.empty();
@@ -40,9 +40,9 @@ public class JdbcReplyRepository implements ReplyRepository {
     }
 
     @Override
-    public List<Reply> findAll(Long id) {
-        String sql = "select reply_id,article_id,writer,contents,write_time from reply where article_id = :articleId order by write_time";
-        SqlParameterSource param = new MapSqlParameterSource("articleId", id);
+    public List<Reply> findAll(Long articleId) {
+        String sql = "select reply_id,article_id,writer,contents,write_time from reply where article_id = :articleId AND deleted = false order by write_time";
+        SqlParameterSource param = new MapSqlParameterSource("articleId", articleId);
         return template.query(sql, param, rowMapperReply());
     }
 
@@ -52,9 +52,17 @@ public class JdbcReplyRepository implements ReplyRepository {
     }
 
     @Override
-    public void delete(Long id) {
-        String sql = "delete from reply where reply_id = :replyId";
-        SqlParameterSource param = new MapSqlParameterSource("replyId", id); // 하나만 찾으면되니까 map(객체 단위로 쓸 수 없으니까)
+    public void delete(Long replyId) {
+        //String sql = "delete from reply where reply_id = :replyId";
+        String sql = "update reply set deleted = true where reply_id = :replyId";
+        SqlParameterSource param = new MapSqlParameterSource("replyId", replyId); // 하나만 찾으면되니까 map(객체 단위로 쓸 수 없으니까)
+        template.update(sql,param);
+    }
+
+    @Override
+    public void deletedAll(Long articleId){
+        String sql = "update reply set deleted = true where article_id = :articleId";
+        SqlParameterSource param = new MapSqlParameterSource("articleId", articleId); // 하나만 찾으면되니까 map(객체 단위로 쓸 수 없으니까)
         template.update(sql,param);
     }
 
