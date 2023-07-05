@@ -42,7 +42,7 @@
                             <li>
                                 <form class="form-delete" action="/article/delete" method="POST">
                                     <input type="hidden" name="_method" value="DELETE">
-                                    <input type="hidden" name="articleId" th:value="${articleDto.getArticleId()}">
+                                    <input class="article-id" type="hidden" name="articleId" th:value="${articleDto.getArticleId()}">
                                     <input type="hidden" name="userId" th:value="${articleDto.getUserId()}">
                                     <button class="link-delete-article" type="submit">삭제</button>
                                 </form>
@@ -56,11 +56,9 @@
 
                 <div class="qna-comment">
                     <div class="qna-comment-slipp">
-                        <p class="qna-comment-count"><strong th:if="${replyDtoList} != null"
-                                                             th:text="${replyDtoList.size()}"></strong>개의 의견</p>
-                        <div class="qna-comment-slipp-articl
-                        es">
-
+                        <p class="qna-comment-count">
+                            <strong class="qna-comment-st1"></strong><strong class="qna-comment-st2"></strong></p>
+                        <div class="qna-comment-slipp-articles">
                             <article th:if="${replyDtoList} != null" th:each="replyDto : ${replyDtoList}"
                                      class="article" id="answer-1405">
                                 <div class="article-header">
@@ -69,7 +67,7 @@
                                              class="article-author-thumb" alt="">
                                     </div>
                                     <div class="article-header-text">
-                                        <a th:text="${replyDto.getUserId()}"
+                                        <a th:id="userId" th:name="userId" th:text="${replyDto.getUserId()}"
                                            th:href="@{../users/{userId}(userId=${replyDto.getUserId()})}"
                                            class="article-author-name"></a>
                                         <a th:text="${replyDto.getTime()}" href="#" class="article-header-time"
@@ -86,24 +84,23 @@
                                                th:href="@{reply/{replyId}/update(replyId=${replyDto.getReplyId()})}">수정</a>
                                         </li>
                                         <li>
-                                            <form class="delete-answer-form" action="/article/reply/delete"
-                                                  method="POST">
+                                            <form class="delete-answer-form" name="delete-reply"
+                                                  action="/article/{articleId}/reply/{replyId}/delete" method="POST">
                                                 <input type="hidden" name="_method" value="DELETE">
-                                                <input type="hidden" name="replyId" th:value="${replyDto.getReplyId()}">
-                                                <input type="hidden" name="articleId"
-                                                       th:value="${replyDto.getArticleId()}">
-                                                <input type="hidden" name="userId" th:value="${replyDto.getUserId()}">
-                                                <button type="submit" class="delete-answer-button">삭제</button>
+                                                <input type="hidden" name="replyId" value="">
+                                                <input type="hidden" name="articleId">
+                                                <input type="hidden" name="userId" value="">
+                                                <button type="submit" class="delete-answer-button-submit">삭제</button>
                                             </form>
                                         </li>
                                     </ul>
                                 </div>
                             </article>
-                            <form method="POST" class="submit-write" action="/article/reply/create">
+                            <form name="replySubmit" method="POST" class="submit-write" action="/article/${articleId}/reply/creat">
                                 <div class="form-group" style="padding:14px;">
                                     <label>
-                                        <input type="hidden" name="userId" th:value="${session.userId}">
-                                        <input type="hidden" name="articleId" th:value="${articleDto.articleId}">
+                                        <input th:value="${articleDto.getUserId()}" type="hidden" name="userId">
+                                        <input th:value="${articleDto.getArticleId()}" type="hidden" name="articleId">
                                     </label>
                                     <textarea class="form-control" name="contents"
                                               placeholder="Update your status"></textarea>
@@ -127,21 +124,19 @@
             </div>
             <div class="article-header-text">
                 <a href="#" class="article-author-name">{0}</a>
-                <div class="article-header-time">{1}</div>
+                <div class="article-header-time" >{1}</div>
             </div>
         </div>
-        <div class="article-doc comment-doc">
-            {2}
-        </div>
+        <div class="article-doc comment-doc">{2}</div>
         <div class="article-util">
             <ul class="article-util-list">
                 <li>
-                    <a class="link-modify-article" href="/api/qna/updateAnswer/{3}">수정</a>
+                    <a class="link-modify-article" href="/article/reply/{3}/update">수정</a>
                 </li>
                 <li>
-                    <form class="delete-answer-form" action="/api/questions/{3}/answers/{4}" method="POST">
+                    <form class="delete-answer-form" name="delete-reply" action="/article/{4}/reply/{3}/delete" method="POST">
                         <input type="hidden" name="_method" value="DELETE">
-                        <button type="submit" class="delete-answer-button">삭제</button>
+                        <button type="submit" class="delete-answer-button" data-replyId="{3}">삭제</button>
                     </form>
                 </li>
             </ul>

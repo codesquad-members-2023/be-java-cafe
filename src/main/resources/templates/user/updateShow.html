@@ -54,10 +54,10 @@
             <!--                    </div>-->
             <!--                </article>-->
 
-            <div class="qna-comment">
-                <div class="qna-comment-slipp">
-                    <!--                        <p class="qna-comment-count"><strong th:if="${replyDtoList} != null" th:text="${replyDtoList.size()}"></strong>개의 의견</p>-->
-                    <div class="qna-comment-slipp-articl
+            <div class="qna-comment-update">
+                <div class="qna-comment-update-slipp">
+                    <!--                        <p class="qna-comment-update-count"><strong th:if="${replyDtoList} != null" th:text="${replyDtoList.size()}"></strong>개의 의견</p>-->
+                    <div class="qna-comment-update-slipp-articl
                         es">
 
                         <article class="article" id="answer-1405">
@@ -93,7 +93,7 @@
                             <!--                                    </ul>-->
                             <!--                                </div>-->
                         </article>
-                        <form method="POST" class="submit-write" action="/article/reply/updateSubmit">
+                        <form method="POST" class="submit-write-update" action="/article/reply/updateSubmit">
                             <div class="form-group" style="padding:14px;">
                                 <label>
                                     <input type="hidden" name="_method" value="PUT"/>
@@ -146,5 +146,8 @@
                 </article>
             </script>
             <footer th:replace="summery/footer :: footer"></footer>
+        </div>
+    </div>
+</div>
 </body>
 </html>

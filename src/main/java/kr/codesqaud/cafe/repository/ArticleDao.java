@@ -5,6 +5,7 @@ import kr.codesqaud.cafe.model.Article;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 @Repository
 public class ArticleDao {
@@ -46,10 +47,12 @@ public class ArticleDao {
         );
     }
 
+    @Transactional
     public void deleteArticle(int articleId) {
-        String sql = "UPDATE ARTICLE SET DELETED = true WHERE ARTICLE_ID = ? AND DELETED = false";
-        jdbcTemplate.update(sql,
-                articleId
-        );
+        String deleteReplySQL = "UPDATE REPLY SET DELETED = true WHERE ARTICLE_ID = ? AND DELETED = false;";
+        jdbcTemplate.update(deleteReplySQL, articleId);
+
+        String deleteArticleSQL = "UPDATE ARTICLE SET DELETED = true WHERE ARTICLE_ID = ? AND DELETED = false;";
+        jdbcTemplate.update(deleteArticleSQL, articleId);
     }
 }
