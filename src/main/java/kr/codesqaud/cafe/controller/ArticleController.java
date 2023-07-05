@@ -1,8 +1,10 @@
 package kr.codesqaud.cafe.controller;
 
 import kr.codesqaud.cafe.domain.article.Article;
+import kr.codesqaud.cafe.domain.reply.ReplyService;
 import kr.codesqaud.cafe.dto.ArticleWithWriterDto;
 import kr.codesqaud.cafe.dto.ArticleWithoutContentsDto;
+import kr.codesqaud.cafe.dto.ReplyDto;
 import kr.codesqaud.cafe.repository.NamedJdbcTemplateArticleRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -11,7 +13,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import static kr.codesqaud.cafe.Constants.SESSIONED_USER;
+import static kr.codesqaud.cafe.utility.Constants.SESSIONED_USER;
 
 import javax.servlet.http.HttpSession;
 import java.sql.SQLException;
@@ -20,11 +22,13 @@ import java.util.List;
 @Controller
 public class ArticleController {
 	private final NamedJdbcTemplateArticleRepository articleRepository;
+	private final ReplyService replyService;
 
 	private final Logger log = LoggerFactory.getLogger(ArticleController.class);
 
 	@Autowired
-	public ArticleController(NamedJdbcTemplateArticleRepository articleRepository) {
+	public ArticleController(NamedJdbcTemplateArticleRepository articleRepository, ReplyService replyService) {
+		this.replyService = replyService;
 		this.articleRepository = articleRepository;
 	}
 
@@ -60,9 +64,11 @@ public class ArticleController {
 	}
 
 	@GetMapping("/articles/{articleSequence}")
-	public String articleShow(@PathVariable Long articleSequence, Model model) throws SQLException {
+	public String articleShow(@PathVariable Long articleSequence, Model article, Model replies) throws SQLException {
 		ArticleWithWriterDto findArticle = articleRepository.findByArticleSequence(articleSequence);
-		model.addAttribute("article", findArticle);
+		List<ReplyDto> replyDtoList = replyService.showReplies(articleSequence);
+		replies.addAttribute("replies", replyDtoList);
+		article.addAttribute("article", findArticle);
 		return "qna/show";
 	}
 

@@ -10,6 +10,7 @@ public class ArticleWithoutContentsDto {
 	private LocalDateTime writtenTime;
 	private String writer;
 	private Long userSequence;
+	private Long repliesCount;
 
 	public ArticleWithoutContentsDto() {
 	}
@@ -59,5 +60,13 @@ public class ArticleWithoutContentsDto {
 
 	public void setUserSequence(Long userSequence) {
 		this.userSequence = userSequence;
+	}
+
+	public Long getRepliesCount() {
+		return repliesCount;
+	}
+
+	public void setRepliesCount(Long repliesCount) {
+		this.repliesCount = repliesCount;
 	}
 }
